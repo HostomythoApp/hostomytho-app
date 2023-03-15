@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tindemma",
-    "slug": "tindemma",
+    "name": "codeine-app",
+    "slug": "codeine-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,7 +24,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/assets/images/favicon.png"
     }
   }
 }
