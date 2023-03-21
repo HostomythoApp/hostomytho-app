@@ -7,9 +7,9 @@
     "android": "GENERATE_SOURCEMAP=false expo start --android",
     "ios": "GENERATE_SOURCEMAP=false expo start --ios",
     "web": "concurrently \"GENERATE_SOURCEMAP=false expo start --web\" \"npm run dev:tailwind\"",
-    "build:tailwind": "tailwindcss --input input.css --output tailwind.css --no-autoprefixer && tailwind-rn",
-    "dev:tailwind": "concurrently \"tailwindcss --input input.css --output tailwind.css --no-autoprefixer --watch\" \"tailwind-rn --watch\""
-  },
+    "build:tailwind": "tailwindcss --input src/utils/tailwind/input.css --output src/utils/tailwind/tailwind.css --no-autoprefixer && tailwind-rn -i src/utils/tailwind/tailwind.css -o src/utils/tailwind/styles.json --color-output src/utils/tailwind/colors.json",
+    "dev:tailwind": "tailwindcss --input src/utils/tailwind/input.css --output src/utils/tailwind/tailwind.css --no-autoprefixer --jit --watch && tailwind-rn -i src/utils/tailwind/tailwind.css -o src/utils/tailwind/styles.json --color-output src/utils/tailwind/colors.json"
+   },
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
     "@react-navigation/native": "^6.1.6",

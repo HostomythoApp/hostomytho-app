@@ -2,10 +2,9 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { TailwindProvider } from "tailwind-rn";
-import utilities from "./tailwind.json";
+import utilities from "tailwind/styles.json";
 import { NavigationContainer } from "@react-navigation/native";
-
-import StackNavigator from "./StackNavigator";
+import StackNavigator from "navigation/StackNavigator";
 
 export default function App() {
   return (
@@ -23,7 +22,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
 });

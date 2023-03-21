@@ -1,8 +1,8 @@
 module.exports = {
   content: [
     "./App.js",
-    "./StackNavigator.js",
-   './src/**/*.{js,jsx,ts,tsx}'
+   './src/**/*.{js,jsx,ts,tsx}',
+   './src/screens/ChatScreen.js'
   ],
   theme: {
     extend: {},

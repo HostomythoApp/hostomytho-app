@@ -18,9 +18,15 @@ module.exports = function (api) {
             ".jpg"
           ],
           alias: {
-            "@screens": "./src/screens",
+            "images": "./src/assets/images",
+            "themes": "./src/assets/themes",
             "components": "./src/components",
             "const": "./src/const",
+            "data": "./src/data",
+            "hooks": "./src/hooks",
+            "navigation": "./src/navigation",
+            "screens": "./src/screens",
+            "tailwind": "./src/utils/tailwind",
           },
         },
       ],
