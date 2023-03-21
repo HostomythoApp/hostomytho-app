@@ -7,8 +7,7 @@ export default function ContainerApp() {
   return (
     <SafeAreaView>
       <View style={tw("")}>
-        <Text style={tw("font-semibold")}>Hello Tsqsdailwind</Text>
-        <Button title="Go to Home" />
+        <Text style={tw("font-semibold")}>Composant pas utile pour le moment</Text>
       </View>
     </SafeAreaView>
   );
