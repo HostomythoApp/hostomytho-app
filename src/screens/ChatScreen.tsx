@@ -17,7 +17,7 @@ const ChatScreen = ({}) => {
         onPressIn={() => setOpacity(0.7)}
         onPressOut={() => setOpacity(1)}
         activeOpacity={1}
-        style={tw("bg-green-500 p-3 rounded-xl self-center")}
+        style={tw("bg-gray-500 p-3 rounded-xl self-center")}
       >
         <Text style={tw("text-white text-lg font-bold")}>
           Go to Home Screen
