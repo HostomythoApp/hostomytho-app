@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useTailwind } from "tailwind-rn";
 
-const ChatScreen = ({}) => {
+const ProfileScreen = ({}) => {
   const navigation = useNavigation();
   const tw = useTailwind();
 
@@ -17,7 +17,7 @@ const ChatScreen = ({}) => {
         onPressIn={() => setOpacity(0.7)}
         onPressOut={() => setOpacity(1)}
         activeOpacity={1}
-        style={tw("bg-cyan-500 p-3 rounded-xl self-center")}
+        style={tw("bg-red-500 p-3 rounded-xl self-center")}
       >
         <Text style={tw("text-white text-lg font-bold")}>
           Go to Home Screen
@@ -27,4 +27,4 @@ const ChatScreen = ({}) => {
   );
 };
 
-export default ChatScreen;
+export default ProfileScreen;
