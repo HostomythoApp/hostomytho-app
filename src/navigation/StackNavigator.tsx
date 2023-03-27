@@ -15,7 +15,8 @@ const StackNavigator = ({}) => {
     >
       <Stack.Screen name="Home" component={MainScreen} />
       <Stack.Screen name="Login" component={ProfileScreen} />
-      <Stack.Screen name="Chat" component={HomeScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Main" component={MainScreen} />
     </Stack.Navigator>
   );
 };
