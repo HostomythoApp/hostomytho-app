@@ -1,30 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
+import PrimaryButton from "../components/PrimaryButton";
 
 const HomeScreen = ({}) => {
-  const navigation = useNavigation();
   const tw = useTailwind();
 
-  const [opacity, setOpacity] = useState(1);
-  
   return (
-    <View>
+    <View style={tw("flex-1 justify-center items-center")}>
       <Text style={tw("font-semibold ")}>Home Screen</Text>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Main")}
-        onPressIn={() => setOpacity(0.7)}
-        onPressOut={() => setOpacity(1)}
-        activeOpacity={1}
-        style={tw("bg-blue-500 p-3 rounded-xl self-center")}
-      >
-        <Text style={tw("text-white text-lg font-bold")}>
-          Go to Main Screen
-        </Text>
-      </TouchableOpacity>
-      
+      <PrimaryButton title="Menu principal" destination="Main" />
     </View>
   );
 };
