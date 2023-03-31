@@ -16,6 +16,7 @@ const MainScreen = ({}) => {
                 <PrimaryButton title="Profil" destination="Profile"/>
                 <PrimaryButton title="Paramètre" destination="Settings"/>
                 <PrimaryButton title="Connexion" destination="Login"/>
+                <PrimaryButton title="Inscription" destination="SignIn"/>
             </View>
         </View>);
 };
