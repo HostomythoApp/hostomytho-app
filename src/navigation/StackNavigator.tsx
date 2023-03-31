@@ -4,7 +4,7 @@ import MainScreen from "screens/MainScreen";
 import ProfileScreen from "screens/ProfileScreen";
 import HomeScreen from "screens/HomeScreen";
 import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
-import TouchableOpacity from 'react-native';
+import { TouchableOpacity } from 'react-native';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({ }) => {
@@ -21,11 +21,11 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
-      <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Login" component={ProfileScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Main" component={MainScreen} />
+      <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
     </Stack.Navigator>
   );
 };

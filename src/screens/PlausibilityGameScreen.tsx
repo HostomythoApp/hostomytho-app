@@ -5,7 +5,7 @@ import MainTitle from "components/MainTitle";
 import PrimaryButton from "components/PrimaryButton";
 import data from "data/fakeUserData.js";
 import Swiper from "react-native-deck-swiper";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -41,8 +41,7 @@ const PlausibilityGameScreen = ({ }) => {
             cardIndex={0}
             backgroundColor={"#4FD0E9"}
             stackSize={5}
-            animateCardOpacity
-            verticalSwipe={false}
+            disableBottomSwipe={true}
             overlayLabels={{
               left: {
                 title: "Suspect",
@@ -54,10 +53,18 @@ const PlausibilityGameScreen = ({ }) => {
                 },
               },
               right: {
-                title: "Crédible",
+                title: "Valide",
                 style: {
                   label: {
-                    color: "#4DED30",
+                    color: "#81dba0",
+                  },
+                },
+              },
+              top: {
+                title: "Doute",
+                style: {
+                  label: {
+                    color: "yellow",
                   },
                 },
               },
@@ -69,7 +76,7 @@ const PlausibilityGameScreen = ({ }) => {
 
               return (
                 <View style={[
-                  tw("bg-yellow-100 p-7 rounded-xl justify-center"),
+                  tw("bg-white rounded-xl justify-center"),
                   {
                     minHeight: 400, // Increased card size
                     shadowColor: "#000",
@@ -80,22 +87,28 @@ const PlausibilityGameScreen = ({ }) => {
                   }
                 ]}>
                   <Text style={[
-                    tw("text-xl tracking-wider mb-2"),
+                    tw("text-xl tracking-wider mb-2 m-7"),
                     {
                       fontFamily: "Pally",
-                    }
-                  ]}>
+                      WebkitUserSelect: 'none',
+                      userSelect: 'none'
+                    },
+                  ]}
+
+                    selectionColor="transparent" >
                     {/* TODO: Désactiver le surlignage */}
                     {displayText}
                   </Text>
                   {card.content.length > 750 && (
-                    <TouchableOpacity onPress={() => toggleExpandCard(index)} >
-                      {isExpanded ? (
-                        <AntDesign name="up" size={24} color="black" />
-                      ) : (
-                        <AntDesign name="down" size={24} color="black" />
-                      )}
-                    </TouchableOpacity>
+                    <View style={tw("flex items-center")}>
+                      <TouchableOpacity onPress={() => toggleExpandCard(index)} >
+                        {isExpanded ? (
+                          <AntDesign name="up" size={24} color="black" />
+                        ) : (
+                          <AntDesign name="down" size={24} color="black" />
+                        )}
+                      </TouchableOpacity>
+                    </View>
                   )}
                 </View>
               );
@@ -104,6 +117,34 @@ const PlausibilityGameScreen = ({ }) => {
         </View>
 
       </ScrollView>
+
+      {/* Boutons de plausibilité */}
+      <View style={tw('flex flex-row justify-evenly mb-4')}>
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
+          onPress={() => swipeRef.current.swipeLeft()} >
+          <Entypo name="cross" size={32} color="red" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
+          onPress={() => swipeRef.current.swipeLeft()} >
+          <Entypo name="flag" size={28} color="orange" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
+          onPress={() => swipeRef.current.swipeTop()}  >
+          <AntDesign name="question" size={30} color="orange" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
+          onPress={() => swipeRef.current.swipeRight()}  >
+          <Ionicons name="checkmark" size={24} color="#48d1cc" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
+          onPress={() => swipeRef.current.swipeRight()}  >
+          <Ionicons name="checkmark-done-sharp" size={24} color="green" />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
