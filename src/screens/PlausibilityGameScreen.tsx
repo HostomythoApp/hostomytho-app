@@ -7,7 +7,7 @@ import data from "data/fakeUserData.js";
 import Swiper from "react-native-deck-swiper";
 import { AntDesign } from '@expo/vector-icons';
 
-const PausibilityGameScreen = ({ }) => {
+const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
   const [listTexts, setListTexts] = useState<any>(null);
   const swipeRef = useRef(null);
@@ -108,4 +108,4 @@ const PausibilityGameScreen = ({ }) => {
   );
 };
 
-export default PausibilityGameScreen;
+export default PlausibilityGameScreen;

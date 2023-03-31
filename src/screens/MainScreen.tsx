@@ -13,7 +13,7 @@ const MainScreen = ({}) => {
     <View style={tw("flex-1 justify-center items-center")}>
       <MainTitle title={"Bonjour " + data.member.login} />
       <View>
-        <PrimaryButton title="Jouer" destination="PausibilityGame" />
+        <PrimaryButton title="Jouer" destination="PlausibilityGame" />
         <PrimaryButton title="Profil" destination="Profile" />
         <PrimaryButton title="Paramètre" destination="Settings" />
       </View>
