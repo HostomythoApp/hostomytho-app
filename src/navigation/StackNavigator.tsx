@@ -5,6 +5,7 @@ import ProfileScreen from "screens/ProfileScreen";
 import HomeScreen from "screens/HomeScreen";
 import PausibilityGameScreen from "screens/PausibilityGameScreen";
 import {ActionSheetIOS, Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import LoginScreen from "../screens/LoginScreen";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({}) => {
@@ -22,7 +23,8 @@ const StackNavigator = ({}) => {
   >
       </Stack.Group>
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Login" component={ProfileScreen} />
+      <Stack.Screen name="Connected" component={ProfileScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Main" component={MainScreen} />
       <Stack.Screen name="PausibilityGame" component={PausibilityGameScreen} />
