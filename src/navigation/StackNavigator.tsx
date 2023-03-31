@@ -4,22 +4,22 @@ import MainScreen from "screens/MainScreen";
 import ProfileScreen from "screens/ProfileScreen";
 import HomeScreen from "screens/HomeScreen";
 import PausibilityGameScreen from "screens/PausibilityGameScreen";
-import {ActionSheetIOS, Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import TouchableOpacity from 'react-native';
 const Stack = createNativeStackNavigator();
 
-const StackNavigator = ({}) => {
+const StackNavigator = ({ }) => {
   return (
     <Stack.Navigator
     // screenOptions={{
     //   headerShown: false,
     // }}
     >
-  <Stack.Group
-    screenOptions={({ navigation }) => ({
-      presentation: 'modal',
-      headerLeft: () => <TouchableOpacity onPress={navigation.goBack} />,
-    })}
-  >
+      <Stack.Group
+        screenOptions={({ navigation }) => ({
+          presentation: 'modal',
+          headerLeft: () => <TouchableOpacity onPress={navigation.goBack} />,
+        })}
+      >
       </Stack.Group>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Login" component={ProfileScreen} />
