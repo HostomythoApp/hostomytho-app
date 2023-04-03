@@ -7,7 +7,6 @@ import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
-  const [listTexts, setListTexts] = useState<any>(null);
   const swipeRef = useRef<Swiper<any>>(null);
 
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
@@ -25,7 +24,7 @@ const PlausibilityGameScreen = ({ }) => {
   };
 
   return (
-    <SafeAreaView style={tw("flex-1")}>
+    <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("flex-grow")}>
 
         {/* Cards */}
@@ -51,6 +50,7 @@ const PlausibilityGameScreen = ({ }) => {
                   label: {
                     textAlign: "right",
                     color: "red",
+                    fontFamily: "Pally",
                   },
                 },
               },
@@ -59,6 +59,7 @@ const PlausibilityGameScreen = ({ }) => {
                 style: {
                   label: {
                     color: "#81dba0",
+                    fontFamily: "Pally",
                   },
                 },
               },
@@ -67,6 +68,8 @@ const PlausibilityGameScreen = ({ }) => {
                 style: {
                   label: {
                     color: "yellow",
+                    textAlign: "bottom",
+                    fontFamily: "Pally",
                   },
                 },
               },
@@ -78,7 +81,7 @@ const PlausibilityGameScreen = ({ }) => {
 
               return (
                 <View style={[
-                  tw("bg-white rounded-xl justify-center"),
+                  tw("bg-[#FFFEE0] rounded-xl justify-center"),
                   {
                     minHeight: 400, // Increased card size
                     shadowColor: "#000",
@@ -90,9 +93,10 @@ const PlausibilityGameScreen = ({ }) => {
                   }
                 ]}>
                   <Text style={[
-                    tw("text-xl tracking-wider mb-2 m-7"),
+                    tw("text-2xl tracking-wider mb-2 m-7"),
                     {
-                      fontFamily: "Pally",
+                      // TODO Importer et altérner plusieurs fonts
+                      fontFamily: "MarckScript",
                       WebkitUserSelect: 'none',
                       userSelect: 'none'
                     },

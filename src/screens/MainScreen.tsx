@@ -10,7 +10,7 @@ const MainScreen = ({}) => {
   const tw = useTailwind();
 
   return (
-    <View style={tw("flex-1 justify-center items-center")}>
+    <View style={tw("flex-1 justify-center items-center bg-white")}>
       <MainTitle title={"Bonjour " + data.member.login} />
       <View>
         <PrimaryButton title="Jouer" destination="PlausibilityGame" />

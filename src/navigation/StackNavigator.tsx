@@ -21,11 +21,11 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
-      <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Login" component={ProfileScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Main" component={MainScreen} />
+      <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
     </Stack.Navigator>
   );
 };

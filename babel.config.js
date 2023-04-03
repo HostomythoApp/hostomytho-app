@@ -27,6 +27,7 @@ module.exports = function (api) {
             "navigation": "./src/navigation",
             "screens": "./src/screens",
             "tailwind": "./src/utils/tailwind",
+            "fonts": "./src/assets/themes/fonts",
           },
         },
       ],
