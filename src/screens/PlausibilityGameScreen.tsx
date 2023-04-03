@@ -10,18 +10,17 @@ const PlausibilityGameScreen = ({ }) => {
   const [listTexts, setListTexts] = useState<any>(null);
   const swipeRef = useRef<Swiper<any>>(null);
 
-  const [expandedCard, setExpandedCard] = useState<boolean | null>(false);
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
   const toggleExpandCard = (index: number) => {
     console.log("toggleExpandCard");
     console.log("index ", index);
     console.log("expandedCard ", expandedCard);
-    setExpandedCard(true);
 
     if (expandedCard) {
-      setExpandedCard(false);
+      setExpandedCard(null);
     } else {
-      setExpandedCard(true);
+      setExpandedCard(1);
     }
   };
 
