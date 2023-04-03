@@ -1,3 +1,4 @@
+// Fichier de déclaration de déclaration de types pour typescript
 declare module 'images/*' {
     const value: any;
     export default value;
@@ -9,6 +10,16 @@ declare module 'images/*' {
   }
   
   declare module 'screens/*' {
+    const value: any;
+    export default value;
+  }
+  
+  declare module 'components/*' {
+    const value: any;
+    export default value;
+  }
+  
+  declare module 'utils/*' {
     const value: any;
     export default value;
   }
