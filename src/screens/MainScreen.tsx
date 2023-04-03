@@ -8,6 +8,7 @@ import MainTitle from "components/MainTitle";
 const MainScreen = ({}) => {
     const tw = useTailwind();
 
+
     return (
         <View style={tw("flex-1 justify-center items-center")}>
             <MainTitle title={"Bonjour " + data.member.login}/>
