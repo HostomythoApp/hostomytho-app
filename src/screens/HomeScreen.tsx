@@ -8,7 +8,7 @@ const HomeScreen = ({}) => {
   const tw = useTailwind();
 
   return (
-    <View style={tw("flex-1 justify-center items-center")}>
+    <View style={tw("flex-1 justify-center items-center bg-white")}>
       <Text style={tw("font-semibold ")}></Text>
       <MainTitle title="Home Screen" />
       <PrimaryButton title="Menu principal" destination="Main" />

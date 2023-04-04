@@ -1,29 +1,30 @@
 import React, { useRef, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import MainTitle from "components/MainTitle";
-import PrimaryButton from "components/PrimaryButton";
 import data from "data/fakeUserData.js";
 import Swiper from "react-native-deck-swiper";
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
-  const [listTexts, setListTexts] = useState<any>(null);
-  const swipeRef = useRef(null);
+  const swipeRef = useRef<Swiper<any>>(null);
 
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
   const toggleExpandCard = (index: number) => {
-    if (expandedCard === index) {
+    console.log("toggleExpandCard");
+    console.log("index ", index);
+    console.log("expandedCard ", expandedCard);
+
+    if (expandedCard) {
       setExpandedCard(null);
     } else {
-      setExpandedCard(index);
+      setExpandedCard(1);
     }
   };
 
   return (
-    <SafeAreaView style={tw("flex-1")}>
+    <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("flex-grow")}>
 
         {/* Cards */}
@@ -49,6 +50,7 @@ const PlausibilityGameScreen = ({ }) => {
                   label: {
                     textAlign: "right",
                     color: "red",
+                    fontFamily: "Pally",
                   },
                 },
               },
@@ -57,6 +59,7 @@ const PlausibilityGameScreen = ({ }) => {
                 style: {
                   label: {
                     color: "#81dba0",
+                    fontFamily: "Pally",
                   },
                 },
               },
@@ -65,18 +68,20 @@ const PlausibilityGameScreen = ({ }) => {
                 style: {
                   label: {
                     color: "yellow",
+                    textAlign: "bottom",
+                    fontFamily: "Pally",
                   },
                 },
               },
             }}
-            renderCard={(card, index) => {
+            renderCard={(card: any, index) => {
               const isExpanded = expandedCard === index;
               const limitedText = card.content.slice(0, 750) + (card.content.length > 750 ? "..." : ""); // Increased text length
               const displayText = isExpanded ? card.content : limitedText;
 
               return (
                 <View style={[
-                  tw("bg-white rounded-xl justify-center"),
+                  tw("bg-[#FFFEE0] rounded-xl justify-center"),
                   {
                     minHeight: 400, // Increased card size
                     shadowColor: "#000",
@@ -84,19 +89,20 @@ const PlausibilityGameScreen = ({ }) => {
                     shadowOpacity: 0.25,
                     shadowRadius: 3.84,
                     elevation: 5,
+                    cursor: 'grab'
                   }
                 ]}>
                   <Text style={[
-                    tw("text-xl tracking-wider mb-2 m-7"),
+                    tw("text-2xl tracking-wider mb-2 m-7"),
                     {
-                      fontFamily: "Pally",
+                      // TODO Importer et altérner plusieurs fonts
+                      fontFamily: "MarckScript",
                       WebkitUserSelect: 'none',
                       userSelect: 'none'
                     },
                   ]}
 
                     selectionColor="transparent" >
-                    {/* TODO: Désactiver le surlignage */}
                     {displayText}
                   </Text>
                   {card.content.length > 750 && (
@@ -121,27 +127,27 @@ const PlausibilityGameScreen = ({ }) => {
       {/* Boutons de plausibilité */}
       <View style={tw('flex flex-row justify-evenly mb-4')}>
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
-          onPress={() => swipeRef.current.swipeLeft()} >
+          onPress={() => swipeRef.current?.swipeLeft()} >
           <Entypo name="cross" size={32} color="red" />
         </TouchableOpacity>
 
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
-          onPress={() => swipeRef.current.swipeLeft()} >
+          onPress={() => swipeRef.current?.swipeLeft()} >
           <Entypo name="flag" size={28} color="orange" />
         </TouchableOpacity>
 
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
-          onPress={() => swipeRef.current.swipeTop()}  >
+          onPress={() => swipeRef.current?.swipeTop()}  >
           <AntDesign name="question" size={30} color="orange" />
         </TouchableOpacity>
 
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
-          onPress={() => swipeRef.current.swipeRight()}  >
+          onPress={() => swipeRef.current?.swipeRight()}  >
           <Ionicons name="checkmark" size={24} color="#48d1cc" />
         </TouchableOpacity>
 
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
-          onPress={() => swipeRef.current.swipeRight()}  >
+          onPress={() => swipeRef.current?.swipeRight()}  >
           <Ionicons name="checkmark-done-sharp" size={24} color="green" />
         </TouchableOpacity>
       </View>

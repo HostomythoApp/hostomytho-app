@@ -33,8 +33,17 @@ const SignIn = ({}) => {
     };
 
     const generatePseudo = () => {
-        const pseudo = "Pseudo";
-        setUsername(pseudo);
+        const detectiveNames = ["Sherbloque", "Hermule", "Thilip", "Fancy", "Colombe", "Adrianne",
+            "Maison", "Gris", "Chapardé", "Banor", "Masloy", "Médith", "Feur",];
+
+        const keywords = ["le vaillant", "l'intrépide", "l'observeur", "le minutieux", "le pro", "le fou","le poète"];
+
+        const name = detectiveNames[Math.floor(Math.random() * detectiveNames.length)];
+
+        const keyword = keywords[Math.floor(Math.random() * keywords.length)];
+
+        setUsername(`${name} ${keyword}`);
+
     }
 
     return (

@@ -8,6 +8,10 @@ const MainInput = ({
     text,
     hide,
     setter,
+}:{
+    setter: any,
+    text: string,
+    hide: boolean,
 }) => {
   const tw = useTailwind();
 

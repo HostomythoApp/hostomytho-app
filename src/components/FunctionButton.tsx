@@ -5,6 +5,9 @@ import { useNavigation } from "@react-navigation/native";
 const FunctionButton = ({
   text,
   func,
+}:{
+    text: string,
+    func: any,
 }) => {
   const tw = useTailwind();
 
