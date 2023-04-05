@@ -1,17 +1,17 @@
 import { useTailwind } from "tailwind-rn";
-import {Text, TextInput, TouchableOpacity} from "react-native";
+import { Text, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
 const MainInput = ({
   value,
-    text,
-    hide,
-    setter,
-}:{
-    setter: any,
-    text: string,
-    hide: boolean,
+  text,
+  hide,
+  setter,
+}: {
+  setter: () => void;
+  text: string,
+  hide: boolean,
 }) => {
   const tw = useTailwind();
 
