@@ -5,7 +5,7 @@ import { useTailwind } from 'tailwind-rn';
 const RadioButton = ({ label, selected, onPress }: {
     label: string;
     selected: boolean;
-    onPress: any;
+    onPress: () => void;
 }) => {
     const tw = useTailwind();
 

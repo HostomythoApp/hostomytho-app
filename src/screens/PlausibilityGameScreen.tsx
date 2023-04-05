@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
@@ -10,18 +10,40 @@ const PlausibilityGameScreen = ({ }) => {
   const swipeRef = useRef<Swiper<any>>(null);
 
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [swipedAll, setSwipedAll] = useState(false);
+  const [texts, setTexts] = useState([]);
+
+  useEffect(() => {
+    console.log("useEffect");
+    setTexts(data.texts)
+  });
 
   const toggleExpandCard = (index: number) => {
     console.log("toggleExpandCard");
     console.log("index ", index);
     console.log("expandedCard ", expandedCard);
-
     if (expandedCard) {
       setExpandedCard(null);
     } else {
       setExpandedCard(1);
     }
   };
+
+  const onSwipedAll = () => {
+    setSwipedAll(true);
+  }
+
+  const swipeLeft = async (cardIndex: number) => {
+    if (!texts[cardIndex]) return;
+    const textPlayed = texts[cardIndex];
+    console.log(`Swiped pass on ${textPlayed.id}`);
+  }
+
+  const swipeRight = async (cardIndex: number) => {
+    const textPlayed = texts[cardIndex];
+    console.log(`Swiped pass on ${textPlayed.id}`);
+  }
+
 
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
@@ -33,11 +55,14 @@ const PlausibilityGameScreen = ({ }) => {
             ref={swipeRef}
             containerStyle={{ backgroundColor: "transparent" }}
             cards={data.texts}
-            onSwiped={(cardIndex) => {
-              console.log(cardIndex);
+            onSwipedLeft={(cardIndex) => {
+              swipeLeft(cardIndex);
+            }}
+            onSwipedRight={(cardIndex) => {
+              swipeRight(cardIndex);
             }}
             onSwipedAll={() => {
-              console.log("onSwipedAll");
+              onSwipedAll();
             }}
             cardIndex={0}
             backgroundColor={"#4FD0E9"}
@@ -120,37 +145,44 @@ const PlausibilityGameScreen = ({ }) => {
               );
             }}
           ></Swiper>
+          {swipedAll && (
+            <View style={tw('relative  h-3/4 rounded-xl justify-center items-center')}>
+              <Text style={tw('font-bold pb-5')} > Plus de texte. Reviens plus tard</Text>
+            </View>
+          )}
         </View>
 
       </ScrollView>
 
       {/* Boutons de plausibilité */}
-      <View style={tw('flex flex-row justify-evenly mb-4')}>
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
-          onPress={() => swipeRef.current?.swipeLeft()} >
-          <Entypo name="cross" size={32} color="red" />
-        </TouchableOpacity>
+      {!swipedAll && (
+        <View style={tw('flex flex-row justify-evenly mb-4')}>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
+            onPress={() => swipeRef.current?.swipeLeft()} >
+            <Entypo name="cross" size={32} color="red" />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
-          onPress={() => swipeRef.current?.swipeLeft()} >
-          <Entypo name="flag" size={28} color="orange" />
-        </TouchableOpacity>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
+            onPress={() => swipeRef.current?.swipeLeft()} >
+            <Entypo name="flag" size={28} color="orange" />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
-          onPress={() => swipeRef.current?.swipeTop()}  >
-          <AntDesign name="question" size={30} color="orange" />
-        </TouchableOpacity>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
+            onPress={() => swipeRef.current?.swipeTop()}  >
+            <AntDesign name="question" size={30} color="orange" />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
-          onPress={() => swipeRef.current?.swipeRight()}  >
-          <Ionicons name="checkmark" size={24} color="#48d1cc" />
-        </TouchableOpacity>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
+            onPress={() => swipeRef.current?.swipeRight()}  >
+            <Ionicons name="checkmark" size={24} color="#48d1cc" />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
-          onPress={() => swipeRef.current?.swipeRight()}  >
-          <Ionicons name="checkmark-done-sharp" size={24} color="green" />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
+            onPress={() => swipeRef.current?.swipeRight()}  >
+            <Ionicons name="checkmark-done-sharp" size={24} color="green" />
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
