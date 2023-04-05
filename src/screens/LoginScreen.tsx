@@ -19,9 +19,9 @@ const LoginScreen = ({}) => {
     return (
         <View style={tw("flex-1 justify-center items-center")}>
 
-            <MainInput text={"Pseudo"} value={username} setter={setUsername} hide={false}/>
+            <MainInput text={"Pseudo"} setter={setUsername} hide={false}/>
 
-            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true}/>
+            <MainInput text={"Mot de passe"} setter={setPassword} hide={true}/>
 
             <FunctionButton text={"Connexion"} func={submit}/>
         </View>
