@@ -19,12 +19,12 @@ const SettingsScreen = ({}) => {
 
     return (
         <View style={tw("flex-1 justify-center items-center")}>
-            <MainTitle title={"Bonjour " + data.member.login}/>
+            <MainTitle title={"Paramètres"}/>
             <View>
                 <PrimaryButton title="Politique de confidentialité" destination="PrivacyPolicy"/>
                 <PrimaryButton title="Notifications" destination="Notif"/>
                 <PrimaryButton title="Aide et contact" destination="Help"/>
-                <FunctionButton text={"Decoonexion"} func={deconnexion}/>
+                <FunctionButton text={"Déconnexion"} func={deconnexion}/>
                 <FunctionButton text={"Supprimer son compte"} func={deleteAccount}/>
             </View>
         </View>);
