@@ -7,6 +7,10 @@ import { TouchableOpacity } from 'react-native';
 import LoginScreen from "../screens/LoginScreen";
 import SignIn from "../screens/SignIn";
 import PlausibilityGameScreen from "../screens/PlausibilityGameScreen";
+import NotifScreen from "../screens/settingsScreens/NotifScreen";
+import HelpScreen from "../screens/settingsScreens/HelpScreen";
+import PrivacyPolicyScreen from "../screens/settingsScreens/PrivacyPolicyScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({ }) => {
@@ -25,11 +29,15 @@ const StackNavigator = ({ }) => {
       </Stack.Group>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Connected" component={ProfileScreen} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Main" component={MainScreen} />
       <Stack.Screen name="PausibilityGame" component={PlausibilityGameScreen} />
+      <Stack.Screen name="Notif" component={NotifScreen} />
+      <Stack.Screen name="Help" component={HelpScreen} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
     </Stack.Navigator>
   );
 };
