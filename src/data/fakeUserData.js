@@ -1,13 +1,27 @@
 const FAKE_DATA = {
-  member: {
-    login: "RandomLogin",
-    password: "",
+  member: [{
+      login: "RandomLogin",
+      password: "Random",
+      email: "",
+      level: 1,
+      xp: 20,
+      doctor: false,
+      avatarUrl:
+          "https://www.boboco.fr/1718-large_default/bouteille-rhum-70cl.jpg",
+      points: 40,
+      id: 0,
+    },{
+    login: "MangaFan",
+    password: "MangaFan",
     email: "",
+    level: 3,
+    xp: 80,
+    doctor: true,
     avatarUrl:
-      "https://www.boboco.fr/1718-large_default/bouteille-rhum-70cl.jpg",
+        "https://i.pinimg.com/550x/be/8d/4f/be8d4f8ed5a4f9c0e5d17ea8ef54e9e4.jpg",
     points: 40,
     id: 1,
-  },
+  }],
   texts: [
     {
       content:

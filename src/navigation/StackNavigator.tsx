@@ -11,6 +11,7 @@ import NotifScreen from "../screens/settingsScreens/NotifScreen";
 import HelpScreen from "../screens/settingsScreens/HelpScreen";
 import PrivacyPolicyScreen from "../screens/settingsScreens/PrivacyPolicyScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import ThemeScreen from "../screens/settingsScreens/ThemeScreen";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({ }) => {
@@ -38,6 +39,7 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="Notif" component={NotifScreen} />
       <Stack.Screen name="Help" component={HelpScreen} />
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+      <Stack.Screen name="Theme" component={ThemeScreen} />
     </Stack.Navigator>
   );
 };

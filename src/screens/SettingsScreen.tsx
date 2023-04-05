@@ -21,6 +21,7 @@ const SettingsScreen = ({}) => {
         <View style={tw("flex-1 justify-center items-center")}>
             <MainTitle title={"Paramètres"}/>
             <View>
+                <PrimaryButton title="Thème" destination="Theme"/>
                 <PrimaryButton title="Politique de confidentialité" destination="PrivacyPolicy"/>
                 <PrimaryButton title="Notifications" destination="Notif"/>
                 <PrimaryButton title="Aide et contact" destination="Help"/>
