@@ -7,7 +7,7 @@ const FunctionButton = ({
   func,
 }:{
     text: string,
-    func: any,
+    func: () => void;
 }) => {
   const tw = useTailwind();
 

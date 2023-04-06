@@ -3,7 +3,6 @@ const FAKE_DATA = {
       login: "RandomLogin",
       password: "Random",
       email: "",
-      level: 1,
       xp: 20,
       doctor: false,
       avatarUrl:
@@ -14,7 +13,6 @@ const FAKE_DATA = {
     login: "MangaFan",
     password: "MangaFan",
     email: "",
-    level: 3,
     xp: 80,
     doctor: true,
     avatarUrl:

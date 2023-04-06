@@ -1,13 +1,16 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { useTailwind } from "tailwind-rn";
+import {View} from "react-native";
+import {useTailwind} from "tailwind-rn";
+import MainTitle from "../../components/MainTitle";
 
 const PrivacyPolicysScreen = ({}) => {
-  const tw = useTailwind();
+    const tw = useTailwind();
 
-  return (
-    <Text>en cours politique conf</Text>
-  );
+    return (
+        <View>
+            <MainTitle title={"Politique de confidentialité"}/>
+        </View>
+    );
 };
 
 export default PrivacyPolicysScreen;
