@@ -36,12 +36,12 @@ const PlausibilityGameScreen = ({ }) => {
   const swipeLeft = async (cardIndex: number) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
-    console.log(`Swiped pass on ${textPlayed.id}`);
+    console.log(`Swiped left on ${textPlayed.id}`);
   }
 
   const swipeRight = async (cardIndex: number) => {
     const textPlayed = texts[cardIndex];
-    console.log(`Swiped pass on ${textPlayed.id}`);
+    console.log(`Swiped right on ${textPlayed.id}`);
   }
 
 

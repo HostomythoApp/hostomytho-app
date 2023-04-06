@@ -13,6 +13,10 @@ module.exports = {
         black: "##000000",
         textPrimary: "##000000",
       },
+      fontFamily: {
+        primary: ['Pally'],
+        MarckScript: ['MarckScript'],
+      }
     },
   },
   plugins: [],
