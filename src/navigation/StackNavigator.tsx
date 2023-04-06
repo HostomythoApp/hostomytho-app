@@ -4,13 +4,17 @@ import MainScreen from "screens/MainScreen";
 import ProfileScreen from "screens/ProfileScreen";
 import HomeScreen from "screens/HomeScreen";
 import { TouchableOpacity } from 'react-native';
-import LoginScreen from "screens/LoginScreen";
-import SignIn from "screens/SignIn";
-import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
+import LoginScreen from "../screens/LoginScreen";
+import SignIn from "../screens/SignIn";
+import PlausibilityGameScreen from "../screens/PlausibilityGameScreen";
+import NotifScreen from "../screens/settingsScreens/NotifScreen";
+import HelpScreen from "../screens/settingsScreens/HelpScreen";
+import PrivacyPolicyScreen from "../screens/settingsScreens/PrivacyPolicyScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import ThemeScreen from "../screens/settingsScreens/ThemeScreen";
 import CustomHeader from "components/CustomHeader";
 import CustomHeaderInGame from "components/CustomHeaderInGame";
 import CustomHeaderEmpty from "components/CustomHeaderEmpty";
-
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({ }) => {
@@ -42,22 +46,38 @@ const StackNavigator = ({ }) => {
         component={ProfileScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
         })} />
-
       <Stack.Screen name="Login"
         component={LoginScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderEmpty title="Connexion" navigation={navigation} />,
         })} />
-
       <Stack.Screen name="SignIn"
         component={SignIn} options={({ navigation }) => ({
           header: () => <CustomHeaderEmpty title="Je crée mon compte" navigation={navigation} />,
         })} />
-
       <Stack.Screen name="Profile"
         component={ProfileScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
         })} />
-
+      <Stack.Screen name="Settings" component={SettingsScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="Notif" component={NotifScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="Help" component={HelpScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="Theme" component={ThemeScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+        })} />
     </Stack.Navigator>
   );
 };

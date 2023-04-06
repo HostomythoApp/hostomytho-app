@@ -16,9 +16,9 @@ const SignIn = ({ }) => {
     const [selectedValue, setSelectedValue] = useState('option1');
 
     const options = [
-        { label: 'Option 1', value: 'option1' },
-        { label: 'Option 2', value: 'option2' },
-        { label: 'Option 3', value: 'option3' },
+        { key:'option1',label: 'Je suis médecin ou étudiant', value: true },
+        { key:'option2',label: 'Je ne suis ni médecin ni étudiant', value: false },
+        { key:'option3',label: 'Je ne souhaite pas me prononcer', value: false },
     ];
 
     const tw = useTailwind();
@@ -26,7 +26,7 @@ const SignIn = ({ }) => {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
-    const [doctor, setDoctor] = useState(false);
+    const [doctor, setDoctor] = useState(true);
     const submit = () => {
         if (username.trim() === '' || password.trim() === '') {
             alert('Erreur, Veuillez remplir tous les champs');
@@ -37,7 +37,7 @@ const SignIn = ({ }) => {
                 if (password.length < 6) {
                     alert('Mot de passe trop court');
                 } else {
-                    alert(`Nom : ${username}\nPassword : ${password}`);
+                    alert(`Nom : ${username}\nPassword : ${password}\nDoctor : ${doctor}`);
                 }
             }
         }
@@ -60,23 +60,26 @@ const SignIn = ({ }) => {
     return (
         <View style={tw("flex-1 justify-center items-center")}>
 
-            <MainInput text={"Pseudo"} value={username} setter={setUsername} hide={false} />
+            <MainInput text={"Pseudo"} setter={setUsername} hide={false} />
 
             <FunctionButton text={"Générer un pseudo"} func={generatePseudo} />
 
-            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} />
+            <MainInput text={"Mot de passe"} setter={setPassword} hide={true} />
 
-            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} />
+            <MainInput text={"Retaper votre mot de passe"} setter={setPassword2} hide={true} />
 
             <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} />
 
-            <View style={tw('p-4')}>
+            <View style={tw('inline-block p-4')}>
                 {options.map((option) => (
                     <RadioButton
-                        key={option.value}
+                        key={option.key}
                         label={option.label}
-                        selected={selectedValue === option.value}
-                        onPress={() => setSelectedValue(option.value)}
+                        selected={selectedValue === option.key}
+                        onPress={() => {setSelectedValue(option.key)
+                                setDoctor(option.value)
+                        }
+                    }
                     />
                 ))}
             </View>
