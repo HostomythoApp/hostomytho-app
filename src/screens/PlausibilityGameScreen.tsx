@@ -4,6 +4,8 @@ import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import Swiper from "react-native-deck-swiper";
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import Modal from 'react-native-modal';
+import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -12,6 +14,9 @@ const PlausibilityGameScreen = ({ }) => {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [swipedAll, setSwipedAll] = useState(false);
   const [texts, setTexts] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [swipeType, setSwipeType] = useState<'right' | 'left' | null>(null);
+
 
   useEffect(() => {
     console.log("useEffect");
@@ -25,10 +30,17 @@ const PlausibilityGameScreen = ({ }) => {
     if (expandedCard) {
       setExpandedCard(null);
     } else {
+      ModalPlausibilityGame
       setExpandedCard(1);
     }
   };
 
+  const handleSwipe = (type: 'right' | 'left') => {
+    setSwipeType(type);
+    setIsModalVisible(true);
+  };
+
+  // Fin des cartes
   const onSwipedAll = () => {
     setSwipedAll(true);
   }
@@ -36,11 +48,13 @@ const PlausibilityGameScreen = ({ }) => {
   const swipeLeft = async (cardIndex: number) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
+    handleSwipe('left');
     console.log(`Swiped left on ${textPlayed.id}`);
   }
 
   const swipeRight = async (cardIndex: number) => {
     const textPlayed = texts[cardIndex];
+    handleSwipe('right');
     console.log(`Swiped right on ${textPlayed.id}`);
   }
 
@@ -127,7 +141,7 @@ const PlausibilityGameScreen = ({ }) => {
                     },
                   ]}
 
-                    selectionColor="transparent" >
+                    selectionModalPlausibilityGameColor="transparent" >
                     {displayText}
                   </Text>
                   {card.content.length > 750 && (
@@ -151,8 +165,15 @@ const PlausibilityGameScreen = ({ }) => {
             </View>
           )}
         </View>
-
       </ScrollView>
+
+
+      <ModalPlausibilityGame
+        isVisible={isModalVisible}
+        swipeType={swipeType}
+        closeModal={() => setIsModalVisible(false)}
+        setIsModalVisible={setIsModalVisible}
+      />
 
       {/* Boutons de plausibilité */}
       {!swipedAll && (
