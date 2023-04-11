@@ -19,14 +19,13 @@ const PlausibilityGameScreen = ({ }) => {
 
 
   useEffect(() => {
-    console.log("useEffect");
     setTexts(data.texts)
   });
 
   const toggleExpandCard = (index: number) => {
-    console.log("toggleExpandCard");
-    console.log("index ", index);
-    console.log("expandedCard ", expandedCard);
+    // console.log("toggleExpandCard");
+    // console.log("index ", index);
+    // console.log("expandedCard ", expandedCard);
     if (expandedCard) {
       setExpandedCard(null);
     } else {
