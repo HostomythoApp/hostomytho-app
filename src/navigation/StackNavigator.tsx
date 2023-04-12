@@ -15,6 +15,9 @@ import ThemeScreen from "../screens/settingsScreens/ThemeScreen";
 import CustomHeader from "components/CustomHeader";
 import CustomHeaderInGame from "components/CustomHeaderInGame";
 import CustomHeaderEmpty from "components/CustomHeaderEmpty";
+import data from "data/fakeUserData.js";
+import user from "../globalState";
+import UserScreen from "../screens/UserScreen";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({ }) => {
@@ -56,27 +59,27 @@ const StackNavigator = ({ }) => {
         })} />
       <Stack.Screen name="Profile"
         component={ProfileScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+          header: () => <CustomHeader title={data.member[user.idUser].login} navigation={navigation} />,
         })} />
       <Stack.Screen name="Settings" component={SettingsScreen}
         options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+          header: () => <CustomHeader title="Paramètres" navigation={navigation} />,
         })} />
       <Stack.Screen name="Notif" component={NotifScreen}
         options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+          header: () => <CustomHeader title="Notification" navigation={navigation} />,
         })} />
       <Stack.Screen name="Help" component={HelpScreen}
         options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+          header: () => <CustomHeader title="Contact" navigation={navigation} />,
         })} />
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen}
         options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+          header: () => <CustomHeader title="Politique de confidentialité" navigation={navigation} />,
         })} />
       <Stack.Screen name="Theme" component={ThemeScreen}
         options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+          header: () => <CustomHeader title="Thème" navigation={navigation} />,
         })} />
     </Stack.Navigator>
   );

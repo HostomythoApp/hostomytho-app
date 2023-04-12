@@ -11,7 +11,7 @@ import RadioButton from 'components/RadioButton';
 //     return null;
 // }
 
-const SignIn = ({ }) => {
+const SignIn = () => {
 
     const [selectedValue, setSelectedValue] = useState('option1');
 

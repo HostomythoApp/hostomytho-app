@@ -1,6 +1,6 @@
 const FAKE_DATA = {
   member: [{
-      login: "RandomLogin",
+      login: "Random",
       password: "Random",
       email: "",
       xp: 20,

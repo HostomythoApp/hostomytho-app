@@ -12,7 +12,7 @@ const ThemeScreen = ({}) => {
         setBackgroundColor(color);
     };
 
-    const colors = ['red', 'blue', 'green', 'yellow'];
+    const colors = ['red', 'blue', 'green', 'yellow','white', 'purple', 'orange', 'pink'];
 
     return (
         <View style={[tw('flex-1 justify-center items-center'), { backgroundColor }]}>
