@@ -18,7 +18,7 @@ const SignIn = ({ }) => {
     const options = [
         { key:'option1',label: 'Je suis médecin ou étudiant', value: true },
         { key:'option2',label: 'Je ne suis ni médecin ni étudiant', value: false },
-        { key:'option3',label: 'Je ne souhaite pas me prononcer', value: false },
+        { key:'option3',label: 'Je ne souhaite pas répondre', value: false },
     ];
 
     const tw = useTailwind();
@@ -60,13 +60,13 @@ const SignIn = ({ }) => {
     return (
         <View style={tw("flex-1 justify-center items-center")}>
 
-            <MainInput text={"Pseudo"} setter={setUsername} hide={false} />
+            <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} />
 
             <FunctionButton text={"Générer un pseudo"} func={generatePseudo} />
 
-            <MainInput text={"Mot de passe"} setter={setPassword} hide={true} />
+            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} />
 
-            <MainInput text={"Retaper votre mot de passe"} setter={setPassword2} hide={true} />
+            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} />
 
             <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} />
 

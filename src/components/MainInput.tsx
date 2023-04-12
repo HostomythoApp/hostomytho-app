@@ -7,10 +7,12 @@ const MainInput = ({
   text,
   hide,
   setter,
+  value,
 }: {
   setter: () => void;
   text: string,
   hide: boolean,
+  value: string,
 }) => {
   const tw = useTailwind();
 
@@ -21,6 +23,7 @@ const MainInput = ({
           placeholder={text}
           secureTextEntry={hide}
           onChangeText={setter}
+          value={value}
       />
 
   );

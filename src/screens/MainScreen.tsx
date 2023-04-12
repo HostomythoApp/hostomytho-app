@@ -9,7 +9,7 @@ const MainScreen = ({}) => {
     const tw = useTailwind();
 
     //sera a -1 lorsque la connexion marchera et que l'utilisateur sera connecté
-    const [idMember, setIdMember] = useState(0);
+    const [idMember, setIdMember] = useState(1);
 
     const login = (userDate:number) => {
         setIdMember(userDate);
