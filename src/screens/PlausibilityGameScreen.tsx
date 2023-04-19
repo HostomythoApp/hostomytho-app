@@ -11,16 +11,32 @@ const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
   const swipeRef = useRef<Swiper<any>>(null);
 
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [swipedAll, setSwipedAll] = useState(false);
   const [texts, setTexts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [swipeType, setSwipeType] = useState<'right' | 'left' | null>(null);
-  const [activeModal, setActiveModal] = useState(false);
+  const [activeModal, setActiveModal] = useState(false); //Gérer si le swipe vient des boutons ou manuellement
+  const [expandedCards, setExpandedCards] = useState<boolean[]>(data.texts.map(() => false));
+  const [displayedTexts, setDisplayedTexts] = useState<string[]>(data.texts.map(text => text.content.slice(0, 750) + (text.content.length > 750 ? "..." : "")));
+  const [swiperKey, setSwiperKey] = useState(0);
 
   useEffect(() => {
     setTexts(data.texts)
   });
+
+  // Toggle de longueur des textes
+  useEffect(() => {
+    const updatedDisplayedTexts = data.texts.map((text, index) => {
+      if (expandedCards[index]) {
+        return text.content;
+      } else {
+        return text.content.slice(0, 750) + (text.content.length > 750 ? "..." : "");
+      }
+    });
+    setDisplayedTexts(updatedDisplayedTexts);
+    setSwiperKey(prevSwiperKey => prevSwiperKey + 1);
+  }, [expandedCards]);
+
 
   const updateSwipeFromButton = async () => {
     return new Promise((resolve) => {
@@ -32,13 +48,11 @@ const PlausibilityGameScreen = ({ }) => {
   const toggleExpandCard = (index: number) => {
     console.log("toggleExpandCard");
     console.log("index ", index);
-    console.log("expandedCard ", expandedCard);
-    if (expandedCard) {
-      setExpandedCard(null);
-    } else {
-      ModalPlausibilityGame
-      setExpandedCard(1);
-    }
+    console.log("expandedCards ", expandedCards);
+
+    const updatedExpandedCards = [...expandedCards];
+    updatedExpandedCards[index] = !updatedExpandedCards[index];
+    setExpandedCards(updatedExpandedCards);
   };
 
   const handleSwipe = (type: 'right' | 'left') => {
@@ -78,6 +92,8 @@ const PlausibilityGameScreen = ({ }) => {
         {/* Cards */}
         <View style={tw("flex-1 -mt-6")}>
           <Swiper
+
+            key={swiperKey}
             ref={swipeRef}
             containerStyle={{ backgroundColor: "transparent" }}
             cards={data.texts}
@@ -126,10 +142,7 @@ const PlausibilityGameScreen = ({ }) => {
               },
             }}
             renderCard={(card: any, index) => {
-              const isExpanded = expandedCard === index;
-              const limitedText = card.content.slice(0, 750) + (card.content.length > 750 ? "..." : ""); // Increased text length
-              const displayText = isExpanded ? card.content : limitedText;
-
+              const isExpanded = expandedCards[index];
               return (
                 <View style={[
                   tw("bg-[#FFFEE0] rounded-xl justify-center"),
@@ -151,12 +164,11 @@ const PlausibilityGameScreen = ({ }) => {
                       WebkitUserSelect: 'none',
                       userSelect: 'none'
                     },
-                  ]}
-                  >
-                    {displayText}
+                  ]}>
+                    {displayedTexts[index]}
                   </Text>
                   {card.content.length > 750 && (
-                    <View style={tw("flex items-center")}>
+                    <View style={tw("flex items-center mb-2")}>
                       <TouchableOpacity onPress={() => toggleExpandCard(index)} >
                         {isExpanded ? (
                           <AntDesign name="up" size={24} color="black" />
@@ -172,7 +184,7 @@ const PlausibilityGameScreen = ({ }) => {
           ></Swiper>
           {swipedAll && (
             <View style={tw('relative  h-3/4 rounded-xl justify-center items-center')}>
-              <Text style={tw('font-bold pb-5')} > Plus de texte. Reviens plus tard</Text>
+              <Text style={tw('font-bold pb-5')} > Plus de texte pour le moment. Reviens plus tard</Text>
             </View>
           )}
         </View>
@@ -206,7 +218,7 @@ const PlausibilityGameScreen = ({ }) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
-            onPress={() => swipeRef.current?.swipeTop(0, true)}  >
+            onPress={() => swipeRef.current?.swipeTop()}  >
             <AntDesign name="question" size={30} color="orange" />
           </TouchableOpacity>
 
