@@ -17,7 +17,7 @@ const ModalPlausibilityGame: FC<ModalPlausibilityGameProps> = ({ isVisible, swip
         if (isVisible) {
             const timer = setTimeout(() => {
                 setIsModalVisible(false);
-            }, 7000);
+            }, 5000);
 
             return () => {
                 clearTimeout(timer);

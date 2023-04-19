@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
@@ -44,15 +44,14 @@ const PlausibilityGameScreen = ({ }) => {
     });
   };
 
-  const toggleExpandCard = (index: number) => {
-    console.log("toggleExpandCard");
-    console.log("index ", index);
-    console.log("expandedCards ", expandedCards);
-
+  const toggleExpandCard = useCallback((index: number) => {
+    // console.log("toggleExpandCard");
+    // console.log("index ", index);
+    // console.log("expandedCards ", expandedCards);
     const updatedExpandedCards = [...expandedCards];
     updatedExpandedCards[index] = !updatedExpandedCards[index];
     setExpandedCards(updatedExpandedCards);
-  };
+  }, [expandedCards]);
 
   const handleSwipe = (type: 'right' | 'left') => {
     if (!activeModal) {
@@ -66,18 +65,18 @@ const PlausibilityGameScreen = ({ }) => {
     setSwipedAll(true);
   }
 
-  const swipeLeft = async (cardIndex: number) => {
+  const swipeLeft = useCallback(async (cardIndex: number) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
     console.log(`Swiped left on ${textPlayed.id}`);
     setActiveModal(false);
-  };
+  }, [texts]);
 
-  const swipeRight = async (cardIndex: number) => {
+  const swipeRight = useCallback(async (cardIndex: number) => {
     const textPlayed = texts[cardIndex];
     console.log(`Swiped right on ${textPlayed.id}`);
     setActiveModal(false);
-  };
+  }, [texts]);
 
 
   return (
