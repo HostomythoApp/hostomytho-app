@@ -16,6 +16,9 @@ module.exports = {
       fontFamily: {
         primary: ['Pally'],
         MarckScript: ['MarckScript'],
+        SpringSnowstorm: ['SpringSnowstorm'],
+        HandleeRegular: ['HandleeRegular'],
+        PatrickHandRegular: ['PatrickHandRegular'],
       }
     },
   },

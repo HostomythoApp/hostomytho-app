@@ -12,12 +12,13 @@ import HelpScreen from "../screens/settingsScreens/HelpScreen";
 import PrivacyPolicyScreen from "../screens/settingsScreens/PrivacyPolicyScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import ThemeScreen from "../screens/settingsScreens/ThemeScreen";
-import CustomHeader from "components/CustomHeader";
-import CustomHeaderInGame from "components/CustomHeaderInGame";
-import CustomHeaderEmpty from "components/CustomHeaderEmpty";
+import CustomHeader from "components/header/CustomHeader";
+import CustomHeaderInGame from "components/header/CustomHeaderInGame";
+import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import data from "data/fakeUserData.js";
 import user from "../globalState";
-import UserScreen from "../screens/UserScreen";
+import UserScreen from "screens/UserScreen";
+
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({ }) => {

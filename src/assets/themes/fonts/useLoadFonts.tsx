@@ -4,6 +4,10 @@ import * as SplashScreen from "expo-splash-screen";
 
 const fontAssets = {
   "MarckScript": require("./MarckScript-Regular.ttf"),
+  "SpringSnowstorm": require("./Spring Snowstorm.ttf"),
+  "HandleeRegular": require("./Handlee-Regular.ttf"),
+  "PatrickHandRegular": require("./PatrickHand-Regular.ttf"),
+
 };
 
 export const useLoadFonts = () => {

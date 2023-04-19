@@ -16,16 +16,23 @@ const PlausibilityGameScreen = ({ }) => {
   const [texts, setTexts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [swipeType, setSwipeType] = useState<'right' | 'left' | null>(null);
-
+  const [activeModal, setActiveModal] = useState(false);
 
   useEffect(() => {
     setTexts(data.texts)
   });
 
+  const updateSwipeFromButton = async () => {
+    return new Promise((resolve) => {
+      setActiveModal(true);
+      resolve(true);
+    });
+  };
+
   const toggleExpandCard = (index: number) => {
-    // console.log("toggleExpandCard");
-    // console.log("index ", index);
-    // console.log("expandedCard ", expandedCard);
+    console.log("toggleExpandCard");
+    console.log("index ", index);
+    console.log("expandedCard ", expandedCard);
     if (expandedCard) {
       setExpandedCard(null);
     } else {
@@ -47,13 +54,19 @@ const PlausibilityGameScreen = ({ }) => {
   const swipeLeft = async (cardIndex: number) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
-    handleSwipe('left');
+    if (activeModal) {
+      handleSwipe('left');
+      setActiveModal(false);
+    }
     console.log(`Swiped left on ${textPlayed.id}`);
   }
 
   const swipeRight = async (cardIndex: number) => {
     const textPlayed = texts[cardIndex];
-    handleSwipe('right');
+    if (activeModal) {
+      handleSwipe('right');
+      setActiveModal(false);
+    }
     console.log(`Swiped right on ${textPlayed.id}`);
   }
 
@@ -134,13 +147,12 @@ const PlausibilityGameScreen = ({ }) => {
                     tw("text-2xl tracking-wider mb-2 m-7"),
                     {
                       // TODO Importer et altérner plusieurs fonts
-                      fontFamily: "MarckScript",
+                      fontFamily: "HandleeRegular",
                       WebkitUserSelect: 'none',
                       userSelect: 'none'
                     },
                   ]}
-
-                    selectionModalPlausibilityGameColor="transparent" >
+                  >
                     {displayText}
                   </Text>
                   {card.content.length > 750 && (
@@ -178,27 +190,39 @@ const PlausibilityGameScreen = ({ }) => {
       {!swipedAll && (
         <View style={tw('flex flex-row justify-evenly mb-4')}>
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
-            onPress={() => swipeRef.current?.swipeLeft()} >
+            onPress={async () => {
+              await updateSwipeFromButton();
+              swipeRef.current?.swipeLeft();
+            }} >
             <Entypo name="cross" size={32} color="red" />
           </TouchableOpacity>
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
-            onPress={() => swipeRef.current?.swipeLeft()} >
+            onPress={async () => {
+              await updateSwipeFromButton();
+              swipeRef.current?.swipeLeft();
+            }} >
             <Entypo name="flag" size={28} color="orange" />
           </TouchableOpacity>
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
-            onPress={() => swipeRef.current?.swipeTop()}  >
+            onPress={() => swipeRef.current?.swipeTop(0, true)}  >
             <AntDesign name="question" size={30} color="orange" />
           </TouchableOpacity>
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
-            onPress={() => swipeRef.current?.swipeRight()}  >
+            onPress={async () => {
+              await updateSwipeFromButton();
+              swipeRef.current?.swipeRight();
+            }} >
             <Ionicons name="checkmark" size={24} color="#48d1cc" />
           </TouchableOpacity>
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
-            onPress={() => swipeRef.current?.swipeRight()}  >
+            onPress={async () => {
+              await updateSwipeFromButton();
+              swipeRef.current?.swipeRight();
+            }} >
             <Ionicons name="checkmark-done-sharp" size={24} color="green" />
           </TouchableOpacity>
         </View>
