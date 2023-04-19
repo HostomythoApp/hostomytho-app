@@ -4,7 +4,6 @@ import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import Swiper from "react-native-deck-swiper";
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
-import Modal from 'react-native-modal';
 import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
 
 const PlausibilityGameScreen = ({ }) => {
@@ -37,9 +36,9 @@ const PlausibilityGameScreen = ({ }) => {
     setSwiperKey(prevSwiperKey => prevSwiperKey + 1);
   }, [expandedCards]);
 
-
-  const updateSwipeFromButton = async () => {
+  const updateSwipeFromButton = async (type: 'right' | 'left' | null) => {
     return new Promise((resolve) => {
+      setSwipeType(type);
       setActiveModal(true);
       resolve(true);
     });
@@ -56,8 +55,10 @@ const PlausibilityGameScreen = ({ }) => {
   };
 
   const handleSwipe = (type: 'right' | 'left') => {
-    setSwipeType(type);
-    setIsModalVisible(true);
+    if (!activeModal) {
+      setSwipeType(type);
+      setIsModalVisible(true);
+    }
   };
 
   // Fin des cartes
@@ -68,21 +69,15 @@ const PlausibilityGameScreen = ({ }) => {
   const swipeLeft = async (cardIndex: number) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
-    if (activeModal) {
-      handleSwipe('left');
-      setActiveModal(false);
-    }
     console.log(`Swiped left on ${textPlayed.id}`);
-  }
+    setActiveModal(false);
+  };
 
   const swipeRight = async (cardIndex: number) => {
     const textPlayed = texts[cardIndex];
-    if (activeModal) {
-      handleSwipe('right');
-      setActiveModal(false);
-    }
     console.log(`Swiped right on ${textPlayed.id}`);
-  }
+    setActiveModal(false);
+  };
 
 
   return (
@@ -98,9 +93,11 @@ const PlausibilityGameScreen = ({ }) => {
             containerStyle={{ backgroundColor: "transparent" }}
             cards={data.texts}
             onSwipedLeft={(cardIndex) => {
+              handleSwipe('left');
               swipeLeft(cardIndex);
             }}
             onSwipedRight={(cardIndex) => {
+              handleSwipe('right');
               swipeRight(cardIndex);
             }}
             onSwipedAll={() => {
@@ -203,7 +200,7 @@ const PlausibilityGameScreen = ({ }) => {
         <View style={tw('flex flex-row justify-evenly mb-4')}>
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
             onPress={async () => {
-              await updateSwipeFromButton();
+              await updateSwipeFromButton('left');
               swipeRef.current?.swipeLeft();
             }} >
             <Entypo name="cross" size={32} color="red" />
@@ -211,7 +208,7 @@ const PlausibilityGameScreen = ({ }) => {
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
             onPress={async () => {
-              await updateSwipeFromButton();
+              await updateSwipeFromButton('left');
               swipeRef.current?.swipeLeft();
             }} >
             <Entypo name="flag" size={28} color="orange" />
@@ -224,7 +221,7 @@ const PlausibilityGameScreen = ({ }) => {
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
             onPress={async () => {
-              await updateSwipeFromButton();
+              await updateSwipeFromButton('right');
               swipeRef.current?.swipeRight();
             }} >
             <Ionicons name="checkmark" size={24} color="#48d1cc" />
@@ -232,7 +229,7 @@ const PlausibilityGameScreen = ({ }) => {
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
             onPress={async () => {
-              await updateSwipeFromButton();
+              await updateSwipeFromButton('right');
               swipeRef.current?.swipeRight();
             }} >
             <Ionicons name="checkmark-done-sharp" size={24} color="green" />
