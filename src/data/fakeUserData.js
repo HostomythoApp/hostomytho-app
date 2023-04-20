@@ -1,25 +1,28 @@
 const FAKE_DATA = {
-  member: [{
+  member: [
+    {
       login: "Random",
       password: "Random",
       email: "",
       xp: 20,
       doctor: false,
       avatarUrl:
-          "https://www.boboco.fr/1718-large_default/bouteille-rhum-70cl.jpg",
+        "https://www.boboco.fr/1718-large_default/bouteille-rhum-70cl.jpg",
       points: 40,
       id: 0,
-    },{
-    login: "MangaFan",
-    password: "MangaFan",
-    email: "",
-    xp: 80,
-    doctor: true,
-    avatarUrl:
+    },
+    {
+      login: "MangaFan",
+      password: "MangaFan",
+      email: "",
+      xp: 80,
+      doctor: true,
+      avatarUrl:
         "https://i.pinimg.com/550x/be/8d/4f/be8d4f8ed5a4f9c0e5d17ea8ef54e9e4.jpg",
-    points: 40,
-    id: 1,
-  }],
+      points: 40,
+      id: 1,
+    },
+  ],
   texts: [
     {
       content:
@@ -111,6 +114,133 @@ const FAKE_DATA = {
       origin: "real",
       plausibility: 1,
       id: 100658,
+    },
+  ],
+  sentences: [
+    {
+      id: 1,
+      content:
+        "Il s'agit d'un enfant de 10 ans qui a présenté un syndrome d’épanchement intrapéritonéal, évoluant dans un contexte d’altération de l’état général avec apparition d’une détresse respiratoire non améliorable par le recours aux médicaments inhalés.",
+      temporalEntity: [],
+    },
+    {
+      id: 2,
+      content:
+        "Une ponction pleurésie liquidienne intrarachidienne avait été pratiquée et l'exploration chirurgicale n'avait pas objectivé d'autres localisations secondaires (en dehors d’un lymphœdème sous cutanéo-crânien).",
+      temporalEntity: [],
+    },
+    {
+      id: 3,
+      content:
+        "Il fût mis sous traitement médical antibacillaire associant amoxicilline-acide clavulanique, ciprofloxacine, rifampicine, ethambutol, Pyrazinamide, Ceftriaxone, Ethionamide, Cyclosérine, Méthylprednisolone, Diazépam), Nicardipril, Bromocriptine, Chlorpromazine, Triméthoprime/ulfaméthoxazole, Captopril, Enoxaparine) voie orale associé au béta-méthasone ont permis d'obtenir une régression rapide de la polyradiculonévralgie devenant modérément fonctionnelle pour laquelle on procéda également à une surveillance radiologique afin de déceler tout éventuel résidu tissulaire extériorisé ayant pu s'inviter durant cette période ou encore d'avoir confirmé son évolution ultérieure ;",
+      temporalEntity: [],
+    },
+    {
+      id: 4,
+      content:
+        "Le début de sa symptomatologie remontait à 4 mois par l’installation d’une dysphagie progressive à évolution intermittente sous traitement à base de corticoïdes, accompagné d’une dysphonie, le tout évoluant dans contexte d’altération de l’état général et d’amaigrissement chiffré à 12 kg en deux mois.",
+      temporalEntity: [],
+    },
+    {
+      id: 5,
+      content:
+        "L’examen clinique retrouvait un patient apyrétique, eupnéique au repos, sans adénopathies cervical palpable, le reste de l’examen somatique était sans particularités.",
+      temporalEntity: [],
+    },
+    {
+      id: 6,
+      content:
+        "La laryngoscopie indirecte avait objectivé un processus bourgeonnant de l’hémi larynx gauche et du sinus piriforme gauche.",
+      temporalEntity: [],
+    },
+    {
+      id: 7,
+      content:
+        "Une tomodensitométrie (TDM) du larynx retrouvait un gros processus tumoral manifestement malin de l’hémi larynx gauche, de 23,5 mm de diamètre transverse, 33 mm de diamètre antéropostérieur, et étendu en hauteur sur 31 mm, intéressant la corde vocale, le ventricule laryngé, le pli vestibulaire et comblant en partie le sinus piriforme gauche, ce processus lésionnel est responsable d’un phénomène de lyse osseuse de la paroi antérolatérale gauche du cartilage thyroïde et de l’aryténoïde gauche.",
+      temporalEntity: [],
+    },
+    {
+      id: 8,
+      content:
+        "Le patient était candidat d’une laryngoscopie directe en suspension.",
+      temporalEntity: [],
+    },
+    {
+      id: 9,
+      content:
+        "L’évaluation pré-anesthésique retrouvait lors de l’examen de l’appareil respiratoire une dyspnée stade II de NYHA avec une tolérance modérée à l’effort.",
+      temporalEntity: [],
+    },
+    {
+      id: 10,
+      content:
+        "Il s’agissait d’un patient de 60 ans, suivis depuis 10 ans pour broncho-pneumopathie chronique obstructive (BPCO), bien équilibrée sous traitement de fond à base de bronchodilatateurs et de corticoïdes inhalés.",
+      temporalEntity: [],
+    },
+    {
+      id: 11,
+      content:
+        "Opéré en 2013 pour exérèse d’une lésion de la base de la langue (cystadénolymphome).",
+      temporalEntity: [],
+    },
+    {
+      id: 12,
+      content:
+        "Dans ces antécédents toxiques on retrouvait un tabagisme chronique à raison de 42 paquets année, ainsi qu’un alcoolisme occasionnel.",
+      temporalEntity: [],
+    },
+    {
+      id: 13,
+      content:
+        "Au bloc opératoire, un monitorage classique contenant un enregistrement du rythme et de la fréquence cardiaque, la PNI, la Spo2 ainsi que la capnographie a été effectué.",
+      temporalEntity: [],
+    },
+    {
+      id: 14,
+      content:
+        "Une voie veineuse périphérique au membre supérieur droit a été prise et une pré-oxygénation à 100% de Fio2 a été entamée.",
+      temporalEntity: [],
+    },
+    {
+      id: 15,
+      content:
+        "L’anesthésie a été induite par du propofol 3mg/kg associé à la lidocaïne 1mg/kg, fentanyl 3ug/kg, et une injection du rocuronium à raison de 0,5mg/kg.",
+      temporalEntity: [],
+    },
+    {
+      id: 16,
+      content:
+        "Le patient a été intubé par un tube endotrachéal de 5,5 mm de diamètre et mis sous ventilation artificielle.",
+      temporalEntity: [],
+    },
+    {
+      id: 17,
+      content: "25 mg d’hydrocortisone a été administré.",
+      temporalEntity: [],
+    },
+    {
+      id: 18,
+      content:
+        "L’entretien de l’anesthésie a été assuré par sévoflurane 1,4% avec un mélange équimolaire oxygène / protoxyde d’azote.",
+      temporalEntity: [],
+    },
+    {
+      id: 19,
+      content:
+        "Le monitorage ventilatoire consistait en une surveillance rapprochée de la pression plateau avec comme objectif une pression inférieur à 30 cm H 2 O.",
+      temporalEntity: [],
+    },
+    {
+      id: 20,
+      content:
+        "Le patient ne présentait pas de critères d’intubation ni de ventilation difficile décelable avec une bonne ouverture buccale et un Mallampati I ainsi qu’une distance thyromentonniére supérieur à 6cm.",
+      temporalEntity: [],
+    },
+    {
+      id: 21,
+      content:
+        "Les examens biologiques à savoir une numération de la formule sanguine, une fonction rénale, un bilan hépatique et radiologique préopératoires à savoir un ECG et une radiographie du thorax ne retrouvaient rien de particulier à part une polyglobulie expliquée par le tabagisme chronique.",
+      temporalEntity: [],
     },
   ],
 };

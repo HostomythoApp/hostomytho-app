@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native';
 import LoginScreen from "../screens/LoginScreen";
 import SignIn from "../screens/SignIn";
 import PlausibilityGameScreen from "../screens/PlausibilityGameScreen";
+import TemporalEntityScreen from "../screens/TemporalEntityScreen";
 import NotifScreen from "../screens/settingsScreens/NotifScreen";
 import HelpScreen from "../screens/settingsScreens/HelpScreen";
 import PrivacyPolicyScreen from "../screens/settingsScreens/PrivacyPolicyScreen";
@@ -24,9 +25,6 @@ const Stack = createNativeStackNavigator();
 const StackNavigator = ({ }) => {
   return (
     <Stack.Navigator
-    // screenOptions={{
-    //   headerShown: false,
-    // }}
     >
       <Stack.Group
         screenOptions={({ navigation }) => ({
@@ -44,6 +42,11 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="PausibilityGame"
         component={PlausibilityGameScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
+        })} />
+
+      <Stack.Screen name="TemporalEntityScreen"
+        component={TemporalEntityScreen} options={({ navigation }) => ({
+          header: () => <CustomHeaderInGame title="Trouver les entités temporelles" navigation={navigation} />,
         })} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Connected"

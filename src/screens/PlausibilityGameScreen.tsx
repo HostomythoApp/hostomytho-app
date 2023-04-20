@@ -9,7 +9,6 @@ import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
   const swipeRef = useRef<Swiper<any>>(null);
-
   const [swipedAll, setSwipedAll] = useState(false);
   const [texts, setTexts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -45,9 +44,6 @@ const PlausibilityGameScreen = ({ }) => {
   };
 
   const toggleExpandCard = useCallback((index: number) => {
-    // console.log("toggleExpandCard");
-    // console.log("index ", index);
-    // console.log("expandedCards ", expandedCards);
     const updatedExpandedCards = [...expandedCards];
     updatedExpandedCards[index] = !updatedExpandedCards[index];
     setExpandedCards(updatedExpandedCards);
