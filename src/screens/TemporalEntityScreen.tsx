@@ -5,10 +5,11 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
 
 const colors = [
   "bg-yellow-300",
@@ -90,48 +91,61 @@ const TemporalEntityScreen = ({ }) => {
       return null;
     }
     return (
-      <View
-        style={[
-          tw("bg-[#FFFEE0] rounded-xl justify-center mx-2"),
-          {
-            minHeight: 300,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-          },
-        ]}
-      >
-        <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-          {sentence.content.map((word, idx) => (
-            <TouchableOpacity
-              key={idx}
-              onPress={() => onWordPress(idx, index)}
-              style={tw(
-                `m-1 ${word.isSelected ? colors[word.entityId % colors.length] : "bg-transparent"}`
-              )}
-            >
-              <Text style={[
-                tw("text-2xl"),
-                {
-                  fontFamily: "HandleeRegular",
-                },
-              ]}
+      <SafeAreaView style={tw("flex-1 bg-white")}>
 
-              >{word.text}</Text>
-            </TouchableOpacity>
-          ))}
+        <View style={tw("flex-row justify-end items-center mb-4 mr-2")}>
+          <TouchableOpacity
+            style={tw("bg-blue-500 py-2 px-4 rounded-lg flex-row items-center")}
+            onPress={onNextCard}
+          >
+            <Text style={tw('font-primary mr-2 text-white text-base')}>Phrase suivante</Text>
+            <MaterialIcons name="navigate-next" size={28} color="white" />
+          </TouchableOpacity>
         </View>
-      </View>
+
+        <View
+          style={[
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2"),
+            {
+              minHeight: 300,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            },
+          ]}
+        >
+          <View style={tw("flex-row flex-wrap mb-2 m-7")}>
+            {sentence.content.map((word, idx) => (
+              <TouchableOpacity
+                key={idx}
+                onPress={() => onWordPress(idx, index)}
+                style={tw(
+                  `m-1 ${word.isSelected ? colors[word.entityId % colors.length] : "bg-transparent"}`
+                )}
+              >
+                <Text style={[
+                  tw("text-2xl"),
+                  {
+                    fontFamily: "HandleeRegular",
+                  },
+                ]}
+
+                >{word.text}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </SafeAreaView>
     );
   };
 
   const renderTemporalEntity = (entity) => (
-    <View key={entity.id} style={tw("flex-row items-center")}>
-      <Text style={tw("mr-2")}>{entity.text}</Text>
+    <View key={entity.id} style={tw(`flex-row items-center m-1 `)}>
+      <Text style={tw(`text-lg mr-2 ${colors[entity.id % colors.length]} font-primary`)}>{entity.text}</Text>
       <TouchableOpacity onPress={() => removeTemporalEntity(entity.id)}>
-        <Text style={tw("text-red-500")}>×</Text>
+        <Entypo name="cross" size={24} color="red" />
       </TouchableOpacity>
     </View>
   );
@@ -145,28 +159,28 @@ const TemporalEntityScreen = ({ }) => {
 
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
-      <View style={tw("flex-1 justify-center items-center")}>
-        {renderSentence(sentences[currentIndex], currentIndex)}
-      </View>
-      <View style={tw("mb-4")}>
-        {temporalEntities.map(entity => renderTemporalEntity(entity))}
-      </View>
-      <View style={tw("flex-row justify-between items-center mb-4 mx-2")}>
-        <TouchableOpacity
-          style={tw("bg-blue-500 py-2 px-4 rounded-lg")}
-          onPress={addTemporalEntity}
-        >
-          <Text style={tw("text-white")}>Nouvelle entité</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={tw("bg-blue-500 py-2 px-4 rounded-lg")}
-          onPress={onNextCard}
-        >
-          <Icon name="arrow-right" size={20} color="#FFFFFF" />
-        </TouchableOpacity>
-      </View>
+      <ScrollView contentContainerStyle={tw("")}>
+
+        <View style={tw("flex-1 justify-center items-center")}>
+          {renderSentence(sentences[currentIndex], currentIndex)}
+        </View>
+        <View style={tw("flex-row mb-4 mt-8 justify-center")}>
+          <View style={tw("mx-4")}>
+            {temporalEntities.map(entity => renderTemporalEntity(entity))}
+          </View>
+          <TouchableOpacity
+            style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10")}
+            onPress={addTemporalEntity}
+          >
+            <View style={tw("py-2")}>
+              <Text style={tw("text-white font-primary text-lg")}>Nouvelle entité</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
+
 };
 
 export default TemporalEntityScreen;
