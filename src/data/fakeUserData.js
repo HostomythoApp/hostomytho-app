@@ -277,6 +277,27 @@ const FAKE_DATA = {
       temporalEntities: [],
     },
   ],
+
+  temporalLinks: [
+    {
+      label: "Before",
+    },
+    {
+      label: "Simultaneous",
+    },
+    {
+      label: "During",
+    },
+    {
+      label: "Begins_on",
+    },
+    {
+      label: "Ends_on",
+    },
+    {
+      label: "Overlap",
+    },
+  ],
 };
 
 export default FAKE_DATA;
