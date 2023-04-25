@@ -149,10 +149,9 @@ const PlausibilityGameScreen = ({ }) => {
                   }
                 ]}>
                   <Text style={[
-                    tw("text-2xl tracking-wider mb-2 m-7"),
+                    tw("text-2xl tracking-wider mb-2 m-7 font-HandleeRegular"),
                     {
                       // TODO Importer et altérner plusieurs fonts
-                      fontFamily: "HandleeRegular",
                       WebkitUserSelect: 'none',
                       userSelect: 'none'
                     },

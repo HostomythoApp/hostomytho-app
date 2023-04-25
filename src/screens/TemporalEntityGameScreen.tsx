@@ -4,7 +4,6 @@ import {
   Text,
   SafeAreaView,
   TouchableOpacity,
-  StyleSheet,
   ScrollView,
 } from "react-native";
 import { useTailwind } from "tailwind-rn";
@@ -125,13 +124,8 @@ const TemporalEntityScreen = ({ }) => {
                   `m-1 ${word.isSelected ? colors[word.entityId % colors.length] : "bg-transparent"}`
                 )}
               >
-                <Text style={[
-                  tw("text-2xl"),
-                  {
-                    fontFamily: "HandleeRegular",
-                  },
-                ]}
-
+                <Text style={
+                  tw("text-2xl font-HandleeRegular")}
                 >{word.text}</Text>
               </TouchableOpacity>
             ))}
