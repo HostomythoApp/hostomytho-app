@@ -24,3 +24,8 @@ declare module 'images/*' {
     export default value;
   }
 
+  declare module 'services/*' {
+    const value: any;
+    export default value;
+  }
+

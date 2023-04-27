@@ -34,15 +34,18 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
-
-      <Stack.Screen name="TemporalLinkGameScreen"
-        component={TemporalLinkGameScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Spécifier les liens temporelles" navigation={navigation} />,
+      <Stack.Screen name="Connected"
+        component={ProfileScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
         })} />
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({
           header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="TemporalLinkGameScreen"
+        component={TemporalLinkGameScreen} options={({ navigation }) => ({
+          header: () => <CustomHeaderInGame title="Spécifier les liens temporelles" navigation={navigation} />,
         })} />
       <Stack.Screen name="PlausibilityGame"
         component={PlausibilityGameScreen} options={({ navigation }) => ({
@@ -53,10 +56,7 @@ const StackNavigator = ({ }) => {
           header: () => <CustomHeaderInGame title="Trouver les entités et expressions temporelles" navigation={navigation} />,
         })} />
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Connected"
-        component={ProfileScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
-        })} />
+
       <Stack.Screen name="Login"
         component={LoginScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderEmpty title="Connexion" navigation={navigation} />,
