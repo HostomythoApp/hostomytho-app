@@ -1,5 +1,5 @@
 // import * as React from "react";
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { TailwindProvider } from "tailwind-rn";
@@ -10,6 +10,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
 import { useLoadFonts } from "fonts/useLoadFonts";
+import { AuthProvider } from "services/contexts/AuthContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -21,13 +22,15 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
+    <AuthProvider>
+      <View style={styles.container} onLayout={onLayoutRootView}>
         <NavigationContainer>
           <TailwindProvider utilities={utilities}>
             <StackNavigator />
           </TailwindProvider>
         </NavigationContainer>
-    </View>
+      </View>
+    </AuthProvider>
   );
 }
 

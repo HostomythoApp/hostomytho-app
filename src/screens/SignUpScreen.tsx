@@ -24,21 +24,20 @@ const SignUpScreen = () => {
     const [doctor, setDoctor] = useState('medecin');
 
     const submit = () => {
-        console.log(username, password, email, doctor);
         if (username.trim() === '' || password.trim() === '') {
-            console.log('Erreur, Veuillez remplir tous les champs');
+            alert('Erreur, Veuillez remplir tous les champs');
         } else {
             if (password !== password2) {
-                console.log('Mots de passe différents');
+                alert('Mots de passe différents');
             } else {
                 if (password.length < 6) {
-                    console.log('Mot de passe trop court');
+                    alert('Mot de passe trop court');
                 } else {
                     signUpUser(username, password, doctor, email)
                         .then((response) => {
-                            console.log(username, password, email, doctor);
-                            if (response.status === 200) {
-                                console.log('Inscription réussie !');
+                            if (response.status === 200 || response.status === 201) {
+                                alert('Inscription réussie !');
+                                // TODO rediriger vers mainpage et vérifier si jwt bien stocker dans cache
                             } else {
                                 console.log(`Erreur lors de l'inscription : ${response.statusText}`);
                             }
