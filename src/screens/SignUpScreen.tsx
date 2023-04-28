@@ -4,21 +4,16 @@ import { useTailwind } from "tailwind-rn";
 import MainInput from "../components/MainInput";
 import FunctionButton from "../components/FunctionButton";
 import RadioButton from 'components/RadioButton';
+import { signUpUser } from "../services/api/user";
 
-
-
-// function RadioButton(props: { value: string }) {
-//     return null;
-// }
-
-const SignIn = () => {
+const SignUpScreen = () => {
 
     const [selectedValue, setSelectedValue] = useState('option1');
 
     const options = [
-        { key:'option1',label: 'Je suis médecin ou étudiant', value: true },
-        { key:'option2',label: 'Je ne suis ni médecin ni étudiant', value: false },
-        { key:'option3',label: 'Je ne souhaite pas répondre', value: false },
+        { key: 'option1', label: 'Je suis médecin ou étudiant', value: 'medecin' },
+        { key: 'option2', label: 'Je ne suis ni médecin ni étudiant', value: 'autre' },
+        { key: 'option3', label: 'Je ne souhaite pas répondre', value: 'etudiant' },
     ];
 
     const tw = useTailwind();
@@ -26,18 +21,31 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
-    const [doctor, setDoctor] = useState(true);
+    const [doctor, setDoctor] = useState('medecin');
+
     const submit = () => {
+        console.log(username, password, email, doctor);
         if (username.trim() === '' || password.trim() === '') {
-            alert('Erreur, Veuillez remplir tous les champs');
+            console.log('Erreur, Veuillez remplir tous les champs');
         } else {
             if (password !== password2) {
-                alert('Mots de passe différents');
+                console.log('Mots de passe différents');
             } else {
                 if (password.length < 6) {
-                    alert('Mot de passe trop court');
+                    console.log('Mot de passe trop court');
                 } else {
-                    alert(`Nom : ${username}\nPassword : ${password}\nDoctor : ${doctor}`);
+                    signUpUser(username, password, doctor, email)
+                        .then((response) => {
+                            console.log(username, password, email, doctor);
+                            if (response.status === 200) {
+                                console.log('Inscription réussie !');
+                            } else {
+                                console.log(`Erreur lors de l'inscription : ${response.statusText}`);
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(`Erreur lors de l'inscription : ${error.message}`);
+                        });
                 }
             }
         }
@@ -76,10 +84,11 @@ const SignIn = () => {
                         key={option.key}
                         label={option.label}
                         selected={selectedValue === option.key}
-                        onPress={() => {setSelectedValue(option.key)
-                                setDoctor(option.value)
+                        onPress={() => {
+                            setSelectedValue(option.key)
+                            setDoctor(option.value)
                         }
-                    }
+                        }
                     />
                 ))}
             </View>
@@ -89,4 +98,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default SignUpScreen;

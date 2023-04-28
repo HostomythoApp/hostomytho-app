@@ -11,7 +11,7 @@ const MainScreen = ({ }) => {
     const tw = useTailwind();
     const Navigation = useNavigation();
 
-    if (user.idUser === -1) {
+    // if (user.idUser === -1) {
         return (
             <View style={tw("flex-1 justify-center items-center")}>
                 <MainTitle title={"Bienvenu sur HostoMytho"} />
@@ -20,21 +20,21 @@ const MainScreen = ({ }) => {
                     <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntityScreen" />
                     <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGameScreen" />
                     <PrimaryButton title="Connexion" destination="Login" />
-                    <PrimaryButton title="Inscription" destination="SignIn" />
+                    <PrimaryButton title="Inscription" destination="SignUpScreen" />
                 </View>
             </View>);
-    } else {
-        return (<View style={tw("flex-1 justify-center items-center")}>
-            <MainTitle title={"Bonjour " + data.member[user.idUser].login} />
-            <View>
-                <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
-                <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntityScreen" />
-                <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGameScreen" />
-                <PrimaryButton title="Profil" destination="Profile" />
-                <PrimaryButton title="Paramètres" destination="Settings" />
-            </View>
-        </View>);
-    }
+    // } else {
+    //     return (<View style={tw("flex-1 justify-center items-center")}>
+    //         <MainTitle title={"Bonjour " + data.member[user.idUser].login} />
+    //         <View>
+    //             <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
+    //             <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntityScreen" />
+    //             <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGameScreen" />
+    //             <PrimaryButton title="Profil" destination="Profile" />
+    //             <PrimaryButton title="Paramètres" destination="Settings" />
+    //         </View>
+    //     </View>);
+    // }
 };
 
 export default MainScreen;

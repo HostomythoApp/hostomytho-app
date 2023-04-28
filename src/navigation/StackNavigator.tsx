@@ -4,8 +4,8 @@ import MainScreen from "screens/MainScreen";
 import ProfileScreen from "screens/ProfileScreen";
 import HomeScreen from "screens/HomeScreen";
 import { TouchableOpacity } from 'react-native';
-import LoginScreen from "screens/LoginScreen";
-import SignIn from "screens/SignIn";
+import SignInScreen from "screens/SignInScreen";
+import SignUpScreen from "screens/SignUpScreen";
 import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
 import TemporalEntityScreen from "screens/TemporalEntityGameScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
@@ -34,10 +34,7 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
-      <Stack.Screen name="Connected"
-        component={ProfileScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
-        })} />
+
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({
@@ -56,13 +53,16 @@ const StackNavigator = ({ }) => {
           header: () => <CustomHeaderInGame title="Trouver les entités et expressions temporelles" navigation={navigation} />,
         })} />
       <Stack.Screen name="Home" component={HomeScreen} />
-
+      <Stack.Screen name="Connected"
+        component={ProfileScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
+        })} />
       <Stack.Screen name="Login"
-        component={LoginScreen} options={({ navigation }) => ({
+        component={SignInScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderEmpty title="Connexion" navigation={navigation} />,
         })} />
-      <Stack.Screen name="SignIn"
-        component={SignIn} options={({ navigation }) => ({
+      <Stack.Screen name="SignUpScreen"
+        component={SignUpScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderEmpty title="Je crée mon compte" navigation={navigation} />,
         })} />
       <Stack.Screen name="Profile"
