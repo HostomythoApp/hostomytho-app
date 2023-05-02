@@ -71,4 +71,3 @@ const AuthProvider: React.FC = ({ children }) => {
 };
 
 export { AuthProvider, useAuth };
-"Ca marche. Par contre maintenant, il faut vérifier sur toutes les pages si on est connecté. Si ce n'est pas le cas, il faut rediriger vers le formulaire de connexion SignUpScreen.tsx"

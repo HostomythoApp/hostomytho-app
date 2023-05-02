@@ -4,9 +4,9 @@ import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
 import RadioButton from 'components/RadioButton';
-import { signUpUser } from "../services/api/user";
+import { signUpUser } from "services/api/user";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../services/auth/AuthContext";
+import { useAuth } from "services/auth/AuthContext";
 
 
 const SignUpScreen = () => {
@@ -39,7 +39,7 @@ const SignUpScreen = () => {
                     alert("Mot de passe trop court");
                 } else {
                     signUpUser(username, password, doctor, email)
-                        .then(async (response) => {
+                        .then(async (response: any) => {
                             if (response.status === 200 || response.status === 201) {
                                 alert("Inscription réussie !");
                                 const handleSuccess = async (token: string) => {
@@ -52,7 +52,7 @@ const SignUpScreen = () => {
                                 console.log(`Erreur lors de l'inscription : ${response.statusText}`);
                             }
                         })
-                        .catch((error) => {
+                        .catch((error: any) => {
                             console.log(`Erreur lors de l'inscription : ${error.message}`);
                         });
                 }

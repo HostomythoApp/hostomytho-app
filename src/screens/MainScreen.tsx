@@ -7,6 +7,7 @@ import MainTitle from "components/MainTitle";
 import user from "../globalState";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/auth/AuthContext";
+import FunctionButton from "../components/FunctionButton";
 
 const MainScreen = ({ }) => {
     const tw = useTailwind();
@@ -35,6 +36,7 @@ const MainScreen = ({ }) => {
                 <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGameScreen" />
                 <PrimaryButton title="Profil" destination="Profile" />
                 <PrimaryButton title="Paramètres" destination="Settings" />
+                <FunctionButton title="Deconnexion" destination="Logout" />
             </View>
         </View>);
     }

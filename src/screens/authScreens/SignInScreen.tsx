@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import MainInput from "../components/MainInput";
+import MainInput from "components/MainInput";
 import data from "data/fakeUserData.js";
-import FunctionButton from "../components/FunctionButton";
-import user from "../globalState";
+import FunctionButton from "components/FunctionButton";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../services/auth/AuthContext";
-import { signInUser } from "../services/api/user";
+import { useAuth } from "services/auth/AuthContext";
+import { signInUser } from "services/api/user";
 
 
 const LoginScreen = () => {

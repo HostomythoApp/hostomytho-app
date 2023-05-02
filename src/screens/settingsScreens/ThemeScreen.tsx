@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Text, View} from "react-native";
 import {useTailwind} from "tailwind-rn";
-import ColorCircles from "../../components/ColorCircles";
+import ColorCircles from "components/ColorCircles";
 import MainTitle from "components/MainTitle";
 
 const ThemeScreen = ({}) => {
