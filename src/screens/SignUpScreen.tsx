@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import MainInput from "../components/MainInput";
-import FunctionButton from "../components/FunctionButton";
+import MainInput from "components/MainInput";
+import FunctionButton from "components/FunctionButton";
 import RadioButton from 'components/RadioButton';
 import { signUpUser } from "../services/api/user";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "services/contexts/AuthContext";
+import { useAuth } from "../services/auth/AuthContext";
 
 
 const SignUpScreen = () => {

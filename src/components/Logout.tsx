@@ -1,4 +1,4 @@
-import { useAuth } from "services/contexts/AuthContext";
+import { useAuth } from "services/auth/AuthContext";
 
 // TODO: Composant à faire
 const LogoutScreen = () => {

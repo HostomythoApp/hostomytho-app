@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AuthState {
@@ -17,13 +17,22 @@ const initialAuthState: AuthState = {
   isAuthenticated: false,
   token: null,
 };
-
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
-
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
+
+  const checkToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem("@auth_token");
+      if (token) {
+        setAuthState({ isAuthenticated: true, token });
+      }
+    } catch (error) {
+      console.error("Error checking token:", error);
+    }
+  };
 
   const storeToken = async (token: string) => {
     try {
@@ -43,6 +52,10 @@ const AuthProvider: React.FC = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    checkToken();
+  }, []);
+  
   return (
     <AuthContext.Provider
       value={{
@@ -58,3 +71,4 @@ const AuthProvider: React.FC = ({ children }) => {
 };
 
 export { AuthProvider, useAuth };
+"Ca marche. Par contre maintenant, il faut vérifier sur toutes les pages si on est connecté. Si ce n'est pas le cas, il faut rediriger vers le formulaire de connexion SignUpScreen.tsx"

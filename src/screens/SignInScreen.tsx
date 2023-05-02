@@ -6,7 +6,7 @@ import data from "data/fakeUserData.js";
 import FunctionButton from "../components/FunctionButton";
 import user from "../globalState";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "services/contexts/AuthContext";
+import { useAuth } from "../services/auth/AuthContext";
 import { signInUser } from "../services/api/user";
 
 

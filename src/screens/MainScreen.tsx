@@ -6,7 +6,7 @@ import PrimaryButton from "components/PrimaryButton";
 import MainTitle from "components/MainTitle";
 import user from "../globalState";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "services/contexts/AuthContext";
+import { useAuth } from "services/auth/AuthContext";
 
 const MainScreen = ({ }) => {
     const tw = useTailwind();

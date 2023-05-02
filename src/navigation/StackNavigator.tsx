@@ -35,6 +35,10 @@ const StackNavigator = ({ }) => {
       >
       </Stack.Group>
 
+      <Stack.Screen name="Profile"
+        component={ProfileScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title={data.member[user.idUser].login} navigation={navigation} />,
+        })} />
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({
@@ -64,10 +68,6 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="SignUpScreen"
         component={SignUpScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderEmpty title="Je crée mon compte" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Profile"
-        component={ProfileScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title={data.member[user.idUser].login} navigation={navigation} />,
         })} />
       <Stack.Screen name="Settings" component={SettingsScreen}
         options={({ navigation }) => ({

@@ -10,7 +10,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
 import { useLoadFonts } from "fonts/useLoadFonts";
-import { AuthProvider } from "services/contexts/AuthContext";
+import { AuthProvider } from "services/auth/AuthContext";
 
 SplashScreen.preventAutoHideAsync();
 
