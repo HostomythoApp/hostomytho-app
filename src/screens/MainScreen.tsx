@@ -7,7 +7,7 @@ import MainTitle from "components/MainTitle";
 import user from "../globalState";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/auth/AuthContext";
-import FunctionButton from "../components/FunctionButton";
+import LogoutButton from "components/LogoutButton";
 
 const MainScreen = ({ }) => {
     const tw = useTailwind();
@@ -15,7 +15,7 @@ const MainScreen = ({ }) => {
     const { authState } = useAuth();
 
 
-  if (!authState.isAuthenticated) {
+    if (!authState.isAuthenticated) {
         return (
             <View style={tw("flex-1 justify-center items-center")}>
                 <MainTitle title={"Bienvenu sur HostoMytho"} />
@@ -36,7 +36,7 @@ const MainScreen = ({ }) => {
                 <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGameScreen" />
                 <PrimaryButton title="Profil" destination="Profile" />
                 <PrimaryButton title="Paramètres" destination="Settings" />
-                <FunctionButton title="Deconnexion" destination="Logout" />
+                <LogoutButton />
             </View>
         </View>);
     }

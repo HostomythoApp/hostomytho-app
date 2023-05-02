@@ -11,6 +11,7 @@ interface AuthContextProps {
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>;
   storeToken: (token: string) => Promise<void>;
   removeToken: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const initialAuthState: AuthState = {
@@ -52,10 +53,17 @@ const AuthProvider: React.FC = ({ children }) => {
     }
   };
 
+  const logout = async () => {
+    try {
+      await removeToken();
+    } catch (error) {
+    }
+  };
+
   useEffect(() => {
     checkToken();
   }, []);
-  
+
   return (
     <AuthContext.Provider
       value={{
@@ -63,6 +71,7 @@ const AuthProvider: React.FC = ({ children }) => {
         setAuthState,
         storeToken,
         removeToken,
+        logout,
       }}
     >
       {children}
