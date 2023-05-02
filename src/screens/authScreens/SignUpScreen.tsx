@@ -77,15 +77,15 @@ const SignUpScreen = () => {
     return (
         <View style={tw("flex-1 justify-center items-center")}>
 
-            <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} />
+            <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} />
 
             <FunctionButton text={"Générer un pseudo"} func={generatePseudo} />
 
-            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} />
+            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} nSubmitEditing={submit} />
 
-            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} />
+            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} nSubmitEditing={submit} />
 
-            <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} />
+            <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} nSubmitEditing={submit} />
 
             <View style={tw('inline-block p-4')}>
                 {options.map((option) => (

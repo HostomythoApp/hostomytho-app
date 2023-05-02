@@ -40,9 +40,9 @@ const LoginScreen = () => {
     return (
         <View style={tw("flex-1 justify-center items-center")}>
 
-            <MainInput text={"Pseudo"} value={username} setter={setUsername} hide={false} />
+            <MainInput text={"Pseudo"} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} />
 
-            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} />
+            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} />
 
             <FunctionButton text={"Connexion"} func={submit} />
         </View>

@@ -8,24 +8,25 @@ const MainInput = ({
   hide,
   setter,
   value,
+  onSubmitEditing,
 }: {
   setter: () => void;
   text: string,
   hide: boolean,
   value: string,
+  onSubmitEditing?: () => void;
 }) => {
   const tw = useTailwind();
 
   return (
-
-      <TextInput
-          style={tw("block my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md")}
-          placeholder={text}
-          secureTextEntry={hide}
-          onChangeText={setter}
-          value={value}
-      />
-
+    <TextInput
+      style={tw("block my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md")}
+      placeholder={text}
+      secureTextEntry={hide}
+      onChangeText={setter}
+      value={value}
+      onSubmitEditing={onSubmitEditing}
+    />
   );
 };
 
