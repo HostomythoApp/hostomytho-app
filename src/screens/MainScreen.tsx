@@ -25,6 +25,7 @@ const MainScreen = ({ }) => {
                     <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGameScreen" />
                     <PrimaryButton title="Connexion" destination="Login" />
                     <PrimaryButton title="Inscription" destination="SignUpScreen" />
+                    <PrimaryButton title="Profil" destination="Profile" />
                 </View>
             </View>);
     } else {

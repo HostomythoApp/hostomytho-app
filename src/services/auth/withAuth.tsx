@@ -10,10 +10,11 @@ const withAuth = <P extends object>(
     const navigation = useNavigation();
 
     React.useEffect(() => {
-      if (!authState.isAuthenticated) {
+      if (!authState.isAuthenticated && !authState.isLoading) {
+        console.log("pas authentifié");
         navigation.navigate("Main");
       }
-    }, [authState.isAuthenticated, navigation]);
+    }, [authState.isAuthenticated, authState.isLoading, navigation]);
 
     return <WrappedComponent {...(props as P)} />;
   };
