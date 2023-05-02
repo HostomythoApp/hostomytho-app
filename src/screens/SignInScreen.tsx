@@ -7,6 +7,8 @@ import FunctionButton from "../components/FunctionButton";
 import user from "../globalState";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/contexts/AuthContext";
+import { signInUser } from "../services/api/user";
+
 
 const LoginScreen = () => {
     const tw = useTailwind();
@@ -15,13 +17,24 @@ const LoginScreen = () => {
     const navigation = useNavigation();
     const { storeToken } = useAuth();
 
+
     const submit = async () => {
-        if (username.trim() === '' || password.trim() === '') {
-            alert('Erreur, Veuillez remplir tous les champs');
+        if (username.trim() === "" || password.trim() === "") {
+            alert("Erreur, Veuillez remplir tous les champs");
         } else {
-            // TODO Effectuez la requête de connexion et récupérez le token JWT, gérer les erreurs
-            const token = "votre_token_jwt";
-            await storeToken(token);
+            try {
+                const response = await signInUser(username, password);
+                if (response.status === 200) {
+                    const token = response.data.token;
+                    await storeToken(token);
+                    navigation.navigate("Main");
+                } else {
+                    alert(response.data.error);
+                }
+            } catch (error) {
+                console.error("Erreur lors de la connexion :", error);
+                alert("Erreur lors de la connexion, veuillez réessayer.");
+            }
         }
     };
 

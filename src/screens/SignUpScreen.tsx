@@ -5,6 +5,9 @@ import MainInput from "../components/MainInput";
 import FunctionButton from "../components/FunctionButton";
 import RadioButton from 'components/RadioButton';
 import { signUpUser } from "../services/api/user";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "services/contexts/AuthContext";
+
 
 const SignUpScreen = () => {
 
@@ -22,22 +25,29 @@ const SignUpScreen = () => {
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
     const [doctor, setDoctor] = useState('medecin');
+    const navigation = useNavigation();
+    const { storeToken } = useAuth();
 
     const submit = () => {
-        if (username.trim() === '' || password.trim() === '') {
-            alert('Erreur, Veuillez remplir tous les champs');
+        if (username.trim() === "" || password.trim() === "") {
+            alert("Erreur, Veuillez remplir tous les champs");
         } else {
             if (password !== password2) {
-                alert('Mots de passe différents');
+                alert("Mots de passe différents");
             } else {
                 if (password.length < 6) {
-                    alert('Mot de passe trop court');
+                    alert("Mot de passe trop court");
                 } else {
                     signUpUser(username, password, doctor, email)
-                        .then((response) => {
+                        .then(async (response) => {
                             if (response.status === 200 || response.status === 201) {
-                                alert('Inscription réussie !');
-                                // TODO rediriger vers mainpage et vérifier si jwt bien stocker dans cache
+                                alert("Inscription réussie !");
+                                const handleSuccess = async (token: string) => {
+                                    await storeToken(token);
+                                    navigation.navigate("Main");
+                                };
+                                const token = response.data.token;
+                                await handleSuccess(token);
                             } else {
                                 console.log(`Erreur lors de l'inscription : ${response.statusText}`);
                             }

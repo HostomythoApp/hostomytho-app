@@ -20,3 +20,10 @@ export const signUpUser = async (username: string, password: string, status: str
     notifications_enabled: true,
   });
 };
+
+export const signInUser = async (username: string, password: string) => {
+  return await api.post("/users/signin", {
+    username,
+    password,
+  });
+};
