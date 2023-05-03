@@ -17,9 +17,6 @@ import TemporalLinkGameScreen from "screens/TemporalLinkGameScreen";
 import CustomHeader from "components/header/CustomHeader";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
-import data from "data/fakeUserData.js";
-import user from "../globalState";
-import UserScreen from "screens/UserScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +38,7 @@ const StackNavigator = ({ }) => {
         })} />
       <Stack.Screen name="Profile"
         component={ProfileScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title={data.member[user.idUser].login} navigation={navigation} />,
+          header: () => <CustomHeader title="Profil" navigation={navigation} />,
         })} />
       <Stack.Screen name="TemporalLinkGameScreen"
         component={TemporalLinkGameScreen} options={({ navigation }) => ({

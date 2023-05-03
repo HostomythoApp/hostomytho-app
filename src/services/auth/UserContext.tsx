@@ -6,6 +6,7 @@ interface User {
   username: string;
   points: number;
   status: string;
+  email: string;
 }
 
 interface UserContextProps {

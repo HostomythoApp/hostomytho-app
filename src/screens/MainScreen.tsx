@@ -15,7 +15,7 @@ const MainScreen = ({ }) => {
     if (!authState.isAuthenticated) {
         return (
             <View style={tw("flex-1 justify-center items-center")}>
-                <MainTitle title={"Bienvenu sur HostoMytho"} />
+                <MainTitle title={"Bienvenue sur HostoMytho"} />
                 <View>
                     <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
                     <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntityScreen" />
