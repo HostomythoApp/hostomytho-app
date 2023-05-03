@@ -1,19 +1,16 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import data from "data/fakeUserData.js";
 import PrimaryButton from "components/PrimaryButton";
 import MainTitle from "components/MainTitle";
-import user from "../globalState";
-import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "services/auth/AuthContext";
+import { useAuth } from "../services/auth/AuthContext";
+import { useUser } from "../services/auth/UserContext";
 import LogoutButton from "components/LogoutButton";
 
 const MainScreen = ({ }) => {
     const tw = useTailwind();
-    const Navigation = useNavigation();
     const { authState } = useAuth();
-
+    const { user } = useUser();
 
     if (!authState.isAuthenticated) {
         return (
@@ -30,7 +27,7 @@ const MainScreen = ({ }) => {
             </View>);
     } else {
         return (<View style={tw("flex-1 justify-center items-center")}>
-            <MainTitle title={"Bonjour " + data.member[user.idUser].login} />
+            <MainTitle title={"Bonjour " + user?.username} />
             <View>
                 <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
                 <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntityScreen" />

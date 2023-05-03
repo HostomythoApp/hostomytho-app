@@ -24,7 +24,7 @@ const PlausibilityGameScreen = ({ }) => {
 
   // Toggle de longueur des textes
   useEffect(() => {
-    const updatedDisplayedTexts = data.texts.map((text, index) => {
+    const updatedDisplayedTexts = data.texts.map((text: any, index: any) => {
       if (expandedCards[index]) {
         return text.content;
       } else {
@@ -64,13 +64,11 @@ const PlausibilityGameScreen = ({ }) => {
   const swipeLeft = useCallback(async (cardIndex: number) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
-    console.log(`Swiped left on ${textPlayed.id}`);
     setActiveModal(false);
   }, [texts]);
 
   const swipeRight = useCallback(async (cardIndex: number) => {
     const textPlayed = texts[cardIndex];
-    console.log(`Swiped right on ${textPlayed.id}`);
     setActiveModal(false);
   }, [texts]);
 

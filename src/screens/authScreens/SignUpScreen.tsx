@@ -96,8 +96,7 @@ const SignUpScreen = () => {
                         onPress={() => {
                             setSelectedValue(option.key)
                             setDoctor(option.value)
-                        }
-                        }
+                        }}
                     />
                 ))}
             </View>

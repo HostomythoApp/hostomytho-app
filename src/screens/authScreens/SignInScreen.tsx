@@ -7,6 +7,7 @@ import FunctionButton from "components/FunctionButton";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/auth/AuthContext";
 import { signInUser } from "services/api/user";
+import { useUser } from "services/auth/UserContext";
 
 
 const LoginScreen = () => {
@@ -15,7 +16,7 @@ const LoginScreen = () => {
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
     const { storeToken } = useAuth();
-
+    const { setUser } = useUser();
 
     const submit = async () => {
         if (username.trim() === "" || password.trim() === "") {
@@ -26,6 +27,8 @@ const LoginScreen = () => {
                 if (response.status === 200) {
                     const token = response.data.token;
                     await storeToken(token);
+                    // Mise à jour du context utilisateur connecté
+                    setUser(response.data.user);
                     navigation.navigate("Main");
                 } else {
                     alert(response.data.error);

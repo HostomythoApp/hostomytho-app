@@ -11,7 +11,6 @@ const withAuth = <P extends object>(
 
     React.useEffect(() => {
       if (!authState.isAuthenticated && !authState.isLoading) {
-        console.log("pas authentifié");
         navigation.navigate("Main");
       }
     }, [authState.isAuthenticated, authState.isLoading, navigation]);
