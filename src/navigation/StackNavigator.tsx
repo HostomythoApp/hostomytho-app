@@ -8,6 +8,7 @@ import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
 import TemporalEntityScreen from "screens/TemporalEntityGameScreen";
+import RankingScreen from "screens/RankingScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
 import HelpScreen from "screens/settingsScreens/HelpScreen";
 import PrivacyPolicyScreen from "screens/settingsScreens/PrivacyPolicyScreen";
@@ -85,6 +86,12 @@ const StackNavigator = ({ }) => {
         options={({ navigation }) => ({
           header: () => <CustomHeader title="Thème" navigation={navigation} />,
         })} />
+      <Stack.Screen name="Ranking" component={RankingScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Thème" navigation={navigation} />,
+        })} />
+
+
     </Stack.Navigator>
   );
 };

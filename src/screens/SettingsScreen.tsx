@@ -5,24 +5,14 @@ import data from "data/fakeUserData.js";
 import PrimaryButton from "components/PrimaryButton";
 import MainTitle from "components/MainTitle";
 import FunctionButton from "../components/FunctionButton";
-import user from "../globalState";
 import {useNavigation} from "@react-navigation/native";
+import LogoutButton from "components/LogoutButton";
 
 const SettingsScreen = ({}) => {
     const tw = useTailwind();
-    const navigation = useNavigation();
-
-    const deconnexion = () => {
-        user.idUser = -1;
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'Main' }],
-        });
-    };
-
 
     const deleteAccount = () => {
-        alert('suppr');
+        alert('deleteAccount');
     }
 
     return (
@@ -33,7 +23,7 @@ const SettingsScreen = ({}) => {
                 <PrimaryButton title="Politique de confidentialité" destination="PrivacyPolicy"/>
                 <PrimaryButton title="Notifications" destination="Notif"/>
                 <PrimaryButton title="Aide et contact" destination="Help"/>
-                <FunctionButton text={"Déconnexion"} func={deconnexion}/>
+                <LogoutButton />
                 <FunctionButton text={"Supprimer son compte"} func={deleteAccount}/>
             </View>
         </View>);

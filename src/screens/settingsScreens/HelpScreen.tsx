@@ -6,7 +6,7 @@ const HelpScreen = ({}) => {
   const tw = useTailwind();
 
   return (
-    <Text>en cours help</Text>
+    <Text>En dev</Text>
   );
 };
 
