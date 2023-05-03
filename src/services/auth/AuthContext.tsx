@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUser } from "./UserContext";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -25,6 +26,7 @@ const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
+  const { removeUser } = useUser(); 
 
   const checkToken = async () => {
     try {
@@ -59,7 +61,7 @@ const AuthProvider: React.FC = ({ children }) => {
       setAuthState((prevState) => ({ ...prevState, isLoading: false }));
     }
   };
-  
+
   const removeToken = async () => {
     try {
       await AsyncStorage.removeItem("@auth_token");
@@ -77,7 +79,9 @@ const AuthProvider: React.FC = ({ children }) => {
   const logout = async () => {
     try {
       await removeToken();
+      await removeUser();
     } catch (error) {
+      console.error("Error during logout:", error);
     }
   };
 

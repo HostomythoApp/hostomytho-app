@@ -22,8 +22,8 @@ export default function App() {
   }
 
   return (
-    <AuthProvider>
       <UserProvider>
+    <AuthProvider>
         <View style={styles.container} onLayout={onLayoutRootView}>
           <NavigationContainer>
             <TailwindProvider utilities={utilities}>
@@ -31,8 +31,8 @@ export default function App() {
             </TailwindProvider>
           </NavigationContainer>
         </View>
-      </UserProvider>
     </AuthProvider>
+      </UserProvider>
   );
 }
 

@@ -11,6 +11,7 @@ interface User {
 interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => Promise<void>;
+  removeUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextProps>({} as UserContextProps);
@@ -51,8 +52,16 @@ const UserProvider: React.FC = ({ children }) => {
     return null;
   };
 
+  const removeUser = async () => {
+    try {
+      await AsyncStorage.removeItem("user");
+    } catch (error) {
+      console.error("Error removing user:", error);
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, removeUser }}>
       {children}
     </UserContext.Provider>
   );
