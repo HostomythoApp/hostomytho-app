@@ -33,7 +33,7 @@ const ProfileScreen = (props) => {
 
     return (
         <ScrollView style={tw('flex-1 p-4')}>
-            <View style={tw('mx-auto')} maxWidth={840}>
+            <View style={tw('mx-auto min-w-[540px]')}>
                 <Text style={tw('text-2xl font-bold mb-2 text-center')}>{user?.username}</Text>
 
                 <Text style={tw('text-lg mb-4 text-center')}>Points: {user?.points}</Text>
@@ -56,7 +56,9 @@ const ProfileScreen = (props) => {
                 </View>
 
                 <View style={tw(' bg-white mt-8 mb-2 py-2')}>
-                    <Text style={tw('text-xl font-bold mb-2 ')}>Classement</Text>
+                    <Text style={tw('text-xl font-bold mb-2 pl-2')}>Classement</Text>
+                    <Text style={tw('pl-2')}
+                    >. . .</Text>
                     {ranking.map((rank) => (
                         <View
                             key={rank.position}
@@ -71,8 +73,10 @@ const ProfileScreen = (props) => {
                             <Text>{rank.points} points</Text>
                         </View>
                     ))}
+                    <Text style={tw('pl-2')}
+                    >. . .</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Ranking')}>
-                        <Text style={tw('text-blue-500 mt-1')}>Voir le classement complet</Text>
+                        <Text style={tw('text-blue-500 mt-2')}>Voir le classement complet</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -82,6 +86,7 @@ const ProfileScreen = (props) => {
                         {achievements.map((achievement) => (
                             <Text key={achievement.id}>{achievement.picto}  {achievement.title}</Text>
                         ))}
+                        <Text>. . .</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Achievements')}>
                             <Text style={tw('text-blue-500 mt-1')}>Tout afficher</Text>
                         </TouchableOpacity>
@@ -94,6 +99,7 @@ const ProfileScreen = (props) => {
                                 {stat.title}: {stat.count}
                             </Text>
                         ))}
+                        <Text>. . .</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Stats')}>
                             <Text style={tw('text-blue-500 mt-1')}>Tout afficher</Text>
                         </TouchableOpacity>
@@ -113,7 +119,7 @@ const ProfileScreen = (props) => {
                         style={tw('bg-blue-500 px-4 py-2 rounded mr-2')}
                         onPress={() => navigation.navigate('Contacts')}
                     >
-                        <Text style={tw('text-white')}>
+                        <Text style={tw('text-white flex')}>
                             <FontAwesome5 style={tw('mr-2')} name='user-friends' size={24} color='white' />
                             Mes contacts
                         </Text>
@@ -122,7 +128,7 @@ const ProfileScreen = (props) => {
                         style={tw('bg-green-500 px-4 py-2 rounded ml-2')}
                         onPress={() => navigation.navigate('Referral')}
                     >
-                        <Text style={tw('text-white')}>
+                        <Text style={tw('text-white flex')}>
                             Parrainer quelqu'un
                         </Text>
                     </TouchableOpacity>
