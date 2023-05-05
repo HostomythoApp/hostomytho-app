@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import FunctionButton from "components/FunctionButton";
-import { Sentence } from "models/Sentence";
 import { TemporalEntity } from "models/TemporalEntity";
 import { TemporalLink } from "models/TemporalLink";
 

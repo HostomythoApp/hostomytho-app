@@ -9,8 +9,8 @@ import {
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
-import { Sentence } from "models/Sentence";
 import { TemporalEntity } from "models/TemporalEntity";
+import { Word } from "models/Word";
 
 const colors = [
   "bg-yellow-300",
@@ -20,11 +20,17 @@ const colors = [
   "bg-pink-300",
 ];
 
+export interface Sentence {
+  id: number;
+  content: Word[];
+  temporalEntities: TemporalEntity[];
+}
+
 const TemporalEntityScreen = ({ }) => {
   const tw = useTailwind();
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [temporalEntities, setTemporalEntities] = useState([]);
+  const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
 
   function shuffleArray(array: any) {
@@ -39,7 +45,7 @@ const TemporalEntityScreen = ({ }) => {
   useEffect(() => {
     const shuffledSentences = shuffleArray(data.sentences);
     setSentences(shuffledSentences.slice(0, 10).map((sentence) => {
-      const words = sentence.content.split(' ').map((word) => ({ text: word, isSelected: false, entityId: null }));
+      const words = sentence.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, entityId: null }));
       return { ...sentence, content: words };
     }));
   }, []);
@@ -47,7 +53,7 @@ const TemporalEntityScreen = ({ }) => {
   const onWordPress = (wordIndex: number, sentenceIndex: number) => {
     const newSentences = sentences.map((sentence, idx) => {
       if (idx === sentenceIndex) {
-        const newWords = sentence.content.map((word: any, idx: number) => {
+        const newWords = sentence.content.map((word: Word, idx: number) => {
           if (idx === wordIndex) {
             return { ...word, isSelected: !word.isSelected, entityId: word.isSelected ? null : temporalEntities.length };
           }
@@ -66,7 +72,7 @@ const TemporalEntityScreen = ({ }) => {
     const entityText = selectedWords.map(word => word.text).join(' ');
 
     if (entityText) {
-      setTemporalEntities([...temporalEntities, { id: temporalEntities.length, text: entityText }]);
+      setTemporalEntities([...temporalEntities, { id: temporalEntities.length, content: entityText }]);
       setColorIndex((colorIndex + 1) % colors.length);
     }
   };
@@ -87,7 +93,7 @@ const TemporalEntityScreen = ({ }) => {
     setSentences(newSentences);
   };
 
-  const renderSentence = (sentence: string, index: number) => {
+  const renderSentence = (sentence: Sentence, index: number) => {
     if (typeof sentence === "undefined") {
       return null;
     }
@@ -137,9 +143,9 @@ const TemporalEntityScreen = ({ }) => {
     );
   };
 
-  const renderTemporalEntity = (entity: TemporalEntity) => (
+  const renderTemporalEntity = (entity: any) => (
     <View key={entity.id} style={tw(`flex-row items-center m-1 `)}>
-      <Text style={tw(`text-lg mr-2 ${colors[entity.id % colors.length]} font-primary`)}>{entity.text}</Text>
+      <Text style={tw(`text-lg mr-2 ${colors[entity.id % colors.length]} font-primary`)}>{entity.content}</Text>
       <TouchableOpacity onPress={() => removeTemporalEntity(entity.id)}>
         <Entypo name="cross" size={24} color="red" />
       </TouchableOpacity>
