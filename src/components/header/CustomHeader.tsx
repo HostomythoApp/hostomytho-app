@@ -23,7 +23,6 @@ const CustomHeader = ({
       <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <Entypo name="menu" size={24} color="black" />
       </TouchableOpacity>
-
     </View>
   );
 };

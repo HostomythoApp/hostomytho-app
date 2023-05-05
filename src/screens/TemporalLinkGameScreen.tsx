@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
-import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import FunctionButton from "components/FunctionButton";
 
 const TemporalLinkGameScreen = () => {

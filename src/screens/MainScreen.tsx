@@ -3,8 +3,8 @@ import { View, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import PrimaryButton from "components/PrimaryButton";
 import MainTitle from "components/MainTitle";
-import { useAuth } from "../services/auth/AuthContext";
-import { useUser } from "../services/auth/UserContext";
+import { useAuth } from "services/auth/AuthContext";
+import { useUser } from "services/auth/UserContext";
 import LogoutButton from "components/LogoutButton";
 
 const MainScreen = ({ }) => {

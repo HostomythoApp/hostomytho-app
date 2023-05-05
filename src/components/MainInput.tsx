@@ -10,11 +10,11 @@ const MainInput = ({
   value,
   onSubmitEditing,
 }: {
-  setter: () => void;
+  setter: any;
   text: string,
   hide: boolean,
   value: string,
-  onSubmitEditing?: () => void;
+  onSubmitEditing?: any;
 }) => {
   const tw = useTailwind();
 

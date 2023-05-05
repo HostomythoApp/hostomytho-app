@@ -1,11 +1,9 @@
 import React from "react";
 import {View} from "react-native";
 import {useTailwind} from "tailwind-rn";
-import data from "data/fakeUserData.js";
 import PrimaryButton from "components/PrimaryButton";
 import MainTitle from "components/MainTitle";
-import FunctionButton from "../components/FunctionButton";
-import {useNavigation} from "@react-navigation/native";
+import FunctionButton from "components/FunctionButton";
 import LogoutButton from "components/LogoutButton";
 
 const SettingsScreen = ({}) => {

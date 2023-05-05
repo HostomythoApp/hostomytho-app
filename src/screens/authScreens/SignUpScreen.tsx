@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -7,7 +7,6 @@ import RadioButton from 'components/RadioButton';
 import { signUpUser } from "services/api/user";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/auth/AuthContext";
-
 
 const SignUpScreen = () => {
 
@@ -81,11 +80,11 @@ const SignUpScreen = () => {
 
             <FunctionButton text={"Générer un pseudo"} func={generatePseudo} />
 
-            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} nSubmitEditing={submit} />
+            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} />
 
-            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} nSubmitEditing={submit} />
+            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} onSubmitEditing={submit} />
 
-            <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} nSubmitEditing={submit} />
+            <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} onSubmitEditing={submit} />
 
             <View style={tw('inline-block p-4')}>
                 {options.map((option) => (

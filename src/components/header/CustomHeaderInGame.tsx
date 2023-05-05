@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useTailwind } from "tailwind-rn";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useUser } from 'services/auth/UserContext';
 
 const CustomHeaderInGame = ({
   title,
@@ -11,6 +12,7 @@ const CustomHeaderInGame = ({
   navigation: any;
 }) => {
   const tw = useTailwind();
+  const { user } = useUser();
 
   return (
     <View style={tw('flex-row justify-between items-center p-3 bg-white')}>
@@ -23,7 +25,7 @@ const CustomHeaderInGame = ({
       <Text style={tw('font-primary')}>
         <MaterialIcons style={tw('mr-1')}
          name="person-search" size={16} color="black" />
-        167 points</Text>
+        {user?.points} points</Text>
     </View>
   );
 };

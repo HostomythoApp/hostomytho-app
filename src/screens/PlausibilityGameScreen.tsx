@@ -13,7 +13,7 @@ const PlausibilityGameScreen = ({ }) => {
   const [texts, setTexts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [swipeType, setSwipeType] = useState<'right' | 'left' | null>(null);
-  const [activeModal, setActiveModal] = useState(false); //Gérer si le swipe vient des boutons ou manuellement
+  const [activeModal, setActiveModal] = useState(false);
   const [expandedCards, setExpandedCards] = useState<boolean[]>(data.texts.map(() => false));
   const [displayedTexts, setDisplayedTexts] = useState<string[]>(data.texts.map(text => text.content.slice(0, 750) + (text.content.length > 750 ? "..." : "")));
   const [swiperKey, setSwiperKey] = useState(0);

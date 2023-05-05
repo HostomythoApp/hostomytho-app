@@ -2,10 +2,10 @@ import React from 'react';
 import { TouchableOpacity, Text, View, ScrollView } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/auth/withAuth';
-import { useUser } from '../services/auth/UserContext';
+import { useUser } from 'services/auth/UserContext';
 import { FontAwesome5, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
-const ProfileScreen = (props) => {
+const ProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user } = useUser();
 

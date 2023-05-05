@@ -8,7 +8,7 @@ const PrimaryButton = ({
   props,
 }: {
   title: string;
-  destination: typeof useNavigation;
+  destination: any;
   props?: any;
 }) => {
   const tw = useTailwind();
