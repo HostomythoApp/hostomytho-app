@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 
 interface ModalPlausibilityGameProps {
     isVisible: boolean;
-    swipeType: 'left' | 'right';
+    swipeType: 'right' | 'left' | null;
     closeModal: () => void;
     setIsModalVisible: (isVisible: boolean) => void;
 }

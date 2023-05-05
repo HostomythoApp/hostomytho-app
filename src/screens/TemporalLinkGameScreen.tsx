@@ -3,12 +3,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import FunctionButton from "components/FunctionButton";
+import { Sentence } from "models/Sentence";
+import { TemporalEntity } from "models/TemporalEntity";
+import { TemporalLink } from "models/TemporalLink";
 
 const TemporalLinkGameScreen = () => {
   const tw = useTailwind();
   const [sentence, setSentence] = useState("");
-  const [entities, setEntities] = useState([]);
-  const [temporalLinks, setTemporalLinks] = useState([]);
+  const [entities, setEntities] = useState<TemporalEntity[]>([]);
+  const [temporalLinks, setTemporalLinks] = useState<TemporalLink[]>([]);
 
   useEffect(() => {
     setEntities(data.sentences[1].temporalEntities);

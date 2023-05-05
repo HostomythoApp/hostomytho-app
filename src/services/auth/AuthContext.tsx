@@ -16,6 +16,9 @@ interface AuthContextProps {
   logout: () => Promise<void>;
 }
 
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
 const initialAuthState: AuthState = {
   isAuthenticated: false,
   token: null,
@@ -24,7 +27,7 @@ const initialAuthState: AuthState = {
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 const useAuth = () => useContext(AuthContext);
 
-const AuthProvider: React.FC = ({ children }) => {
+const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
   const { removeUser } = useUser(); 
 

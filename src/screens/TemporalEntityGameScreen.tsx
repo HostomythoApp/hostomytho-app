@@ -9,6 +9,8 @@ import {
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import { Sentence } from "models/Sentence";
+import { TemporalEntity } from "models/TemporalEntity";
 
 const colors = [
   "bg-yellow-300",
@@ -20,12 +22,12 @@ const colors = [
 
 const TemporalEntityScreen = ({ }) => {
   const tw = useTailwind();
-  const [sentences, setSentences] = useState([]);
+  const [sentences, setSentences] = useState<Sentence[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [temporalEntities, setTemporalEntities] = useState([]);
   const [colorIndex, setColorIndex] = useState(0);
 
-  function shuffleArray(array) {
+  function shuffleArray(array: any) {
     const newArr = [...array];
     for (let i = newArr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -42,10 +44,10 @@ const TemporalEntityScreen = ({ }) => {
     }));
   }, []);
 
-  const onWordPress = (wordIndex, sentenceIndex) => {
+  const onWordPress = (wordIndex: number, sentenceIndex: number) => {
     const newSentences = sentences.map((sentence, idx) => {
       if (idx === sentenceIndex) {
-        const newWords = sentence.content.map((word, idx) => {
+        const newWords = sentence.content.map((word: any, idx: number) => {
           if (idx === wordIndex) {
             return { ...word, isSelected: !word.isSelected, entityId: word.isSelected ? null : temporalEntities.length };
           }
@@ -69,7 +71,7 @@ const TemporalEntityScreen = ({ }) => {
     }
   };
 
-  const removeTemporalEntity = (entityId) => {
+  const removeTemporalEntity = (entityId: number) => {
     setTemporalEntities(temporalEntities.filter(entity => entity.id !== entityId));
 
     const newSentences = sentences.map(sentence => {
@@ -85,7 +87,7 @@ const TemporalEntityScreen = ({ }) => {
     setSentences(newSentences);
   };
 
-  const renderSentence = (sentence, index) => {
+  const renderSentence = (sentence: string, index: number) => {
     if (typeof sentence === "undefined") {
       return null;
     }
@@ -116,7 +118,7 @@ const TemporalEntityScreen = ({ }) => {
           ]}
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-            {sentence.content.map((word, idx) => (
+            {sentence.content.map((word: any, idx: number) => (
               <TouchableOpacity
                 key={idx}
                 onPress={() => onWordPress(idx, index)}
@@ -135,7 +137,7 @@ const TemporalEntityScreen = ({ }) => {
     );
   };
 
-  const renderTemporalEntity = (entity) => (
+  const renderTemporalEntity = (entity: TemporalEntity) => (
     <View key={entity.id} style={tw(`flex-row items-center m-1 `)}>
       <Text style={tw(`text-lg mr-2 ${colors[entity.id % colors.length]} font-primary`)}>{entity.text}</Text>
       <TouchableOpacity onPress={() => removeTemporalEntity(entity.id)}>

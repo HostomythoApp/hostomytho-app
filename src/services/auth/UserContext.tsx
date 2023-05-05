@@ -15,10 +15,14 @@ interface UserContextProps {
   removeUser: () => Promise<void>;
 }
 
+interface UserProviderProps {
+  children: React.ReactNode;
+}
+
 const UserContext = createContext<UserContextProps>({} as UserContextProps);
 const useUser = () => useContext(UserContext);
 
-const UserProvider: React.FC = ({ children }) => {
+const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUserState] = useState<User | null>(null);
 
   useEffect(() => {

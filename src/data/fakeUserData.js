@@ -280,21 +280,27 @@ const FAKE_DATA = {
 
   temporalLinks: [
     {
+      id: 1,
       label: "Before",
     },
     {
+      id: 2,
       label: "Simultaneous",
     },
     {
+      id: 3,
       label: "During",
     },
     {
+      id: 4,
       label: "Begins_on",
     },
     {
+      id: 5,
       label: "Ends_on",
     },
     {
+      id: 6,
       label: "Overlap",
     },
   ],
