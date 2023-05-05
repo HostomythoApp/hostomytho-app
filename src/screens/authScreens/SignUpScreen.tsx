@@ -8,6 +8,7 @@ import { signUpUser } from "services/api/user";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/auth/AuthContext";
 import { RootStackNavigationProp } from "navigation/Types";
+import { User } from "models/User";
 
 const SignUpScreen = () => {
 
@@ -24,7 +25,7 @@ const SignUpScreen = () => {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
-    const [doctor, setDoctor] = useState('medecin'); 
+    const [doctor, setDoctor] = useState('medecin');
     const navigation = useNavigation<RootStackNavigationProp<"Main">>();
     const { storeToken } = useAuth();
 
@@ -38,7 +39,14 @@ const SignUpScreen = () => {
                 if (password.length < 6) {
                     alert("Mot de passe trop court");
                 } else {
-                    signUpUser(username, password, doctor, email)
+                    const newUser: Partial<User> = {
+                        username,
+                        password,
+                        email,
+                        status: doctor,
+                    };
+                    signUpUser(newUser)
+                    // TODO gérer la mise en cache de l'utilisateur et du jwt
                         .then(async (response: any) => {
                             if (response.status === 200 || response.status === 201) {
                                 alert("Inscription réussie !");
