@@ -5,12 +5,13 @@ import data from "data/fakeUserData.js";
 import Swiper from "react-native-deck-swiper";
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
+import { Text as TextType } from "models/Text";
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
   const swipeRef = useRef<Swiper<any>>(null);
   const [swipedAll, setSwipedAll] = useState(false);
-  const [texts, setTexts] = useState([]);
+  const [texts, setTexts] = useState<TextType[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [swipeType, setSwipeType] = useState<'right' | 'left' | null>(null);
   const [activeModal, setActiveModal] = useState(false);
