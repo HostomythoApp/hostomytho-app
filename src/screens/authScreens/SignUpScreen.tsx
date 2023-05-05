@@ -7,6 +7,7 @@ import RadioButton from 'components/RadioButton';
 import { signUpUser } from "services/api/user";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/auth/AuthContext";
+import { RootStackNavigationProp } from "navigation/Types";
 
 const SignUpScreen = () => {
 
@@ -23,8 +24,8 @@ const SignUpScreen = () => {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
-    const [doctor, setDoctor] = useState('medecin');
-    const navigation = useNavigation();
+    const [doctor, setDoctor] = useState('medecin'); 
+    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
     const { storeToken } = useAuth();
 
     const submit = () => {

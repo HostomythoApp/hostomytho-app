@@ -7,15 +7,16 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/auth/AuthContext";
 import { signInUser } from "services/api/user";
 import { useUser } from "services/auth/UserContext";
+import { RootStackNavigationProp } from "navigation/Types";
 
 
 const LoginScreen = () => {
     const tw = useTailwind();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const navigation = useNavigation();
     const { storeToken } = useAuth();
     const { setUser } = useUser();
+    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
 
     const submit = async () => {
         if (username.trim() === "" || password.trim() === "") {

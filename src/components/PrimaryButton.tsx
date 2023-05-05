@@ -16,6 +16,7 @@ const PrimaryButton = ({
 
   return (
     <TouchableOpacity
+      // @ts-ignore
       onPress={() => navigation.navigate(destination)}
       style={tw("bg-secondary py-2 px-12 my-2 font-medium rounded-xl")}
     >
