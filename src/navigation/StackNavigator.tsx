@@ -8,6 +8,7 @@ import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
 import TemporalEntityScreen from "screens/TemporalEntityGameScreen";
+import AchievementsScreen from "screens/AchievementsScreen";
 import RankingScreen from "screens/RankingScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
 import HelpScreen from "screens/settingsScreens/HelpScreen";
@@ -32,6 +33,10 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
+      <Stack.Screen name="Achievements"
+        component={AchievementsScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Tous les hauts faits" navigation={navigation} />,
+        })} />
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({

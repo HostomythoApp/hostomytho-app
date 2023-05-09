@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, View, ScrollView } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/auth/withAuth';
 import { useUser } from 'services/auth/UserContext';
-import { FontAwesome5, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { FontAwesome5, FontAwesome, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
