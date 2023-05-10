@@ -13,6 +13,7 @@ interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => Promise<void>;
   removeUser: () => Promise<void>;
+  incrementPoints: (points: number) => void;
 }
 
 interface UserProviderProps {
@@ -65,8 +66,16 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+    const incrementPoints = (points: number) => {
+    if (user) {
+      const newUser = { ...user, points: user.points + points };
+      setUser(newUser);
+      // Mettre à jour l'utilisateur dans la base de données ou autre stockage persistant ici
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, incrementPoints }}>
       {children}
     </UserContext.Provider>
   );

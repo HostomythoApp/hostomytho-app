@@ -72,6 +72,7 @@ const TemporalEntityScreen = ({ }) => {
     const entityText = selectedWords.map(word => word.text).join(' ');
 
     if (entityText) {
+      // @ts-ignore
       setTemporalEntities([...temporalEntities, { id: temporalEntities.length, content: entityText }]);
       setColorIndex((colorIndex + 1) % colors.length);
     }
