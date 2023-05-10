@@ -10,8 +10,8 @@ const ProfileScreen = (props: any) => {
     const { user } = useUser();
 
     const achievements = [
-        { id: 1, title: 'Premier texte validé', picto: <Entypo name="medal" size={24} color="gold" /> },
-        { id: 2, title: '10 annotations créées', picto: <MaterialCommunityIcons name="rewind-10" size={24} color="mediumseagreen" /> },
+        { id: 1, title: 'Compléter 10 parties.', picto: <MaterialCommunityIcons name="numeric-10-box-multiple" size={24} color="mediumseagreen" /> },
+        { id: 2, title: 'Atteindre 100 points de réputation.', picto: <SimpleLineIcons name="badge" size={24} color="#CD7F32" /> },
     ];
 
     const stats = [
@@ -84,7 +84,8 @@ const ProfileScreen = (props: any) => {
                     <View style={tw('flex-1 mr-2')}>
                         <Text style={tw('text-xl font-bold mb-2')}>Hauts faits</Text>
                         {achievements.map((achievement) => (
-                            <Text key={achievement.id}>{achievement.picto}  {achievement.title}</Text>
+                            <Text style={tw('flex my-1')}
+                                key={achievement.id}>{achievement.picto}  {achievement.title}</Text>
                         ))}
                         <Text>. . .</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Achievements')}>
@@ -95,7 +96,8 @@ const ProfileScreen = (props: any) => {
                     <View style={tw('flex-1 ml-2')}>
                         <Text style={tw('text-xl font-bold mb-2')}>Statistiques</Text>
                         {stats.map((stat) => (
-                            <Text key={stat.id}>
+                            <Text style={tw('my-1')}
+                                key={stat.id}>
                                 {stat.title}: {stat.count}
                             </Text>
                         ))}

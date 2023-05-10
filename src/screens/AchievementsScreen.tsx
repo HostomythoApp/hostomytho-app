@@ -19,7 +19,6 @@ const AchievementsScreen = () => {
                 const achievementsData = await getAchievementsWithUserStatus(userId);
                 setAchievements(achievementsData);
             }
-
         };
 
         fetchAndSetAchievements();

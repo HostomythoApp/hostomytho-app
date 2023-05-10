@@ -33,10 +33,6 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
-      <Stack.Screen name="Achievements"
-        component={AchievementsScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Tous les hauts faits" navigation={navigation} />,
-        })} />
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({
@@ -45,6 +41,10 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="Profile"
         component={ProfileScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Profil" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="Achievements"
+        component={AchievementsScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Tous les hauts faits" navigation={navigation} />,
         })} />
       <Stack.Screen name="TemporalLinkGameScreen"
         component={TemporalLinkGameScreen} options={({ navigation }) => ({
