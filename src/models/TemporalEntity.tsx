@@ -1,4 +1,5 @@
 export interface TemporalEntity {
   id: number;
-  content: string;
+  startIndex: number;
+  endIndex: number;
 }

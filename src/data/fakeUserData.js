@@ -130,15 +130,21 @@ const FAKE_DATA = {
       temporalEntities: [
         {
           id: 1,
-          content: "évoluant dans contexte d'altération de l'état général",
+          // content: "évoluant dans contexte d'altération de l'état général",
+          startIndex: 0,
+          endIndex: 27,
         },
         {
           id: 2,
-          content: "amaigrissement chiffré à 12 kg",
+          // content: "amaigrissement chiffré à 12 kg",
+          startIndex: 0,
+          endIndex: 27,
         },
         {
           id: 3,
-          content: "en deux mois",
+          // content: "en deux mois",
+          startIndex: 0,
+          endIndex: 27,
         },
       ],
     },
@@ -155,23 +161,28 @@ const FAKE_DATA = {
       temporalEntities: [
         {
           id: 1,
-          content: "dysphagie progressive",
+          startIndex: 75,
+          endIndex: 96,
         },
         {
           id: 2,
-          content: "sous traitement à base de corticoïdes",
+          startIndex: 123,
+          endIndex: 160,
         },
         {
           id: 3,
-          content: "Le début de sa symptomatologie",
+          startIndex: 0,
+          endIndex: 30,
         },
         {
           id: 4,
-          content: "A 4 mois",
+          startIndex: 41,
+          endIndex: 49,
         },
         {
-          id: 4,
-          content: "dysphonie",
+          id: 5,
+          startIndex: 175,
+          endIndex: 188,
         },
       ],
     },
@@ -281,27 +292,27 @@ const FAKE_DATA = {
   temporalLinks: [
     {
       id: 1,
-      label: "Before",
+      label: "Précède",
     },
     {
       id: 2,
-      label: "Simultaneous",
+      label: "Simultanné avec",
     },
     {
       id: 3,
-      label: "During",
+      label: "Pendant",
     },
     {
       id: 4,
-      label: "Begins_on",
+      label: "Débute à",
     },
     {
       id: 5,
-      label: "Ends_on",
+      label: "Finit à",
     },
     {
       id: 6,
-      label: "Overlap",
+      label: "Chevauche",
     },
   ],
 };

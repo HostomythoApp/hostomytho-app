@@ -182,7 +182,6 @@ const TemporalEntityScreen = ({ }) => {
       </ScrollView>
     </SafeAreaView>
   );
-
 };
 
 export default TemporalEntityScreen;
