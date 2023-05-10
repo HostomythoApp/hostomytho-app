@@ -11,29 +11,44 @@ const TemporalLinkGameScreen = () => {
   const [sentence, setSentence] = useState("");
   const [entities, setEntities] = useState<TemporalEntity[]>([]);
   const [temporalLinks, setTemporalLinks] = useState<TemporalLink[]>([]);
-  const upperEntities = entities.slice(0, Math.ceil(entities.length / 2));
-  const lowerEntities = entities.slice(Math.ceil(entities.length / 2));
   const sortedEntities = entities.sort((a, b) => a.startIndex - b.startIndex);
-
+  const [entitiesWithColors, setEntitiesWithColors] = useState<(TemporalEntity & { color: string })[]>([]);
+  const upperEntities = entitiesWithColors.slice(0, Math.ceil(entitiesWithColors.length / 2));
+  const lowerEntities = entitiesWithColors.slice(Math.ceil(entitiesWithColors.length / 2));
+  
   useEffect(() => {
+    const entitiesWithAssignedColors = data.sentences[3].temporalEntities.map((entity, index) => ({
+      ...entity,
+      color: colors[index % colors.length],
+    }));
+
     setEntities(data.sentences[3].temporalEntities);
     setSentence(data.sentences[3].content);
     setTemporalLinks(data.temporalLinks);
-    console.log(lowerEntities);
-
   });
+
+  useEffect(() => {
+    const entitiesWithAssignedColors = entities.map((entity, index) => ({
+      ...entity,
+      color: colors[index % colors.length],
+    }));
+
+    setEntitiesWithColors(entitiesWithAssignedColors);
+  }, [entities]);
+
 
   const nextSentence = () => {
     console.log("nextSentence");
   };
 
   const colors = [
-    "bg-yellow-300",
-    "bg-green-300",
-    "bg-blue-300",
-    "bg-indigo-300",
-    "bg-pink-300",
+    "bg-[#87CEFA]", // Jaune pastel
+    "bg-[#FFB6B9]", // Rose pastel
+    "bg-[#A2D9D3]", // Vert pastel
+    "bg-[#C3B1E1]", // Violet pastel
+    "bg-[#F5D5BA]", // Beige pastel
   ];
+  
 
   const splitSentenceIntoSegments = (
     sentence: string,
@@ -74,17 +89,19 @@ const TemporalLinkGameScreen = () => {
       <View style={tw("flex-row justify-end mb-2")}>
         <FunctionButton text={"Phrase suivante"} func={nextSentence} />
       </View>
-
+  
       <View style={tw("m-4 p-2 bg-gray-100 rounded flex-row flex-wrap mb-6")}>
         {sentenceSegments.map((segment, index) => (
           <Text
             key={index}
             style={[
               tw("text-lg italic"),
-              segment.isEntity
+              segment.isEntity &&
+              segment.entityIndex !== undefined &&
+              entitiesWithColors[segment.entityIndex]
                 ? tw(
-                  `${colors[index % colors.length]} px-1 py-0.5 rounded`
-                )
+                    `${entitiesWithColors[segment.entityIndex].color} px-1 py-0.5 rounded`
+                  )
                 : {},
             ]}
           >
@@ -92,12 +109,15 @@ const TemporalLinkGameScreen = () => {
           </Text>
         ))}
       </View>
-
+  
       <View style={tw("flex-row flex-wrap justify-center mb-12")}>
         {upperEntities.map((entity, index) => (
           <TouchableOpacity
             key={index}
-            style={[tw("m-2 p-2 py-4 bg-yellow-300"), myStyles.postIt]}
+            style={[
+              tw(`m-2 p-2 py-4 ${entity.color}`),
+              myStyles.postIt,
+            ]}
           >
             <Text style={tw("text-2xl font-HandleeRegular")}>
               {sentence.slice(entity.startIndex, entity.endIndex)}
@@ -105,24 +125,26 @@ const TemporalLinkGameScreen = () => {
           </TouchableOpacity>
         ))}
       </View>
-
-
+  
       <View style={tw("flex-row flex-wrap justify-center")}>
         {temporalLinks.map((link, index) => (
           <TouchableOpacity
             key={index}
-            style={[tw("m-2 p-2 py-2 bg-blue-300"), myStyles.postIt]}
+            style={[tw("m-2 p-2 py-2 bg-[#FFE680]"), myStyles.postIt]}
           >
             <Text style={tw("text-2xl font-HandleeRegular")}>{link.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
-
+  
       <View style={tw("flex-row flex-wrap justify-center mt-12")}>
         {lowerEntities.map((entity, index) => (
           <TouchableOpacity
             key={index}
-            style={[tw("m-2 p-2 py-4 bg-yellow-300"), myStyles.postIt]}
+            style={[
+              tw(`m-2 p-2 py-4 ${entity.color}`),
+              myStyles.postIt,
+            ]}
           >
             <Text style={tw("text-2xl font-HandleeRegular")}>
               {sentence.slice(entity.startIndex, entity.endIndex)}
@@ -130,10 +152,9 @@ const TemporalLinkGameScreen = () => {
           </TouchableOpacity>
         ))}
       </View>
-
-
     </View>
   );
+  
 };
 
 const myStyles = StyleSheet.create({

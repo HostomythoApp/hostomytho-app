@@ -161,23 +161,23 @@ const FAKE_DATA = {
       temporalEntities: [
         {
           id: 1,
-          startIndex: 75,
-          endIndex: 96,
-        },
-        {
-          id: 2,
-          startIndex: 123,
-          endIndex: 160,
-        },
-        {
-          id: 3,
           startIndex: 0,
           endIndex: 30,
         },
         {
-          id: 4,
+          id: 2,
           startIndex: 41,
           endIndex: 49,
+        },
+        {
+          id: 3,
+          startIndex: 75,
+          endIndex: 96,
+        },
+        {
+          id: 4,
+          startIndex: 123,
+          endIndex: 160,
         },
         {
           id: 5,
