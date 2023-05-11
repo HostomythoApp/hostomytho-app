@@ -3,6 +3,7 @@ module.exports = function (api) {
   return {
     presets: ["babel-preset-expo"],
     plugins: [
+      "react-native-reanimated/plugin",
       [
         "module-resolver",
         {
@@ -15,20 +16,20 @@ module.exports = function (api) {
             ".json",
             ".svg",
             ".png",
-            ".jpg"
+            ".jpg",
           ],
           alias: {
-            "images": "./src/assets/images",
-            "themes": "./src/assets/themes",
-            "components": "./src/components",
-            "const": "./src/const",
-            "data": "./src/data",
-            "hooks": "./src/hooks",
-            "navigation": "./src/navigation",
-            "screens": "./src/screens",
-            "tailwind": "./src/utils/tailwind",
-            "fonts": "./src/assets/themes/fonts",
-            "services": "./src/services",
+            images: "./src/assets/images",
+            themes: "./src/assets/themes",
+            components: "./src/components",
+            const: "./src/const",
+            data: "./src/data",
+            hooks: "./src/hooks",
+            navigation: "./src/navigation",
+            screens: "./src/screens",
+            tailwind: "./src/utils/tailwind",
+            fonts: "./src/assets/themes/fonts",
+            services: "./src/services",
           },
         },
       ],

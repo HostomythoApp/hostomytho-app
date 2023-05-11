@@ -40,8 +40,6 @@ const TemporalLinkGameScreen = () => {
 
 
   const nextSentence = () => {
-    console.log("nextSentence");
-
     incrementPoints(10);
   };
 

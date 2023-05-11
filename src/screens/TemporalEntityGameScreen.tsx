@@ -11,6 +11,7 @@ import data from "data/fakeUserData.js";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { TemporalEntity } from "models/TemporalEntity";
 import { Word } from "models/Word";
+import { useUser } from 'services/auth/UserContext';
 
 const colors = [
   "bg-yellow-300",
@@ -32,6 +33,7 @@ const TemporalEntityScreen = ({ }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
+  const { incrementPoints } = useUser();
 
   function shuffleArray(array: any) {
     const newArr = [...array];
@@ -157,6 +159,7 @@ const TemporalEntityScreen = ({ }) => {
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setTemporalEntities([]); // Réinitialiser le récapitulatif des entités
+      incrementPoints(5);
     }
   };
 

@@ -66,10 +66,11 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-    const incrementPoints = (points: number) => {
+  const incrementPoints = async (points: number) => {
     if (user) {
       const newUser = { ...user, points: user.points + points };
-      setUser(newUser);
+      await storeUser(newUser);
+      setUserState(newUser);
       // Mettre à jour l'utilisateur dans la base de données ou autre stockage persistant ici
     }
   };

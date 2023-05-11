@@ -6,6 +6,7 @@ import Swiper from "react-native-deck-swiper";
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
 import { Text as TextType } from "models/Text";
+import { useUser } from 'services/auth/UserContext';
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -18,6 +19,7 @@ const PlausibilityGameScreen = ({ }) => {
   const [expandedCards, setExpandedCards] = useState<boolean[]>(data.texts.map(() => false));
   const [displayedTexts, setDisplayedTexts] = useState<string[]>(data.texts.map(text => text.content.slice(0, 750) + (text.content.length > 750 ? "..." : "")));
   const [swiperKey, setSwiperKey] = useState(0);
+  const { incrementPoints } = useUser();
 
   useEffect(() => {
     setTexts(data.texts)
@@ -66,6 +68,7 @@ const PlausibilityGameScreen = ({ }) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
     setActiveModal(false);
+    incrementPoints(10);
   }, [texts]);
 
   const swipeRight = useCallback(async (cardIndex: number) => {
@@ -89,10 +92,12 @@ const PlausibilityGameScreen = ({ }) => {
             onSwipedLeft={(cardIndex) => {
               handleSwipe('left');
               swipeLeft(cardIndex);
+              incrementPoints(10);
             }}
             onSwipedRight={(cardIndex) => {
               handleSwipe('right');
               swipeRight(cardIndex);
+              incrementPoints(10);
             }}
             onSwipedAll={() => {
               onSwipedAll();
