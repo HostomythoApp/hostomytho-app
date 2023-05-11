@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { updateUser } from "services/api/user";
 
 interface User {
   id: number;
@@ -72,6 +73,9 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       await storeUser(newUser);
       setUserState(newUser);
       // Mettre à jour l'utilisateur dans la base de données ou autre stockage persistant ici
+      console.log(user.id, "    ",  user.points);
+      
+      updateUser(user.id, user.points);
     }
   };
 

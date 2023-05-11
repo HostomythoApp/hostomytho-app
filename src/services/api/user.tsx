@@ -25,3 +25,9 @@ export const signInUser = async (username: string, password: string) => {
     password,
   });
 };
+
+export const updateUser = async (id: number, points: number) => {
+  return await api.put(`/users/${id}`, {
+    points,
+  });
+};

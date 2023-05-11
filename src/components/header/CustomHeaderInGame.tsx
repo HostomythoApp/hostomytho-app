@@ -27,7 +27,7 @@ const CustomHeaderInGame = ({
   useEffect(() => {
     if (user?.points !== points.value) {
       points.value = user?.points || 0;
-      scale.value = withSpring(1.5, { overshootClamping: true }, () => {
+      scale.value = withSpring(1.2, { overshootClamping: true }, () => {
         scale.value = withSpring(1);
       });
     }

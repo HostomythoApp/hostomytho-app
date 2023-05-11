@@ -29,7 +29,8 @@ const ProfileScreen = (props: any) => {
 
     const currentPoints = user?.points || 0;
     const nextRewardPoints = 1000;
-    const pointsPercentage = (currentPoints / nextRewardPoints) * 100;
+    const pointsForProgress = currentPoints % nextRewardPoints;
+    const pointsPercentage = (pointsForProgress / nextRewardPoints) * 100;
 
     return (
         <ScrollView style={tw('flex-1 p-4')}>
@@ -51,7 +52,7 @@ const ProfileScreen = (props: any) => {
                         ></View>
                     </View>
                     <Text style={tw('text-xs mt-1')}>
-                        {currentPoints} / {nextRewardPoints} points
+                        {pointsForProgress} / {nextRewardPoints} points
                     </Text>
                 </View>
 
