@@ -8,6 +8,7 @@ import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
 import TemporalEntityScreen from "screens/TemporalEntityGameScreen";
+import ProfileSettingsScreen from "screens/ProfileSettingsScreen";
 import AchievementsScreen from "screens/AchievementsScreen";
 import RankingScreen from "screens/RankingScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
@@ -33,14 +34,19 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
+
+      <Stack.Screen name="Profile"
+        component={ProfileScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Profil" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="ProfileSettings"
+        component={ProfileSettingsScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Paramètre du profil" navigation={navigation} />,
+        })} />
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({
           header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Profile"
-        component={ProfileScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Profil" navigation={navigation} />,
         })} />
       <Stack.Screen name="Achievements"
         component={AchievementsScreen} options={({ navigation }) => ({
@@ -59,10 +65,6 @@ const StackNavigator = ({ }) => {
           header: () => <CustomHeaderInGame title="Trouver les entités et expressions temporelles" navigation={navigation} />,
         })} />
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Connected"
-        component={ProfileScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Mon profil" navigation={navigation} />,
-        })} />
       <Stack.Screen name="Login"
         component={SignInScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderEmpty title="Connexion" navigation={navigation} />,

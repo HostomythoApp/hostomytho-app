@@ -18,7 +18,7 @@ const PrimaryButton = ({
     <TouchableOpacity
       // @ts-ignore
       onPress={() => navigation.navigate(destination)}
-      style={tw("bg-secondary py-2 px-12 my-2 font-medium rounded-xl")}
+      style={tw("bg-blue-500 rounded mr-2 py-2 px-12 my-2 font-medium")}
     >
       <Text style={[tw("text-white text-center text-lg"), { cursor: 'pointer' }]}>{title}</Text>
     </TouchableOpacity>

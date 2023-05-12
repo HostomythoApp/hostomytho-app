@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/auth/AuthContext";
 import { RootStackNavigationProp } from "navigation/Types";
 import { User } from "models/User";
+import { useUser } from "services/auth/UserContext";
 
 const SignUpScreen = () => {
 
@@ -28,6 +29,7 @@ const SignUpScreen = () => {
     const [doctor, setDoctor] = useState('medecin');
     const navigation = useNavigation<RootStackNavigationProp<"Main">>();
     const { storeToken } = useAuth();
+    const { setUser } = useUser();
 
     const submit = () => {
         if (username.trim() === "" || password.trim() === "") {
@@ -46,7 +48,6 @@ const SignUpScreen = () => {
                         status: doctor,
                     };
                     signUpUser(newUser)
-                    // TODO gérer la mise en cache de l'utilisateur et du jwt
                         .then(async (response: any) => {
                             if (response.status === 200 || response.status === 201) {
                                 alert("Inscription réussie !");
@@ -55,6 +56,7 @@ const SignUpScreen = () => {
                                     navigation.navigate("Main");
                                 };
                                 const token = response.data.token;
+                                setUser(response.data.user);
                                 await handleSuccess(token);
                             } else {
                                 console.log(`Erreur lors de l'inscription : ${response.statusText}`);
@@ -70,9 +72,9 @@ const SignUpScreen = () => {
 
     const generatePseudo = () => {
         const detectiveNames = ["Sherbloque", "Hermule", "Thilip", "Fancy", "Colombe", "Adrianne",
-            "Maison", "Gris", "Chapardé", "Banor", "Masloy", "Médith", "Feur",];
+            "Maison", "Gris", "Chapardé", "Banor", "Masloy", "Médith", "Feur", "Broutarde", "Prevenche", "Violette", "Olive", "Rose"];
 
-        const keywords = ["le vaillant", "l'intrépide", "l'observeur", "le minutieux", "le pro", "le fou", "le poète"];
+        const keywords = ["le vaillant", "l'intrépide", "l'observeur", "le minutieux", "le pro", "le fou", "le poète", "le maladroit", "l'hyperactif"];
 
         const name = detectiveNames[Math.floor(Math.random() * detectiveNames.length)];
 

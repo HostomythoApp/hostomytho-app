@@ -4,6 +4,7 @@ import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/auth/withAuth';
 import { useUser } from 'services/auth/UserContext';
 import { FontAwesome5, FontAwesome, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icons';
+import PrimaryButton from "components/PrimaryButton";
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
@@ -109,13 +110,6 @@ const ProfileScreen = (props: any) => {
                     </View>
                 </View>
 
-                <Text style={tw(' text-base mb-1 my-2')}>
-                    {user?.email ? user.email : "Vous n'avez pas renseigné d'email"}
-                </Text>
-
-                <Text style={tw('text-base mb-2')}>
-                    {user?.status ? `Vous êtes ${user.status}` : "Aucun statut renseigné"}
-                </Text>
 
                 <View style={tw('flex-row items-center justify-center mt-4')}>
                     <TouchableOpacity
@@ -136,6 +130,8 @@ const ProfileScreen = (props: any) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
+
+                <PrimaryButton title="Paramètres du profil" destination="ProfileSettings" />
             </View>
         </ScrollView>
     );
