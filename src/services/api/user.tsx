@@ -31,3 +31,12 @@ export const updateUser = async (id: number, points: number) => {
     points,
   });
 };
+
+// Récupération du rang de l'utilisateur et des joueurs les plus proches de lui au score
+export const getUserRanking = async (id: number): Promise<any> => {
+  return await api.get(`/users/getUserRanking/${id}`);
+};
+
+export const getUsersOrderedByPoints = async (): Promise<User[]> => {
+  return await api.get(`/users/getUsersOrderedByPoints`);
+};

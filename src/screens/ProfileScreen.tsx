@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, View, ScrollView } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/auth/withAuth';
 import { useUser } from 'services/auth/UserContext';
 import { FontAwesome5, FontAwesome, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 import PrimaryButton from "components/PrimaryButton";
+import { getUserRanking } from 'services/api/user';
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user } = useUser();
+
+    const [ranking, setRanking] = useState([]);
 
     const achievements = [
         { id: 1, title: 'Compléter 10 parties.', picto: <MaterialCommunityIcons name="numeric-10-box-multiple" size={24} color="mediumseagreen" /> },
@@ -20,11 +23,11 @@ const ProfileScreen = (props: any) => {
         { id: 2, title: 'Annotations créées', count: 15 },
     ];
 
-    const ranking = [
-        { position: 31, username: 'Utilisateur31', points: 540 },
-        { position: 32, username: user?.username, points: 530 },
-        { position: 33, username: 'Utilisateur33', points: 520 },
-    ];
+    // const ranking = [
+    //     { position: 31, username: 'Utilisateur31', points: 540 },
+    //     { position: 32, username: user?.username, points: 530 },
+    //     { position: 33, username: 'Utilisateur33', points: 520 },
+    // ];
 
     const { navigation } = props;
 
@@ -32,6 +35,17 @@ const ProfileScreen = (props: any) => {
     const nextRewardPoints = 1000;
     const pointsForProgress = currentPoints % nextRewardPoints;
     const pointsPercentage = (pointsForProgress / nextRewardPoints) * 100;
+
+    useEffect(() => {
+        const fetchRanking = async () => {
+            if (user?.id) {
+                const result = await getUserRanking(user.id);
+                setRanking(result.data);
+            }
+        };
+
+        fetchRanking();
+    }, [user]);
 
     return (
         <ScrollView style={tw('flex-1 p-4')}>
@@ -61,18 +75,18 @@ const ProfileScreen = (props: any) => {
                     <Text style={tw('text-xl font-bold mb-2 pl-2')}>Classement</Text>
                     <Text style={tw('pl-2')}
                     >. . .</Text>
-                    {ranking.map((rank) => (
+                    {ranking.map((rank: any) => (
                         <View
                             key={rank.position}
                             style={[
                                 tw('p-2 flex-row items-center justify-between '),
-                                rank.position === 32 && tw('bg-blue-100'),
+                                rank.user.id === user?.id && tw('bg-blue-100'),
                             ]}
                         >
                             <Text>
-                                {rank.position}. {rank.username}
+                                {rank.position}. {rank.user.username}
                             </Text>
-                            <Text>{rank.points} points</Text>
+                            <Text>{rank.user.points} points</Text>
                         </View>
                     ))}
                     <Text style={tw('pl-2')}
