@@ -6,17 +6,17 @@ import { useUser } from 'services/auth/UserContext';
 import { FontAwesome5, FontAwesome, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 import PrimaryButton from "components/PrimaryButton";
 import { getUserRankingRange } from 'services/api/user';
+import { getUserAchievements } from 'services/api/achievements';
+import { Achievement } from 'models/Achievement';
+import AchievementItem from "components/AchievementItem";
+import AchievementIcon from 'components/AchievementIcon';
+
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user } = useUser();
 
     const [ranking, setRanking] = useState([]);
-
-    const achievements = [
-        { id: 1, title: 'Compléter 10 parties.', picto: <MaterialCommunityIcons name="numeric-10-box-multiple" size={24} color="mediumseagreen" /> },
-        { id: 2, title: 'Atteindre 100 points de réputation.', picto: <SimpleLineIcons name="badge" size={24} color="#CD7F32" /> },
-    ];
 
     const stats = [
         { id: 1, title: 'Textes validés', count: 5 },
@@ -30,10 +30,16 @@ const ProfileScreen = (props: any) => {
     const pointsForProgress = currentPoints % nextRewardPoints;
     const pointsPercentage = (pointsForProgress / nextRewardPoints) * 100;
 
+    const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
+
+
+
     useEffect(() => {
         const fetchRanking = async () => {
             if (user?.id) {
                 const result = await getUserRankingRange(user.id);
+                const achievementsData = await getUserAchievements(user.id);
+                setUserAchievements(achievementsData);
                 const allUsers = result.data;
                 setRanking(allUsers);
             }
@@ -93,17 +99,34 @@ const ProfileScreen = (props: any) => {
                 </View>
 
                 <View style={tw('flex-row justify-between my-6')}>
+
                     <View style={tw('flex-1 mr-2')}>
-                        <Text style={tw('text-xl font-bold mb-2')}>Hauts faits</Text>
-                        {achievements.map((achievement) => (
-                            <Text style={tw('flex my-1')}
-                                key={achievement.id}>{achievement.picto}  {achievement.title}</Text>
-                        ))}
-                        <Text>. . .</Text>
+                        <Text style={tw('text-lg font-bold mb-2')}>Hauts faits</Text>
+                        {userAchievements.length > 0 ? (
+                            userAchievements.slice(0, 2).map((achievement) => (
+                                <View style={tw("flex-row items-center p-4 bg-white rounded-lg mb-3")} key={achievement.id}>
+                                    <AchievementIcon achievement={achievement} />
+                                    <View style={tw("ml-3")}>
+                                        <Text style={tw("font-bold text-lg")}>
+                                            {achievement.name}
+                                        </Text>
+                                        <Text style={tw("text-gray-600 text-xs")}>
+                                            {achievement.description}
+                                        </Text>
+                                    </View>
+                                </View>
+                            ))
+                        ) : (
+                            <Text style={tw('text-gray-600')}>Aucun haut fait pour le moment</Text>
+                        )}
+
+                            <Text style={tw('text-center text-lg')}
+                            >. . .</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Achievements')}>
-                            <Text style={tw('text-blue-500 mt-1')}>Tout afficher</Text>
+                            <Text style={tw('text-blue-500 mt-3 text-center')}>Afficher tous les hauts faits</Text>
                         </TouchableOpacity>
                     </View>
+
                     <View style={tw('border-r border-gray-300 h-full mx-2')} />
                     <View style={tw('flex-1 ml-2')}>
                         <Text style={tw('text-xl font-bold mb-2')}>Statistiques</Text>

@@ -72,8 +72,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const newUser = { ...user, points: user.points + points };
       await storeUser(newUser);
       setUserState(newUser);
-      console.log(user.id, "    ",  user.points);
-      updateUser(user.id, user.points);
+      updateUser(user.id, newUser.points);
     }
   };
 

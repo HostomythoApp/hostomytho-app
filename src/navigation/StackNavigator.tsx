@@ -35,6 +35,11 @@ const StackNavigator = ({ }) => {
       >
       </Stack.Group>
 
+      <Stack.Screen name="Main"
+        component={MainScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
+        })} />
       <Stack.Screen name="Profile"
         component={ProfileScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Profil" navigation={navigation} />,
@@ -42,11 +47,6 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="ProfileSettings"
         component={ProfileSettingsScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Paramètre du profil" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Main"
-        component={MainScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
         })} />
       <Stack.Screen name="Achievements"
         component={AchievementsScreen} options={({ navigation }) => ({

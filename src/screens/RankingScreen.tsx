@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, ScrollView } from "react-native
 import { useTailwind } from "tailwind-rn";
 import { getUsersOrderedByPoints } from 'services/api/user';
 import { User } from "models/User";
+import { useUser } from 'services/auth/UserContext';
 
 const RankingScreen = ({ }) => {
     const tw = useTailwind();
@@ -10,6 +11,8 @@ const RankingScreen = ({ }) => {
     const [page, setPage] = useState(1);
     const limit = 20;
     const [hasMoreUsers, setHasMoreUsers] = useState(true);
+    const { user } = useUser();
+    const currentUserId = user?.id;
 
     useEffect(() => {
         fetchUsers();
@@ -33,7 +36,8 @@ const RankingScreen = ({ }) => {
             key={item.id}
             style={[
                 tw('p-2 flex-row items-center justify-between'),
-                index % 2 === 0 ? tw('bg-blue-100') : tw('bg-white'),
+                item.id === currentUserId ? tw('bg-blue-300') :
+                    index % 2 === 0 ? tw('bg-blue-100') : tw('bg-white'),
             ]}
         >
             <Text>
@@ -58,7 +62,8 @@ const RankingScreen = ({ }) => {
                     </TouchableOpacity>
                 )}
                 {hasMoreUsers && (
-                    <TouchableOpacity onPress={() => setPage(page + 1)}>
+                    <TouchableOpacity onPress={() => setPage(page + 1)} style={tw('text-right')}
+                    >
                         <Text style={tw('text-blue-500 mt-2')}>Page suivante</Text>
                     </TouchableOpacity>
                 )}
