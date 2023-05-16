@@ -5,7 +5,7 @@ import withAuth from 'services/auth/withAuth';
 import { useUser } from 'services/auth/UserContext';
 import { FontAwesome5, FontAwesome, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 import PrimaryButton from "components/PrimaryButton";
-import { getUserRanking } from 'services/api/user';
+import { getUserRankingRange } from 'services/api/user';
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
@@ -23,12 +23,6 @@ const ProfileScreen = (props: any) => {
         { id: 2, title: 'Annotations créées', count: 15 },
     ];
 
-    // const ranking = [
-    //     { position: 31, username: 'Utilisateur31', points: 540 },
-    //     { position: 32, username: user?.username, points: 530 },
-    //     { position: 33, username: 'Utilisateur33', points: 520 },
-    // ];
-
     const { navigation } = props;
 
     const currentPoints = user?.points || 0;
@@ -39,8 +33,9 @@ const ProfileScreen = (props: any) => {
     useEffect(() => {
         const fetchRanking = async () => {
             if (user?.id) {
-                const result = await getUserRanking(user.id);
-                setRanking(result.data);
+                const result = await getUserRankingRange(user.id);
+                const allUsers = result.data;
+                setRanking(allUsers);
             }
         };
 
@@ -77,18 +72,19 @@ const ProfileScreen = (props: any) => {
                     >. . .</Text>
                     {ranking.map((rank: any) => (
                         <View
-                            key={rank.position}
+                            key={rank.id}
                             style={[
-                                tw('p-2 flex-row items-center justify-between '),
-                                rank.user.id === user?.id && tw('bg-blue-100'),
+                                tw('p-2 flex-row items-center justify-between'),
+                                rank.id === user?.id && tw('bg-blue-100'),
                             ]}
                         >
                             <Text>
-                                {rank.position}. {rank.user.username}
+                                {rank.ranking}. {rank.username}
                             </Text>
-                            <Text>{rank.user.points} points</Text>
+                            <Text>{rank.points} points</Text>
                         </View>
                     ))}
+
                     <Text style={tw('pl-2')}
                     >. . .</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Ranking')}>

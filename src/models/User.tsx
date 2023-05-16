@@ -8,5 +8,6 @@ export interface User {
     trust_index: number;
     theme: string;
     notifications_enabled: boolean;
+    ranking?: number;
   }
   
