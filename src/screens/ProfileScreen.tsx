@@ -32,8 +32,6 @@ const ProfileScreen = (props: any) => {
 
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
 
-
-
     useEffect(() => {
         const fetchRanking = async () => {
             if (user?.id) {
@@ -72,8 +70,8 @@ const ProfileScreen = (props: any) => {
                     </Text>
                 </View>
 
-                <View style={tw(' bg-white mt-8 mb-2 py-2')}>
-                    <Text style={tw('text-xl font-bold mb-2 pl-2')}>Classement</Text>
+                <Text style={tw('text-xl font-bold mt-8 mb-2 pl-2')}>Classement</Text>
+                <View style={tw('bg-white mb-2 py-2')}>
                     <Text style={tw('pl-2')}
                     >. . .</Text>
                     {ranking.map((rank: any) => (
@@ -94,7 +92,7 @@ const ProfileScreen = (props: any) => {
                     <Text style={tw('pl-2')}
                     >. . .</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Ranking')}>
-                        <Text style={tw('text-blue-500 mt-2')}>Voir le classement complet</Text>
+                        <Text style={tw('text-blue-500 mt-2 text-center')}>Voir le classement complet</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -120,8 +118,8 @@ const ProfileScreen = (props: any) => {
                             <Text style={tw('text-gray-600')}>Aucun haut fait pour le moment</Text>
                         )}
 
-                            <Text style={tw('text-center text-lg')}
-                            >. . .</Text>
+                        <Text style={tw('text-center text-lg')}
+                        >. . .</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Achievements')}>
                             <Text style={tw('text-blue-500 mt-3 text-center')}>Afficher tous les hauts faits</Text>
                         </TouchableOpacity>
@@ -130,21 +128,25 @@ const ProfileScreen = (props: any) => {
                     <View style={tw('border-r border-gray-300 h-full mx-2')} />
                     <View style={tw('flex-1 ml-2')}>
                         <Text style={tw('text-xl font-bold mb-2')}>Statistiques</Text>
-                        {stats.map((stat) => (
-                            <Text style={tw('my-1')}
-                                key={stat.id}>
-                                {stat.title}: {stat.count}
-                            </Text>
-                        ))}
-                        <Text>. . .</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('Stats')}>
-                            <Text style={tw('text-blue-500 mt-1')}>Tout afficher</Text>
-                        </TouchableOpacity>
+                        <View style={tw(" p-4 bg-white rounded-lg")}>
+                            {stats.map((stat) => (
+                                <Text style={tw('my-2')}
+                                    key={stat.id}>
+                                    {stat.title}: {stat.count}
+                                </Text>
+                            ))}
+                            <Text style={tw('ml-1 mt-1')}
+                            >. . .</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('Stats')}>
+                                <Text style={tw('text-blue-500 mt-2 text-center')}>Tout afficher</Text>
+                            </TouchableOpacity>
+                        </View>
+
                     </View>
                 </View>
 
 
-                <View style={tw('flex-row items-center justify-center mt-4')}>
+                <View style={tw('flex-row items-center justify-center my-4')}>
                     <TouchableOpacity
                         style={tw('bg-blue-500 px-4 py-2 rounded mr-2')}
                         onPress={() => navigation.navigate('Contacts')}

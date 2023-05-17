@@ -95,7 +95,7 @@ const StackNavigator = ({ }) => {
         })} />
       <Stack.Screen name="Ranking" component={RankingScreen}
         options={({ navigation }) => ({
-          header: () => <CustomHeader title="Thème" navigation={navigation} />,
+          header: () => <CustomHeader title="Classements" navigation={navigation} />,
         })} />
 
 

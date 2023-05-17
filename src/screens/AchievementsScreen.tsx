@@ -28,7 +28,7 @@ const AchievementsScreen = () => {
             <FlatList
                 data={achievements}
                 renderItem={({ item }) => (
-                    <View style={tw("flex-row items-center p-4 bg-white rounded-lg mb-4")}>
+                    <View style={[tw("flex-row items-center p-4 bg-white rounded-lg mb-4"), { opacity: item.userHasAchievement ? 1 : 0.3 }]}>
                         <AchievementIcon achievement={item} />
                         <View style={tw("ml-4")}>
                             <Text style={tw("font-bold text-lg")}>

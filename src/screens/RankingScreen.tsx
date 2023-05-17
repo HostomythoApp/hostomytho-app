@@ -50,7 +50,7 @@ const RankingScreen = ({ }) => {
     return (
         <ScrollView style={tw('flex-1 p-4')}>
             <View style={tw("mx-auto min-w-[540px]")}>
-                <Text style={tw('text-xl mb-4')}>Classements</Text>
+                <Text style={tw('text-xl mb-4')}>Classement général</Text>
                 <FlatList
                     data={users}
                     renderItem={renderItem}
