@@ -17,6 +17,7 @@ import PrivacyPolicyScreen from "screens/settingsScreens/PrivacyPolicyScreen";
 import SettingsScreen from "screens/SettingsScreen";
 import ThemeScreen from "screens/settingsScreens/ThemeScreen";
 import TemporalLinkGameScreen from "screens/TemporalLinkGameScreen";
+import TypeSentenceGameScreen from "screens/TypeSentenceGameScreen";
 import CustomHeader from "components/header/CustomHeader";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
@@ -63,6 +64,10 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="TemporalEntityScreen"
         component={TemporalEntityScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderInGame title="Trouver les entités et expressions temporelles" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="TypeSentenceGameScreen"
+        component={TypeSentenceGameScreen} options={({ navigation }) => ({
+          header: () => <CustomHeaderInGame title="Trouver le type des phrases" navigation={navigation} />,
         })} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Login"
