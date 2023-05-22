@@ -67,7 +67,7 @@ const StackNavigator = ({ }) => {
         })} />
       <Stack.Screen name="TypeSentenceGameScreen"
         component={TypeSentenceGameScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Trouver le type des phrases" navigation={navigation} />,
+          header: () => <CustomHeaderInGame title="Spécifier le type des phrases" navigation={navigation} />,
         })} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Login"
