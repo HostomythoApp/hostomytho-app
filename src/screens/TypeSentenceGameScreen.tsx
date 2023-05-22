@@ -57,7 +57,6 @@ const TypeSentenceGameScreen = ({ }) => {
   }, []);
 
   const onWordPress = (wordIndex: number, sentenceIndex: number) => {
-    // TODO changer couleur au premier clic et surligner les espaces
     const newSentences = sentences.map((sentence, idx) => {
       if (idx === sentenceIndex) {
         const newWords = sentence.content.map((word: Word, idx: number) => {
@@ -67,10 +66,12 @@ const TypeSentenceGameScreen = ({ }) => {
             }
           } else if (endWordIndex === null) { // Si c'est le deuxième clic
             if (idx >= Math.min(startWordIndex, wordIndex) && idx <= Math.max(startWordIndex, wordIndex)) {
-              return { ...word, isSelected: !word.isSelected, entityId: word.isSelected ? null : temporalEntities.length };
+              return { ...word, isSelected: true, entityId: word.isSelected ? null : temporalEntities.length };
             }
           } else { // Si on a déjà sélectionné une plage de mots
-            if (word.isSelected) { // Si le mot est sélectionné, le dé-sélectionner
+            if (idx === wordIndex) { // Si c'est le début d'une nouvelle sélection
+              return { ...word, isSelected: true, entityId: null };
+            } else { // Si c'est un mot précédemment sélectionné
               return { ...word, isSelected: false, entityId: null };
             }
           }
@@ -87,7 +88,7 @@ const TypeSentenceGameScreen = ({ }) => {
       setStartWordIndex(wordIndex);
     } else if (endWordIndex === null) {
       setEndWordIndex(wordIndex);
-    } else {
+    } else { // Si on a déjà sélectionné une plage de mots, commencer une nouvelle sélection
       setStartWordIndex(wordIndex);
       setEndWordIndex(null);
     }
@@ -98,39 +99,28 @@ const TypeSentenceGameScreen = ({ }) => {
     setSelectedButton(type);
     const newSentences = sentences.map((sentence, index) => {
       if (index === currentIndex) {
-        return { ...sentence, selectedType: type };
+        if (type === 'none') { // Si le bouton 'Aucun' est appuyé
+          const newWords = sentence.content.map(word => {
+            return { ...word, isSelected: false, entityId: null }; // Désélectionner tous les mots
+          });
+          return { ...sentence, content: newWords, selectedType: type };
+        } else {
+          return { ...sentence, selectedType: type };
+        }
       }
       return sentence;
     });
     setSentences(newSentences);
-  }
 
-  const addTemporalEntity = () => {
-    const selectedWords = sentences[currentIndex].content.filter(word => word.isSelected && word.entityId === temporalEntities.length);
-    const entityText = selectedWords.map(word => word.text).join(' ');
-
-    if (entityText) {
-      // @ts-ignore
-      setTemporalEntities([...temporalEntities, { id: temporalEntities.length, content: entityText }]);
-      setColorIndex((colorIndex + 1) % colors.length);
+    // Réinitialiser la sélection de mot
+    if (type === 'none') {
+      setStartWordIndex(null);
+      setEndWordIndex(null);
     }
   };
 
-  const removeTemporalEntity = (entityId: number) => {
-    setTemporalEntities(temporalEntities.filter(entity => entity.id !== entityId));
 
-    const newSentences = sentences.map(sentence => {
-      const newWords = sentence.content.map(word => {
-        if (word.entityId === entityId) {
-          return { ...word, isSelected: false, entityId: null };
-        }
-        return word;
-      });
-      return { ...sentence, content: newWords };
-    });
-
-    setSentences(newSentences);
-  };
+  const sentenceHasSelectedWord = sentences[currentIndex]?.content.some(word => word.isSelected);
 
   const renderSentence = (sentence: Sentence, index: number) => {
     if (typeof sentence === "undefined") {
@@ -141,12 +131,14 @@ const TypeSentenceGameScreen = ({ }) => {
 
         <View style={tw("flex-row justify-end items-center mb-4 mr-2")}>
           <TouchableOpacity
-            style={tw("bg-blue-500 py-2 px-4 rounded-lg flex-row items-center")}
+            style={tw(`py-2 px-4 rounded-lg flex-row items-center ${selectedButton !== null && (sentenceHasSelectedWord || selectedButton === 'none') ? 'bg-blue-500' : 'bg-gray-300'}`)}
             onPress={onNextCard}
+            disabled={selectedButton === null}
           >
             <Text style={tw('font-primary mr-2 text-white text-base')}>Phrase suivante</Text>
             <MaterialIcons name="navigate-next" size={28} color="white" />
           </TouchableOpacity>
+
         </View>
 
         <View
@@ -180,18 +172,11 @@ const TypeSentenceGameScreen = ({ }) => {
     );
   };
 
-  const renderTemporalEntity = (entity: any) => (
-    <View key={entity.id} style={tw(`flex-row items-center m-1 `)}>
-      <Text style={tw(`text-lg mr-2 ${colors[entity.id % colors.length]} font-primary`)}>{entity.content}</Text>
-      <TouchableOpacity onPress={() => removeTemporalEntity(entity.id)}>
-        <Entypo name="cross" size={24} color="red" />
-      </TouchableOpacity>
-    </View>
-  );
-
   const onNextCard = () => {
-    if (currentIndex < sentences.length - 1) {
+    const sentenceHasSelectedWord = sentences[currentIndex].content.some(word => word.isSelected);
+    if (currentIndex < sentences.length - 1 && selectedButton !== null && (sentenceHasSelectedWord || selectedButton === 'none')) {
       setCurrentIndex(currentIndex + 1);
+      setSelectedButton(null);
       setTemporalEntities([]);
       incrementPoints(5);
     }
@@ -207,30 +192,32 @@ const TypeSentenceGameScreen = ({ }) => {
 
         <View style={tw("flex-row justify-around mt-4")}>
           <TouchableOpacity
-            style={tw(`py-2 px-4 rounded-lg ${selectedButton === 'hypothèse' ? 'bg-blue-500' : 'bg-blue-300'}`)}
+            style={tw(`py-2 px-4 rounded-lg border border-blue-500 ${selectedButton === 'hypothèse' ? 'bg-blue-500' : 'bg-white'}`)}
             onPress={() => onButtonPress('hypothèse')}
           >
-            <Text style={tw("text-white font-primary text-lg")}>Hypothèse</Text>
+            <Text style={tw(`${selectedButton === 'hypothèse' ? 'text-white' : 'text-blue-500'} font-primary text-lg`)}>Hypothèse</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={tw(`py-2 px-4 rounded-lg ${selectedButton === 'condition' ? 'bg-blue-500' : 'bg-blue-300'}`)}
+            style={tw(`py-2 px-4 rounded-lg border border-blue-500 ${selectedButton === 'condition' ? 'bg-blue-500' : 'bg-white'}`)}
             onPress={() => onButtonPress('condition')}
           >
-            <Text style={tw("text-white font-primary text-lg")}>Condition</Text>
+            <Text style={tw(`${selectedButton === 'condition' ? 'text-white' : 'text-blue-500'} font-primary text-lg`)}>Condition</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={tw(`py-2 px-4 rounded-lg ${selectedButton === 'négation' ? 'bg-blue-500' : 'bg-blue-300'}`)}
+            style={tw(`py-2 px-4 rounded-lg border border-blue-500 ${selectedButton === 'négation' ? 'bg-blue-500' : 'bg-white'}`)}
             onPress={() => onButtonPress('négation')}
           >
-            <Text style={tw("text-white font-primary text-lg")}>Négation</Text>
+            <Text style={tw(`${selectedButton === 'négation' ? 'text-white' : 'text-blue-500'} font-primary text-lg`)}>Négation</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={tw(`py-2 px-4 rounded-lg border border-blue-500 ${selectedButton === 'none' ? 'bg-blue-500' : 'bg-white'}`)}
+            onPress={() => onButtonPress('none')}
+          >
+            <Text style={tw(`${selectedButton === 'none' ? 'text-white' : 'text-blue-500'} font-primary text-lg`)}>Aucun</Text>
+          </TouchableOpacity>
+
         </View>
 
-        <View style={tw("flex-row mb-4 mt-8 justify-center")}>
-          <View style={tw("mx-4")}>
-            {temporalEntities.map(entity => renderTemporalEntity(entity))}
-          </View>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
