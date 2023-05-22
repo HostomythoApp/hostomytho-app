@@ -17,6 +17,7 @@ export type RootStackParamList = {
     PrivacyPolicy: undefined;
     Theme: undefined;
     Ranking: undefined;
+    AdminHome: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

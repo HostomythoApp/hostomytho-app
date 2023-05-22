@@ -9,6 +9,8 @@ import SignUpScreen from "screens/authScreens/SignUpScreen";
 import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
 import TemporalEntityScreen from "screens/TemporalEntityGameScreen";
 import ProfileSettingsScreen from "screens/ProfileSettingsScreen";
+import AdminLoginScreen from "screens/AdminScreens/AdminLoginScreen";
+import AdminHomeScreen from "screens/AdminScreens/AdminHomeScreen";
 import AchievementsScreen from "screens/AchievementsScreen";
 import RankingScreen from "screens/RankingScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
@@ -36,6 +38,10 @@ const StackNavigator = ({ }) => {
       >
       </Stack.Group>
 
+      <Stack.Screen name="AdminLogin"
+        component={AdminLoginScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Connexion admin" navigation={navigation} />,
+        })} />
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({
@@ -48,6 +54,10 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="ProfileSettings"
         component={ProfileSettingsScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Paramètre du profil" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="AdminHome"
+        component={AdminHomeScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Espace administrateur" navigation={navigation} />,
         })} />
       <Stack.Screen name="Achievements"
         component={AchievementsScreen} options={({ navigation }) => ({
