@@ -2,13 +2,12 @@ import React from "react";
 import { View, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
 
-const HelpScreen = ({}) => {
+const ExportDataSreen = ({}) => {
   const tw = useTailwind();
 
   return (
-    <Text>En dev</Text>
+    <Text>Exporter les données de l'application</Text>
   );
 };
 
-export default HelpScreen;
-
+export default ExportDataSreen;

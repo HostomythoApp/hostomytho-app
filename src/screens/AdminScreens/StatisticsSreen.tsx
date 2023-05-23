@@ -2,13 +2,12 @@ import React from "react";
 import { View, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
 
-const HelpScreen = ({}) => {
+const StatisticsSreen = ({}) => {
   const tw = useTailwind();
 
   return (
-    <Text>En dev</Text>
+    <Text>Page de statistiques</Text>
   );
 };
 
-export default HelpScreen;
-
+export default StatisticsSreen;

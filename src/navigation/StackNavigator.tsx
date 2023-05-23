@@ -11,6 +11,12 @@ import TemporalEntityScreen from "screens/TemporalEntityGameScreen";
 import ProfileSettingsScreen from "screens/ProfileSettingsScreen";
 import AdminLoginScreen from "screens/AdminScreens/AdminLoginScreen";
 import AdminHomeScreen from "screens/AdminScreens/AdminHomeScreen";
+import EditRewardsSreen from "screens/AdminScreens/EditRewardsSreen";
+import ExportDataSreen from "screens/AdminScreens/ExportDataSreen";
+import ManageTextsScreen from "screens/AdminScreens/ManageTextsScreen";
+import ManageUsersSreen from "screens/AdminScreens/ManageUsersSreen";
+import StatisticsSreen from "screens/AdminScreens/StatisticsSreen";
+import UserMessagingScreen from "screens/AdminScreens/UserMessagingScreen";
 import AchievementsScreen from "screens/AchievementsScreen";
 import RankingScreen from "screens/RankingScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
@@ -37,10 +43,42 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
-
+      <Stack.Screen name="AdminHome"
+        component={AdminHomeScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Espace administrateur" navigation={navigation} />,
+        })} />
       <Stack.Screen name="AdminLogin"
         component={AdminLoginScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Connexion admin" navigation={navigation} />,
+        })} />
+      <Stack.Screen name="EditRewards"
+        component={EditRewardsSreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Gérer les récompenses" navigation={navigation} />,
+        })} />
+
+      <Stack.Screen name="ExportData"
+        component={ExportDataSreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Exporter des données" navigation={navigation} />,
+        })} />
+
+      <Stack.Screen name="ManageTexts"
+        component={ManageTextsScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Gestion des textes" navigation={navigation} />,
+        })} />
+
+      <Stack.Screen name="ManageUsers"
+        component={ManageUsersSreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Gestion des utilisateurs" navigation={navigation} />,
+        })} />
+
+      <Stack.Screen name="Statistics"
+        component={StatisticsSreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Statistiques générales de l'application" navigation={navigation} />,
+        })} />
+
+      <Stack.Screen name="UserMessaging"
+        component={UserMessagingScreen} options={({ navigation }) => ({
+          header: () => <CustomHeader title="Contact avec les utilisateurs" navigation={navigation} />,
         })} />
       <Stack.Screen name="Main"
         component={MainScreen}
@@ -54,10 +92,6 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="ProfileSettings"
         component={ProfileSettingsScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Paramètre du profil" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="AdminHome"
-        component={AdminHomeScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Espace administrateur" navigation={navigation} />,
         })} />
       <Stack.Screen name="Achievements"
         component={AchievementsScreen} options={({ navigation }) => ({
