@@ -1,6 +1,7 @@
 export interface Text {
-  content: string;
-  origin: string;
-  plausibility: number;
   id: number;
+  content: string;
+  id_theme?: number;
+  plausibility?: number;
+  origin: string;
 }
