@@ -11,28 +11,32 @@ import * as SplashScreen from "expo-splash-screen";
 import { useLoadFonts } from "fonts/useLoadFonts";
 import { AuthProvider } from "services/auth/AuthContext";
 import { UserProvider } from "services/auth/UserContext";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const { fontsLoaded, onLayoutRootView } = useLoadFonts();
+  const queryClient = new QueryClient();
 
   if (!fontsLoaded) {
     return null;
   }
 
   return (
-      <UserProvider>
-    <AuthProvider>
-        <View style={styles.container} onLayout={onLayoutRootView}>
-          <NavigationContainer>
-            <TailwindProvider utilities={utilities}>
-              <StackNavigator />
-            </TailwindProvider>
-          </NavigationContainer>
-        </View>
-    </AuthProvider>
-      </UserProvider>
+    <UserProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <View style={styles.container} onLayout={onLayoutRootView}>
+            <NavigationContainer>
+              <TailwindProvider utilities={utilities}>
+                <StackNavigator />
+              </TailwindProvider>
+            </NavigationContainer>
+          </View>
+        </QueryClientProvider>
+      </AuthProvider>
+    </UserProvider>
   );
 }
 
