@@ -15,6 +15,15 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 SplashScreen.preventAutoHideAsync();
 
+const linking = {
+  prefixes: ['http://localhost:19006', 'localhost:19006://'],
+  config: {
+    screens: {
+      Admin: 'admin',
+    },
+  },
+};
+
 export default function App() {
   const { fontsLoaded, onLayoutRootView } = useLoadFonts();
   const queryClient = new QueryClient();
@@ -28,7 +37,7 @@ export default function App() {
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <View style={styles.container} onLayout={onLayoutRootView}>
-            <NavigationContainer>
+            <NavigationContainer linking={linking}>
               <TailwindProvider utilities={utilities}>
                 <StackNavigator />
               </TailwindProvider>

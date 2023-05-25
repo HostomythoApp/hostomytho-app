@@ -29,6 +29,7 @@ import TypeSentenceGameScreen from "screens/TypeSentenceGameScreen";
 import CustomHeader from "components/header/CustomHeader";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
+import AdminNavigator from "./AdminNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,21 @@ const StackNavigator = ({ }) => {
         })}
       >
       </Stack.Group>
+
+      <Stack.Screen name="Main"
+        component={MainScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
+        })} />
+
+      <Stack.Screen name="Admin"
+        options={{
+          headerShown: false
+        }}
+      >
+        {(props) => <AdminNavigator {...props} />}
+      </Stack.Screen>
+
       <Stack.Screen name="AdminHome"
         component={AdminHomeScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Espace administrateur" navigation={navigation} />,
@@ -79,11 +95,6 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="UserMessaging"
         component={UserMessagingScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Contact avec les utilisateurs" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Main"
-        component={MainScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
         })} />
       <Stack.Screen name="Profile"
         component={ProfileScreen} options={({ navigation }) => ({
