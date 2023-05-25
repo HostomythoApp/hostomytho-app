@@ -7,6 +7,7 @@ import { getAllTexts, deleteText, updateText, createText } from 'services/api/te
 import { getAllThemes } from 'services/api/themes';
 import { Text as TextModel } from 'models/Text';
 import { Theme as ThemeModel } from 'models/Theme';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ManageTextsScreen() {
     const tw = useTailwind();
@@ -18,15 +19,54 @@ export default function ManageTextsScreen() {
     const [plausibility, setPlausibility] = useState<number | undefined>(undefined);
     const [origin, setOrigin] = useState('');
     const [id_theme, setId_theme] = useState<number | undefined>(undefined);
+    const [isCreating, setIsCreating] = useState(false);
 
+
+    // // // Création texte
+    const createMutation = useMutation(createText, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('texts');
+            setIsCreating(false);
+            setContent('');
+            setPlausibility(undefined);
+            setOrigin('');
+            setId_theme(undefined);
+        },
+    });
+
+    const handleCreate = () => {
+        setIsCreating(true);
+        setContent('');
+        setPlausibility(undefined);
+        setOrigin('');
+        setId_theme(undefined);
+    };
+
+    const handleCreateSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (isCreating) {
+            createMutation.mutate({
+                content,
+                id_theme,
+                plausibility,
+                origin,
+            });
+        }
+    };
+
+    // // // Suppression
     const deleteMutation = useMutation(deleteText, {
         onSuccess: () => {
             queryClient.invalidateQueries('texts');
         },
     });
 
-    const updateMutation = useMutation(updateText, {
+    const handleDelete = (id: number) => {
+        deleteMutation.mutate(id);
+    };
 
+    // // // Modification
+    const updateMutation = useMutation(updateText, {
         onSuccess: () => {
             queryClient.invalidateQueries('texts');
             setSelectedText(null);
@@ -52,10 +92,6 @@ export default function ManageTextsScreen() {
         }
     };
 
-    const handleDelete = (id: number) => {
-        deleteMutation.mutate(id);
-    };
-
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (selectedText) {
@@ -78,11 +114,52 @@ export default function ManageTextsScreen() {
     return (
         <ScrollView style={tw('p-5')}>
             <TouchableOpacity
-                onPress={() => handleUpdate(null)}
-                style={tw('px-4 py-2 mb-5 bg-blue-500 text-white rounded-md')}
+                onPress={handleCreate}
+                style={tw('px-4 py-2 mb-5 bg-blue-500 text-white rounded-md flex-row items-center justify-center')}
             >
-                <Text style={tw('text-white')}>Ajouter un nouveau texte</Text>
+                <Ionicons name="add-outline" size={24} color="white" />
+                <Text style={tw('text-white ml-2')}>Ajouter un nouveau texte</Text>
             </TouchableOpacity>
+            {isCreating ? (
+                <View style={tw('border p-4 mb-4 rounded')}>
+                    <TextInput
+                        style={tw('border p-2 mb-4')}
+                        onChangeText={setContent}
+                        value={content}
+                        placeholder="Contenu"
+                    />
+                    <TextInput
+                        style={tw('border p-2 mb-4')}
+                        onChangeText={value => setPlausibility(Number(value))}
+                        value={plausibility !== undefined ? String(plausibility) : ''}
+                        placeholder="Plausibilité"
+                        keyboardType="numeric"
+                    />
+                    <TextInput
+                        style={tw('border p-2 mb-4')}
+                        onChangeText={setOrigin}
+                        value={origin}
+                        placeholder="Origine"
+                    />
+                    {/* TODO mettre un select picker avec les différentes origines possibles */}
+                    <Picker
+                        selectedValue={id_theme}
+                        onValueChange={(id_theme: number) => setId_theme(id_theme)}
+                        style={tw('border p-2 mb-4')}
+                    >
+                        {themes && themes.data.map((theme: ThemeModel) => (
+                            <Picker.Item key={theme.id} label={theme.name} value={theme.id} />
+                        ))}
+                    </Picker>
+                    <TouchableOpacity
+                        // @ts-ignore
+                        onPress={handleCreateSubmit}
+                        style={tw('px-4 py-2 bg-blue-500 text-white rounded-md')}
+                    >
+                        <Text style={tw('text-white')}>Créer</Text>
+                    </TouchableOpacity>
+                </View>
+            ) : null}
             {/* @ts-ignore */}
             {texts && texts.data.map((text: TextModel) => (
                 <View key={text.id} style={tw('border p-4 mb-4 rounded')}>
@@ -107,6 +184,8 @@ export default function ManageTextsScreen() {
                                 value={origin}
                                 placeholder="Origine"
                             />
+                            {/* TODO mettre un select picker avec les différentes origines possibles */}
+
                             <Picker
                                 selectedValue={id_theme}
                                 onValueChange={(id_theme: number) => setId_theme(id_theme)}
