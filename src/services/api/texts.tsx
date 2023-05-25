@@ -2,11 +2,7 @@ import { Text } from "models/Text";
 import api from "./index";
 
 export const getAllTexts = async (): Promise<Text[]> => {
-  console.log("function getAllText");
-  
   try {
-    console.log(await api.get("/texts"));
-    
     return await api.get("/texts");
   } catch (error) {
     console.error(error);
@@ -41,9 +37,10 @@ export const createText = async (text: Partial<Text>) => {
   }
 };
 
-export const updateText = async (id: number, text: Partial<Text>) => {
+export const updateText = async (updatedText: { text: Partial<Text> }) => {
+  const { text } = updatedText;
   try {
-    return await api.put(`/texts/${id}`, text);
+    return await api.put(`/texts/${text.id}`, text);
   } catch (error) {
     console.error(error);
     throw error;

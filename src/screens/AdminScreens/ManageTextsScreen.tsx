@@ -13,17 +13,11 @@ export default function ManageTextsScreen() {
     const { isLoading, error, data: texts } = useQuery('texts', getAllTexts);
     const { data: themes } = useQuery('themes', getAllThemes);
     const [selectedText, setSelectedText] = useState<TextModel | null>(null);
-    const [content, setContent] = useState(selectedText ? selectedText.content : '');
-    const [plausibility, setPlausibility] = useState(selectedText ? selectedText.plausibility : 0);
-    const [origin, setOrigin] = useState(selectedText ? selectedText.origin : '');
-    const [id_theme, setId_theme] = useState(selectedText ? selectedText.id_theme : '');
+    const [content, setContent] = useState('');
+    const [plausibility, setPlausibility] = useState(0);
+    const [origin, setOrigin] = useState('');
+    const [id_theme, setId_theme] = useState(0);
 
-    useEffect(() => {
-        if (selectedText) {
-            setSelectedText({ ...selectedText, content, plausibility, origin, id_theme });
-        }
-    }, [content, plausibility, origin, id_theme]);
-    
     const deleteMutation = useMutation(deleteText, {
         onSuccess: () => {
             queryClient.invalidateQueries('texts');
@@ -31,35 +25,47 @@ export default function ManageTextsScreen() {
     });
 
     const updateMutation = useMutation(updateText, {
+
         onSuccess: () => {
-            console.log("updateMutation onSuccess");
             queryClient.invalidateQueries('texts');
+            setSelectedText(null);
+            setContent('');
+            setPlausibility(0);
+            setOrigin('');
+            setId_theme(0);
         },
     });
 
-    const handleUpdate = async (text: TextModel) => {
-        console.log("handleUpdate de ", text);
-
+    const handleUpdate = (text: TextModel) => {
         setSelectedText(text);
+        setContent(text.content);
+        setPlausibility(text.plausibility);
+        setOrigin(text.origin);
+        setId_theme(text.id_theme);
     };
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = (id: number) => {
         deleteMutation.mutate(id);
     };
 
-    const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Update the text here
         if (selectedText) {
-            console.log(selectedText, " text changé");
-
-            updateMutation.mutate({ ...selectedText });
-            setSelectedText(null);
+            updateMutation.mutate({
+                text: {
+                    id: selectedText.id,
+                    content,
+                    plausibility,
+                    origin,
+                    id_theme,
+                }
+            });
         }
     };
 
     if (isLoading) return <View><Text>Chargement...</Text></View>;
     if (error) return <View><Text>Une erreur s'est produite: {error.message}</Text></View>;
+
 
     return (
         <ScrollView style={tw('p-5')}>
@@ -72,63 +78,65 @@ export default function ManageTextsScreen() {
 
             {texts && texts.data.map((text: TextModel) => (
                 <View key={text.id} style={tw('border p-4 mb-4 rounded')}>
-                    <Text style={tw('mb-2')}>Contenu: {text.content}</Text>
-                    <Text style={tw('mb-2')}>Plausibilité: {text.plausibility}</Text>
-                    <Text style={tw('mb-2')}>Origine: {text.origin}</Text>
-                    <Text style={tw('mb-2')}>Theme: {themes && themes.data.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
-                    <View style={tw('flex-row justify-between')}>
-                        <Button
-                            onPress={() => handleUpdate(text)}
-                            title="Modifier"
-                            color="#007BFF"
-                        />
-                        <Button
-                            onPress={() => handleDelete(text.id)}
-                            title="Supprimer"
-                            color="#dc3545"
-                        />
-                    </View>
+                    {selectedText && selectedText.id === text.id ? (
+                        <View>
+                            <TextInput
+                                style={tw('border p-2 mb-4')}
+                                onChangeText={setContent}
+                                value={content}
+                                placeholder="Contenu"
+                            />
+                            <TextInput
+                                style={tw('border p-2 mb-4')}
+                                onChangeText={value => setPlausibility(Number(value))}
+                                value={String(plausibility)}
+                                placeholder="Plausibilité"
+                                keyboardType="numeric"
+                            />
+                            <TextInput
+                                style={tw('border p-2 mb-4')}
+                                onChangeText={setOrigin}
+                                value={origin}
+                                placeholder="Origine"
+                            />
+                            <Picker
+                                selectedValue={id_theme}
+                                onValueChange={(id_theme: number) => setId_theme(id_theme)}
+                                style={tw('border p-2 mb-4')}
+                            >
+                                {themes && themes.data.map((theme: ThemeModel) => (
+                                    <Picker.Item key={theme.id} label={theme.name} value={theme.id} />
+                                ))}
+                            </Picker>
+                            <TouchableOpacity
+                                onPress={handleSubmit}
+                                style={tw('px-4 py-2 bg-blue-500 text-white rounded-md')}
+                            >
+                                <Text style={tw('text-white')}>Enregistrer</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <>
+                            <Text style={tw('mb-2')}>Contenu: {text.content}</Text>
+                            <Text style={tw('mb-2')}>Plausibilité: {text.plausibility}</Text>
+                            <Text style={tw('mb-2')}>Origine: {text.origin}</Text>
+                            <Text style={tw('mb-2')}>Theme: {themes && themes.data.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
+                            <View style={tw('flex-row justify-between')}>
+                                <Button
+                                    onPress={() => handleUpdate(text)}
+                                    title="Modifier"
+                                    color="#007BFF"
+                                />
+                                <Button
+                                    onPress={() => handleDelete(text.id)}
+                                    title="Supprimer"
+                                    color="#dc3545"
+                                />
+                            </View>
+                        </>
+                    )}
                 </View>
             ))}
-
-            {selectedText && (
-                <View style={tw('mt-5')}>
-                    <TextInput
-                        style={tw('border p-2 mb-4')}
-                        onChangeText={setContent}
-                        value={content}
-                        placeholder="Contenu"
-                    />
-                    <TextInput
-                        style={tw('border p-2 mb-4')}
-                        onChangeText={setPlausibility}
-                        value={String(plausibility)}
-                        placeholder="Plausibilité"
-                        keyboardType="numeric"
-                    />
-                    <TextInput
-                        style={tw('border p-2 mb-4')}
-                        onChangeText={setOrigin}
-                        value={origin}
-                        placeholder="Origine"
-                    />
-                    <Picker
-                        selectedValue={id_theme}
-                        onValueChange={(itemValue) => setId_theme(itemValue)}
-                        style={tw('border p-2 mb-4')}
-                    >
-                        {themes && themes.data.map((theme: ThemeModel) => (
-                            <Picker.Item key={theme.id} label={theme.name} value={theme.id} />
-                        ))}
-                    </Picker>
-                    <TouchableOpacity
-                        onPress={handleSubmit}
-                        style={tw('px-4 py-2 bg-blue-500 text-white rounded-md')}
-                    >
-                        <Text style={tw('text-white')}>Enregistrer</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
         </ScrollView>
     );
 }
