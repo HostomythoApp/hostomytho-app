@@ -1,7 +1,7 @@
 import { Theme } from "models/Theme";
 import api from "./index";
 
-export const getAllThemes = async (): Promise<Theme[]> => {
+export const getAllThemes = async (): Promise<Theme[] | any> => {
   try {
     return await api.get("/themes");
   } catch (error) {

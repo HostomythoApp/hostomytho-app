@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Button } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Button } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { useTailwind } from 'tailwind-rn';
 import { getAllTexts, deleteText, updateText, createText } from 'services/api/texts';
 import { getAllThemes } from 'services/api/themes';
@@ -14,9 +15,9 @@ export default function ManageTextsScreen() {
     const { data: themes } = useQuery('themes', getAllThemes);
     const [selectedText, setSelectedText] = useState<TextModel | null>(null);
     const [content, setContent] = useState('');
-    const [plausibility, setPlausibility] = useState(0);
+    const [plausibility, setPlausibility] = useState<number | undefined>(undefined);
     const [origin, setOrigin] = useState('');
-    const [id_theme, setId_theme] = useState(0);
+    const [id_theme, setId_theme] = useState<number | undefined>(undefined);
 
     const deleteMutation = useMutation(deleteText, {
         onSuccess: () => {
@@ -36,12 +37,19 @@ export default function ManageTextsScreen() {
         },
     });
 
-    const handleUpdate = (text: TextModel) => {
-        setSelectedText(text);
-        setContent(text.content);
-        setPlausibility(text.plausibility);
-        setOrigin(text.origin);
-        setId_theme(text.id_theme);
+    const handleUpdate = (text: TextModel | null) => {
+        if (text) {
+            setSelectedText(text);
+            setContent(text.content);
+            setPlausibility(text.plausibility);
+            setOrigin(text.origin);
+            setId_theme(text.id_theme);
+        } else {
+            setContent('');
+            setPlausibility(undefined);
+            setOrigin('');
+            setId_theme(undefined);
+        }
     };
 
     const handleDelete = (id: number) => {
@@ -64,7 +72,7 @@ export default function ManageTextsScreen() {
     };
 
     if (isLoading) return <View><Text>Chargement...</Text></View>;
-    if (error) return <View><Text>Une erreur s'est produite: {error.message}</Text></View>;
+    if (error) return <View><Text>Une erreur s'est produite.</Text></View>;
 
 
     return (
@@ -75,7 +83,7 @@ export default function ManageTextsScreen() {
             >
                 <Text style={tw('text-white')}>Ajouter un nouveau texte</Text>
             </TouchableOpacity>
-
+            {/* @ts-ignore */}
             {texts && texts.data.map((text: TextModel) => (
                 <View key={text.id} style={tw('border p-4 mb-4 rounded')}>
                     {selectedText && selectedText.id === text.id ? (
@@ -109,6 +117,7 @@ export default function ManageTextsScreen() {
                                 ))}
                             </Picker>
                             <TouchableOpacity
+                                // @ts-ignore
                                 onPress={handleSubmit}
                                 style={tw('px-4 py-2 bg-blue-500 text-white rounded-md')}
                             >
@@ -117,10 +126,11 @@ export default function ManageTextsScreen() {
                         </View>
                     ) : (
                         <>
-                            <Text style={tw('mb-2')}>Contenu: {text.content}</Text>
-                            <Text style={tw('mb-2')}>Plausibilité: {text.plausibility}</Text>
-                            <Text style={tw('mb-2')}>Origine: {text.origin}</Text>
-                            <Text style={tw('mb-2')}>Theme: {themes && themes.data.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Texte id:</Text> {text.id}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Contenu:</Text> {text.content}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Plausibilité:</Text>  {text.plausibility}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Origine:</Text>  {text.origin}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Theme:</Text>  {themes && themes.data.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
                             <View style={tw('flex-row justify-between')}>
                                 <Button
                                     onPress={() => handleUpdate(text)}
