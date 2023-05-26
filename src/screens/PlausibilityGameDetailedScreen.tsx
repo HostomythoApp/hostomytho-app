@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState, FC } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import Swiper from "react-native-deck-swiper";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useUser } from 'services/auth/UserContext';
 import { Word } from "models/Word";
@@ -18,50 +17,9 @@ interface ModalPlausibilityGameDetailedProps {
   isVisible: boolean;
   closeModal: () => void;
   setIsModalVisible: (isVisible: boolean) => void;
+  setHighlightEnabled: (highlight: boolean) => void;
 }
 
-const ModalPlausibilityGameDetailed: FC<ModalPlausibilityGameDetailedProps> = ({ isVisible, closeModal, setIsModalVisible }) => {
-  const tw = useTailwind();
-
-  return (
-    <Modal
-      isVisible={isVisible}
-      onBackdropPress={() => setIsModalVisible(false)}
-      backdropColor="transparent"
-      style={tw("items-center justify-center")}
-    >
-      <View style={[tw("bg-white rounded-lg p-4 flex-row mb-14"), {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 3,
-      }]}>
-        <>
-          <TouchableOpacity
-            style={tw("bg-orange-100 p-3 mr-3 rounded-lg")}
-            onPress={() => {
-              setIsModalVisible(false);
-              closeModal();
-            }}
-          >
-            <Text style={tw(" text-orange-500 font-semibold")}>Préciser la faute</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={tw("bg-green-200 p-3 rounded-lg")}
-            onPress={() => {
-              setIsModalVisible(false);
-              closeModal();
-            }}
-          >
-            <Text style={tw(" text-green-700 font-semibold")}>Aller au texte suivant</Text>
-          </TouchableOpacity>
-        </>
-      </View>
-    </Modal>
-  );
-};
 
 const PlausibilityGameDetailedScreen = ({ }) => {
   const tw = useTailwind();
@@ -73,6 +31,59 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [highlightEnabled, setHighlightEnabled] = useState(false);
+
+
+
+  const ModalPlausibilityGameDetailed: FC<ModalPlausibilityGameDetailedProps> = ({ isVisible, closeModal, setIsModalVisible, setHighlightEnabled }) => {
+    const tw = useTailwind();
+
+    return (
+      <Modal
+        isVisible={isVisible}
+        onBackdropPress={() => setIsModalVisible(false)}
+        backdropColor="transparent"
+        style={tw("items-center justify-center")}
+      >
+        <View style={[tw("bg-white rounded-lg p-4 flex-row mb-14"), {
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 3,
+        }]}>
+          <>
+            <TouchableOpacity
+              style={tw("bg-orange-100 p-3 mr-3 rounded-lg")}
+              onPress={() => {
+                setIsModalVisible(false);
+                setHighlightEnabled(true);
+                closeModal();
+              }}
+            >
+              <Text style={tw(" text-orange-500 font-semibold")}>Préciser la faute</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={tw("bg-green-200 p-3 rounded-lg")}
+              onPress={() => {
+                setIsModalVisible(false);
+                if (currentIndex + 1 < texts.length) {
+                  setCurrentIndex(currentIndex + 1);
+                  incrementPoints(5)
+                } else {
+                  // TODO afficher qu'il n'y a plus de texte
+                }
+                closeModal();
+              }}
+            >
+              <Text style={tw(" text-green-700 font-semibold")}>Aller au texte suivant</Text>
+            </TouchableOpacity>
+          </>
+        </View>
+      </Modal>
+    );
+  };
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -149,7 +160,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   };
 
 
-
+  // TODO Séparer dans d'autres fichiers pour plus de visibilité
   const renderText = (text: SplitText, index: number) => {
     if (typeof text === "undefined") {
       return null;
@@ -191,7 +202,6 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("flex-grow")}>
-
         {/* Cards */}
         <View style={tw("flex-1 -mt-6")}>
           {renderText(texts[currentIndex], currentIndex)}
@@ -202,7 +212,12 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         isVisible={isModalVisible}
         closeModal={() => setIsModalVisible(false)}
         setIsModalVisible={setIsModalVisible}
+        setHighlightEnabled={setHighlightEnabled} // Pass setHighlightEnabled as prop
       />
+
+
+      {/* TODO faire des boutons pour préciser l'erreur si cohérence médical (fièvre à 40°), ou cohérence linguistique (répétition, manque un mot)  */}
+      {/* Les faire apparaître quand on clique sur "préciser la faute" */}
 
       {/* Boutons de plausibilité */}
       <View style={tw('flex flex-row justify-evenly mb-4')}>
@@ -246,5 +261,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
     </SafeAreaView>
   );
 };
+
+
 
 export default PlausibilityGameDetailedScreen;
