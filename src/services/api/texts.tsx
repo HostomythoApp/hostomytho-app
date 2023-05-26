@@ -1,9 +1,11 @@
 import { Text } from "models/Text";
 import api from "./index";
+import { ReloadInstructions } from "react-native/Libraries/NewAppScreen";
 
 export const getAllTexts = async (): Promise<Text[]> => {
   try {
-    return await api.get("/texts");
+    const response = await api.get(`/texts`);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -12,7 +14,8 @@ export const getAllTexts = async (): Promise<Text[]> => {
 
 export const getTextById = async (id: number): Promise<Text[]> => {
   try {
-    return await api.get(`/texts/${id}`);
+    const response = await api.get(`/texts/${id}`);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -21,7 +24,8 @@ export const getTextById = async (id: number): Promise<Text[]> => {
 
 export const getTextsByTheme = async (theme: string): Promise<Text[]> => {
   try {
-    return await api.get(`/texts/theme/${theme}`);
+    const response = await api.get(`/texts/theme/${theme}`);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -30,7 +34,8 @@ export const getTextsByTheme = async (theme: string): Promise<Text[]> => {
 
 export const createText = async (text: Partial<Text>) => {
   try {
-    return await api.post("/texts", text);
+    const response = await api.post("/texts", text);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -40,7 +45,8 @@ export const createText = async (text: Partial<Text>) => {
 export const updateText = async (updatedText: { text: Partial<Text> }) => {
   const { text } = updatedText;
   try {
-    return await api.put(`/texts/${text.id}`, text);
+    const response = await api.put(`/texts/${text.id}`, text);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -49,7 +55,8 @@ export const updateText = async (updatedText: { text: Partial<Text> }) => {
 
 export const deleteText = async (id: number) => {
   try {
-    return await api.delete(`/texts/${id}`);
+    const response = await api.delete(`/texts/${id}`);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -58,7 +65,8 @@ export const deleteText = async (id: number) => {
 
 export const getTextsByOrigin = async (origin: string): Promise<Text[]> => {
   try {
-    return await api.get(`/texts/origin/${origin}`);
+    const response = await api.get(`/texts/origin/${origin}`);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;

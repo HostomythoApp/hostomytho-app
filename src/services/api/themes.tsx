@@ -3,7 +3,8 @@ import api from "./index";
 
 export const getAllThemes = async (): Promise<Theme[] | any> => {
   try {
-    return await api.get("/themes");
+    const response = await api.get("/themes");
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;

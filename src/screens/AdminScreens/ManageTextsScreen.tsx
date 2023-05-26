@@ -23,6 +23,7 @@ export default function ManageTextsScreen() {
 
 
     // // // Création texte
+    // TODO Problème à création
     const createMutation = useMutation(createText, {
         onSuccess: () => {
             queryClient.invalidateQueries('texts');
@@ -123,6 +124,8 @@ export default function ManageTextsScreen() {
             {isCreating ? (
                 <View style={tw('border p-4 mb-4 rounded')}>
                     <TextInput
+                        multiline
+                        numberOfLines={6}
                         style={tw('border p-2 mb-4')}
                         onChangeText={setContent}
                         value={content}
@@ -147,7 +150,7 @@ export default function ManageTextsScreen() {
                         onValueChange={(id_theme: number) => setId_theme(id_theme)}
                         style={tw('border p-2 mb-4')}
                     >
-                        {themes && themes.data.map((theme: ThemeModel) => (
+                        {themes && themes.map((theme: ThemeModel) => (
                             <Picker.Item key={theme.id} label={theme.name} value={theme.id} />
                         ))}
                     </Picker>
@@ -161,11 +164,13 @@ export default function ManageTextsScreen() {
                 </View>
             ) : null}
             {/* @ts-ignore */}
-            {texts && texts.data.map((text: TextModel) => (
+            {texts && texts.map((text: TextModel) => (
                 <View key={text.id} style={tw('border p-4 mb-4 rounded')}>
                     {selectedText && selectedText.id === text.id ? (
                         <View>
                             <TextInput
+                                multiline
+                                numberOfLines={6}
                                 style={tw('border p-2 mb-4')}
                                 onChangeText={setContent}
                                 value={content}
@@ -191,7 +196,7 @@ export default function ManageTextsScreen() {
                                 onValueChange={(id_theme: number) => setId_theme(id_theme)}
                                 style={tw('border p-2 mb-4')}
                             >
-                                {themes && themes.data.map((theme: ThemeModel) => (
+                                {themes && themes.map((theme: ThemeModel) => (
                                     <Picker.Item key={theme.id} label={theme.name} value={theme.id} />
                                 ))}
                             </Picker>
@@ -209,7 +214,7 @@ export default function ManageTextsScreen() {
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Contenu:</Text> {text.content}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Plausibilité:</Text>  {text.plausibility}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Origine:</Text>  {text.origin}</Text>
-                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Theme:</Text>  {themes && themes.data.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Theme:</Text>  {themes && themes.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
                             <View style={tw('flex-row justify-between')}>
                                 <Button
                                     onPress={() => handleUpdate(text)}

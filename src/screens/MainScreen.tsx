@@ -18,9 +18,10 @@ const MainScreen = ({ }) => {
                 <MainTitle title={"Bienvenue sur HostoMytho"} />
                 <View>
                     <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
-                    <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntityScreen" />
-                    <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGameScreen" />
-                    <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGameScreen" />
+                    <PrimaryButton title="Plausibilité des textes détaillée" destination="PlausibilityGameDetailed" />
+                    <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
+                    <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
+                    <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" />
                     <PrimaryButton title="Connexion" destination="Login" />
                     <PrimaryButton title="Inscription" destination="SignUpScreen" />
                     <PrimaryButton title="Profil" destination="Profile" />
@@ -31,9 +32,10 @@ const MainScreen = ({ }) => {
             <MainTitle title={"Bonjour " + user?.username} />
             <View>
                 <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
-                <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntityScreen" />
-                <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGameScreen" />
-                <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGameScreen" />
+                <PrimaryButton title="Plausibilité des textes détaillée" destination="PlausibilityGameDetailed" />
+                <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
+                <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
+                <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" />
                 <PrimaryButton title="Profil" destination="Profile" />
                 <PrimaryButton title="Paramètres" destination="Settings" />
                 <LogoutButton />
