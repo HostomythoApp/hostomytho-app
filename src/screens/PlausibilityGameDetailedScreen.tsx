@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, FC } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import Swiper from "react-native-deck-swiper";
@@ -7,25 +7,72 @@ import { useUser } from 'services/auth/UserContext';
 import { Word } from "models/Word";
 import { TemporalEntity } from "models/TemporalEntity";
 import { getAllTexts } from "services/api/texts";
+import Modal from 'react-native-modal';
 
 export interface SplitText {
   id: number;
   content: Word[];
   selectedType: string | null;
 }
+interface ModalPlausibilityGameDetailedProps {
+  isVisible: boolean;
+  closeModal: () => void;
+  setIsModalVisible: (isVisible: boolean) => void;
+}
+
+const ModalPlausibilityGameDetailed: FC<ModalPlausibilityGameDetailedProps> = ({ isVisible, closeModal, setIsModalVisible }) => {
+  const tw = useTailwind();
+
+  return (
+    <Modal
+      isVisible={isVisible}
+      onBackdropPress={() => setIsModalVisible(false)}
+      backdropColor="transparent"
+      style={tw("items-center justify-center")}
+    >
+      <View style={[tw("bg-white rounded-lg p-4 flex-row mb-14"), {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 3,
+      }]}>
+        <>
+          <TouchableOpacity
+            style={tw("bg-orange-100 p-3 mr-3 rounded-lg")}
+            onPress={() => {
+              setIsModalVisible(false);
+              closeModal();
+            }}
+          >
+            <Text style={tw(" text-orange-500 font-semibold")}>Préciser la faute</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={tw("bg-green-200 p-3 rounded-lg")}
+            onPress={() => {
+              setIsModalVisible(false);
+              closeModal();
+            }}
+          >
+            <Text style={tw(" text-green-700 font-semibold")}>Aller au texte suivant</Text>
+          </TouchableOpacity>
+        </>
+      </View>
+    </Modal>
+  );
+};
 
 const PlausibilityGameDetailedScreen = ({ }) => {
   const tw = useTailwind();
-  const swipeRef = useRef<Swiper<any>>(null);
   const [texts, setTexts] = useState<SplitText[]>([]);
   const [activeModal, setActiveModal] = useState(false);
   const { incrementPoints } = useUser();
   const [startWordIndex, setStartWordIndex] = useState<number | null>(null); // Nouvel état pour le début de la sélection
   const [endWordIndex, setEndWordIndex] = useState<number | null>(null); // Nouvel état pour la fin de la sélection
-  const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -102,6 +149,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   };
 
 
+
   const renderText = (text: SplitText, index: number) => {
     if (typeof text === "undefined") {
       return null;
@@ -150,75 +198,53 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         </View>
       </ScrollView>
 
+      <ModalPlausibilityGameDetailed
+        isVisible={isModalVisible}
+        closeModal={() => setIsModalVisible(false)}
+        setIsModalVisible={setIsModalVisible}
+      />
+
       {/* Boutons de plausibilité */}
       <View style={tw('flex flex-row justify-evenly mb-4')}>
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
           onPress={async () => {
-            setShowModal(true);
+            setIsModalVisible(true);
           }} >
           <Entypo name="cross" size={32} color="red" />
         </TouchableOpacity>
 
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
           onPress={async () => {
-            setShowModal(true);
+            setIsModalVisible(true);
           }} >
           <Entypo name="flag" size={28} color="orange" />
         </TouchableOpacity>
 
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
           onPress={() => {
-            setShowModal(true);
+            setIsModalVisible(true);
           }}  >
           <AntDesign name="question" size={30} color="orange" />
         </TouchableOpacity>
 
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
           onPress={async () => {
-            setShowModal(true);
+            setIsModalVisible(true);
           }} >
           <Ionicons name="checkmark" size={24} color="#48d1cc" />
         </TouchableOpacity>
 
         <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
           onPress={async () => {
-            setShowModal(true);
+            setIsModalVisible(true);
           }} >
           <Ionicons name="checkmark-done-sharp" size={24} color="green" />
         </TouchableOpacity>
       </View>
 
-      {
-        showModal &&
-        <View style={tw("absolute inset-0 flex items-center justify-center bg-black bg-opacity-50")}>
-        <View style={tw("bg-white rounded-xl p-8")}>
-          <Text style={tw("text-2xl mb-4")}>Voulez-vous préciser où est la faute ?</Text>
-          <View style={tw("flex flex-row justify-evenly")}>
-            <TouchableOpacity
-              style={tw("bg-blue-500 p-2 rounded-md")}
-              onPress={() => {
-                // ici, vous pouvez ajouter la logique pour aller au texte suivant
-                setShowModal(false);
-              }}
-            >
-              <Text style={tw("text-white")}>Aller au texte suivant</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={tw("bg-green-500 p-2 rounded-md")}
-              onPress={() => {
-                // ici, vous pouvez ajouter la logique pour préciser où est la faute
-                setShowModal(false);
-              }}
-            >
-              <Text style={tw("text-white")}>Préciser la faute</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    }
 
-  </SafeAreaView>
-);
+    </SafeAreaView>
+  );
 };
 
 export default PlausibilityGameDetailedScreen;
