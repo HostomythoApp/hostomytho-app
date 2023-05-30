@@ -135,14 +135,14 @@ export default function ManageTextsScreen() {
                         style={tw('border p-2 mb-4')}
                         onChangeText={value => setPlausibility(Number(value))}
                         value={plausibility !== undefined ? String(plausibility) : ''}
-                        placeholder="Plausibilité"
+                        placeholder="Plausibilité (0 par défaut)"
                         keyboardType="numeric"
                     />
                     <TextInput
                         style={tw('border p-2 mb-4')}
                         onChangeText={setOrigin}
                         value={origin}
-                        placeholder="Origine"
+                        placeholder='Origine'
                     />
                     {/* TODO mettre un select picker avec les différentes origines possibles */}
                     <Picker
@@ -212,9 +212,9 @@ export default function ManageTextsScreen() {
                         <>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Texte id:</Text> {text.id}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Contenu:</Text> {text.content}</Text>
-                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Plausibilité:</Text>  {text.plausibility}</Text>
-                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Origine:</Text>  {text.origin}</Text>
-                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Theme:</Text>  {themes && themes.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Plausibilité: </Text>{text.plausibility}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Origine:</Text> {text.origin}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Theme:</Text> {themes && themes.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
                             <View style={tw('flex-row justify-between')}>
                                 <Button
                                     onPress={() => handleUpdate(text)}

@@ -3,5 +3,5 @@ export interface Text {
   content: string;
   id_theme?: number;
   plausibility?: number;
-  origin: string;
+  origin?: string;
 }
