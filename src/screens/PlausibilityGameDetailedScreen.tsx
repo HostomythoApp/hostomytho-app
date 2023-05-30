@@ -24,7 +24,6 @@ interface ModalPlausibilityGameDetailedProps {
 const PlausibilityGameDetailedScreen = ({ }) => {
   const tw = useTailwind();
   const [texts, setTexts] = useState<SplitText[]>([]);
-  const [activeModal, setActiveModal] = useState(false);
   const { incrementPoints } = useUser();
   const [startWordIndex, setStartWordIndex] = useState<number | null>(null); // Nouvel état pour le début de la sélection
   const [endWordIndex, setEndWordIndex] = useState<number | null>(null); // Nouvel état pour la fin de la sélection
@@ -95,7 +94,17 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         const response = await getAllTexts();
         const shuffledTexts = shuffleArray(response);
         const newtexts = shuffledTexts.slice(0, 10).map((text) => {
-          const words = text.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, entityId: null }));
+          const words = text.content.split(' ').map((word: string) => { 
+            // Ajouter un marqueur de fin de ligne à chaque saut de ligne
+            if (word.includes("\n")) {
+              return [
+                { text: word.replace("\n", ""), isSelected: false, entityId: null },
+                { text: "<EOL>", isSelected: false, entityId: null } // Marqueur de fin de ligne
+              ];
+            } else {
+              return { text: word, isSelected: false, entityId: null };
+            }
+          }).flat();
           return { ...text, content: words };
         });
 
@@ -187,17 +196,24 @@ const PlausibilityGameDetailedScreen = ({ }) => {
           ]}
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-            {text.content.map((word: any, idx: number) => (
-              <TouchableOpacity
-                key={idx}
-                onPress={() => onWordPress(idx, index)}
-                style={tw(
-                  `m-0 p-[2px] ${word.isSelected ? "bg-yellow-300" : "bg-transparent"}`
-                )}
-              >
-                <Text style={tw("text-2xl font-HandleeRegular")}>{word.text + " "}</Text>
-              </TouchableOpacity>
-            ))}
+            {text.content.map((word: any, idx: number) => {
+              if (word.text === "<EOL>") {
+                // Ajouter un élément de remplissage à la fin de la ligne
+                return <View style={{ flexGrow: 1 }} />;
+              } else {
+                return (
+                  <TouchableOpacity
+                    key={idx}
+                    onPress={() => onWordPress(idx, index)}
+                    style={tw(
+                      `m-0 p-[2px] ${word.isSelected ? "bg-yellow-300" : "bg-transparent"}`
+                    )}
+                  >
+                    <Text style={tw("text-2xl font-HandleeRegular")}>{word.text + " "}</Text>
+                  </TouchableOpacity>
+                );
+              }
+            })}
           </View>
         </View>
       </SafeAreaView>
@@ -217,7 +233,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         isVisible={isModalVisible}
         closeModal={() => setIsModalVisible(false)}
         setIsModalVisible={setIsModalVisible}
-        setHighlightEnabled={setHighlightEnabled} // Pass setHighlightEnabled as prop
+        setHighlightEnabled={setHighlightEnabled}
       />
 
       {errorSpecifying ? (

@@ -17,7 +17,7 @@ export default function ManageTextsScreen() {
     const [selectedText, setSelectedText] = useState<TextModel | null>(null);
     const [content, setContent] = useState('');
     const [plausibility, setPlausibility] = useState<number | undefined>(undefined);
-    const [origin, setOrigin] = useState('');
+    const [origin, setOrigin] = useState<string | undefined>(undefined);
     const [id_theme, setId_theme] = useState<number | undefined>(undefined);
     const [isCreating, setIsCreating] = useState(false);
 
