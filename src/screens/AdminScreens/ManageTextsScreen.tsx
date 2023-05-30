@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Button } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Button, Switch } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useTailwind } from 'tailwind-rn';
 import { getAllTexts, deleteText, updateText, createText } from 'services/api/texts';
@@ -20,6 +20,7 @@ export default function ManageTextsScreen() {
     const [origin, setOrigin] = useState<string | undefined>('Généré');
     const [id_theme, setId_theme] = useState<number | undefined>(undefined);
     const [isCreating, setIsCreating] = useState(false);
+    const [includeSentences, setIncludeSentences] = useState(true);
 
     const origins = [
         { id: 1, name: 'Généré' },
@@ -160,10 +161,19 @@ export default function ManageTextsScreen() {
                             <Picker.Item key={theme.id} label={theme.name} value={theme.id} />
                         ))}
                     </Picker>
+                    <Text>Importer également toutes les phrases du texte séparément dans les différents mini-jeux</Text>
+
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#8FEE89" }}
+                        thumbColor={includeSentences ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={setIncludeSentences}
+                        value={includeSentences}
+                    />
                     <TouchableOpacity
                         // @ts-ignore
                         onPress={handleCreateSubmit}
-                        style={tw('px-4 py-2 bg-blue-500 text-white rounded-md')}
+                        style={tw('px-4 py-2 bg-blue-500 text-white rounded-md mt-2')}
                     >
                         <Text style={tw('text-white')}>Créer</Text>
                     </TouchableOpacity>
