@@ -7,6 +7,7 @@ import { Word } from "models/Word";
 import { TemporalEntity } from "models/TemporalEntity";
 import { getAllTexts } from "services/api/texts";
 import Modal from 'react-native-modal';
+import ErrorButtonPlausibilityGame from "components/ErrorButtonPlausibilityGame";
 
 export interface SplitText {
   id: number;
@@ -20,7 +21,6 @@ interface ModalPlausibilityGameDetailedProps {
   setHighlightEnabled: (highlight: boolean) => void;
 }
 
-
 const PlausibilityGameDetailedScreen = ({ }) => {
   const tw = useTailwind();
   const [texts, setTexts] = useState<SplitText[]>([]);
@@ -32,7 +32,10 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
-
+  const [errorSpecifying, setErrorSpecifying] = useState(false);
+  const [selectedErrorType, setSelectedErrorType] = useState<string | null>(null);
+  const [wordsSelected, setWordsSelected] = useState(false);
+  const [coherenceSelected, setCoherenceSelected] = useState(false);
 
 
   const ModalPlausibilityGameDetailed: FC<ModalPlausibilityGameDetailedProps> = ({ isVisible, closeModal, setIsModalVisible, setHighlightEnabled }) => {
@@ -58,6 +61,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
               onPress={() => {
                 setIsModalVisible(false);
                 setHighlightEnabled(true);
+                setErrorSpecifying(true);
                 closeModal();
               }}
             >
@@ -113,14 +117,15 @@ const PlausibilityGameDetailedScreen = ({ }) => {
     return newArr;
   }
 
-  const updateSwipeFromButton = async (type: 'right' | 'left' | null) => {
-    return new Promise((resolve) => {
-      setActiveModal(true);
-      resolve(true);
-    });
+  const onCoherenceSelected = (type: string) => {
+    setSelectedErrorType(type);
+    setCoherenceSelected(true); // Ajouter cette ligne
   };
 
   const onWordPress = (wordIndex: number, textIndex: number) => {
+    if (!highlightEnabled) {
+      return;
+    }
     const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
         const newWords = text.content.map((word: Word, idx: number) => {
@@ -157,8 +162,8 @@ const PlausibilityGameDetailedScreen = ({ }) => {
       return text;
     });
     setTexts(newTexts);
+    setWordsSelected(true);
   };
-
 
   // TODO Séparer dans d'autres fichiers pour plus de visibilité
   const renderText = (text: SplitText, index: number) => {
@@ -215,53 +220,95 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         setHighlightEnabled={setHighlightEnabled} // Pass setHighlightEnabled as prop
       />
 
+      {errorSpecifying ? (
+        <View style={tw('my-3 flex flex-row justify-between items-center')}>
+          <View style={tw('flex flex-row self-center mx-auto')}>
+            <ErrorButtonPlausibilityGame
+              type="Cohérence médicale"
+              setSelectedErrorType={onCoherenceSelected}
+              selectedErrorType={selectedErrorType}
+            />
+            <ErrorButtonPlausibilityGame
+              type="Cohérence linguistique"
+              setSelectedErrorType={onCoherenceSelected}
+              selectedErrorType={selectedErrorType}
+            />
+          </View>
+          <TouchableOpacity
+            style={tw(`items-center justify-center rounded-full w-12 h-12 mr-2 ${wordsSelected && coherenceSelected ? 'bg-blue-200' : 'bg-blue-50'}`)}
+            onPress={async () => {
+              if (wordsSelected && coherenceSelected) {
+                if (currentIndex + 1 < texts.length) {
+                  setCurrentIndex(currentIndex + 1);
+                  incrementPoints(10)
+                  setHighlightEnabled(false)
+                  setErrorSpecifying(false)
+                  // Réinitialisation de l'état
+                  const newTexts = texts.map((text, idx) => {
+                    if (idx === currentIndex) {
+                      const newWords = text.content.map(word => {
+                        return { ...word, isSelected: false };
+                      });
+                      return { ...text, content: newWords };
+                    }
+                    return text;
+                  });
+                  setTexts(newTexts);
+                  setSelectedErrorType(null);
+                  setWordsSelected(false);
+                  setCoherenceSelected(false);
+                } else {
+                  // TODO afficher qu'il n'y a plus de texte
+                }
+              }
+            }}
+            disabled={!wordsSelected || !coherenceSelected} // Le bouton est désactivé si les mots ne sont pas surlignés ou si la cohérence n'est pas sélectionnée
+          >
+            <Ionicons name="arrow-forward" size={24} color={wordsSelected && coherenceSelected ? "blue" : "lightblue"} />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        // Boutons de plausibilité  
+        < View style={tw('flex flex-row justify-evenly my-3')}>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
+            onPress={async () => {
+              setIsModalVisible(true);
+            }} >
+            <Entypo name="cross" size={32} color="red" />
+          </TouchableOpacity>
 
-      {/* TODO faire des boutons pour préciser l'erreur si cohérence médical (fièvre à 40°), ou cohérence linguistique (répétition, manque un mot)  */}
-      {/* Les faire apparaître quand on clique sur "préciser la faute" */}
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
+            onPress={async () => {
+              setIsModalVisible(true);
+            }} >
+            <Entypo name="flag" size={28} color="orange" />
+          </TouchableOpacity>
 
-      {/* Boutons de plausibilité */}
-      <View style={tw('flex flex-row justify-evenly mb-4')}>
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
-          onPress={async () => {
-            setIsModalVisible(true);
-          }} >
-          <Entypo name="cross" size={32} color="red" />
-        </TouchableOpacity>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
+            onPress={() => {
+              setIsModalVisible(true);
+            }}  >
+            <AntDesign name="question" size={30} color="orange" />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
-          onPress={async () => {
-            setIsModalVisible(true);
-          }} >
-          <Entypo name="flag" size={28} color="orange" />
-        </TouchableOpacity>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
+            onPress={async () => {
+              setIsModalVisible(true);
+            }} >
+            <Ionicons name="checkmark" size={24} color="#48d1cc" />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
-          onPress={() => {
-            setIsModalVisible(true);
-          }}  >
-          <AntDesign name="question" size={30} color="orange" />
-        </TouchableOpacity>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
+            onPress={async () => {
+              setIsModalVisible(true);
+            }} >
+            <Ionicons name="checkmark-done-sharp" size={24} color="green" />
+          </TouchableOpacity>
+        </View>
+      )}
 
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
-          onPress={async () => {
-            setIsModalVisible(true);
-          }} >
-          <Ionicons name="checkmark" size={24} color="#48d1cc" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
-          onPress={async () => {
-            setIsModalVisible(true);
-          }} >
-          <Ionicons name="checkmark-done-sharp" size={24} color="green" />
-        </TouchableOpacity>
-      </View>
-
-
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
-
-
 
 export default PlausibilityGameDetailedScreen;

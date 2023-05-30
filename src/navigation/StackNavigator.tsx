@@ -51,12 +51,10 @@ const StackNavigator = ({ }) => {
         options={({ navigation }) => ({
           header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
         })} />
-
       <Stack.Screen name="PlausibilityGameDetailed"
         component={PlausibilityGameDetailedScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
         })} />
-
       <Stack.Screen name="Profile"
         component={ProfileScreen} options={({ navigation }) => ({
           header: () => <CustomHeader title="Profil" navigation={navigation} />,
