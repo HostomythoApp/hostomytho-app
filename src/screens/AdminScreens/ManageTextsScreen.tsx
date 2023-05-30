@@ -17,20 +17,24 @@ export default function ManageTextsScreen() {
     const [selectedText, setSelectedText] = useState<TextModel | null>(null);
     const [content, setContent] = useState('');
     const [plausibility, setPlausibility] = useState<number | undefined>(undefined);
-    const [origin, setOrigin] = useState<string | undefined>(undefined);
+    const [origin, setOrigin] = useState<string | undefined>('Généré');
     const [id_theme, setId_theme] = useState<number | undefined>(undefined);
     const [isCreating, setIsCreating] = useState(false);
 
+    const origins = [
+        { id: 1, name: 'Généré' },
+        { id: 2, name: 'Réel - Vrai' },
+        { id: 3, name: 'Réel - Faux' }
+    ];
 
     // // // Création texte
-    // TODO Problème à création
     const createMutation = useMutation(createText, {
         onSuccess: () => {
             queryClient.invalidateQueries('texts');
             setIsCreating(false);
             setContent('');
             setPlausibility(undefined);
-            setOrigin('');
+            setOrigin('Généré');
             setId_theme(undefined);
         },
     });
@@ -39,7 +43,7 @@ export default function ManageTextsScreen() {
         setIsCreating(true);
         setContent('');
         setPlausibility(undefined);
-        setOrigin('');
+        setOrigin('Généré');
         setId_theme(undefined);
     };
 
@@ -138,13 +142,15 @@ export default function ManageTextsScreen() {
                         placeholder="Plausibilité (0 par défaut)"
                         keyboardType="numeric"
                     />
-                    <TextInput
+                    <Picker
+                        selectedValue={origin}
+                        onValueChange={(origin: string) => setOrigin(origin)}
                         style={tw('border p-2 mb-4')}
-                        onChangeText={setOrigin}
-                        value={origin}
-                        placeholder='Origine'
-                    />
-                    {/* TODO mettre un select picker avec les différentes origines possibles */}
+                    >
+                        {origins.map((origin: { id: number, name: string }) => (
+                            <Picker.Item key={origin.id} label={origin.name} value={origin.name} />
+                        ))}
+                    </Picker>
                     <Picker
                         selectedValue={id_theme}
                         onValueChange={(id_theme: number) => setId_theme(id_theme)}
