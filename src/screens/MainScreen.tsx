@@ -19,8 +19,8 @@ const MainScreen = ({ }) => {
                 <View>
                     <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
                     <PrimaryButton title="Plausibilité des textes détaillée" destination="PlausibilityGameDetailed" />
-                    <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
                     <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
+                    <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
                     <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" />
                     <PrimaryButton title="Connexion" destination="Login" />
                     <PrimaryButton title="Inscription" destination="SignUpScreen" />
@@ -33,8 +33,8 @@ const MainScreen = ({ }) => {
             <View>
                 <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
                 <PrimaryButton title="Plausibilité des textes détaillée" destination="PlausibilityGameDetailed" />
-                <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
                 <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
+                <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
                 <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" />
                 <PrimaryButton title="Profil" destination="Profile" />
                 <PrimaryButton title="Paramètres" destination="Settings" />
