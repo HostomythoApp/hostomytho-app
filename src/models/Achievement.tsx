@@ -1,5 +1,5 @@
 export interface Achievement {
-  userHasAchievement: boolean;
+  userHasAchievement?: boolean;
   id: number,
   name: string,
   description: string,

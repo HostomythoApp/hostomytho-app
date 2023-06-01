@@ -5,21 +5,20 @@ import { TailwindProvider } from "tailwind-rn";
 import utilities from "tailwind/styles.json";
 import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "navigation/StackNavigator";
-// import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-// import { useCallback } from "react";
 import { useLoadFonts } from "fonts/useLoadFonts";
 import { AuthProvider } from "services/auth/AuthContext";
 import { UserProvider } from "services/auth/UserContext";
+import { AchievementProvider } from "services/auth/AchievementContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 SplashScreen.preventAutoHideAsync();
 
 const linking = {
-  prefixes: ['http://localhost:19006', 'localhost:19006://'],
+  prefixes: ["http://localhost:19006", "localhost:19006://"],
   config: {
     screens: {
-      Admin: 'admin',
+      Admin: "admin",
     },
   },
 };
@@ -33,19 +32,21 @@ export default function App() {
   }
 
   return (
-    <UserProvider>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <View style={styles.container} onLayout={onLayoutRootView}>
-            <NavigationContainer linking={linking}>
-              <TailwindProvider utilities={utilities}>
-                <StackNavigator />
-              </TailwindProvider>
-            </NavigationContainer>
-          </View>
-        </QueryClientProvider>
-      </AuthProvider>
-    </UserProvider>
+    <AchievementProvider>
+      <UserProvider>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <View style={styles.container} onLayout={onLayoutRootView}>
+              <NavigationContainer linking={linking}>
+                <TailwindProvider utilities={utilities}>
+                  <StackNavigator />
+                </TailwindProvider>
+              </NavigationContainer>
+            </View>
+          </QueryClientProvider>
+        </AuthProvider>
+      </UserProvider>
+    </AchievementProvider>
   );
 }
 

@@ -8,7 +8,7 @@ import PrimaryButton from "components/PrimaryButton";
 import { getUserRankingRange } from 'services/api/user';
 import { getUserAchievements } from 'services/api/achievements';
 import { Achievement } from 'models/Achievement';
-import AchievementItem from "components/AchievementItem";
+// import AchievementItem from "components/AchievementItem";
 import AchievementIcon from 'components/AchievementIcon';
 
 
@@ -50,7 +50,7 @@ const ProfileScreen = (props: any) => {
         <ScrollView style={tw('flex-1 p-4')}>
             <View style={tw('mx-auto min-w-[540px]')}>
                 <Text style={tw('text-2xl font-bold mb-2 text-center')}>{user?.username}</Text>
-
+                {/* TODO Vérifier la synchronisation des points avec la bdd */}
                 <Text style={tw('text-lg mb-4 text-center')}>Points: {user?.points}</Text>
 
                 <View style={tw('w-full mt-4')}>

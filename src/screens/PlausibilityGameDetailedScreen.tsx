@@ -94,7 +94,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         const response = await getAllTexts();
         const shuffledTexts = shuffleArray(response);
         const newtexts = shuffledTexts.slice(0, 10).map((text) => {
-          const words = text.content.split(' ').map((word: string) => { 
+          const words = text.content.split(' ').map((word: string) => {
             // Ajouter un marqueur de fin de ligne à chaque saut de ligne
             if (word.includes("\n")) {
               return [
@@ -313,7 +313,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             }} >
             <Ionicons name="checkmark" size={24} color="#48d1cc" />
           </TouchableOpacity>
-
+          {/* TODO ne pas afficher la popup de choix pour ce bouton */}
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
             onPress={async () => {
               setIsModalVisible(true);

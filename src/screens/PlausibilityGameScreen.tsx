@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
@@ -20,10 +20,12 @@ const PlausibilityGameScreen = ({ }) => {
   const [displayedTexts, setDisplayedTexts] = useState<string[]>(data.texts.map(text => text.content.slice(0, 750) + (text.content.length > 750 ? "..." : "")));
   const [swiperKey, setSwiperKey] = useState(0);
   const { incrementPoints } = useUser();
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setTexts(data.texts)
   });
+
 
   // Toggle de longueur des textes
   useEffect(() => {

@@ -51,6 +51,10 @@ const StackNavigator = ({ }) => {
         options={({ navigation }) => ({
           header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
         })} />
+      <Stack.Screen name="PlausibilityGame"
+        component={PlausibilityGameScreen} options={({ navigation }) => ({
+          header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
+        })} />
       <Stack.Screen name="PlausibilityGameDetailed"
         component={PlausibilityGameDetailedScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
@@ -70,10 +74,6 @@ const StackNavigator = ({ }) => {
       <Stack.Screen name="TemporalLinkGame"
         component={TemporalLinkGameScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderInGame title="Spécifier les liens temporelles" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="PlausibilityGame"
-        component={PlausibilityGameScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
         })} />
       <Stack.Screen name="TemporalEntity"
         component={TemporalEntityScreen} options={({ navigation }) => ({

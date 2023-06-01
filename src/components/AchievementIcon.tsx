@@ -2,7 +2,10 @@ import React from 'react';
 import getIconComponent from "utils/iconHelpers";
 import { Achievement } from "models/Achievement";
 
-const AchievementIcon = ({ achievement }: { achievement: Achievement }) => {
+const AchievementIcon = ({ achievement }: { achievement: Achievement | null}) => {
+    if (!achievement) {
+        return null;
+    }
     const LibToLoad = achievement.picto ? achievement.lib : "AntDesign";
     const IconComponent = getIconComponent(LibToLoad);
 

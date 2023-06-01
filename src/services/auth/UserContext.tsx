@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateUserPoints } from "services/api/user";
+import { AchievementContext } from 'services/auth/AchievementContext';
+import { Achievement } from "models/Achievement";
 
 interface User {
   id: number;
@@ -26,6 +28,7 @@ const useUser = () => useContext(UserContext);
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUserState] = useState<User | null>(null);
+  const { unlockAchievement } = useContext(AchievementContext);
 
   useEffect(() => {
   }, [user]);
@@ -72,7 +75,30 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const newUser = { ...user, points: user.points + points };
       await storeUser(newUser);
       setUserState(newUser);
-      updateUserPoints(user.id, newUser.points);
+
+      // Mise à jour des points de l'utilisateur et récupération des nouvelles réalisations
+      const response = await updateUserPoints(user.id, newUser.points);
+
+      // Test unlock
+      const testAchievement: Achievement = {
+        id: 2,
+        name: 'Expert',
+        description: 'Atteindre 500 points de réputation..',
+        picto: 'badge',
+        color: '#C0C0C0',
+        lib: 'SimpleLineIcons'
+      };
+      console.log(testAchievement);
+
+      unlockAchievement(testAchievement);
+
+      // // Si il y a de nouvelles réalisations, on déclenche l'affichage du modal pour chacune d'entre elles
+      // if (response.data.newAchievements && response.data.newAchievements.length > 0) {
+      //   response.data.newAchievements.forEach(achievement => {
+      //     console.log(achievement);
+      //     unlockAchievement(achievement);
+      //   });
+      // }
     }
   };
 
