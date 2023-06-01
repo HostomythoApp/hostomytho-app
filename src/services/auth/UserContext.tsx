@@ -79,26 +79,12 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       // Mise à jour des points de l'utilisateur et récupération des nouvelles réalisations
       const response = await updateUserPoints(user.id, newUser.points);
 
-      // Test unlock
-      const testAchievement: Achievement = {
-        id: 2,
-        name: 'Expert',
-        description: 'Atteindre 500 points de réputation..',
-        picto: 'badge',
-        color: '#C0C0C0',
-        lib: 'SimpleLineIcons'
-      };
-      console.log(testAchievement);
-
-      unlockAchievement(testAchievement);
-
-      // // Si il y a de nouvelles réalisations, on déclenche l'affichage du modal pour chacune d'entre elles
-      // if (response.data.newAchievements && response.data.newAchievements.length > 0) {
-      //   response.data.newAchievements.forEach(achievement => {
-      //     console.log(achievement);
-      //     unlockAchievement(achievement);
-      //   });
-      // }
+      // Si il y a de nouvelles réalisations, on déclenche l'affichage du modal pour chacune d'entre elles
+      if (response.data.newAchievements && response.data.newAchievements.length > 0) {
+        response.data.newAchievements.forEach((achievement: Achievement) => {
+          unlockAchievement(achievement);
+        });
+      }
     }
   };
 
