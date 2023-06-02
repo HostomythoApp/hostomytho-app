@@ -48,6 +48,7 @@ const CustomHeaderInGame = ({
       <Text style={tw('font-primary text-center flex-grow text-2xl')}>{title}</Text>
       <Animated.Text style={[tw('font-primary'), animatedStyle]}>
         <MaterialIcons style={tw('mr-1')} name="person-search" size={16} color="black" />
+        {/* TODO cacher les points quand déco */}
         {Math.round(displayPoints)} points
       </Animated.Text>
     </View>

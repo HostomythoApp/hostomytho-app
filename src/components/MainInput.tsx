@@ -16,7 +16,7 @@ const MainInput = ({
   hide: boolean,
   value: string,
   onSubmitEditing?: any;
-  isError: boolean
+  isError?: boolean
 }) => {
   const tw = useTailwind();
   const errorStyle = isError ? tw("border-red-500") : {};

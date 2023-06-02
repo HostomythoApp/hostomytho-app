@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -27,19 +27,34 @@ const SignUpScreen = () => {
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
     const [doctor, setDoctor] = useState('medecin');
+    const [usernameError, setUsernameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [password2Error, setPassword2Error] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const navigation = useNavigation<RootStackNavigationProp<"Main">>();
     const { storeToken } = useAuth();
     const { setUser } = useUser();
 
     const submit = () => {
-        if (username.trim() === "" || password.trim() === "") {
-            alert("Erreur, Veuillez remplir tous les champs");
+        setUsernameError(false);
+        setPasswordError(false);
+        setPassword2Error(false);
+        setErrorMessage('');
+
+        if (username.trim() === "" || password.trim() === "" || password2.trim() === "") {
+            if (username.trim() === "") setUsernameError(true);
+            if (password.trim() === "") setPasswordError(true);
+            if (password2.trim() === "") setPassword2Error(true);
+            setErrorMessage("Veuillez remplir tous les champs");
         } else {
             if (password !== password2) {
-                alert("Mots de passe différents");
+                setPasswordError(true);
+                setPassword2Error(true);
+                setErrorMessage("Les mots de passe ne correspondent pas");
             } else {
                 if (password.length < 6) {
-                    alert("Mot de passe trop court");
+                    setPasswordError(true);
+                    setErrorMessage("Mot de passe trop court. Celui-ci doit contenir 6 caractères minimum.");
                 } else {
                     const newUser: Partial<User> = {
                         username,
@@ -63,7 +78,11 @@ const SignUpScreen = () => {
                             }
                         })
                         .catch((error: any) => {
-                            console.log(`Erreur lors de l'inscription : ${error.message}`);
+                            if (error.response && error.response.status === 409) {
+                                setErrorMessage("Ce nom d'utilisateur est déjà pris.");
+                            } else {
+                                console.log(`Erreur lors de l'inscription : ${error.message}`);
+                            }
                         });
                 }
             }
@@ -71,29 +90,59 @@ const SignUpScreen = () => {
     };
 
     const generatePseudo = () => {
-        const detectiveNames = ["Sherbloque", "Hermule", "Thilip", "Fancy", "Colombe", "Adrianne",
-            "Maison", "Gris", "Chapardé", "Banor", "Masloy", "Médith", "Feur", "Broutarde", "Prevenche", "Violette", "Olive", "Rose"];
+        const detectiveNamesMale = ["Sherbloque", "Hermule", "Thilip", "Fancy", "Colombe", "Adrianne",
+            "Maison", "Gris", "Chapardé", "Banor", "Masloy", "Médith", "Feur", "Broutarde",
+            "Prevenche", "Violette", "Olive", "Rose", "Noir", "Lupin", "Marlo", "Poirot",
+            "Gadjo", "Magret", "Columbo", "Spade", "Holmes", "Lestrade", "Marple", "Wolfe",
+            "Vance", "Hercule"];
 
-        const keywords = ["le vaillant", "l'intrépide", "l'observeur", "le minutieux", "le pro", "le fou", "le poète", "le maladroit", "l'hyperactif"];
+        const detectiveNamesFemale = ["Sherlocke", "Hermula", "Philippa", "Fancy", "Colomba", "Adrianne",
+            "Maisie", "Griselda", "Chaparde", "Banora", "Masloy", "Meredith", "Fleur", "Broutarde",
+            "Prevenche", "Violet", "Oliva", "Rosa", "Noire", "Lupina", "Marla", "Poirot",
+            "Gadja", "Magret", "Columba", "Spade", "Holmes", "Lestrade", "Marple", "Wolfe",
+            "Vance", "Hercula"];
 
-        const name = detectiveNames[Math.floor(Math.random() * detectiveNames.length)];
+        const keywordsMale = ["le vaillant", "l'intrépide", "l'observeur", "le minutieux", "le pro",
+            "le fou", "le poète", "le maladroit", "l'hyperactif", "l'énigmatique", "le perspicace",
+            "le sagace", "l'astucieux", "l'intelligent", "le rusé", "le téméraire", "le courageux",
+            "l'imperturbable", "le ténébreux", "le déducteur", "l'insaisissable", "l'ombrageux",
+            "l'incorruptible", "le résolu", "le déterminé", "l'implacable", "le tenace", "le patient",
+            "le subtil", "l'infaillible", "le retors", "le vigilant", "le pénétrant", "l'audacieux"];
 
-        const keyword = keywords[Math.floor(Math.random() * keywords.length)];
+        const keywordsFemale = ["la vaillante", "l'intrépide", "l'observeuse", "la minutieuse", "la pro",
+            "la folle", "la poétesse", "la maladroite", "l'hyperactive", "l'énigmatique", "la perspicace",
+            "la sagace", "l'astucieuse", "l'intelligente", "la rusée", "la téméraire", "la courageuse",
+            "l'imperturbable", "la ténébreuse", "la déductrice", "l'insaisissable", "l'ombrageuse",
+            "l'incorruptible", "la résolue", "la déterminée", "l'implacable", "la tenace", "la patiente",
+            "la subtile", "l'infaillible", "la retorse", "la vigilante", "la pénétrante", "l'audacieuse"];
+        
+        const gender = Math.random() > 0.5 ? 'male' : 'female';
+
+        const name = (gender === 'male') 
+            ? detectiveNamesMale[Math.floor(Math.random() * detectiveNamesMale.length)] 
+            : detectiveNamesFemale[Math.floor(Math.random() * detectiveNamesFemale.length)];
+
+        const keyword = (gender === 'male') 
+            ? keywordsMale[Math.floor(Math.random() * keywordsMale.length)] 
+            : keywordsFemale[Math.floor(Math.random() * keywordsFemale.length)];
 
         setUsername(`${name} ${keyword}`);
-
     }
+
 
     return (
         <View style={tw("flex-1 justify-center items-center")}>
 
-            <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} />
+            <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} isError={usernameError} />
+            {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
             <FunctionButton text={"Générer un pseudo"} func={generatePseudo} />
 
-            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} />
+            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} isError={passwordError} />
+            {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} onSubmitEditing={submit} />
+            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} onSubmitEditing={submit} isError={password2Error} />
+            {password2Error && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
             <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} onSubmitEditing={submit} />
 
@@ -109,9 +158,12 @@ const SignUpScreen = () => {
                         }}
                     />
                 ))}
-            </View>
 
+            </View>
             <FunctionButton text={"Inscription"} func={submit} />
+            <Text>
+                {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
+            </Text>
         </View>
     );
 };

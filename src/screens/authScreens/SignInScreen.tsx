@@ -60,7 +60,7 @@ const LoginScreen = () => {
                 isError={usernameError}
             />
             {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
-
+            {/* TODO Ajouter mot de passe oublié */}
             <MainInput
                 text={"Mot de passe"}
                 value={password}
