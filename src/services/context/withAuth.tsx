@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth } from "services/auth/AuthContext";
+import { useAuth } from "services/context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 

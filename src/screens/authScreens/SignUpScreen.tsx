@@ -6,10 +6,10 @@ import FunctionButton from "components/FunctionButton";
 import RadioButton from 'components/RadioButton';
 import { signUpUser } from "services/api/user";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "services/auth/AuthContext";
+import { useAuth } from "services/context/AuthContext";
 import { RootStackNavigationProp } from "navigation/Types";
 import { User } from "models/User";
-import { useUser } from "services/auth/UserContext";
+import { useUser } from "services/context/UserContext";
 
 const SignUpScreen = () => {
 

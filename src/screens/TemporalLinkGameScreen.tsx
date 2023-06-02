@@ -5,7 +5,7 @@ import data from "data/fakeUserData.js";
 import FunctionButton from "components/FunctionButton";
 import { TemporalEntity } from "models/TemporalEntity";
 import { TemporalLink } from "models/TemporalLink";
-import { useUser } from 'services/auth/UserContext';
+import { useUser } from 'services/context/UserContext';
 
 const TemporalLinkGameScreen = () => {
   const tw = useTailwind();

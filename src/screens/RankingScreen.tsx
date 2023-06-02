@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, ScrollView } from "react-native
 import { useTailwind } from "tailwind-rn";
 import { getUsersOrderedByPoints } from 'services/api/user';
 import { User } from "models/User";
-import { useUser } from 'services/auth/UserContext';
+import { useUser } from 'services/context/UserContext';
 
 const RankingScreen = ({ }) => {
     const tw = useTailwind();

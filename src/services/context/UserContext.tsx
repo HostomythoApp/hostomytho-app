@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateUserPoints } from "services/api/user";
-import { AchievementContext } from 'services/auth/AchievementContext';
+import { AchievementContext } from 'services/context/AchievementContext';
 import { Achievement } from "models/Achievement";
 
 interface User {

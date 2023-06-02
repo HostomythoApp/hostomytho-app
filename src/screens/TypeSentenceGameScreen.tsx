@@ -11,7 +11,7 @@ import data from "data/fakeUserData.js";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { TemporalEntity } from "models/TemporalEntity";
 import { Word } from "models/Word";
-import { useUser } from 'services/auth/UserContext';
+import { useUser } from 'services/context/UserContext';
 
 const colors = [
   "bg-yellow-300",

@@ -7,9 +7,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "navigation/StackNavigator";
 import * as SplashScreen from "expo-splash-screen";
 import { useLoadFonts } from "fonts/useLoadFonts";
-import { AuthProvider } from "services/auth/AuthContext";
-import { UserProvider } from "services/auth/UserContext";
-import { AchievementProvider } from "services/auth/AchievementContext";
+import { AuthProvider } from "services/context/AuthContext";
+import { UserProvider } from "services/context/UserContext";
+import { AchievementProvider } from "services/context/AchievementContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 SplashScreen.preventAutoHideAsync();

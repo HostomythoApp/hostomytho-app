@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useTailwind } from "tailwind-rn";
 import { getAchievementsWithUserStatus } from "services/api/achievements";
-import { useUser } from 'services/auth/UserContext';
+import { useUser } from 'services/context/UserContext';
 import { Achievement } from "models/Achievement";
 import AchievementIcon from 'components/AchievementIcon';
 

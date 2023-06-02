@@ -1,8 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, Text, View, ScrollView } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
-import withAuth from 'services/auth/withAuth';
-import { useUser } from 'services/auth/UserContext';
+import withAuth from 'services/context/withAuth';
+import { useUser } from 'services/context/UserContext';
 import FunctionButton from "components/FunctionButton";
 import LogoutButton from "components/LogoutButton";
 

@@ -6,7 +6,7 @@ import Swiper from "react-native-deck-swiper";
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
 import { Text as TextType } from "models/Text";
-import { useUser } from 'services/auth/UserContext';
+import { useUser } from 'services/context/UserContext';
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();

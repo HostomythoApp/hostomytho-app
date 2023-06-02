@@ -4,9 +4,9 @@ import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "services/auth/AuthContext";
+import { useAuth } from "services/context/AuthContext";
 import { signInUser } from "services/api/user";
-import { useUser } from "services/auth/UserContext";
+import { useUser } from "services/context/UserContext";
 import { RootStackNavigationProp } from "navigation/Types";
 
 

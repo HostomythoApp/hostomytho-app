@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, View, ScrollView } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
-import withAuth from 'services/auth/withAuth';
-import { useUser } from 'services/auth/UserContext';
+import withAuth from 'services/context/withAuth';
+import { useUser } from 'services/context/UserContext';
 import { FontAwesome5, FontAwesome, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 import PrimaryButton from "components/PrimaryButton";
 import { getUserRankingRange } from 'services/api/user';

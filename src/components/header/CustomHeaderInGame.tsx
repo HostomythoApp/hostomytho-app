@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useTailwind } from "tailwind-rn";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useUser } from 'services/auth/UserContext';
+import { useUser } from 'services/context/UserContext';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,

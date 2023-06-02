@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState, FC } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useUser } from 'services/auth/UserContext';
+import { useUser } from 'services/context/UserContext';
 import { Word } from "models/Word";
 import { TemporalEntity } from "models/TemporalEntity";
 import { getAllTexts } from "services/api/texts";
