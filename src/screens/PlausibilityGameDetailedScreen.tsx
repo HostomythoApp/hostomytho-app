@@ -203,7 +203,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
               } else {
                 return (
                   <TouchableOpacity
-                    key={idx}
+                    key={`${idx}-${word.text}`}
                     onPress={() => onWordPress(idx, index)}
                     style={tw(
                       `m-0 p-[2px] ${word.isSelected ? "bg-yellow-300" : "bg-transparent"}`
@@ -251,6 +251,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             />
           </View>
           <TouchableOpacity
+            key={"next"}
             style={tw(`items-center justify-center rounded-full w-12 h-12 mr-2 ${wordsSelected && coherenceSelected ? 'bg-blue-200' : 'bg-blue-50'}`)}
             onPress={async () => {
               if (wordsSelected && coherenceSelected) {
@@ -313,11 +314,17 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             }} >
             <Ionicons name="checkmark" size={24} color="#48d1cc" />
           </TouchableOpacity>
-          {/* TODO ne pas afficher la popup de choix pour ce bouton */}
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
+          <TouchableOpacity
+            style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
             onPress={async () => {
-              setIsModalVisible(true);
-            }} >
+              if (currentIndex + 1 < texts.length) {
+                setCurrentIndex(currentIndex + 1);
+                incrementPoints(5);
+              } else {
+                // TODO afficher qu'il n'y a plus de texte
+              }
+            }}
+          >
             <Ionicons name="checkmark-done-sharp" size={24} color="green" />
           </TouchableOpacity>
         </View>
