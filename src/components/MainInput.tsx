@@ -9,18 +9,21 @@ const MainInput = ({
   setter,
   value,
   onSubmitEditing,
+  isError
 }: {
   setter: any;
   text: string,
   hide: boolean,
   value: string,
   onSubmitEditing?: any;
+  isError: boolean
 }) => {
   const tw = useTailwind();
+  const errorStyle = isError ? tw("border-red-500") : {};
 
   return (
     <TextInput
-      style={tw("block my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md")}
+      style={{ ...tw("block my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md"), ...errorStyle }}
       placeholder={text}
       secureTextEntry={hide}
       onChangeText={setter}
