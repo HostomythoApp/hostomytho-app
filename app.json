@@ -7,7 +7,7 @@
     "icon": "./src/assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./src/assets/image/wait.png",
+      "image": "./src/assets/images/wait.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
