@@ -152,6 +152,7 @@ export default function ManageTextsScreen() {
                             <Picker.Item key={origin.id} label={origin.name} value={origin.name} />
                         ))}
                     </Picker>
+                    {/* TODO A delete */}
                     <Picker
                         selectedValue={id_theme}
                         onValueChange={(id_theme: number) => setId_theme(id_theme)}

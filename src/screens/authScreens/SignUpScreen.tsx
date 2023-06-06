@@ -92,13 +92,13 @@ const SignUpScreen = () => {
     const generatePseudo = () => {
         const detectiveNamesMale = ["Sherbloque", "Hermule", "Thilip", "Fancy", "Colombe", "Adrianne",
             "Maison", "Gris", "Chapardé", "Banor", "Masloy", "Médith", "Feur", "Broutarde",
-            "Prevenche", "Violette", "Olive", "Rose", "Noir", "Lupin", "Marlo", "Poirot",
+            "Prevenche", "Violette", "Olive", "Rose", "Lupin", "Marlo", "Poirot",
             "Gadjo", "Magret", "Columbo", "Spade", "Holmes", "Lestrade", "Marple", "Wolfe",
             "Vance", "Hercule"];
 
         const detectiveNamesFemale = ["Sherlocke", "Hermula", "Philippa", "Fancy", "Colomba", "Adrianne",
             "Maisie", "Griselda", "Chaparde", "Banora", "Masloy", "Meredith", "Fleur", "Broutarde",
-            "Prevenche", "Violet", "Oliva", "Rosa", "Noire", "Lupina", "Marla", "Poirot",
+            "Prevenche", "Violette", "Oliva", "Rosa", "Noire", "Lupina", "Marla", "Poirot",
             "Gadja", "Magret", "Columba", "Spade", "Holmes", "Lestrade", "Marple", "Wolfe",
             "Vance", "Hercula"];
 
@@ -115,7 +115,7 @@ const SignUpScreen = () => {
             "l'imperturbable", "la ténébreuse", "la déductrice", "l'insaisissable", "l'ombrageuse",
             "l'incorruptible", "la résolue", "la déterminée", "l'implacable", "la tenace", "la patiente",
             "la subtile", "l'infaillible", "la retorse", "la vigilante", "la pénétrante", "l'audacieuse"];
-        
+        // TODO liste de noms débiles
         const gender = Math.random() > 0.5 ? 'male' : 'female';
 
         const name = (gender === 'male') 

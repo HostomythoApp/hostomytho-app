@@ -11,12 +11,18 @@ import { Achievement } from 'models/Achievement';
 // import AchievementItem from "components/AchievementItem";
 import AchievementIcon from 'components/AchievementIcon';
 
+interface Rank {
+    id: number;
+    ranking: number;
+    username: string;
+    points: number;
+  }
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user } = useUser();
 
-    const [ranking, setRanking] = useState([]);
+    const [ranking, setRanking] = useState<Rank[]>([]);
 
     const stats = [
         { id: 1, title: 'Textes validés', count: 5 },
@@ -72,8 +78,9 @@ const ProfileScreen = (props: any) => {
 
                 <Text style={tw('text-xl font-bold mt-8 mb-2 pl-2')}>Classement</Text>
                 <View style={tw('bg-white mb-2 py-2')}>
-                    <Text style={tw('pl-2')}
-                    >. . .</Text>
+                    {ranking[0]?.id !== user?.id && (
+                        <Text style={tw('pl-2')}>. . .</Text>
+                    )}
                     {ranking.map((rank: any) => (
                         <View
                             key={rank.id}
@@ -88,9 +95,9 @@ const ProfileScreen = (props: any) => {
                             <Text>{rank.points} points</Text>
                         </View>
                     ))}
-
-                    <Text style={tw('pl-2')}
-                    >. . .</Text>
+                    {ranking[ranking.length - 1]?.id !== user?.id && (
+                        <Text style={tw('pl-2')}>. . .</Text>
+                    )}
                     <TouchableOpacity onPress={() => navigation.navigate('Ranking')}>
                         <Text style={tw('text-blue-500 mt-2 text-center')}>Voir le classement complet</Text>
                     </TouchableOpacity>
@@ -101,25 +108,26 @@ const ProfileScreen = (props: any) => {
                     <View style={tw('flex-1 mr-2')}>
                         <Text style={tw('text-lg font-bold mb-2')}>Hauts faits</Text>
                         {userAchievements.length > 0 ? (
-                            userAchievements.slice(0, 2).map((achievement) => (
-                                <View style={tw("flex-row items-center p-4 bg-white rounded-lg mb-3")} key={achievement.id}>
-                                    <AchievementIcon achievement={achievement} />
-                                    <View style={tw("ml-3")}>
-                                        <Text style={tw("font-bold text-lg")}>
-                                            {achievement.name}
-                                        </Text>
-                                        <Text style={tw("text-gray-600 text-xs")}>
-                                            {achievement.description}
-                                        </Text>
+                            <>
+                                {userAchievements.slice(0, 2).map((achievement) => (
+                                    <View style={tw("flex-row items-center p-4 bg-white rounded-lg mb-3")} key={achievement.id}>
+                                        <AchievementIcon achievement={achievement} />
+                                        <View style={tw("ml-3")}>
+                                            <Text style={tw("font-bold text-lg")}>
+                                                {achievement.name}
+                                            </Text>
+                                            <Text style={tw("text-gray-600 text-xs")}>
+                                                {achievement.description}
+                                            </Text>
+                                        </View>
                                     </View>
-                                </View>
-                            ))
+                                ))}
+                                <Text style={tw('text-center text-lg')}
+                                >. . .</Text>
+                            </>
                         ) : (
                             <Text style={tw('text-gray-600')}>Aucun haut fait pour le moment</Text>
                         )}
-
-                        <Text style={tw('text-center text-lg')}
-                        >. . .</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Achievements')}>
                             <Text style={tw('text-blue-500 mt-3 text-center')}>Afficher tous les hauts faits</Text>
                         </TouchableOpacity>
