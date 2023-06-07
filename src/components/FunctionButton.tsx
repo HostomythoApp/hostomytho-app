@@ -14,7 +14,7 @@ const FunctionButton = ({
   return (
     <TouchableOpacity
       onPress={func}
-      style={tw("bg-blue-500 rounded mr-2 py-2 px-12 my-2 font-medium")}
+      style={tw("bg-blue-500 rounded py-2 px-12 my-2 font-medium")}
     >
       <Text style={tw("text-white text-center text-lg")}>{text}</Text>
     </TouchableOpacity>
