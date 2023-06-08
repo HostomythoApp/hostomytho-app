@@ -19,11 +19,12 @@ const MainScreen = ({ }) => {
                 {authState.isAuthenticated && <MainTitle title={"Bonjour " + user?.username} />}
                 <View style={{ minWidth: 100, alignSelf: 'center' }}>
                     <View>
-                        <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
+                        {/* <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" /> */}
                         <PrimaryButton title="Plausibilité des textes détaillée" destination="PlausibilityGameDetailed" />
+                        <PrimaryButton title="Trouver les hypothèses" destination="HypothesisGame" />
                         <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
                         <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
-                        <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" />
+                        {/* <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" /> */}
                     </View>
                     {!authState.isAuthenticated &&
                         <View>

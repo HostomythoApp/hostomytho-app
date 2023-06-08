@@ -18,6 +18,7 @@ import ManageTextsScreen from "screens/AdminScreens/ManageTextsScreen";
 import ManageUsersSreen from "screens/AdminScreens/ManageUsersSreen";
 import StatisticsSreen from "screens/AdminScreens/StatisticsSreen";
 import UserMessagingScreen from "screens/AdminScreens/UserMessagingScreen";
+import HypothesisGameScreen from "screens/HypothesisGameScreen";
 import AchievementsScreen from "screens/AchievementsScreen";
 import RankingScreen from "screens/RankingScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
@@ -46,6 +47,10 @@ const StackNavigator = ({ }) => {
       >
       </Stack.Group>
 
+      <Stack.Screen name="HypothesisGame"
+        component={HypothesisGameScreen} options={({ navigation }) => ({
+          header: () => <CustomHeaderInGame title="Trouver les hypothèses" navigation={navigation} />,
+        })} />
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({

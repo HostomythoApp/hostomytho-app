@@ -8,6 +8,7 @@ import { TemporalEntity } from "models/TemporalEntity";
 import { getAllTexts } from "services/api/texts";
 import Modal from 'react-native-modal';
 import ErrorButtonPlausibilityGame from "components/ErrorButtonPlausibilityGame";
+import shuffleArray from "utils/functions";
 
 export interface SplitText {
   id: number;
@@ -113,18 +114,8 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         console.error(error);
       }
     };
-
     fetchTexts();
   }, []);
-
-  function shuffleArray(array: any) {
-    const newArr = [...array];
-    for (let i = newArr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-    }
-    return newArr;
-  }
 
   const onCoherenceSelected = (type: string) => {
     setSelectedErrorType(type);
