@@ -48,14 +48,10 @@ const RankingScreen = ({ }) => {
     );
 
     return (
-        <ScrollView style={tw('flex-1 p-4')}>
-            <View style={tw("mx-auto min-w-[540px]")}>
+        <ScrollView style={tw('')}>
+            <View style={tw("flex-1 p-4 mx-auto min-w-[540px]")}>
                 <Text style={tw('text-xl mb-4')}>Classement général</Text>
-                <FlatList
-                    data={users}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id.toString()}
-                />
+                {users.map((item, index) => renderItem({ item, index }))}
                 {page > 1 && (
                     <TouchableOpacity onPress={() => setPage(page - 1)}>
                         <Text style={tw('text-blue-500 mt-2')}>Page précédente</Text>

@@ -146,7 +146,7 @@ const SignUpScreen = () => {
 
             <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} onSubmitEditing={submit} />
 
-            <View style={tw('inline-block p-4')}>
+            <View style={tw(' p-4')}>
                 {options.map((option) => (
                     <RadioButton
                         key={option.key}

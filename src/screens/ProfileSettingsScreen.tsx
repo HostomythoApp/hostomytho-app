@@ -11,6 +11,7 @@ const ProfileSettingsScreen = (props: any) => {
     const { user } = useUser();
 
     const deleteAccount = () => {
+        // TODO A faire
         alert('deleteAccount');
     }
 

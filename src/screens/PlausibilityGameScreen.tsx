@@ -133,7 +133,6 @@ const PlausibilityGameScreen = ({ }) => {
                 style: {
                   label: {
                     color: "yellow",
-                    textAlign: "bottom",
                     fontFamily: "Pally",
                   },
                 },
@@ -158,8 +157,8 @@ const PlausibilityGameScreen = ({ }) => {
                     tw("text-2xl tracking-wider mb-2 m-7 font-HandleeRegular"),
                     {
                       // TODO Importer et altérner plusieurs fonts
-                      WebkitUserSelect: 'none',
-                      userSelect: 'none'
+                      // WebkitUserSelect: 'none',
+                      // userSelect: 'none'
                     },
                   ]}>
                     {displayedTexts[index]}

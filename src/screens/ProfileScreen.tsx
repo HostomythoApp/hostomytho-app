@@ -16,7 +16,7 @@ interface Rank {
     ranking: number;
     username: string;
     points: number;
-  }
+}
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
@@ -60,7 +60,7 @@ const ProfileScreen = (props: any) => {
                 <Text style={tw('text-lg mb-4 text-center')}>Points: {user?.points}</Text>
 
                 <View style={tw('w-full mt-4')}>
-                    <Text style={tw('text-lg font-bold mb-2')}>
+                    <Text style={tw('text-lg font-bold mb-2 w-full')}>
                         Progression avant la prochaine récompense
                     </Text>
                     <View style={tw('bg-gray-300 h-4 rounded')}>
@@ -173,8 +173,9 @@ const ProfileScreen = (props: any) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-
-                <PrimaryButton title="Paramètres du profil" destination="ProfileSettings" />
+                <View>
+                    <PrimaryButton title="Paramètres du profil" destination="ProfileSettings" />
+                </View>
             </View>
         </ScrollView>
     );

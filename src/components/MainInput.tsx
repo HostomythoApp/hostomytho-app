@@ -23,7 +23,7 @@ const MainInput = ({
 
   return (
     <TextInput
-      style={{ ...tw("block my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md"), ...errorStyle }}
+      style={{ ...tw(" my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md"), ...errorStyle }}
       placeholder={text}
       secureTextEntry={hide}
       onChangeText={setter}
