@@ -99,11 +99,11 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             // Ajouter un marqueur de fin de ligne à chaque saut de ligne
             if (word.includes("\n")) {
               return [
-                { text: word.replace("\n", ""), isSelected: false, entityId: null },
-                { text: "<EOL>", isSelected: false, entityId: null } // Marqueur de fin de ligne
+                { text: word.replace("\n", ""), isSelected: false, sentenceId: null },
+                { text: "<EOL>", isSelected: false, sentenceId: null } // Marqueur de fin de ligne
               ];
             } else {
-              return { text: word, isSelected: false, entityId: null };
+              return { text: word, isSelected: false, sentenceId: null };
             }
           }).flat();
           return { ...text, content: words };
@@ -131,17 +131,17 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         const newWords = text.content.map((word: Word, idx: number) => {
           if (startWordIndex === null) { // Si c'est le premier clic
             if (idx === wordIndex) {
-              return { ...word, isSelected: true, entityId: word.isSelected ? null : temporalEntities.length };
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
             }
           } else if (startWordIndex !== null && endWordIndex === null) { // Si c'est le deuxième clic
             if (idx >= Math.min(startWordIndex, wordIndex) && idx <= Math.max(startWordIndex, wordIndex)) {
-              return { ...word, isSelected: true, entityId: word.isSelected ? null : temporalEntities.length };
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
             }
           } else { // Si on a déjà sélectionné une plage de mots
             if (idx === wordIndex) { // Si c'est le début d'une nouvelle sélection
-              return { ...word, isSelected: true, entityId: null };
+              return { ...word, isSelected: true, sentenceId: null };
             } else { // Si c'est un mot précédemment sélectionné
-              return { ...word, isSelected: false, entityId: null };
+              return { ...word, isSelected: false, sentenceId: null };
             }
           }
           return word;

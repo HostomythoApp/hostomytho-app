@@ -47,7 +47,7 @@ const TemporalEntityScreen = ({ }) => {
   useEffect(() => {
     const shuffledSentences = shuffleArray(data.sentences);
     setSentences(shuffledSentences.slice(0, 10).map((sentence) => {
-      const words = sentence.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, entityId: null }));
+      const words = sentence.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, sentenceId: null }));
       return { ...sentence, content: words };
     }));
   }, []);
@@ -57,7 +57,7 @@ const TemporalEntityScreen = ({ }) => {
       if (idx === sentenceIndex) {
         const newWords = sentence.content.map((word: Word, idx: number) => {
           if (idx === wordIndex) {
-            return { ...word, isSelected: !word.isSelected, entityId: word.isSelected ? null : temporalEntities.length };
+            return { ...word, isSelected: !word.isSelected, sentenceId: word.isSelected ? null : temporalEntities.length };
           }
           return word;
         });
@@ -70,7 +70,7 @@ const TemporalEntityScreen = ({ }) => {
   };
 
   const addTemporalEntity = () => {
-    const selectedWords = sentences[currentIndex].content.filter(word => word.isSelected && word.entityId === temporalEntities.length);
+    const selectedWords = sentences[currentIndex].content.filter(word => word.isSelected && word.sentenceId === temporalEntities.length);
     const entityText = selectedWords.map(word => word.text).join(' ');
 
     if (entityText) {
@@ -80,13 +80,13 @@ const TemporalEntityScreen = ({ }) => {
     }
   };
 
-  const removeTemporalEntity = (entityId: number) => {
-    setTemporalEntities(temporalEntities.filter(entity => entity.id !== entityId));
+  const removeTemporalEntity = (sentenceId: number) => {
+    setTemporalEntities(temporalEntities.filter(entity => entity.id !== sentenceId));
 
     const newSentences = sentences.map(sentence => {
       const newWords = sentence.content.map(word => {
-        if (word.entityId === entityId) {
-          return { ...word, isSelected: false, entityId: null };
+        if (word.sentenceId === sentenceId) {
+          return { ...word, isSelected: false, sentenceId: null };
         }
         return word;
       });
@@ -132,7 +132,7 @@ const TemporalEntityScreen = ({ }) => {
                 key={idx}
                 onPress={() => onWordPress(idx, index)}
                 style={tw(
-                  `m-1 ${word.isSelected ? colors[word.entityId % colors.length] : "bg-transparent"}`
+                  `m-1 ${word.isSelected ? colors[word.sentenceId % colors.length] : "bg-transparent"}`
                 )}
               >
                 <Text style={

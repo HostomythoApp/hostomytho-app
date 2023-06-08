@@ -46,7 +46,7 @@ const TypeSentenceGameScreen = ({ }) => {
   useEffect(() => {
     const shuffledSentences = shuffleArray(data.sentences);
     setSentences(shuffledSentences.slice(0, 10).map((sentence) => {
-      const words = sentence.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, entityId: null }));
+      const words = sentence.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, sentenceId: null }));
       return { ...sentence, content: words };
     }));
   }, []);
@@ -57,17 +57,17 @@ const TypeSentenceGameScreen = ({ }) => {
         const newWords = sentence.content.map((word: Word, idx: number) => {
           if (startWordIndex === null) { // Si c'est le premier clic
             if (idx === wordIndex) {
-              return { ...word, isSelected: true, entityId: word.isSelected ? null : temporalEntities.length };
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
             }
           } else if (endWordIndex === null) { // Si c'est le deuxième clic
             if (idx >= Math.min(startWordIndex, wordIndex) && idx <= Math.max(startWordIndex, wordIndex)) {
-              return { ...word, isSelected: true, entityId: word.isSelected ? null : temporalEntities.length };
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
             }
           } else { // Si on a déjà sélectionné une plage de mots
             if (idx === wordIndex) { // Si c'est le début d'une nouvelle sélection
-              return { ...word, isSelected: true, entityId: null };
+              return { ...word, isSelected: true, sentenceId: null };
             } else { // Si c'est un mot précédemment sélectionné
-              return { ...word, isSelected: false, entityId: null };
+              return { ...word, isSelected: false, sentenceId: null };
             }
           }
           return word;
@@ -96,7 +96,7 @@ const TypeSentenceGameScreen = ({ }) => {
       if (index === currentIndex) {
         if (type === 'none') { // Si le bouton 'Aucun' est appuyé
           const newWords = sentence.content.map(word => {
-            return { ...word, isSelected: false, entityId: null }; // Désélectionner tous les mots
+            return { ...word, isSelected: false, sentenceId: null }; // Désélectionner tous les mots
           });
           return { ...sentence, content: newWords, selectedType: type };
         } else {
@@ -155,7 +155,7 @@ const TypeSentenceGameScreen = ({ }) => {
                 key={idx}
                 onPress={() => onWordPress(idx, index)}
                 style={tw(
-                  `m-0 p-[2px] ${word.isSelected ? colors[word.entityId % colors.length] : "bg-transparent"}`
+                  `m-0 p-[2px] ${word.isSelected ? colors[word.sentenceId % colors.length] : "bg-transparent"}`
                 )}
               >
                 <Text style={tw("text-2xl font-HandleeRegular")}>{word.text + " "}</Text>

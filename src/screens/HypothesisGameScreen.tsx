@@ -55,11 +55,11 @@ const HypothesisGameScreen = ({ }) => {
             // Ajouter un marqueur de fin de ligne à chaque saut de ligne
             if (word.includes("\n")) {
               return [
-                { text: word.replace("\n", ""), isSelected: false, entityId: null },
-                { text: "<EOL>", isSelected: false, entityId: null } // Marqueur de fin de ligne
+                { text: word.replace("\n", ""), isSelected: false, sentenceId: null },
+                { text: "<EOL>", isSelected: false, sentenceId: null } // Marqueur de fin de ligne
               ];
             } else {
-              return { text: word, isSelected: false, entityId: null };
+              return { text: word, isSelected: false, sentenceId: null };
             }
           }).flat();
           return { ...text, content: words };
@@ -79,17 +79,17 @@ const HypothesisGameScreen = ({ }) => {
         const newWords = text.content.map((word: Word, idx: number) => {
           if (startWordIndex === null) { // Si c'est le premier clic
             if (idx === wordIndex) {
-              return { ...word, isSelected: true, entityId: word.isSelected ? null : temporalEntities.length };
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
             }
           } else if (startWordIndex !== null && endWordIndex === null) { // Si c'est le deuxième clic
             if (idx >= Math.min(startWordIndex, wordIndex) && idx <= Math.max(startWordIndex, wordIndex)) {
-              return { ...word, isSelected: true, entityId: word.isSelected ? null : temporalEntities.length };
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
             }
           } else { // Si on a déjà sélectionné une plage de mots
             if (idx === wordIndex) { // Si c'est le début d'une nouvelle sélection
-              return { ...word, isSelected: true, entityId: null };
+              return { ...word, isSelected: true, sentenceId: null };
             } else { // Si c'est un mot précédemment sélectionné
-              return { ...word, isSelected: false, entityId: null };
+              return { ...word, isSelected: false, sentenceId: null };
             }
           }
           return word;
@@ -114,7 +114,7 @@ const HypothesisGameScreen = ({ }) => {
   };
 
   const addSentenceSpecification = () => {
-    const selectedWords = texts[currentIndex].content.filter(word => word.isSelected && word.entityId === temporalEntities.length);
+    const selectedWords = texts[currentIndex].content.filter(word => word.isSelected && word.sentenceId === temporalEntities.length);
     const entityText = selectedWords.map(word => word.text).join(' ');
 
     if (entityText) {
@@ -124,13 +124,13 @@ const HypothesisGameScreen = ({ }) => {
     }
   };
 
-  const removeUserSentenceSpecification = (entityId: number) => {
-    setUserSentenceSpecifications(temporalEntities.filter(entity => entity.id !== entityId));
+  const removeUserSentenceSpecification = (sentenceId: number) => {
+    setUserSentenceSpecifications(temporalEntities.filter(entity => entity.id !== sentenceId));
 
     const newTexts = texts.map(text => {
       const newWords = text.content.map(word => {
-        if (word.entityId === entityId) {
-          return { ...word, isSelected: false, entityId: null };
+        if (word.sentenceId === sentenceId) {
+          return { ...word, isSelected: false, sentenceId: null };
         }
         return word;
       });
@@ -176,7 +176,7 @@ const HypothesisGameScreen = ({ }) => {
                 key={idx}
                 onPress={() => onWordPress(idx, index)}
                 style={tw(
-                  `m-1 ${word.isSelected ? colors[word.entityId % colors.length] : "bg-transparent"}`
+                  `m-1 ${word.isSelected ? colors[word.sentenceId % colors.length] : "bg-transparent"}`
                 )}
               >
                 <Text style={
