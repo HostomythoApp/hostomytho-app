@@ -47,16 +47,16 @@ const StackNavigator = ({ }) => {
       >
       </Stack.Group>
 
+      <Stack.Screen name="HypothesisGame"
+        component={HypothesisGameScreen} options={({ navigation }) => ({
+          header: () => <CustomHeaderInGame title="Trouver les hypothèses" navigation={navigation} />,
+        })} />
       <Stack.Screen name="Main"
         component={MainScreen}
         options={({ navigation }) => ({
           header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
         })} />
 
-      <Stack.Screen name="HypothesisGame"
-        component={HypothesisGameScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Trouver les hypothèses" navigation={navigation} />,
-        })} />
       <Stack.Screen name="PlausibilityGame"
         component={PlausibilityGameScreen} options={({ navigation }) => ({
           header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,

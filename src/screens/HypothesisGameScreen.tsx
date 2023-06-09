@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
@@ -28,22 +22,17 @@ export interface SplitText {
   selectedType: string | null;
 }
 
-// export interface Sentence {
-//   id: number;
-//   content: Word[];
-//   temporalEntities: UserSentenceSpecification[];
-// }
-
 const HypothesisGameScreen = ({ }) => {
   const tw = useTailwind();
   const [texts, setTexts] = useState<SplitText[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [temporalEntities, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
+  const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
   const { incrementPoints } = useUser();
-  const [startWordIndex, setStartWordIndex] = useState<number | null>(null); // Nouvel état pour le début de la sélection
-  const [endWordIndex, setEndWordIndex] = useState<number | null>(null); // Nouvel état pour la fin de la sélection
-  const [wordsSelected, setWordsSelected] = useState(false);
+  const [startWordIndex, setStartWordIndex] = useState<number | null>(null);
+  const [endWordIndex, setEndWordIndex] = useState<number | null>(null);
+  const [selectedWords, setSelectedWords] = useState<Word[]>([]);
+  const [colorAssignment, setColorAssignment] = useState<Record<number, string>>({});
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -73,59 +62,84 @@ const HypothesisGameScreen = ({ }) => {
     fetchTexts();
   }, []);
 
+
+
+
   const onWordPress = (wordIndex: number, textIndex: number) => {
     const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
         const newWords = text.content.map((word: Word, idx: number) => {
-          if (startWordIndex === null) { // Si c'est le premier clic
-            if (idx === wordIndex) {
-              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
-            }
-          } else if (startWordIndex !== null && endWordIndex === null) { // Si c'est le deuxième clic
+          if (startWordIndex !== null && endWordIndex === null) {
             if (idx >= Math.min(startWordIndex, wordIndex) && idx <= Math.max(startWordIndex, wordIndex)) {
-              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
+              return { ...word, isSelected: true, sentenceId: userSentenceSpecifications.length };
+            } else {
+              return { ...word, isSelected: false, sentenceId: null };
             }
-          } else { // Si on a déjà sélectionné une plage de mots
-            if (idx === wordIndex) { // Si c'est le début d'une nouvelle sélection
+          } else {
+            if (idx === wordIndex) {
               return { ...word, isSelected: true, sentenceId: null };
-            } else { // Si c'est un mot précédemment sélectionné
+            } else {
               return { ...word, isSelected: false, sentenceId: null };
             }
           }
-          return word;
         });
 
-        // Réinitialiser les indices de début et de fin lorsqu'un mot est sélectionné après une plage de mots
         if (startWordIndex !== null && endWordIndex !== null) {
           setStartWordIndex(wordIndex);
           setEndWordIndex(null);
-        } else if (startWordIndex !== null && endWordIndex === null) { // Après le deuxième clic
+        } else if (startWordIndex !== null && endWordIndex === null) {
           setEndWordIndex(wordIndex);
-        } else { // Après le premier clic
+        } else {
           setStartWordIndex(wordIndex);
         }
+
+        const selectedWords = newWords.filter(word => word.isSelected);
+        setSelectedWords(selectedWords);
 
         return { ...text, content: newWords };
       }
       return text;
     });
+
     setTexts(newTexts);
-    setWordsSelected(true);
   };
 
-  const addSentenceSpecification = () => {
-    const selectedWords = texts[currentIndex].content.filter(word => word.isSelected && word.sentenceId === temporalEntities.length);
-    const entityText = selectedWords.map(word => word.text).join(' ');
 
-    if (entityText) {
-      // @ts-ignore
-      setUserSentenceSpecifications([...temporalEntities, { id: temporalEntities.length, content: entityText }]);
-      setColorIndex((colorIndex + 1) % colors.length);
+  ///////////////////////////////
+  const addSentenceSpecification = () => {
+    const sentenceSpecification = selectedWords.map(word => word.text).join(' ');
+
+    if (sentenceSpecification) {
+      setUserSentenceSpecifications([...userSentenceSpecifications, { id: userSentenceSpecifications.length, content: sentenceSpecification }]);
+
+      if (!colorAssignment[userSentenceSpecifications.length]) {
+        setColorAssignment({
+          ...colorAssignment,
+          [userSentenceSpecifications.length]: colors[colorIndex]
+        });
+        setColorIndex((colorIndex + 1) % colors.length);
+      }
+
+      const newTexts = texts.map(text => {
+        const newWords = text.content.map(word => {
+          if (selectedWords.includes(word)) {
+            return { ...word, sentenceId: userSentenceSpecifications.length };
+          }
+          return word;
+        });
+        return { ...text, content: newWords };
+      });
+
+      setTexts(newTexts);
+      setSelectedWords([]);
+      setStartWordIndex(null); // réinitialise les index après l'ajout de l'hypothèse
+      setEndWordIndex(null);
     }
   };
 
+
   const removeUserSentenceSpecification = (sentenceId: number) => {
-    setUserSentenceSpecifications(temporalEntities.filter(entity => entity.id !== sentenceId));
+    setUserSentenceSpecifications(userSentenceSpecifications.filter(sentenceSpecification => sentenceSpecification.id !== sentenceId));
 
     const newTexts = texts.map(text => {
       const newWords = text.content.map(word => {
@@ -176,24 +190,23 @@ const HypothesisGameScreen = ({ }) => {
                 key={idx}
                 onPress={() => onWordPress(idx, index)}
                 style={tw(
-                  `m-1 ${word.isSelected ? colors[word.sentenceId % colors.length] : "bg-transparent"}`
+                  `m-1 ${word.isSelected ? colorAssignment[word.sentenceId] : "bg-transparent"}`
                 )}
               >
-                <Text style={
-                  tw("text-2xl font-HandleeRegular")}
-                >{word.text}</Text>
+                <Text style={tw("text-2xl font-HandleeRegular")}>{word.text}</Text>
               </TouchableOpacity>
             ))}
           </View>
+
         </View>
       </SafeAreaView>
     );
   };
 
-  const renderUserSentenceSpecification = (entity: any) => (
-    <View key={entity.id} style={tw(`flex-row items-center m-1 `)}>
-      <Text style={tw(`text-lg mr-2 ${colors[entity.id % colors.length]} font-primary`)}>{entity.content}</Text>
-      <TouchableOpacity onPress={() => removeUserSentenceSpecification(entity.id)}>
+  const renderUserSentenceSpecification = (sentenceSpecification: any) => (
+    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 `)}>
+      <Text style={tw(`text-lg mr-2 ${colorAssignment[sentenceSpecification.id]} font-primary`)}>{sentenceSpecification.content}</Text>
+      <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
         <Entypo name="cross" size={24} color="red" />
       </TouchableOpacity>
     </View>
@@ -216,7 +229,7 @@ const HypothesisGameScreen = ({ }) => {
         </View>
         <View style={tw("flex-row mb-4 mt-8 justify-center")}>
           <View style={tw("mx-4")}>
-            {temporalEntities.map(entity => renderUserSentenceSpecification(entity))}
+            {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
           <TouchableOpacity
             style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10")}
