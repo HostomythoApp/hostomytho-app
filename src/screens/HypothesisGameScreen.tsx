@@ -99,6 +99,7 @@ const HypothesisGameScreen = ({ }) => {
       word.isSelected = true;  // Set isSelected to true
       word.isCurrentSelection = false; // Set isCurrentSelection to false
     });
+    // @ts-ignore
     setUserSentenceSpecifications([...userSentenceSpecifications, { id: nextId, content: selectedWords.map(word => word.text).join(' ') }]);
     setNextId(nextId + 1);
     setColorIndex((colorIndex + 1) % colors.length);
