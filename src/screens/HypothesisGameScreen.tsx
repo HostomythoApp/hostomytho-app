@@ -30,9 +30,6 @@ const HypothesisGameScreen = ({ }) => {
   const [colorIndex, setColorIndex] = useState(0);
   const { incrementPoints } = useUser();
   const [startWordIndex, setStartWordIndex] = useState<number | null>(null);
-  const [endWordIndex, setEndWordIndex] = useState<number | null>(null);
-  const [selectedWords, setSelectedWords] = useState<Word[]>([]);
-  const [colorAssignment, setColorAssignment] = useState<Record<number, string>>({});
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -62,81 +59,49 @@ const HypothesisGameScreen = ({ }) => {
     fetchTexts();
   }, []);
 
-
-
-
   const onWordPress = (wordIndex: number, textIndex: number) => {
     const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
         const newWords = text.content.map((word: Word, idx: number) => {
-          if (startWordIndex !== null && endWordIndex === null) {
-            if (idx >= Math.min(startWordIndex, wordIndex) && idx <= Math.max(startWordIndex, wordIndex)) {
-              return { ...word, isSelected: true, sentenceId: userSentenceSpecifications.length };
-            } else {
-              return { ...word, isSelected: false, sentenceId: null };
+          // Si l'index de départ n'a pas encore été défini
+          if (startWordIndex === null) {
+            // Si l'index du mot cliqué est l'index de départ
+            if (idx === wordIndex) {
+              setStartWordIndex(wordIndex);
+              // Ne pas changer le statut de sélection ou l'ID de la phrase pour le premier mot cliqué
+              return word;
             }
           } else {
-            if (idx === wordIndex) {
-              return { ...word, isSelected: true, sentenceId: null };
-            } else {
-              return { ...word, isSelected: false, sentenceId: null };
+            // Si un index de départ a été défini, sélectionnez tous les mots entre l'index de départ et l'index du mot cliqué
+            if ((idx >= startWordIndex && idx <= wordIndex) || (idx <= startWordIndex && idx >= wordIndex)) {
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : userSentenceSpecifications.length };
             }
           }
+          return word;
         });
-
-        if (startWordIndex !== null && endWordIndex !== null) {
-          setStartWordIndex(wordIndex);
-          setEndWordIndex(null);
-        } else if (startWordIndex !== null && endWordIndex === null) {
-          setEndWordIndex(wordIndex);
-        } else {
-          setStartWordIndex(wordIndex);
+        // Réinitialisez l'index de départ à null seulement si un deuxième mot a été cliqué
+        if (startWordIndex !== null && startWordIndex !== wordIndex) {
+          setStartWordIndex(null);
         }
-
-        const selectedWords = newWords.filter(word => word.isSelected);
-        setSelectedWords(selectedWords);
-
         return { ...text, content: newWords };
       }
       return text;
     });
 
     setTexts(newTexts);
-  };
+};
 
 
-  ///////////////////////////////
   const addSentenceSpecification = () => {
+    const selectedWords = texts[currentIndex].content.filter(word => word.isSelected && word.sentenceId === userSentenceSpecifications.length);
     const sentenceSpecification = selectedWords.map(word => word.text).join(' ');
 
     if (sentenceSpecification) {
+      // @ts-ignore
       setUserSentenceSpecifications([...userSentenceSpecifications, { id: userSentenceSpecifications.length, content: sentenceSpecification }]);
-
-      if (!colorAssignment[userSentenceSpecifications.length]) {
-        setColorAssignment({
-          ...colorAssignment,
-          [userSentenceSpecifications.length]: colors[colorIndex]
-        });
-        setColorIndex((colorIndex + 1) % colors.length);
-      }
-
-      const newTexts = texts.map(text => {
-        const newWords = text.content.map(word => {
-          if (selectedWords.includes(word)) {
-            return { ...word, sentenceId: userSentenceSpecifications.length };
-          }
-          return word;
-        });
-        return { ...text, content: newWords };
-      });
-
-      setTexts(newTexts);
-      setSelectedWords([]);
-      setStartWordIndex(null); // réinitialise les index après l'ajout de l'hypothèse
-      setEndWordIndex(null);
+      setColorIndex((colorIndex + 1) % colors.length);
     }
   };
-
 
   const removeUserSentenceSpecification = (sentenceId: number) => {
     setUserSentenceSpecifications(userSentenceSpecifications.filter(sentenceSpecification => sentenceSpecification.id !== sentenceId));
@@ -153,23 +118,12 @@ const HypothesisGameScreen = ({ }) => {
 
     setTexts(newTexts);
   };
-
   const renderText = (text: SplitText, index: number) => {
     if (typeof text === "undefined") {
       return null;
     }
     return (
       <SafeAreaView style={tw("flex-1 bg-white")}>
-
-        <View style={tw("flex-row justify-end items-center mb-4 mr-2")}>
-          <TouchableOpacity
-            style={tw("bg-blue-500 py-2 px-4 rounded-lg flex-row items-center")}
-            onPress={onNextCard}
-          >
-            <Text style={tw('font-primary mr-2 text-white text-base')}>Text suivant</Text>
-            <MaterialIcons name="navigate-next" size={28} color="white" />
-          </TouchableOpacity>
-        </View>
 
         <View
           style={[
@@ -190,7 +144,7 @@ const HypothesisGameScreen = ({ }) => {
                 key={idx}
                 onPress={() => onWordPress(idx, index)}
                 style={tw(
-                  `m-1 ${word.isSelected ? colorAssignment[word.sentenceId] : "bg-transparent"}`
+                  `m-1 ${word.isSelected ? colors[word.sentenceId % colors.length] : "bg-transparent"}`
                 )}
               >
                 <Text style={tw("text-2xl font-HandleeRegular")}>{word.text}</Text>
@@ -205,7 +159,7 @@ const HypothesisGameScreen = ({ }) => {
 
   const renderUserSentenceSpecification = (sentenceSpecification: any) => (
     <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 `)}>
-      <Text style={tw(`text-lg mr-2 ${colorAssignment[sentenceSpecification.id]} font-primary`)}>{sentenceSpecification.content}</Text>
+      <Text style={tw(`text-lg mr-2 ${colors[sentenceSpecification.id % colors.length]} font-primary`)}>{sentenceSpecification.content}</Text>
       <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
         <Entypo name="cross" size={24} color="red" />
       </TouchableOpacity>

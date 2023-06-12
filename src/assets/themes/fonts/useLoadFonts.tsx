@@ -10,7 +10,7 @@ const fontAssets = {
   "PatrickHandRegular": require("./PatrickHand-Regular.ttf"),
 
 };
-// TODO problèmes de chargement de font
+
 export const useLoadFonts = () => {
   const [fontsLoaded] = useFonts(fontAssets);
 
