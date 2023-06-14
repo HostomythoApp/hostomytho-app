@@ -1,5 +1,6 @@
 import { Admin } from "models/Admin";
 import api from "./index";
+// TODO mettre des try catch
 
 export const getAdmins = async (): Promise<Admin[]> => {
   return await api.get("/admins");

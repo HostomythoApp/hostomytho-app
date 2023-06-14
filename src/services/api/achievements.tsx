@@ -3,8 +3,7 @@ import { User } from "models/User";
 
 import api from "./index";
 
-import axios from 'axios';
-
+// TODO mettre des try catch
 
 export const getAllAchievements = async (): Promise<Achievement[]> => {
   const response = await api.get('/achievements');

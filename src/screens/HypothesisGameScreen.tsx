@@ -7,6 +7,7 @@ import { Word } from "models/Word";
 import { useUser } from 'services/context/UserContext';
 import { getAllTexts } from "services/api/texts";
 import shuffleArray from "utils/functions";
+import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 
 const colors = [
   "bg-yellow-300",
@@ -94,8 +95,8 @@ const HypothesisGameScreen = ({ }) => {
 
   const addSentenceSpecification = () => {
     const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
-    selectedWords.forEach(word => { 
-      word.sentenceId = nextId; 
+    selectedWords.forEach(word => {
+      word.sentenceId = nextId;
       word.isSelected = true;  // Set isSelected to true
       word.isCurrentSelection = false; // Set isCurrentSelection to false
     });
@@ -168,13 +169,18 @@ const HypothesisGameScreen = ({ }) => {
     </View>
   );
 
-  const onNextCard = () => {
+
+  const onNextCard = async () => {
     if (currentIndex < texts.length - 1) {
+      for (let userSentenceSpecification of userSentenceSpecifications) {
+        await createUserSentenceSpecification(userSentenceSpecification);
+      }
       setCurrentIndex(currentIndex + 1);
       setUserSentenceSpecifications([]); // Réinitialiser le récapitulatif des entités
       incrementPoints(5);
     }
   };
+  
 
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
@@ -187,14 +193,26 @@ const HypothesisGameScreen = ({ }) => {
           <View style={tw("mx-4")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
-          <TouchableOpacity
-            style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10")}
-            onPress={addSentenceSpecification}
+          <View style={tw(' flex')}
           >
-            <View style={tw("py-2")}>
-              <Text style={tw("text-white font-primary text-lg")}>Nouvelle hypothèse</Text>
-            </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
+              onPress={addSentenceSpecification}
+            >
+              <View style={tw("py-2 text-center")}>
+                <Text style={tw("text-white font-primary text-lg")}>Nouvelle hypothèse</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 my-1")}
+              onPress={onNextCard}
+            >
+              <View style={tw("py-2 text-center")}>
+                <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

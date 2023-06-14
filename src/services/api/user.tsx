@@ -1,5 +1,6 @@
 import { User } from "models/User";
 import api from "./index";
+// TODO mettre des try catch
 
 export const getUsers = async (): Promise<User[]> => {
   return await api.get("/users");
