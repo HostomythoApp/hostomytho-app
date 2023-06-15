@@ -77,7 +77,7 @@ const HypothesisGameScreen = ({ }) => {
               });
               // Begin the new selection
               setStartWordIndex(wordIndex);
-              return { ...word, isCurrentSelection: true, sentenceId: userSentenceSpecifications.length };
+              return { ...word, isCurrentSelection: true, sentenceId: userSentenceSpecifications.length, color: colors[colorIndex] };
             }
           } else {
             // Si un index de départ a été défini, sélectionnez tous les mots entre l'index de départ et l'index du mot cliqué
@@ -87,7 +87,7 @@ const HypothesisGameScreen = ({ }) => {
                 setStartWordIndex(null);
               }
               const isSelected = (idx >= startWordIndex && idx <= wordIndex) || (idx <= startWordIndex && idx >= wordIndex);
-              return { ...word, isSelected, isCurrentSelection: isSelected, sentenceId: userSentenceSpecifications.length };
+              return { ...word, isSelected, isCurrentSelection: isSelected, sentenceId: userSentenceSpecifications.length, color: colors[colorIndex] };
             }
           }
           return word;
@@ -100,32 +100,42 @@ const HypothesisGameScreen = ({ }) => {
   };
 
 
-
-
   const addSentenceSpecification = () => {
     const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
     selectedWords.forEach(word => {
       word.sentenceId = nextId;
-      word.isSelected = true;  // Set isSelected to true
-      word.isCurrentSelection = false; // Set isCurrentSelection to false
+      word.isSelected = true; 
+      word.isCurrentSelection = false; 
+      delete word.color; // Remove the temporary color from the word
     });
 
-    const startPosition = selectedWords[0].position; // <- récupère la position du premier mot
-    const endPosition = selectedWords[selectedWords.length - 1].position; // <- récupère la position du dernier mot
+    const startPosition = selectedWords[0].position; 
+    const endPosition = selectedWords[selectedWords.length - 1].position;
 
     // @ts-ignore
     setUserSentenceSpecifications([...userSentenceSpecifications, {
-      id: nextId,  // Utilisez nextId comme id
+      id: nextId,
       user_id: user?.id,
       text_id: texts[currentIndex].id,
       type: 1,
       content: selectedWords.map(word => word.text).join(' '),
       startPosition: startPosition,
-      endPosition: endPosition
+      endPosition: endPosition,
+      color: colors[colorIndex]
     }]);
 
     setNextId(nextId + 1);
     setColorIndex((colorIndex + 1) % colors.length);
+  };
+
+
+  const getSentenceColor = (sentenceId: number | null) => {
+    if (sentenceId === null) {
+      return "bg-transparent";
+    }
+
+    const sentence = userSentenceSpecifications.find(spec => spec.id === sentenceId);
+    return sentence ? sentence.color : "bg-transparent";
   };
 
   const removeUserSentenceSpecification = (sentenceId: number) => {
@@ -169,8 +179,9 @@ const HypothesisGameScreen = ({ }) => {
                 key={idx}
                 onPress={() => onWordPress(idx, index)}
                 style={tw(
-                  `m-0 p-[2px] ${word.isSelected ? colors[word.sentenceId % colors.length] : "bg-transparent"}`
+                  `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
                 )}
+
               >
                 <Text style={tw("text-2xl font-HandleeRegular")}>{word.text}</Text>
               </TouchableOpacity>
@@ -184,9 +195,8 @@ const HypothesisGameScreen = ({ }) => {
 
   const renderUserSentenceSpecification = (sentenceSpecification: any) => (
     <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
-
       <View style={tw("flex-shrink")}>
-        <Text style={tw(`text-lg mr-2 ${colors[userSentenceSpecifications.indexOf(sentenceSpecification) % colors.length]} font-primary`)}>{sentenceSpecification.content}</Text>
+        <Text style={tw(`text-lg mr-2 ${sentenceSpecification.color ? sentenceSpecification.color : ''} font-primary`)}>{sentenceSpecification.content}</Text>
       </View>
       <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
         <Entypo name="cross" size={24} color="red" />

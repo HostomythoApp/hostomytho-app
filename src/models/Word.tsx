@@ -4,4 +4,5 @@ export interface Word {
   sentenceId: number | null;
   isCurrentSelection?: boolean;
   position: number; 
+  color?: string;
 }
