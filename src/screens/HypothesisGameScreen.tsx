@@ -44,7 +44,6 @@ const HypothesisGameScreen = ({ }) => {
             if (word.includes("\n")) {
               return [
                 { text: word.replace("\n", ""), isSelected: false, sentenceId: null, isCurrentSelection: false },
-                { text: "<EOL>", isSelected: false, sentenceId: null, isCurrentSelection: false }
               ];
             } else {
               return { text: word, isSelected: false, sentenceId: null, isCurrentSelection: false };
@@ -65,13 +64,24 @@ const HypothesisGameScreen = ({ }) => {
     const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
         const newWords = text.content.map((word: Word, idx: number) => {
+          // Si l'index de départ n'a pas encore été défini
           if (startWordIndex === null) {
+            // Si l'index du mot cliqué est l'index de départ
             if (idx === wordIndex) {
+              // Cancel the previous selection if not added
+              const wordsToDeselect = text.content.filter(w => w.isCurrentSelection && w.sentenceId === userSentenceSpecifications.length);
+              wordsToDeselect.forEach(w => {
+                w.isCurrentSelection = false;
+                w.isSelected = false;  // Also reset isSelected
+              });
+              // Begin the new selection
               setStartWordIndex(wordIndex);
               return { ...word, isCurrentSelection: true, sentenceId: userSentenceSpecifications.length };
             }
           } else {
+            // Si un index de départ a été défini, sélectionnez tous les mots entre l'index de départ et l'index du mot cliqué
             if ((idx >= startWordIndex && idx <= wordIndex) || (idx <= startWordIndex && idx >= wordIndex)) {
+              // Réinitialisez l'index de départ à null seulement si un deuxième mot a été cliqué
               if (startWordIndex !== null && startWordIndex !== wordIndex) {
                 setStartWordIndex(null);
               }
@@ -87,6 +97,7 @@ const HypothesisGameScreen = ({ }) => {
     });
     setTexts(newTexts);
   };
+  
   
 
 

@@ -100,7 +100,6 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             if (word.includes("\n")) {
               return [
                 { text: word.replace("\n", ""), isSelected: false, sentenceId: null },
-                { text: "<EOL>", isSelected: false, sentenceId: null } // Marqueur de fin de ligne
               ];
             } else {
               return { text: word, isSelected: false, sentenceId: null };
@@ -188,10 +187,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
             {text.content.map((word: any, idx: number) => {
-              if (word.text === "<EOL>") {
-                // Ajouter un élément de remplissage à la fin de la ligne
-                return <View style={{ flexGrow: 1 }} />;
-              } else {
+             
                 return (
                   <TouchableOpacity
                     key={`${idx}-${word.text}`}
@@ -203,7 +199,6 @@ const PlausibilityGameDetailedScreen = ({ }) => {
                     <Text style={tw("text-2xl font-HandleeRegular")}>{word.text + " "}</Text>
                   </TouchableOpacity>
                 );
-              }
             })}
           </View>
         </View>
