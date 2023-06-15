@@ -31,8 +31,9 @@ const HypothesisGameScreen = ({ }) => {
   const [colorIndex, setColorIndex] = useState(0);
   const { incrementPoints } = useUser();
   const [startWordIndex, setStartWordIndex] = useState<number | null>(null);
-  const [selectionFinished, setSelectionFinished] = useState(false);
+  // const [selectionFinished, setSelectionFinished] = useState(false);
   const [nextId, setNextId] = useState(0);
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -40,13 +41,13 @@ const HypothesisGameScreen = ({ }) => {
         const response = await getAllTexts();
         const shuffledTexts = shuffleArray(response);
         const newtexts = shuffledTexts.slice(0, 10).map((text) => {
-          const words = text.content.split(' ').map((word: string) => {
+          const words = text.content.split(' ').map((word: string, idx: number) => {
             if (word.includes("\n")) {
               return [
-                { text: word.replace("\n", ""), isSelected: false, sentenceId: null, isCurrentSelection: false },
+                { text: word.replace("\n", ""), isSelected: false, sentenceId: null, isCurrentSelection: false, position: idx },
               ];
             } else {
-              return { text: word, isSelected: false, sentenceId: null, isCurrentSelection: false };
+              return { text: word, isSelected: false, sentenceId: null, isCurrentSelection: false, position: idx };
             }
           }).flat();
           return { ...text, content: words };
@@ -97,8 +98,8 @@ const HypothesisGameScreen = ({ }) => {
     });
     setTexts(newTexts);
   };
-  
-  
+
+
 
 
   const addSentenceSpecification = () => {
@@ -108,8 +109,21 @@ const HypothesisGameScreen = ({ }) => {
       word.isSelected = true;  // Set isSelected to true
       word.isCurrentSelection = false; // Set isCurrentSelection to false
     });
+
+    const startPosition = selectedWords[0].position; // <- récupère la position du premier mot
+    const endPosition = selectedWords[selectedWords.length - 1].position; // <- récupère la position du dernier mot
+
     // @ts-ignore
-    setUserSentenceSpecifications([...userSentenceSpecifications, { id: nextId, content: selectedWords.map(word => word.text).join(' ') }]);
+    setUserSentenceSpecifications([...userSentenceSpecifications, {
+      id: nextId,  // Utilisez nextId comme id
+      user_id: user?.id,
+      text_id: texts[currentIndex].id,
+      type: 1,
+      content: selectedWords.map(word => word.text).join(' '),
+      startPosition: startPosition,
+      endPosition: endPosition
+    }]);
+
     setNextId(nextId + 1);
     setColorIndex((colorIndex + 1) % colors.length);
   };
@@ -169,8 +183,11 @@ const HypothesisGameScreen = ({ }) => {
   };
 
   const renderUserSentenceSpecification = (sentenceSpecification: any) => (
-    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 `)}>
-      <Text style={tw(`text-lg mr-2 ${colors[sentenceSpecification.id % colors.length]} font-primary`)}>{sentenceSpecification.content}</Text>
+    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
+
+      <View style={tw("flex-shrink")}>
+        <Text style={tw(`text-lg mr-2 ${colors[userSentenceSpecifications.indexOf(sentenceSpecification) % colors.length]} font-primary`)}>{sentenceSpecification.content}</Text>
+      </View>
       <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
         <Entypo name="cross" size={24} color="red" />
       </TouchableOpacity>

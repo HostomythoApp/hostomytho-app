@@ -1,10 +1,9 @@
 export interface UserSentenceSpecification {
   id: number;
-  userId: number;
-  textId: number;
+  user_id?: number;
+  text_id: number;
   type: number;
   content: string;
   startPosition: number;
   endPosition: number;
-  createdAt: Date;
 }
