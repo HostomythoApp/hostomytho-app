@@ -65,7 +65,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
                 closeModal();
               }}
             >
-              <Text style={tw(" text-orange-500 font-semibold")}>Préciser la faute</Text>
+              <Text style={tw(" text-orange-500 font-semibold")}>Préciser le doute</Text>
             </TouchableOpacity>
 
             <TouchableOpacity

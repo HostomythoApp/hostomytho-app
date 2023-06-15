@@ -65,17 +65,13 @@ const HypothesisGameScreen = ({ }) => {
     const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
         const newWords = text.content.map((word: Word, idx: number) => {
-          // Si l'index de départ n'a pas encore été défini
           if (startWordIndex === null) {
-            // Si l'index du mot cliqué est l'index de départ
             if (idx === wordIndex) {
               setStartWordIndex(wordIndex);
               return { ...word, isCurrentSelection: true, sentenceId: userSentenceSpecifications.length };
             }
           } else {
-            // Si un index de départ a été défini, sélectionnez tous les mots entre l'index de départ et l'index du mot cliqué
             if ((idx >= startWordIndex && idx <= wordIndex) || (idx <= startWordIndex && idx >= wordIndex)) {
-              // Réinitialisez l'index de départ à null seulement si un deuxième mot a été cliqué
               if (startWordIndex !== null && startWordIndex !== wordIndex) {
                 setStartWordIndex(null);
               }
@@ -91,6 +87,7 @@ const HypothesisGameScreen = ({ }) => {
     });
     setTexts(newTexts);
   };
+  
 
 
   const addSentenceSpecification = () => {
@@ -180,7 +177,7 @@ const HypothesisGameScreen = ({ }) => {
       incrementPoints(5);
     }
   };
-  
+
 
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
