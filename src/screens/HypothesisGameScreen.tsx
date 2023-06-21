@@ -104,12 +104,12 @@ const HypothesisGameScreen = ({ }) => {
     const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
     selectedWords.forEach(word => {
       word.sentenceId = nextId;
-      word.isSelected = true; 
-      word.isCurrentSelection = false; 
+      word.isSelected = true;
+      word.isCurrentSelection = false;
       delete word.color; // Remove the temporary color from the word
     });
 
-    const startPosition = selectedWords[0].position; 
+    const startPosition = selectedWords[0].position;
     const endPosition = selectedWords[selectedWords.length - 1].position;
 
     // @ts-ignore
@@ -208,7 +208,8 @@ const HypothesisGameScreen = ({ }) => {
   const onNextCard = async () => {
     if (currentIndex < texts.length - 1) {
       for (let userSentenceSpecification of userSentenceSpecifications) {
-        await createUserSentenceSpecification(userSentenceSpecification);
+        const {id, ...rest} = userSentenceSpecification;
+        await createUserSentenceSpecification(rest);
       }
       setCurrentIndex(currentIndex + 1);
       setUserSentenceSpecifications([]); // Réinitialiser le récapitulatif des entités
