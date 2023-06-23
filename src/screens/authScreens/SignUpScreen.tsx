@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -118,12 +118,12 @@ const SignUpScreen = () => {
         // TODO liste de noms débiles
         const gender = Math.random() > 0.5 ? 'male' : 'female';
 
-        const name = (gender === 'male') 
-            ? detectiveNamesMale[Math.floor(Math.random() * detectiveNamesMale.length)] 
+        const name = (gender === 'male')
+            ? detectiveNamesMale[Math.floor(Math.random() * detectiveNamesMale.length)]
             : detectiveNamesFemale[Math.floor(Math.random() * detectiveNamesFemale.length)];
 
-        const keyword = (gender === 'male') 
-            ? keywordsMale[Math.floor(Math.random() * keywordsMale.length)] 
+        const keyword = (gender === 'male')
+            ? keywordsMale[Math.floor(Math.random() * keywordsMale.length)]
             : keywordsFemale[Math.floor(Math.random() * keywordsFemale.length)];
 
         setUsername(`${name} ${keyword}`);
@@ -132,38 +132,41 @@ const SignUpScreen = () => {
 
     return (
         <View style={tw("flex-1 justify-center items-center")}>
+            <ScrollView style={tw('w-full')}>
 
-            <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} isError={usernameError} />
-            {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} isError={usernameError} />
+                {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-            <FunctionButton text={"Générer un pseudo"} func={generatePseudo} />
+                <FunctionButton text={"Générer un pseudo"} func={generatePseudo} />
 
-            <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} isError={passwordError} />
-            {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} isError={passwordError} />
+                {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-            <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} onSubmitEditing={submit} isError={password2Error} />
-            {password2Error && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} onSubmitEditing={submit} isError={password2Error} />
+                {password2Error && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-            <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} onSubmitEditing={submit} />
+                <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} onSubmitEditing={submit} />
 
-            <View style={tw(' p-4')}>
-                {options.map((option) => (
-                    <RadioButton
-                        key={option.key}
-                        label={option.label}
-                        selected={selectedValue === option.key}
-                        onPress={() => {
-                            setSelectedValue(option.key)
-                            setDoctor(option.value)
-                        }}
-                    />
-                ))}
+                <View style={tw(' p-4')}>
+                    {options.map((option) => (
+                        <RadioButton
+                            key={option.key}
+                            label={option.label}
+                            selected={selectedValue === option.key}
+                            onPress={() => {
+                                setSelectedValue(option.key)
+                                setDoctor(option.value)
+                            }}
+                        />
+                    ))}
 
-            </View>
-            <FunctionButton text={"Inscription"} func={submit} />
-            <Text>
-                {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
-            </Text>
+                </View>
+                <FunctionButton text={"Inscription"} func={submit} />
+                <Text>
+                    {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
+                </Text>
+            </ScrollView>
+
         </View>
     );
 };

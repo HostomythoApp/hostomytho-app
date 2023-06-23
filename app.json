@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "codeine-app",
-    "slug": "codeine-app",
+    "name": "hostomytho",
+    "slug": "hostomytho",
     "version": "1.0.0",
-    "orientation": "paysage",
+    "orientation": "landscape",
     "icon": "./src/assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.hostomytho.hostomytho"
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "adad8738-a861-4171-8186-e2133adc05bc"
+      }
+    },
+    "owner": "hostomytho"
   }
 }

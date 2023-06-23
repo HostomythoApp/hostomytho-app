@@ -2,8 +2,9 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "esModuleInterop": true,
     "jsx": "react-native",
-    "baseUrl": "./src", 
+    "baseUrl": "./src",
     "paths": {
       "images/*": ["assets/images/*"],
       "themes/*": ["assets/themes/*"],

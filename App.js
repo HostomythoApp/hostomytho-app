@@ -1,8 +1,6 @@
 import "react-native-gesture-handler";
-// import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { TailwindProvider } from "tailwind-rn";
-import utilities from "tailwind/styles.json";
 import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "navigation/StackNavigator";
 import * as SplashScreen from "expo-splash-screen";
@@ -11,6 +9,7 @@ import { AuthProvider } from "services/context/AuthContext";
 import { UserProvider } from "services/context/UserContext";
 import { AchievementProvider } from "services/context/AchievementContext";
 import { QueryClient, QueryClientProvider } from "react-query";
+import utilities from "./styles.json";
 
 SplashScreen.preventAutoHideAsync();
 
