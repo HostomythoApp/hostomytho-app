@@ -121,7 +121,7 @@ const TemporalLinkGameScreen = () => {
               myStyles.postIt,
             ]}
           >
-            <Text style={tw("text-2xl font-HandleeRegular")}>
+            <Text style={tw("text-2xl font-secondary")}>
               {sentence.slice(entity.startIndex, entity.endIndex)}
             </Text>
           </TouchableOpacity>
@@ -134,7 +134,7 @@ const TemporalLinkGameScreen = () => {
             key={index}
             style={[tw("m-2 p-2 py-2 bg-[#FFE680]"), myStyles.postIt]}
           >
-            <Text style={tw("text-2xl font-HandleeRegular")}>{link.label}</Text>
+            <Text style={tw("text-2xl font-secondary")}>{link.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -148,7 +148,7 @@ const TemporalLinkGameScreen = () => {
               myStyles.postIt,
             ]}
           >
-            <Text style={tw("text-2xl font-HandleeRegular")}>
+            <Text style={tw("text-2xl font-secondary")}>
               {sentence.slice(entity.startIndex, entity.endIndex)}
             </Text>
           </TouchableOpacity>

@@ -22,3 +22,4 @@ web-build/
 # Tailwind dist
 src/utils/tailwind/tailwind.css
 src/utils/tailwind/styles.json
+styles.json

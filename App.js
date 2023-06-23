@@ -9,7 +9,8 @@ import { AuthProvider } from "services/context/AuthContext";
 import { UserProvider } from "services/context/UserContext";
 import { AchievementProvider } from "services/context/AchievementContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-import utilities from "./styles.json";
+// import utilities from "./styles.json";
+import utilities from "./src/utils/tailwind/styles.json";
 
 SplashScreen.preventAutoHideAsync();
 

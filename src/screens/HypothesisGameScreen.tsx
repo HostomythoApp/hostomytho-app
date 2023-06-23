@@ -183,7 +183,7 @@ const HypothesisGameScreen = ({ }) => {
                 )}
 
               >
-                <Text style={tw("text-2xl font-HandleeRegular")}>{word.text}</Text>
+                <Text style={tw("text-2xl font-secondary")}>{word.text}</Text>
               </TouchableOpacity>
             ))}
           </View>
