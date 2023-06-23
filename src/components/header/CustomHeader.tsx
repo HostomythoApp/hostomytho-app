@@ -20,9 +20,9 @@ const CustomHeader = ({
 
       <Text style={tw('font-primary text-center flex-grow text-2xl')}>{title}</Text>
 
-      <TouchableOpacity onPress={() => navigation.openDrawer()}>
+      {/* <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <Entypo name="menu" size={24} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

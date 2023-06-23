@@ -1,6 +1,7 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "screens/MainScreen";
+import MainScreenBoard from "screens/MainScreenBoard";
 import ProfileScreen from "screens/ProfileScreen";
 import HomeScreen from "screens/HomeScreen";
 import { TouchableOpacity } from 'react-native';
@@ -38,6 +39,11 @@ const Stack = createNativeStackNavigator();
 const StackNavigator = ({ }) => {
   return (
     <Stack.Navigator
+      screenOptions={{
+        contentStyle: {
+          backgroundColor: '#FFF'
+        }
+      }}
     >
       <Stack.Group
         screenOptions={({ navigation }) => ({
@@ -45,131 +51,138 @@ const StackNavigator = ({ }) => {
           headerLeft: () => <TouchableOpacity onPress={navigation.goBack} />,
         })}
       >
+
+        <Stack.Screen name="Main"
+          component={MainScreen}
+          options={({ navigation }) => ({
+            header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
+          })} />
+
+        <Stack.Screen name="MainBoard"
+          component={MainScreenBoard}
+          options={({ }) => ({
+            headerShown: false
+          })} />
+
+        <Stack.Screen name="HypothesisGame"
+          component={HypothesisGameScreen} options={({ navigation }) => ({
+            header: () => <CustomHeaderInGame title="Trouver les hypothèses" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="PlausibilityGame"
+          component={PlausibilityGameScreen} options={({ navigation }) => ({
+            header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="PlausibilityGameDetailed"
+          component={PlausibilityGameDetailedScreen} options={({ navigation }) => ({
+            header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="Profile"
+          component={ProfileScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Profil" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="ProfileSettings"
+          component={ProfileSettingsScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Paramètre du profil" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="Achievements"
+          component={AchievementsScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Tous les hauts faits" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="TemporalLinkGame"
+          component={TemporalLinkGameScreen} options={({ navigation }) => ({
+            header: () => <CustomHeaderInGame title="Spécifier les liens temporelles" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="TemporalEntity"
+          component={TemporalEntityScreen} options={({ navigation }) => ({
+            header: () => <CustomHeaderInGame title="Trouver les entités et expressions temporelles" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="TypeSentenceGame"
+          component={TypeSentenceGameScreen} options={({ navigation }) => ({
+            header: () => <CustomHeaderInGame title="Spécifier le type des phrases" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login"
+          component={SignInScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Connexion" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="SignUpScreen"
+          component={SignUpScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Je crée mon compte" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="Settings" component={SettingsScreen}
+          options={({ navigation }) => ({
+            header: () => <CustomHeader title="Paramètres" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="Notif" component={NotifScreen}
+          options={({ navigation }) => ({
+            header: () => <CustomHeader title="Notification" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="Help" component={HelpScreen}
+          options={({ navigation }) => ({
+            header: () => <CustomHeader title="Contact" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen}
+          options={({ navigation }) => ({
+            header: () => <CustomHeader title="Politique de confidentialité" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="Theme" component={ThemeScreen}
+          options={({ navigation }) => ({
+            header: () => <CustomHeader title="Thème" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="Ranking" component={RankingScreen}
+          options={({ navigation }) => ({
+            header: () => <CustomHeader title="Classements" navigation={navigation} />,
+          })} />
+
+        {/* Partie admin */}
+        <Stack.Screen name="Admin"
+          options={{
+            headerShown: false
+          }}
+        >
+          {/* @ts-ignore */}
+          {(props) => <AdminNavigator {...props} />}
+        </Stack.Screen>
+
+        <Stack.Screen name="AdminHome"
+          component={AdminHomeScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Espace administrateur" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="AdminLogin"
+          component={AdminLoginScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Connexion admin" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="EditRewards"
+          component={EditRewardsSreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Gérer les récompenses" navigation={navigation} />,
+          })} />
+
+        <Stack.Screen name="ExportData"
+          component={ExportDataSreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Exporter des données" navigation={navigation} />,
+          })} />
+
+        <Stack.Screen name="ManageTexts"
+          component={ManageTextsScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Gestion des textes" navigation={navigation} />,
+          })} />
+
+        <Stack.Screen name="ManageUsers"
+          component={ManageUsersSreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Gestion des utilisateurs" navigation={navigation} />,
+          })} />
+
+        <Stack.Screen name="Statistics"
+          component={StatisticsSreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Statistiques générales de l'application" navigation={navigation} />,
+          })} />
+
+        <Stack.Screen name="UserMessaging"
+          component={UserMessagingScreen} options={({ navigation }) => ({
+            header: () => <CustomHeader title="Contact avec les utilisateurs" navigation={navigation} />,
+          })} />
       </Stack.Group>
-      <Stack.Screen name="Main"
-        component={MainScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
-        })} />
 
-
-<Stack.Screen name="HypothesisGame"
-        component={HypothesisGameScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Trouver les hypothèses" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="PlausibilityGame"
-        component={PlausibilityGameScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="PlausibilityGameDetailed"
-        component={PlausibilityGameDetailedScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Profile"
-        component={ProfileScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Profil" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="ProfileSettings"
-        component={ProfileSettingsScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Paramètre du profil" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Achievements"
-        component={AchievementsScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Tous les hauts faits" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="TemporalLinkGame"
-        component={TemporalLinkGameScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Spécifier les liens temporelles" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="TemporalEntity"
-        component={TemporalEntityScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Trouver les entités et expressions temporelles" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="TypeSentenceGame"
-        component={TypeSentenceGameScreen} options={({ navigation }) => ({
-          header: () => <CustomHeaderInGame title="Spécifier le type des phrases" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Login"
-        component={SignInScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Connexion" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="SignUpScreen"
-        component={SignUpScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Je crée mon compte" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Settings" component={SettingsScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Paramètres" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Notif" component={NotifScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Notification" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Help" component={HelpScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Contact" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Politique de confidentialité" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Theme" component={ThemeScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Thème" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="Ranking" component={RankingScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Classements" navigation={navigation} />,
-        })} />
-
-      {/* Partie admin */}
-      <Stack.Screen name="Admin"
-        options={{
-          headerShown: false
-        }}
-      >
-        {/* @ts-ignore */}
-        {(props) => <AdminNavigator {...props} />}
-      </Stack.Screen>
-
-      <Stack.Screen name="AdminHome"
-        component={AdminHomeScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Espace administrateur" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="AdminLogin"
-        component={AdminLoginScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Connexion admin" navigation={navigation} />,
-        })} />
-      <Stack.Screen name="EditRewards"
-        component={EditRewardsSreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Gérer les récompenses" navigation={navigation} />,
-        })} />
-
-      <Stack.Screen name="ExportData"
-        component={ExportDataSreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Exporter des données" navigation={navigation} />,
-        })} />
-
-      <Stack.Screen name="ManageTexts"
-        component={ManageTextsScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Gestion des textes" navigation={navigation} />,
-        })} />
-
-      <Stack.Screen name="ManageUsers"
-        component={ManageUsersSreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Gestion des utilisateurs" navigation={navigation} />,
-        })} />
-
-      <Stack.Screen name="Statistics"
-        component={StatisticsSreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Statistiques générales de l'application" navigation={navigation} />,
-        })} />
-
-      <Stack.Screen name="UserMessaging"
-        component={UserMessagingScreen} options={({ navigation }) => ({
-          header: () => <CustomHeader title="Contact avec les utilisateurs" navigation={navigation} />,
-        })} />
     </Stack.Navigator>
   );
 };

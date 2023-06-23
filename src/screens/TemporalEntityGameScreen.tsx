@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
@@ -101,7 +102,7 @@ const TemporalEntityScreen = ({ }) => {
       return null;
     }
     return (
-      <SafeAreaView style={tw("flex-1 bg-white")}>
+      <SafeAreaView style={tw("flex-1 ")}>
 
         <View style={tw("flex-row justify-end items-center mb-4 mr-2")}>
           <TouchableOpacity
@@ -164,27 +165,31 @@ const TemporalEntityScreen = ({ }) => {
   };
 
   return (
-    <SafeAreaView style={tw("flex-1 bg-white")}>
-      <ScrollView contentContainerStyle={tw("")}>
+    <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>
 
-        <View style={tw("flex-1 justify-center items-center")}>
-          {renderSentence(sentences[currentIndex], currentIndex)}
-        </View>
-        <View style={tw("flex-row mb-4 mt-8 justify-center")}>
-          <View style={tw("mx-4")}>
-            {temporalEntities.map(entity => renderTemporalEntity(entity))}
+      <SafeAreaView style={tw("flex-1 ")}>
+        <ScrollView contentContainerStyle={tw("")}>
+
+          <View style={tw("flex-1 justify-center items-center")}>
+            {renderSentence(sentences[currentIndex], currentIndex)}
           </View>
-          <TouchableOpacity
-            style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10")}
-            onPress={addTemporalEntity}
-          >
-            <View style={tw("py-2")}>
-              <Text style={tw("text-white font-primary text-lg")}>Nouvelle entité</Text>
+          <View style={tw("flex-row mb-4 mt-8 justify-center")}>
+            <View style={tw("mx-4")}>
+              {temporalEntities.map(entity => renderTemporalEntity(entity))}
             </View>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            <TouchableOpacity
+              style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10")}
+              onPress={addTemporalEntity}
+            >
+              <View style={tw("py-2")}>
+                <Text style={tw("text-white font-primary text-lg")}>Nouvelle entité</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
+
   );
 };
 
