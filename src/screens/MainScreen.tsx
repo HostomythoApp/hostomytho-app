@@ -27,6 +27,7 @@ const MainScreen = ({ }) => {
                         <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
                         <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
                         <PrimaryButton title="Tableau de bord" destination="MainBoard" />
+                        <PrimaryButton title="Tableau de bord" destination="MainEmptyBoard" />
                         {/* <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" /> */}
                     </View>
                     {!authState.isAuthenticated &&

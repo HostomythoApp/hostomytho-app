@@ -2,6 +2,7 @@ import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "screens/MainScreen";
 import MainScreenBoard from "screens/MainScreenBoard";
+import MainScreenEmptyBoard from "screens/MainScreenEmptyBoard";
 import ProfileScreen from "screens/ProfileScreen";
 import HomeScreen from "screens/HomeScreen";
 import { TouchableOpacity } from 'react-native';
@@ -63,6 +64,11 @@ const StackNavigator = ({ }) => {
             headerShown: false
           })} />
 
+        <Stack.Screen name="MainEmptyBoard"
+          component={MainScreenEmptyBoard}
+          options={({ }) => ({
+            headerShown: false
+          })} />
 
         <Stack.Screen name="HypothesisGame"
           component={HypothesisGameScreen} options={({ navigation }) => ({

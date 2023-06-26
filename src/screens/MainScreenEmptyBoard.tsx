@@ -9,14 +9,14 @@ import { useUser } from "services/context/UserContext";
 import LogoutButton from "components/LogoutButton";
 import { useNavigation } from "@react-navigation/native";
 
-const MainScreenBoard = ({ }) => {
+const MainScreenEmptyBoard = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
     const { user } = useUser();
     const navigation = useNavigation();
 
     return (
-        <ImageBackground source={require('images/main_background.png')} style={tw('flex-1 relative')}>
+        <ImageBackground source={require('images/board_empty.png')} style={tw('flex-1 relative')}>
 
             <View style={tw("flex-1 items-center")}>
                 <ScrollView style={tw('w-full')}>
@@ -41,13 +41,30 @@ const MainScreenBoard = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("Main")} style={tw('absolute top-10 left-40')}>
                                 <Image source={require('images/post_it.png')} style={tw('w-10 h-10')} />
                             </TouchableOpacity>
-                            {/* <PrimaryButton title="Trouver les hypothèses" destination="HypothesisGame" />
-                            <PrimaryButton title="Trouver les conditions" destination="HypothesisGame" />
-                            <PrimaryButton title="Trouver les négations" destination="HypothesisGame" />
-                            <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
-                            <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
-                            <PrimaryButton title="Tableau de bord" destination="MainScreenBoard" /> */}
-                            {/* <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" /> */}
+
+                            <TouchableOpacity onPress={() => navigation.navigate("PlausibilityGame")} style={tw('absolute top-30 left-10')}>
+                                <Image source={require('images/multi_post_it.png')} style={tw('w-10 h-10')} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => navigation.navigate("HypothesisGame")} style={tw('absolute left-90')}>
+                                <Image source={require('images/paper.png')} style={tw('w-10 h-10')} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => navigation.navigate("TypeSentenceGame")} style={tw('absolute top-10 right-40')}>
+                                <Image source={require('images/paper_2.png')} style={tw('w-10 h-10')} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => navigation.navigate("TemporalEntity")} style={tw('absolute bottom-40 right-80')}>
+                                <Image source={require('images/post_it_orange.png')} style={tw('w-10 h-10')} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => navigation.navigate("TemporalLinkGame")} style={tw('absolute bottom-10 left-40')}>
+                                <Image source={require('images/polaroid_picture.png')} style={tw('w-10 h-10')} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => navigation.navigate("Main")} style={tw('absolute top-60 left-80')}>
+                                <Image source={require('images/polaroid_smile.png')} style={tw('w-10 h-10')} />
+                            </TouchableOpacity>
                         </View>
                         {!authState.isAuthenticated &&
                             <View>
@@ -69,4 +86,4 @@ const MainScreenBoard = ({ }) => {
     );
 };
 
-export default MainScreenBoard;
+export default MainScreenEmptyBoard;

@@ -9,19 +9,14 @@
 			"position": "relative"
 		}
 	},
-	"left-10": {
+	"left-40": {
 		"style": {
-			"left": 40
+			"left": 160
 		}
 	},
 	"top-10": {
 		"style": {
 			"top": 40
-		}
-	},
-	"left-40": {
-		"style": {
-			"left": 160
 		}
 	},
 	"m-0": {
@@ -793,6 +788,11 @@
 			"textAlign": "right"
 		}
 	},
+	"font-SpringSnowstorm": {
+		"style": {
+			"fontFamily": "SpringSnowstorm"
+		}
+	},
 	"font-primary": {
 		"style": {
 			"fontFamily": "Pally"
@@ -801,26 +801,6 @@
 	"font-secondary": {
 		"style": {
 			"fontFamily": "Pally"
-		}
-	},
-	"font-MarckScript": {
-		"style": {
-			"fontFamily": "MarckScript"
-		}
-	},
-	"font-SpringSnowstorm": {
-		"style": {
-			"fontFamily": "SpringSnowstorm"
-		}
-	},
-	"font-HandleeRegular": {
-		"style": {
-			"fontFamily": "HandleeRegular"
-		}
-	},
-	"font-PatrickHandRegular": {
-		"style": {
-			"fontFamily": "PatrickHandRegular"
 		}
 	},
 	"text-2xl": {
@@ -833,6 +813,12 @@
 		"style": {
 			"fontSize": 30,
 			"lineHeight": 36
+		}
+	},
+	"text-4xl": {
+		"style": {
+			"fontSize": 36,
+			"lineHeight": 40
 		}
 	},
 	"text-base": {
@@ -857,18 +843,6 @@
 		"style": {
 			"fontSize": 12,
 			"lineHeight": 16
-		}
-	},
-	"text-5xl": {
-		"style": {
-			"fontSize": 48,
-			"lineHeight": 1
-		}
-	},
-	"text-4xl": {
-		"style": {
-			"fontSize": 36,
-			"lineHeight": 40
 		}
 	},
 	"font-bold": {
@@ -955,6 +929,12 @@
 			"color": "rgb(21 128 61 / var(--tw-text-opacity))"
 		}
 	},
+	"text-orange-400": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(251 146 60 / var(--tw-text-opacity))"
+		}
+	},
 	"text-orange-500": {
 		"style": {
 			"--tw-text-opacity": 1,
@@ -971,12 +951,6 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
-		}
-	},
-	"text-orange-400": {
-		"style": {
-			"--tw-text-opacity": 1,
-			"color": "rgb(251 146 60 / var(--tw-text-opacity))"
 		}
 	},
 	"dark:text-white": {
@@ -1002,13 +976,6 @@
 		"style": {
 			"fontSize": 36,
 			"lineHeight": 40
-		},
-		"media": "(min-width: 768px)"
-	},
-	"md:text-8xl": {
-		"style": {
-			"fontSize": 96,
-			"lineHeight": 1
 		},
 		"media": "(min-width: 768px)"
 	},
