@@ -106,7 +106,7 @@ const TemporalEntityScreen = ({ }) => {
 
         <View style={tw("flex-row justify-end items-center mb-4 mr-2")}>
           <TouchableOpacity
-            style={tw("bg-blue-500 py-2 px-4 rounded-lg flex-row items-center")}
+            style={tw("bg-primary py-2 px-4 rounded-lg flex-row items-center")}
             onPress={onNextCard}
           >
             <Text style={tw('font-primary mr-2 text-white text-base')}>Phrase suivante</Text>
@@ -178,7 +178,7 @@ const TemporalEntityScreen = ({ }) => {
               {temporalEntities.map(entity => renderTemporalEntity(entity))}
             </View>
             <TouchableOpacity
-              style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10")}
+              style={tw("bg-primary px-4 rounded-lg mx-4 h-10")}
               onPress={addTemporalEntity}
             >
               <View style={tw("py-2")}>

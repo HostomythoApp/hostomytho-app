@@ -241,7 +241,7 @@ const HypothesisGameScreen = ({ }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 my-1")}
+              style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
               onPress={onNextCard}
             >
               <View style={tw("py-2 text-center")}>
