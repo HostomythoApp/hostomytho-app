@@ -53,6 +53,11 @@ const StackNavigator = ({ }) => {
         })}
       >
 
+        <Stack.Screen name="MainEmptyBoard"
+          component={MainScreenEmptyBoard}
+          options={({ }) => ({
+            headerShown: false
+          })} />
         <Stack.Screen name="Main"
           component={MainScreen}
           options={({ navigation }) => ({
@@ -64,11 +69,6 @@ const StackNavigator = ({ }) => {
             headerShown: false
           })} />
 
-        <Stack.Screen name="MainEmptyBoard"
-          component={MainScreenEmptyBoard}
-          options={({ }) => ({
-            headerShown: false
-          })} />
 
         <Stack.Screen name="HypothesisGame"
           component={HypothesisGameScreen} options={({ navigation }) => ({

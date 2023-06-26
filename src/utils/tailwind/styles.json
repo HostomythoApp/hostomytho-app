@@ -9,14 +9,49 @@
 			"position": "relative"
 		}
 	},
+	"bottom-10": {
+		"style": {
+			"bottom": 40
+		}
+	},
+	"bottom-40": {
+		"style": {
+			"bottom": 160
+		}
+	},
+	"left-10": {
+		"style": {
+			"left": 40
+		}
+	},
 	"left-40": {
 		"style": {
 			"left": 160
 		}
 	},
+	"left-80": {
+		"style": {
+			"left": 320
+		}
+	},
+	"right-40": {
+		"style": {
+			"right": 160
+		}
+	},
+	"right-80": {
+		"style": {
+			"right": 320
+		}
+	},
 	"top-10": {
 		"style": {
 			"top": 40
+		}
+	},
+	"top-60": {
+		"style": {
+			"top": 240
 		}
 	},
 	"m-0": {
