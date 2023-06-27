@@ -635,6 +635,12 @@
 			"backgroundColor": "rgb(249 168 212 / var(--tw-bg-opacity))"
 		}
 	},
+	"bg-primary": {
+		"style": {
+			"--tw-bg-opacity": 1,
+			"backgroundColor": "rgb(179 103 0 / var(--tw-bg-opacity))"
+		}
+	},
 	"bg-red-200": {
 		"style": {
 			"--tw-bg-opacity": 1,
@@ -662,12 +668,6 @@
 		"style": {
 			"--tw-bg-opacity": 1,
 			"backgroundColor": "rgb(253 224 71 / var(--tw-bg-opacity))"
-		}
-	},
-	"bg-primary": {
-		"style": {
-			"--tw-bg-opacity": 1,
-			"backgroundColor": "rgb(179 103 0 / var(--tw-bg-opacity))"
 		}
 	},
 	"p-2": {
@@ -809,21 +809,6 @@
 			"fontFamily": "Pally"
 		}
 	},
-	"font-MarckScript": {
-		"style": {
-			"fontFamily": "MarckScript"
-		}
-	},
-	"font-HandleeRegular": {
-		"style": {
-			"fontFamily": "HandleeRegular"
-		}
-	},
-	"font-PatrickHandRegular": {
-		"style": {
-			"fontFamily": "PatrickHandRegular"
-		}
-	},
 	"text-2xl": {
 		"style": {
 			"fontSize": 24,
@@ -864,12 +849,6 @@
 		"style": {
 			"fontSize": 12,
 			"lineHeight": 16
-		}
-	},
-	"text-5xl": {
-		"style": {
-			"fontSize": 48,
-			"lineHeight": 1
 		}
 	},
 	"font-bold": {
@@ -980,6 +959,13 @@
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
 		}
 	},
+	"dark:text-orange-400": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(251 146 60 / var(--tw-text-opacity))"
+		},
+		"media": "(prefers-color-scheme: dark)"
+	},
 	"dark:text-white": {
 		"style": {
 			"--tw-text-opacity": 1,
@@ -1009,20 +995,6 @@
 	"md:text-6xl": {
 		"style": {
 			"fontSize": 60,
-			"lineHeight": 1
-		},
-		"media": "(min-width: 768px)"
-	},
-	"md:text-7xl": {
-		"style": {
-			"fontSize": 72,
-			"lineHeight": 1
-		},
-		"media": "(min-width: 768px)"
-	},
-	"md:text-8xl": {
-		"style": {
-			"fontSize": 96,
 			"lineHeight": 1
 		},
 		"media": "(min-width: 768px)"

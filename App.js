@@ -15,7 +15,6 @@ import utilities from "./src/utils/tailwind/styles.json";
 SplashScreen.preventAutoHideAsync();
 
 const linking = {
-  prefixes: ["http://localhost:19006", "localhost:19006://"],
   config: {
     screens: {
       Admin: "admin",

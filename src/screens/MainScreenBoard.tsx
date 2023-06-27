@@ -49,12 +49,12 @@ const MainScreenBoard = ({ }) => {
                             <PrimaryButton title="Tableau de bord" destination="MainScreenBoard" /> */}
                             {/* <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" /> */}
                         </View>
-                        {!authState.isAuthenticated &&
+                        {/* {!authState.isAuthenticated &&
                             <View>
                                 <PrimaryButton title="Connexion" destination="Login" />
                                 <PrimaryButton title="Inscription" destination="SignUpScreen" />
                             </View>
-                        }
+                        } */}
                         {authState.isAuthenticated &&
                             <View>
                                 {/* <PrimaryButton title="Profil" destination="Profile" />

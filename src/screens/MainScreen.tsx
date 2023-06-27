@@ -34,7 +34,6 @@ const MainScreen = ({ }) => {
                         <View>
                             <PrimaryButton title="Connexion" destination="Login" />
                             <PrimaryButton title="Inscription" destination="SignUpScreen" />
-                            <PrimaryButton title="Profil" destination="Profile" />
                         </View>
                     }
                     {authState.isAuthenticated &&

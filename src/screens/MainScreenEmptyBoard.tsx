@@ -24,7 +24,7 @@ const MainScreenEmptyBoard = ({ }) => {
                 <View style={StyleSheet.absoluteFill}>
                     <Text
                         style={[
-                            tw("mb-8 font-bold text-center text-orange-400 dark:text-white font-SpringSnowstorm"),
+                            tw("mb-8 font-bold text-center text-orange-400 dark:text-orange-400 font-SpringSnowstorm"),
                             {
                                 position: 'absolute',
                                 top: '74%',
@@ -41,54 +41,54 @@ const MainScreenEmptyBoard = ({ }) => {
 
                     <View style={StyleSheet.absoluteFill}>
                         <TouchableOpacity onPress={() => navigation.navigate("Main")} style={{ position: 'absolute', top: '13%', left: '25%' }}>
-                            <Image source={require('images/post_it.png')} style={{ width: windowWidth * 0.1, aspectRatio: 1 }} />
+                            <Image source={require('images/post_it.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("PlausibilityGame")} style={{ position: 'absolute', top: '30%', left: '17%' }}>
-                            <Image source={require('images/paper.png')} style={{ width: windowWidth * 0.1, aspectRatio: 1 }} />
+                            <Image source={require('images/paper.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("HypothesisGame")} style={{ position: 'absolute', top: '20%', left: '70%' }}>
-                            <Image source={require('images/post_it2.png')} style={{ width: windowWidth * 0.1, aspectRatio: 1 }} />
+                            <Image source={require('images/post_it2.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("TemporalEntity")} style={{ position: 'absolute', top: '40%', left: '40%' }}>
-                            <Image source={require('images/paper_3.png')} style={{ width: windowWidth * 0.12, aspectRatio: 1 }} />
+                            <Image source={require('images/paper_3.png')} style={{ width: windowWidth * 0.12 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("PlausibilityGameDetailed")} style={{ position: 'absolute', top: '52%', right: '24%' }}>
-                            <Image source={require('images/paper_2.png')} style={{ width: windowWidth * 0.1, aspectRatio: 1 }} />
+                            <Image source={require('images/paper_2.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("TemporalLinkGame")} style={{ position: 'absolute', top: '15%', left: '50%' }}>
-                            <Image source={require('images/polaroid_picture.png')} style={{ width: windowWidth * 0.1, aspectRatio: 1 }} />
+                            <Image source={require('images/polaroid_picture.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("TypeSentenceGame")} style={{ position: 'absolute', top: '50%', left: '57%' }}>
-                            <Image source={require('images/polaroid_smile.png')} style={{ width: windowWidth * 0.1, aspectRatio: 1 }} />
+                            <Image source={require('images/polaroid_smile.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
                     </View>
 
                 </View>
-                {!authState.isAuthenticated &&
+                {/* {!authState.isAuthenticated &&
                     <View>
                         <PrimaryButton title="Connexion" destination="Login" />
                         <PrimaryButton title="Inscription" destination="SignUpScreen" />
                     </View>
-                }
-                {authState.isAuthenticated &&
+                } */}
+                {/* {authState.isAuthenticated && */}
                     <TouchableOpacity onPress={() => navigation.navigate("Settings")} style={{ position: 'absolute', top: '5%', right: '6%' }}>
                         {/* <AntDesign name="setting" size={windowWidth * 0.04} color="whitesmoke" /> */}
-                        <Image source={require('images/settings1.png')} style={{ width: windowWidth * 0.05, aspectRatio: 1, resizeMode: 'contain' }} />
+                        <Image source={require('images/settings1.png')} style={{ width: windowWidth * 0.05 , height: windowWidth * 0.1, resizeMode: 'contain' }} />
 
                     </TouchableOpacity>
-                }
+                {/* } */}
 
-                {authState.isAuthenticated &&
+                {/* {authState.isAuthenticated && */}
                     <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={{ position: 'absolute', bottom: '5%', right: '5%' }}>
-                        <Image source={require('images/icon_detective2.png')} style={{ width: windowWidth * 0.1, aspectRatio: 1, resizeMode: 'contain' }} />
+                        <Image source={require('images/icon_detective2.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1, resizeMode: 'contain' }} />
                     </TouchableOpacity>
-                }
+                {/* } */}
             </View>
 
         </ImageBackground>

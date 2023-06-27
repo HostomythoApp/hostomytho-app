@@ -52,7 +52,6 @@ const StackNavigator = ({ }) => {
           headerLeft: () => <TouchableOpacity onPress={navigation.goBack} />,
         })}
       >
-
         <Stack.Screen name="MainEmptyBoard"
           component={MainScreenEmptyBoard}
           options={({ }) => ({
@@ -68,7 +67,6 @@ const StackNavigator = ({ }) => {
           options={({ }) => ({
             headerShown: false
           })} />
-
 
         <Stack.Screen name="HypothesisGame"
           component={HypothesisGameScreen} options={({ navigation }) => ({
