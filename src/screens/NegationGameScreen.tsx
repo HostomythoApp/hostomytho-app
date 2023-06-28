@@ -8,6 +8,7 @@ import { useUser } from 'services/context/UserContext';
 import { getAllTexts } from "services/api/texts";
 import shuffleArray from "utils/functions";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
+import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 
 const colors = [
   "bg-yellow-300",
@@ -208,7 +209,7 @@ const NegationGameScreen = ({ }) => {
   const onNextCard = async () => {
     if (currentIndex < texts.length - 1) {
       for (let userSentenceSpecification of userSentenceSpecifications) {
-        const {id, ...rest} = userSentenceSpecification;
+        const { id, ...rest } = userSentenceSpecification;
         await createUserSentenceSpecification(rest);
       }
       setCurrentIndex(currentIndex + 1);
@@ -221,6 +222,7 @@ const NegationGameScreen = ({ }) => {
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("")}>
+        <CustomHeaderInGame title="Trouver les négations" />
 
         <View style={tw("flex-1 justify-center items-center")}>
           {renderText(texts[currentIndex], currentIndex)}

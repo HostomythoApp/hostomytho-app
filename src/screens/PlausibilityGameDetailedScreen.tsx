@@ -9,6 +9,7 @@ import { getAllTexts } from "services/api/texts";
 import Modal from 'react-native-modal';
 import ErrorButtonPlausibilityGame from "components/ErrorButtonPlausibilityGame";
 import shuffleArray from "utils/functions";
+import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 
 export interface SplitText {
   id: number;
@@ -174,7 +175,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
 
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-12"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-2 lg:mt-8 xl:mt-12"),
             {
               minHeight: 300,
               shadowColor: "#000",
@@ -187,18 +188,18 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
             {text.content.map((word: any, idx: number) => {
-             
-                return (
-                  <TouchableOpacity
-                    key={`${idx}-${word.text}`}
-                    onPress={() => onWordPress(idx, index)}
-                    style={tw(
-                      `m-0 p-[2px] ${word.isSelected ? "bg-yellow-300" : "bg-transparent"}`
-                    )}
-                  >
-                    <Text style={tw("text-2xl font-secondary")}>{word.text + " "}</Text>
-                  </TouchableOpacity>
-                );
+
+              return (
+                <TouchableOpacity
+                  key={`${idx}-${word.text}`}
+                  onPress={() => onWordPress(idx, index)}
+                  style={tw(
+                    `m-0 p-[1px] lg:p-[2px] ${word.isSelected ? "bg-yellow-300" : "bg-transparent"}`
+                  )}
+                >
+                  <Text style={tw("text-2xl font-secondary")}>{word.text + " "}</Text>
+                </TouchableOpacity>
+              );
             })}
           </View>
         </View>
@@ -207,10 +208,12 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   };
 
   return (
+
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("flex-grow")}>
+        <CustomHeaderInGame title="Plausibilité de textes" />
         {/* Cards */}
-        <View style={tw("flex-1 -mt-6")}>
+        <View style={tw("flex-1")}>
           {renderText(texts[currentIndex], currentIndex)}
         </View>
       </ScrollView>
@@ -272,36 +275,36 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         </View>
       ) : (
         // Boutons de plausibilité  
-        < View style={tw('flex flex-row justify-evenly my-3')}>
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
+        < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
             onPress={async () => {
               setIsModalVisible(true);
             }} >
             <Entypo name="cross" size={32} color="red" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
             onPress={async () => {
               setIsModalVisible(true);
             }} >
             <Entypo name="flag" size={28} color="orange" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
             onPress={() => {
               setIsModalVisible(true);
             }}  >
             <AntDesign name="question" size={30} color="orange" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
             onPress={async () => {
               setIsModalVisible(true);
             }} >
             <Ionicons name="checkmark" size={24} color="#48d1cc" />
           </TouchableOpacity>
           <TouchableOpacity
-            style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
+            style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
             onPress={async () => {
               if (currentIndex + 1 < texts.length) {
                 setCurrentIndex(currentIndex + 1);

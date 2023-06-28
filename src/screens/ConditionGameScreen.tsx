@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
@@ -8,6 +8,7 @@ import { useUser } from 'services/context/UserContext';
 import { getAllTexts } from "services/api/texts";
 import shuffleArray from "utils/functions";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
+import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 
 const colors = [
   "bg-yellow-300",
@@ -158,7 +159,7 @@ const ConditionGameScreen = ({ }) => {
       return null;
     }
     return (
-      <SafeAreaView style={tw("flex-1 bg-white")}>
+      <SafeAreaView style={tw("flex-1 ")}>
 
         <View
           style={[
@@ -208,7 +209,7 @@ const ConditionGameScreen = ({ }) => {
   const onNextCard = async () => {
     if (currentIndex < texts.length - 1) {
       for (let userSentenceSpecification of userSentenceSpecifications) {
-        const {id, ...rest} = userSentenceSpecification;
+        const { id, ...rest } = userSentenceSpecification;
         await createUserSentenceSpecification(rest);
       }
       setCurrentIndex(currentIndex + 1);
@@ -219,39 +220,44 @@ const ConditionGameScreen = ({ }) => {
 
 
   return (
-    <SafeAreaView style={tw("flex-1 bg-white")}>
-      <ScrollView contentContainerStyle={tw("")}>
+    <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>
 
-        <View style={tw("flex-1 justify-center items-center")}>
-          {renderText(texts[currentIndex], currentIndex)}
-        </View>
-        <View style={tw("flex-row mb-4 mt-8 justify-center")}>
-          <View style={tw("mx-4")}>
-            {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
-          </View>
-          <View style={tw(' flex')}
-          >
-            <TouchableOpacity
-              style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
-              onPress={addSentenceSpecification}
-            >
-              <View style={tw("py-2 text-center")}>
-                <Text style={tw("text-white font-primary text-lg")}>Nouvelle condition</Text>
-              </View>
-            </TouchableOpacity>
+      <SafeAreaView style={tw("flex-1 ")}>
+        <ScrollView contentContainerStyle={tw("")}>
+          <CustomHeaderInGame title="Trouver les conditions" backgroundColor="bg-transparent" textColor="white" />
 
-            <TouchableOpacity
-              style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
-              onPress={onNextCard}
-            >
-              <View style={tw("py-2 text-center")}>
-                <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-              </View>
-            </TouchableOpacity>
+          <View style={tw("flex-1 justify-center items-center")}>
+            {renderText(texts[currentIndex], currentIndex)}
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+          <View style={tw("flex-row mb-4 mt-8 justify-center")}>
+            <View style={tw("mx-4")}>
+              {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
+            </View>
+            <View style={tw(' flex')}
+            >
+              <TouchableOpacity
+                style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
+                onPress={addSentenceSpecification}
+              >
+                <View style={tw("py-2 text-center")}>
+                  <Text style={tw("text-white font-primary text-lg")}>Nouvelle condition</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
+                onPress={onNextCard}
+              >
+                <View style={tw("py-2 text-center")}>
+                  <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
+
   );
 };
 

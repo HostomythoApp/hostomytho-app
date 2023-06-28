@@ -12,6 +12,7 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { TemporalEntity } from "models/TemporalEntity";
 import { Word } from "models/Word";
 import { useUser } from 'services/context/UserContext';
+import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 
 const colors = [
   "bg-yellow-300",
@@ -180,6 +181,7 @@ const TypeSentenceGameScreen = ({ }) => {
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("")}>
+        <CustomHeaderInGame title="Définir les types de phrases" />
 
         <View style={tw("flex-1 justify-center items-center")}>
           {renderSentence(sentences[currentIndex], currentIndex)}

@@ -7,6 +7,7 @@ import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
 import { Text as TextType } from "models/Text";
 import { useUser } from 'services/context/UserContext';
+import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -82,6 +83,7 @@ const PlausibilityGameScreen = ({ }) => {
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("flex-grow")}>
+        <CustomHeaderInGame title="Plausibilité de textes" />
 
         {/* Cards */}
         <View style={tw("flex-1 -mt-6")}>

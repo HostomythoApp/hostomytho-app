@@ -51,7 +51,9 @@ const StackNavigator = ({ }) => {
       <Stack.Group
         screenOptions={({ navigation }) => ({
           presentation: 'modal',
-          headerLeft: () => <TouchableOpacity onPress={navigation.goBack} />,
+          // headerLeft: () => <TouchableOpacity onPress={navigation.goBack} />,
+          headerShown: false
+
         })}
       >
         <Stack.Screen name="MainEmptyBoard"
@@ -70,59 +72,34 @@ const StackNavigator = ({ }) => {
             headerShown: false
           })} />
 
-        <Stack.Screen name="HypothesisGame"
-          component={HypothesisGameScreen} options={({ navigation }) => ({
-            header: () => <CustomHeaderInGame title="Trouver les hypothèses" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="NegationGame"
-          component={NegationGameScreen} options={({ navigation }) => ({
-            header: () => <CustomHeaderInGame title="Trouver les négations" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="ConditionGame"
-          component={ConditionGameScreen} options={({ navigation }) => ({
-            header: () => <CustomHeaderInGame title="Trouver les conditions" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="PlausibilityGame"
-          component={PlausibilityGameScreen} options={({ navigation }) => ({
-            header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="PlausibilityGameDetailed"
-          component={PlausibilityGameDetailedScreen} options={({ navigation }) => ({
-            header: () => <CustomHeaderInGame title="Plausibilité de textes" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="Profile"
-          component={ProfileScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Profil" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="ProfileSettings"
-          component={ProfileSettingsScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Paramètre du profil" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="Achievements"
-          component={AchievementsScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Tous les hauts faits" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="TemporalLinkGame"
-          component={TemporalLinkGameScreen} options={({ navigation }) => ({
-            header: () => <CustomHeaderInGame title="Spécifier les liens temporelles" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="TemporalEntity"
-          component={TemporalEntityScreen} options={({ navigation }) => ({
-            header: () => <CustomHeaderInGame title="Trouver les entités et expressions temporelles" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="TypeSentenceGame"
-          component={TypeSentenceGameScreen} options={({ navigation }) => ({
-            header: () => <CustomHeaderInGame title="Spécifier le type des phrases" navigation={navigation} />,
-          })} />
+        <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
+
+        <Stack.Screen name="NegationGame" component={NegationGameScreen} />
+
+        <Stack.Screen name="ConditionGame" component={ConditionGameScreen} />
+
+        <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
+
+        <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
+
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
+
+        <Stack.Screen name="Achievements" component={AchievementsScreen} />
+
+        <Stack.Screen name="TemporalLinkGame" component={TemporalLinkGameScreen} />
+
+        <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
+
+        <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
+
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Login"
-          component={SignInScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Connexion" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="SignUpScreen"
-          component={SignUpScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Je crée mon compte" navigation={navigation} />,
-          })} />
+
+        <Stack.Screen name="Login" component={SignInScreen} />
+
+        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+
         <Stack.Screen name="Settings" component={SettingsScreen}
           options={({ navigation }) => ({
             header: () => <CustomHeader title="Paramètres" navigation={navigation} />,

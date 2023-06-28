@@ -7,7 +7,8 @@ const PrivacyPolicysScreen = ({}) => {
     const tw = useTailwind();
 
     return (
-        <View>
+        <View style={tw('text-black')}
+        >
             <MainTitle title={"Politique de confidentialité"}/>
         </View>
     );
