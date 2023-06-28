@@ -46,11 +46,12 @@ const CustomHeaderInGame = ({
         <MaterialCommunityIcons name="backburger" size={24} color="black" />
       </TouchableOpacity>
       <Text style={tw('font-primary text-center flex-grow text-2xl')}>{title}</Text>
-      {user?.points &&
+      {user?.points !== undefined &&
         <Animated.Text style={[tw('font-primary'), animatedStyle]}>
           <MaterialIcons style={tw('mr-1')} name="person-search" size={16} color="black" />
           {Math.round(displayPoints)} points
-        </Animated.Text>}
+        </Animated.Text>
+      }
     </View>
   );
 };

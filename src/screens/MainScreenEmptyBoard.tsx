@@ -60,11 +60,11 @@ const MainScreenEmptyBoard = ({ }) => {
                             <Image source={require('images/paper_2.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("TemporalLinkGame")} style={{ position: 'absolute', top: '15%', left: '50%' }}>
+                        <TouchableOpacity onPress={() => navigation.navigate("ConditionGame")} style={{ position: 'absolute', top: '15%', left: '50%' }}>
                             <Image source={require('images/polaroid_picture.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("TypeSentenceGame")} style={{ position: 'absolute', top: '50%', left: '57%' }}>
+                        <TouchableOpacity onPress={() => navigation.navigate("NegationGame")} style={{ position: 'absolute', top: '50%', left: '57%' }}>
                             <Image source={require('images/polaroid_smile.png')} style={{ width: windowWidth * 0.1 , height: windowWidth * 0.1 }} />
                         </TouchableOpacity>
                     </View>

@@ -63,7 +63,7 @@ const ProfileScreen = (props: any) => {
                     <Text style={tw('text-lg font-bold mb-2 w-full')}>
                         Progression avant la prochaine récompense
                     </Text>
-                    <View style={tw('bg-gray-300 h-4 rounded')}>
+                    <View style={tw('bg-gray-300 h-4 rounded ')}>
                         <View
                             style={[
                                 tw('bg-blue-500 h-full rounded-l'),
@@ -110,7 +110,7 @@ const ProfileScreen = (props: any) => {
                         {userAchievements.length > 0 ? (
                             <>
                                 {userAchievements.slice(0, 2).map((achievement) => (
-                                    <View style={tw("flex-row items-center p-4 bg-white rounded-lg mb-3")} key={achievement.id}>
+                                    <View style={tw("flex-row items-center p-4 bg-white rounded-lg")} key={achievement.id}>
                                         <AchievementIcon achievement={achievement} />
                                         <View style={tw("ml-3")}>
                                             <Text style={tw("font-bold text-lg")}>
@@ -173,7 +173,8 @@ const ProfileScreen = (props: any) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <View>
+                <View style={tw('mb-4')}
+                >
                     <PrimaryButton title="Paramètres du profil" destination="ProfileSettings" />
                 </View>
             </View>

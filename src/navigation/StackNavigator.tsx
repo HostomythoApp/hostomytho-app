@@ -21,6 +21,8 @@ import ManageUsersSreen from "screens/AdminScreens/ManageUsersSreen";
 import StatisticsSreen from "screens/AdminScreens/StatisticsSreen";
 import UserMessagingScreen from "screens/AdminScreens/UserMessagingScreen";
 import HypothesisGameScreen from "screens/HypothesisGameScreen";
+import ConditionGameScreen from "screens/ConditionGameScreen";
+import NegationGameScreen from "screens/NegationGameScreen";
 import AchievementsScreen from "screens/AchievementsScreen";
 import RankingScreen from "screens/RankingScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
@@ -71,6 +73,14 @@ const StackNavigator = ({ }) => {
         <Stack.Screen name="HypothesisGame"
           component={HypothesisGameScreen} options={({ navigation }) => ({
             header: () => <CustomHeaderInGame title="Trouver les hypothèses" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="NegationGame"
+          component={NegationGameScreen} options={({ navigation }) => ({
+            header: () => <CustomHeaderInGame title="Trouver les négations" navigation={navigation} />,
+          })} />
+        <Stack.Screen name="ConditionGame"
+          component={ConditionGameScreen} options={({ navigation }) => ({
+            header: () => <CustomHeaderInGame title="Trouver les conditions" navigation={navigation} />,
           })} />
         <Stack.Screen name="PlausibilityGame"
           component={PlausibilityGameScreen} options={({ navigation }) => ({
