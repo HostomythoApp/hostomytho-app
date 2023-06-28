@@ -11,6 +11,7 @@ import { AchievementProvider } from "services/context/AchievementContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 // import utilities from "./styles.json";
 import utilities from "./src/utils/tailwind/styles.json";
+import { StatusBar } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,6 +37,7 @@ export default function App() {
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
             <View style={styles.container} onLayout={onLayoutRootView}>
+              <StatusBar hidden />
               <NavigationContainer linking={linking}>
                 <TailwindProvider utilities={utilities}>
                   <StackNavigator />

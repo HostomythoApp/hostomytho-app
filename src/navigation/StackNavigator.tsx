@@ -33,8 +33,6 @@ import ThemeScreen from "screens/settingsScreens/ThemeScreen";
 import TemporalLinkGameScreen from "screens/TemporalLinkGameScreen";
 import TypeSentenceGameScreen from "screens/TypeSentenceGameScreen";
 import CustomHeader from "components/header/CustomHeader";
-import CustomHeaderInGame from "components/header/CustomHeaderInGame";
-import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import AdminNavigator from "./AdminNavigator";
 
 const Stack = createNativeStackNavigator();
