@@ -18,7 +18,7 @@ import EditRewardsSreen from "screens/AdminScreens/EditRewardsSreen";
 import ExportDataSreen from "screens/AdminScreens/ExportDataSreen";
 import ManageTextsScreen from "screens/AdminScreens/ManageTextsScreen";
 import ManageUsersSreen from "screens/AdminScreens/ManageUsersSreen";
-import StatisticsSreen from "screens/AdminScreens/StatisticsSreen";
+import AdminStatisticsScreen from "screens/AdminScreens/AdminStatisticsScreen";
 import UserMessagingScreen from "screens/AdminScreens/UserMessagingScreen";
 import HypothesisGameScreen from "screens/HypothesisGameScreen";
 import ConditionGameScreen from "screens/ConditionGameScreen";
@@ -31,6 +31,7 @@ import PrivacyPolicyScreen from "screens/settingsScreens/PrivacyPolicyScreen";
 import SettingsScreen from "screens/SettingsScreen";
 import ThemeScreen from "screens/settingsScreens/ThemeScreen";
 import TemporalLinkGameScreen from "screens/TemporalLinkGameScreen";
+import StatisticsScreen from "screens/StatisticsScreen";
 import TypeSentenceGameScreen from "screens/TypeSentenceGameScreen";
 import CustomHeader from "components/header/CustomHeader";
 import AdminNavigator from "./AdminNavigator";
@@ -59,11 +60,13 @@ const StackNavigator = ({ }) => {
           options={({ }) => ({
             headerShown: false
           })} />
+
         <Stack.Screen name="Main"
           component={MainScreen}
           options={({ navigation }) => ({
             header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
           })} />
+
         <Stack.Screen name="MainBoard"
           component={MainScreenBoard}
           options={({ }) => ({
@@ -98,30 +101,19 @@ const StackNavigator = ({ }) => {
 
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
 
-        <Stack.Screen name="Settings" component={SettingsScreen}
-          options={({ navigation }) => ({
-            header: () => <CustomHeader title="Paramètres" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="Notif" component={NotifScreen}
-          options={({ navigation }) => ({
-            header: () => <CustomHeader title="Notification" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="Help" component={HelpScreen}
-          options={({ navigation }) => ({
-            header: () => <CustomHeader title="Contact" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen}
-          options={({ navigation }) => ({
-            header: () => <CustomHeader title="Politique de confidentialité" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="Theme" component={ThemeScreen}
-          options={({ navigation }) => ({
-            header: () => <CustomHeader title="Thème" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="Ranking" component={RankingScreen}
-          options={({ navigation }) => ({
-            header: () => <CustomHeader title="Classements" navigation={navigation} />,
-          })} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+
+        <Stack.Screen name="Notif" component={NotifScreen} />
+
+        <Stack.Screen name="Help" component={HelpScreen} />
+
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+
+        <Stack.Screen name="Theme" component={ThemeScreen} />
+
+        <Stack.Screen name="Ranking" component={RankingScreen} />
+        
+        <Stack.Screen name="Stats" component={StatisticsScreen} />
 
         {/* Partie admin */}
         <Stack.Screen name="Admin"
@@ -162,7 +154,7 @@ const StackNavigator = ({ }) => {
           })} />
 
         <Stack.Screen name="Statistics"
-          component={StatisticsSreen} options={({ navigation }) => ({
+          component={AdminStatisticsScreen} options={({ navigation }) => ({
             header: () => <CustomHeader title="Statistiques générales de l'application" navigation={navigation} />,
           })} />
 

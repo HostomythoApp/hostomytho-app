@@ -4,6 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { getUsersOrderedByPoints } from 'services/api/user';
 import { User } from "models/User";
 import { useUser } from 'services/context/UserContext';
+import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 
 const RankingScreen = ({ }) => {
     const tw = useTailwind();
@@ -49,6 +50,7 @@ const RankingScreen = ({ }) => {
 
     return (
         <ScrollView style={tw('')}>
+            <CustomHeaderEmpty title="Classement" />
             <View style={tw("flex-1 p-4 mx-auto min-w-[540px]")}>
                 <Text style={tw('text-xl mb-4')}>Classement général</Text>
                 {users.map((item, index) => renderItem({ item, index }))}

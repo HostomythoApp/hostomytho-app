@@ -9,9 +9,9 @@ import { AuthProvider } from "services/context/AuthContext";
 import { UserProvider } from "services/context/UserContext";
 import { AchievementProvider } from "services/context/AchievementContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-// import utilities from "./styles.json";
 import utilities from "./src/utils/tailwind/styles.json";
 import { StatusBar } from "react-native";
+import * as NavigationBar from "expo-navigation-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,6 +26,7 @@ const linking = {
 export default function App() {
   const { fontsLoaded, onLayoutRootView } = useLoadFonts();
   const queryClient = new QueryClient();
+  NavigationBar.setVisibilityAsync("hidden");
 
   if (!fontsLoaded) {
     return null;

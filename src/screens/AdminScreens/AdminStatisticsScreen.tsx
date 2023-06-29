@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
 
-const StatisticsSreen = ({}) => {
+const AdminStatisticsScreen = ({}) => {
   const tw = useTailwind();
 
   return (
@@ -10,4 +10,4 @@ const StatisticsSreen = ({}) => {
   );
 };
 
-export default StatisticsSreen;
+export default AdminStatisticsScreen;

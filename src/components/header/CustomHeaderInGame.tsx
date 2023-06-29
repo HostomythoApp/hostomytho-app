@@ -12,8 +12,8 @@ import Animated, {
 
 const CustomHeaderInGame = ({
   title,
-  backgroundColor = 'bg-white', // Paramètre pour la couleur de fond
-  textColor = 'black', // Paramètre pour la couleur du texte
+  backgroundColor = 'bg-white',
+  textColor = 'black',
 }: {
   title: string;
   backgroundColor?: string;

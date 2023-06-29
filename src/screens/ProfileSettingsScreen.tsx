@@ -5,6 +5,7 @@ import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
 import FunctionButton from "components/FunctionButton";
 import LogoutButton from "components/LogoutButton";
+import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
 
 const ProfileSettingsScreen = (props: any) => {
     const tw = useTailwind();
@@ -17,6 +18,7 @@ const ProfileSettingsScreen = (props: any) => {
 
     return (
         <ScrollView style={tw('flex-1 p-4')}>
+            <CustomHeaderEmpty title="Paramètre du profil" />
             <View style={tw('mx-auto min-w-[540px]')}>
 
 

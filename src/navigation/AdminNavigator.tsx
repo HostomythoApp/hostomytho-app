@@ -9,7 +9,7 @@ function AdminNavigator() {
         <Stack.Navigator initialRouteName="AdminHome">
             <Stack.Screen name="AdminHome" component={AdminHomeScreen}
                 options={({ navigation }) => ({
-                    header: () => <CustomHeaderEmpty title="Menu principal" navigation={navigation} />,
+                    header: () => <CustomHeaderEmpty title="Menu principal" />,
                 })}
             />
         </Stack.Navigator>

@@ -5,6 +5,7 @@ import { getAchievementsWithUserStatus } from "services/api/achievements";
 import { useUser } from 'services/context/UserContext';
 import { Achievement } from "models/Achievement";
 import AchievementIcon from 'components/AchievementIcon';
+import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
 
 const AchievementsScreen = () => {
     const [achievements, setAchievements] = useState<Achievement[]>([]);
@@ -25,6 +26,7 @@ const AchievementsScreen = () => {
 
     return (
         <View style={tw('flex-1 bg-gray-100')}>
+            <CustomHeaderEmpty title="Haut faits" />
             <FlatList
                 data={achievements}
                 renderItem={({ item }) => (

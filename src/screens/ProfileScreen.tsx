@@ -10,6 +10,7 @@ import { getUserAchievements } from 'services/api/achievements';
 import { Achievement } from 'models/Achievement';
 // import AchievementItem from "components/AchievementItem";
 import AchievementIcon from 'components/AchievementIcon';
+import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
 
 interface Rank {
     id: number;
@@ -54,6 +55,7 @@ const ProfileScreen = (props: any) => {
 
     return (
         <ScrollView style={tw('flex-1 p-4')}>
+            <CustomHeaderEmpty title="Profil" />
             <View style={tw('mx-auto min-w-[540px]')}>
                 <Text style={tw('text-2xl font-bold mb-2 text-center')}>{user?.username}</Text>
                 {/* TODO Vérifier la synchronisation des points avec la bdd */}
