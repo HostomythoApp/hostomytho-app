@@ -76,9 +76,8 @@ const PlausibilityGameDetailedScreen = ({ }) => {
                 setIsModalVisible(false);
                 if (currentIndex + 1 < texts.length) {
                   setCurrentIndex(currentIndex + 1);
-                  console.log("scrollView");
-                  scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
                   incrementPoints(5)
+                  scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
                 } else {
                   // TODO afficher qu'il n'y a plus de texte
                 }
@@ -248,12 +247,11 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             onPress={async () => {
               if (wordsSelected && coherenceSelected) {
                 if (currentIndex + 1 < texts.length) {
-                  scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
                   setCurrentIndex(currentIndex + 1);
-                  console.log("scrollView");
                   incrementPoints(10)
                   setHighlightEnabled(false)
                   setErrorSpecifying(false)
+                  scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
                   // Réinitialisation de l'état
                   const newTexts = texts.map((text, idx) => {
                     if (idx === currentIndex) {
@@ -312,11 +310,9 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
             onPress={async () => {
               if (currentIndex + 1 < texts.length) {
-                scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-                console.log("scrollView");
-
                 setCurrentIndex(currentIndex + 1);
                 incrementPoints(5);
+                scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
               } else {
                 // TODO afficher qu'il n'y a plus de texte
               }

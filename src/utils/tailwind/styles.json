@@ -261,11 +261,6 @@
 			"height": 56
 		}
 	},
-	"h-16": {
-		"style": {
-			"height": 64
-		}
-	},
 	"h-20": {
 		"style": {
 			"height": 80
@@ -309,11 +304,6 @@
 	"w-14": {
 		"style": {
 			"width": 56
-		}
-	},
-	"w-16": {
-		"style": {
-			"width": 64
 		}
 	},
 	"w-20": {
@@ -821,11 +811,6 @@
 			"textAlign": "center"
 		}
 	},
-	"text-right": {
-		"style": {
-			"textAlign": "right"
-		}
-	},
 	"font-SpringSnowstorm": {
 		"style": {
 			"fontFamily": "SpringSnowstorm"
@@ -839,6 +824,51 @@
 	"font-secondary": {
 		"style": {
 			"fontFamily": "Pally"
+		}
+	},
+	"font-BubblegumSans": {
+		"style": {
+			"fontFamily": "BubblegumSans"
+		}
+	},
+	"font-Bungee": {
+		"style": {
+			"fontFamily": "Bungee"
+		}
+	},
+	"font-BungeeInline": {
+		"style": {
+			"fontFamily": "BungeeInline"
+		}
+	},
+	"font-CabinSketchBold": {
+		"style": {
+			"fontFamily": "CabinSketchBold"
+		}
+	},
+	"font-CabinSketch": {
+		"style": {
+			"fontFamily": "CabinSketch"
+		}
+	},
+	"font-IrishGrover": {
+		"style": {
+			"fontFamily": "IrishGrover"
+		}
+	},
+	"font-MochiyPopOne": {
+		"style": {
+			"fontFamily": "MochiyPopOne"
+		}
+	},
+	"font-OleoScriptBold": {
+		"style": {
+			"fontFamily": "OleoScriptBold"
+		}
+	},
+	"font-OleoScriptRegular": {
+		"style": {
+			"fontFamily": "OleoScriptRegular"
 		}
 	},
 	"text-2xl": {
@@ -995,6 +1025,12 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
+		}
+	},
+	"text-orange-700": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(194 65 12 / var(--tw-text-opacity))"
 		}
 	},
 	"dark:text-orange-400": {

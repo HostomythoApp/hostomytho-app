@@ -20,6 +20,9 @@ module.exports = {
         SpringSnowstorm: ['SpringSnowstorm'],
         HandleeRegular: ['HandleeRegular'],
         PatrickHandRegular: ['PatrickHandRegular'],
+        BubblegumSans: ['BubblegumSans'],
+        IrishGrover: ['IrishGrover'],
+        MochiyPopOne: ['MochiyPopOne'],
       }
     },
   },

@@ -30,8 +30,8 @@ const RankingScreen = ({ }) => {
                     setHasMoreUsers(true);
                 }
             });
+            
     };
-
     const renderItem = ({ item, index }: { item: User, index: number }) => (
         <View
             key={item.id}
@@ -60,10 +60,11 @@ const RankingScreen = ({ }) => {
                     </TouchableOpacity>
                 )}
                 {hasMoreUsers && (
-                    <TouchableOpacity onPress={() => setPage(page + 1)} style={tw('text-right')}
-                    >
-                        <Text style={tw('text-blue-500 mt-2')}>Page suivante</Text>
-                    </TouchableOpacity>
+                    <View style={tw('flex-row justify-end')}>
+                        <TouchableOpacity onPress={() => setPage(page + 1)}>
+                            <Text style={tw('text-blue-500 mt-2')}>Page suivante</Text>
+                        </TouchableOpacity>
+                    </View>
                 )}
             </View>
         </ScrollView>

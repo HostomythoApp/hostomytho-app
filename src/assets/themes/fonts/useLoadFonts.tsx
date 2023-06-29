@@ -9,6 +9,10 @@ const fontAssets = {
   "HandleeRegular": require("./Handlee-Regular.ttf"),
   "PatrickHandRegular": require("./PatrickHand-Regular.ttf"),
 
+  "BubblegumSans": require("./BubblegumSans-Regular.ttf"),
+  "IrishGrover": require("./IrishGrover-Regular.ttf"),
+  "MochiyPopOne": require("./MochiyPopOne-Regular.ttf"),
+
 };
 
 export const useLoadFonts = () => {
