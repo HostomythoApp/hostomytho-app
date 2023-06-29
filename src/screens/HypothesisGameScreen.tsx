@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
@@ -35,7 +35,8 @@ const HypothesisGameScreen = ({ }) => {
   // const [selectionFinished, setSelectionFinished] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
-
+  const scrollViewRef = useRef<ScrollView | null>(null);
+  
   useEffect(() => {
     const fetchTexts = async () => {
       try {
@@ -215,13 +216,14 @@ const HypothesisGameScreen = ({ }) => {
       setCurrentIndex(currentIndex + 1);
       setUserSentenceSpecifications([]); // Réinitialiser le récapitulatif des entités
       incrementPoints(5);
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     }
   };
 
 
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
-      <ScrollView contentContainerStyle={tw("")}>
+      <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
         <CustomHeaderInGame title="Trouver les hypothèses" />
 
         <View style={tw("flex-1 justify-center items-center")}>

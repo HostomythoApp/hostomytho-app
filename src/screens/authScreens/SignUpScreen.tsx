@@ -10,6 +10,7 @@ import { useAuth } from "services/context/AuthContext";
 import { RootStackNavigationProp } from "navigation/Types";
 import { User } from "models/User";
 import { useUser } from "services/context/UserContext";
+import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 
 const SignUpScreen = () => {
 
@@ -133,6 +134,7 @@ const SignUpScreen = () => {
     return (
         <View style={tw("flex-1 justify-center items-center")}>
             <ScrollView style={tw('w-full')}>
+                <CustomHeaderEmpty title="Inscription" />
 
                 <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} isError={usernameError} />
                 {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}

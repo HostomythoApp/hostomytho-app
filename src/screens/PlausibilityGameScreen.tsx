@@ -198,8 +198,8 @@ const PlausibilityGameScreen = ({ }) => {
 
       {/* Boutons de plausibilité */}
       {!swipedAll && (
-        <View style={tw('flex flex-row justify-evenly mb-4')}>
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-red-200')}
+        < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
             onPress={async () => {
               await updateSwipeFromButton('left');
               swipeRef.current?.swipeLeft();
@@ -207,7 +207,7 @@ const PlausibilityGameScreen = ({ }) => {
             <Entypo name="cross" size={32} color="red" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-orange-100')}
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
             onPress={async () => {
               await updateSwipeFromButton('left');
               swipeRef.current?.swipeLeft();
@@ -215,12 +215,12 @@ const PlausibilityGameScreen = ({ }) => {
             <Entypo name="flag" size={28} color="orange" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-yellow-100')}
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
             onPress={() => swipeRef.current?.swipeTop()}  >
             <AntDesign name="question" size={30} color="orange" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-50')}
+          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
             onPress={async () => {
               await updateSwipeFromButton('right');
               swipeRef.current?.swipeRight();
@@ -228,7 +228,8 @@ const PlausibilityGameScreen = ({ }) => {
             <Ionicons name="checkmark" size={24} color="#48d1cc" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-16 h-16 bg-green-200')}
+          <TouchableOpacity
+            style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
             onPress={async () => {
               await updateSwipeFromButton('right');
               swipeRef.current?.swipeRight();

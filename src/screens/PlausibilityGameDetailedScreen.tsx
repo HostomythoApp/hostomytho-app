@@ -37,6 +37,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   const [selectedErrorType, setSelectedErrorType] = useState<string | null>(null);
   const [wordsSelected, setWordsSelected] = useState(false);
   const [coherenceSelected, setCoherenceSelected] = useState(false);
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
 
   const ModalPlausibilityGameDetailed: FC<ModalPlausibilityGameDetailedProps> = ({ isVisible, closeModal, setIsModalVisible, setHighlightEnabled }) => {
@@ -75,6 +76,8 @@ const PlausibilityGameDetailedScreen = ({ }) => {
                 setIsModalVisible(false);
                 if (currentIndex + 1 < texts.length) {
                   setCurrentIndex(currentIndex + 1);
+                  console.log("scrollView");
+                  scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
                   incrementPoints(5)
                 } else {
                   // TODO afficher qu'il n'y a plus de texte
@@ -210,7 +213,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   return (
 
     <SafeAreaView style={tw("flex-1 bg-white")}>
-      <ScrollView contentContainerStyle={tw("flex-grow")}>
+      <ScrollView ref={scrollViewRef} contentContainerStyle={tw("flex-grow")}>
         <CustomHeaderInGame title="Plausibilité de textes" />
         {/* Cards */}
         <View style={tw("flex-1")}>
@@ -245,7 +248,9 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             onPress={async () => {
               if (wordsSelected && coherenceSelected) {
                 if (currentIndex + 1 < texts.length) {
+                  scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
                   setCurrentIndex(currentIndex + 1);
+                  console.log("scrollView");
                   incrementPoints(10)
                   setHighlightEnabled(false)
                   setErrorSpecifying(false)
@@ -307,6 +312,9 @@ const PlausibilityGameDetailedScreen = ({ }) => {
             style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
             onPress={async () => {
               if (currentIndex + 1 < texts.length) {
+                scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+                console.log("scrollView");
+
                 setCurrentIndex(currentIndex + 1);
                 incrementPoints(5);
               } else {

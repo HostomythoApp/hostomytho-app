@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
@@ -35,6 +35,7 @@ const NegationGameScreen = ({ }) => {
   // const [selectionFinished, setSelectionFinished] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -159,7 +160,7 @@ const NegationGameScreen = ({ }) => {
       return null;
     }
     return (
-      <SafeAreaView style={tw("flex-1 bg-white")}>
+      <SafeAreaView style={tw("flex-1 ")}>
 
         <View
           style={[
@@ -215,45 +216,50 @@ const NegationGameScreen = ({ }) => {
       setCurrentIndex(currentIndex + 1);
       setUserSentenceSpecifications([]); // Réinitialiser le récapitulatif des entités
       incrementPoints(5);
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true }); 
     }
   };
-
+  
 
   return (
-    <SafeAreaView style={tw("flex-1 bg-white")}>
-      <ScrollView contentContainerStyle={tw("")}>
-        <CustomHeaderInGame title="Trouver les négations" />
+    <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>
 
-        <View style={tw("flex-1 justify-center items-center")}>
-          {renderText(texts[currentIndex], currentIndex)}
-        </View>
-        <View style={tw("flex-row mb-4 mt-8 justify-center")}>
-          <View style={tw("mx-4")}>
-            {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
-          </View>
-          <View style={tw(' flex')}
-          >
-            <TouchableOpacity
-              style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
-              onPress={addSentenceSpecification}
-            >
-              <View style={tw("py-2 text-center")}>
-                <Text style={tw("text-white font-primary text-lg")}>Nouvelle négation</Text>
-              </View>
-            </TouchableOpacity>
+      <SafeAreaView style={tw("flex-1 ")}>
+        <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
+          <CustomHeaderInGame title="Trouver les négations" backgroundColor="bg-transparent" textColor="white" />
 
-            <TouchableOpacity
-              style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
-              onPress={onNextCard}
-            >
-              <View style={tw("py-2 text-center")}>
-                <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-              </View>
-            </TouchableOpacity>
+          <View style={tw("flex-1 justify-center items-center")}>
+            {renderText(texts[currentIndex], currentIndex)}
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+          <View style={tw("flex-row mb-4 mt-8 justify-center")}>
+            <View style={tw("mx-4")}>
+              {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
+            </View>
+            <View style={tw(' flex')}
+            >
+              <TouchableOpacity
+                style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
+                onPress={addSentenceSpecification}
+              >
+                <View style={tw("py-2 text-center")}>
+                  <Text style={tw("text-white font-primary text-lg")}>Nouvelle négation</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
+                onPress={onNextCard}
+              >
+                <View style={tw("py-2 text-center")}>
+                  <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
+
   );
 };
 

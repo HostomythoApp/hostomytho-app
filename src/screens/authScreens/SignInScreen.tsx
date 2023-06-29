@@ -8,6 +8,7 @@ import { useAuth } from "services/context/AuthContext";
 import { signInUser } from "services/api/user";
 import { useUser } from "services/context/UserContext";
 import { RootStackNavigationProp } from "navigation/Types";
+import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 
 const LoginScreen = () => {
     const tw = useTailwind();
@@ -51,6 +52,7 @@ const LoginScreen = () => {
 
     return (
         <View style={tw("flex-1 justify-center items-center")}>
+            <CustomHeaderEmpty title="Connexion" />
             <MainInput
                 text={"Pseudo"}
                 value={username}

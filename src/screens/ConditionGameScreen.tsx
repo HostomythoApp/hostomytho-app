@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
@@ -35,6 +35,7 @@ const ConditionGameScreen = ({ }) => {
   // const [selectionFinished, setSelectionFinished] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -215,15 +216,16 @@ const ConditionGameScreen = ({ }) => {
       setCurrentIndex(currentIndex + 1);
       setUserSentenceSpecifications([]); // Réinitialiser le récapitulatif des entités
       incrementPoints(5);
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true }); 
     }
   };
-
+  
 
   return (
     <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>
 
       <SafeAreaView style={tw("flex-1 ")}>
-        <ScrollView contentContainerStyle={tw("")}>
+        <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
           <CustomHeaderInGame title="Trouver les conditions" backgroundColor="bg-transparent" textColor="white" />
 
           <View style={tw("flex-1 justify-center items-center")}>
