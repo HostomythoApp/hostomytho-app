@@ -26,6 +26,7 @@
     "web": {
       "favicon": "./src/assets/images/favicon.png"
     },
+    "plugins": [["./src/utils/plugins/withDisableForcedDarkModeAndroid.js", {}]],
     "extra": {
       "eas": {
         "projectId": "adad8738-a861-4171-8186-e2133adc05bc"

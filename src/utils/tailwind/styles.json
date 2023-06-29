@@ -241,6 +241,11 @@
 			"display": "flex"
 		}
 	},
+	"hidden": {
+		"style": {
+			"display": "none"
+		}
+	},
 	"h-10": {
 		"style": {
 			"height": 40
