@@ -17,24 +17,25 @@ const ProfileSettingsScreen = (props: any) => {
     }
 
     return (
-        <ScrollView style={tw('flex-1 p-4')}>
-            <CustomHeaderEmpty title="Paramètre du profil" />
-            <View style={tw('mx-auto min-w-[540px]')}>
+        <View style={tw("flex-1")}>
+            <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
 
+                <CustomHeaderEmpty title="Paramètre du profil" />
+                <View style={tw('mx-auto min-w-[540px] pt-20 items-center')}>
 
-                <Text style={tw(' text-base mb-1 my-2')}>
-                    {user?.email ? user.email : "Vous n'avez pas renseigné d'email"}
-                </Text>
+                    <Text style={tw(' text-base mb-1 my-2')}>
+                        {user?.email ? user.email : "Vous n'avez pas renseigné d'email"}
+                    </Text>
 
-                <Text style={tw('text-base mb-2')}>
-                    {user?.status ? `Vous êtes ${user.status}` : "Aucun statut renseigné"}
-                </Text>
+                    <Text style={tw('text-base mb-2')}>
+                        {user?.status ? `Vous êtes ${user.status}` : "Aucun statut renseigné"}
+                    </Text>
 
-
-                <LogoutButton />
-                <FunctionButton text={"Supprimer son compte"} func={deleteAccount} />
-            </View>
-        </ScrollView>
+                    <LogoutButton />
+                    <FunctionButton text={"Supprimer son compte"} func={deleteAccount} />
+                </View>
+            </ScrollView>
+        </View>
     );
 };
 

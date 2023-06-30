@@ -14,10 +14,10 @@ const MainScreen = ({ }) => {
     const { user } = useUser();
 
     return (
-        <View style={tw("flex-1 items-center")}>
-            <CustomHeaderEmpty title="Menu" />
-            <ScrollView style={tw('w-full')}>
-                <View style={{ minWidth: 100, alignSelf: 'center' }}>
+        <View style={tw("flex-1")}>
+            <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
+                <CustomHeaderEmpty title="Menu" />
+                <View style={[tw('pt-20'), { minWidth: 100, alignSelf: 'center' }]}>
                     <View>
                         <PrimaryButton title="Tableau de bord" destination="MainEmptyBoard" />
                         <PrimaryButton title="Tableau de bord - Exemple de rendu" destination="MainBoard" />

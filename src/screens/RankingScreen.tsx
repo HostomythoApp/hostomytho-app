@@ -30,7 +30,7 @@ const RankingScreen = ({ }) => {
                     setHasMoreUsers(true);
                 }
             });
-            
+
     };
     const renderItem = ({ item, index }: { item: User, index: number }) => (
         <View
@@ -50,8 +50,8 @@ const RankingScreen = ({ }) => {
 
     return (
         <ScrollView style={tw('')}>
-            <CustomHeaderEmpty title="Classement" />
-            <View style={tw("flex-1 p-4 mx-auto min-w-[540px]")}>
+            <CustomHeaderEmpty title="Classement" backgroundColor="bg-white"/>
+            <View style={tw("flex-1 p-4 mx-auto min-w-[540px] pt-20")}>
                 <Text style={tw('text-xl mb-4')}>Classement général</Text>
                 {users.map((item, index) => renderItem({ item, index }))}
                 {page > 1 && (

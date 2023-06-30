@@ -18,7 +18,7 @@ const CustomHeaderEmpty = ({
 
 
   return (
-    <View style={tw(`flex-row justify-between items-center p-[18px] ${backgroundColor} absolute w-full top-0`)}>
+    <View style={tw(`flex-row justify-between items-center p-[18px] z-10 ${backgroundColor} absolute w-full top-0`)}>
       <TouchableOpacity style={tw('pl-4')} onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="backburger" size={24} color={textColor} />
       </TouchableOpacity>

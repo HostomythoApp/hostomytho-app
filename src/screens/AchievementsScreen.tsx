@@ -26,8 +26,9 @@ const AchievementsScreen = () => {
 
     return (
         <View style={tw('flex-1 bg-gray-100')}>
-            <CustomHeaderEmpty title="Haut faits" />
-            <FlatList
+            <CustomHeaderEmpty title="Haut faits" backgroundColor="bg-white" />
+            <FlatList style={tw('pt-20')}
+            
                 data={achievements}
                 renderItem={({ item }) => (
                     <View style={[tw("flex-row items-center p-4 bg-white rounded-lg mb-4"), { opacity: item.userHasAchievement ? 1 : 0.3 }]}>

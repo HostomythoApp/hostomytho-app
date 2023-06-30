@@ -34,6 +34,11 @@
 			"top": 40
 		}
 	},
+	"z-10": {
+		"style": {
+			"zIndex": 10
+		}
+	},
 	"m-0": {
 		"style": {
 			"marginTop": 0,
@@ -829,6 +834,11 @@
 	"pt-4": {
 		"style": {
 			"paddingTop": 16
+		}
+	},
+	"pt-20": {
+		"style": {
+			"paddingTop": 80
 		}
 	},
 	"text-center": {

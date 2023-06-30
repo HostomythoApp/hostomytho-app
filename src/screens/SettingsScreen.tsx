@@ -11,10 +11,10 @@ const SettingsScreen = ({ }) => {
     const { authState } = useAuth();
 
     return (
-        <View style={tw("flex-1 items-center")}>
-            <ScrollView style={tw('w-full')}>
+        <View style={tw("flex-1")}>
+            <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Paramètres" />
-                <View style={{ minWidth: 100, alignSelf: 'center', paddingTop: 50 }}>
+                <View style={{ minWidth: 100, alignSelf: 'center', paddingTop: 60 }}>
                     <View>
                         {!authState.isAuthenticated &&
                             <View>
