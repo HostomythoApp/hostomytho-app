@@ -68,17 +68,10 @@ const MainScreenEmptyBoard = ({ }) => {
                     </View>
 
                 </View>
-                {/* {!authState.isAuthenticated &&
-                    <View>
-                        <PrimaryButton title="Connexion" destination="Login" />
-                        <PrimaryButton title="Inscription" destination="SignUpScreen" />
-                    </View>
-                } */}
-                {/* {authState.isAuthenticated && */}
-                <TouchableOpacity onPress={() => navigation.navigate("Settings")} style={{ position: 'absolute', bottom: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10 }}>
+                <TouchableOpacity onPress={() => navigation.navigate("Settings")} style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10 }}>
                     <View style={{
                         backgroundColor: "rgba(0,0,0,0.5)",
-                        borderTopRightRadius: 30,
+                        borderBottomRightRadius: 30,
                         width: '100%',
                         height: '100%',
                         justifyContent: 'center',
@@ -87,22 +80,35 @@ const MainScreenEmptyBoard = ({ }) => {
                         <Image source={require('images/settings1.png')} style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, resizeMode: 'contain' }} />
                     </View>
                 </TouchableOpacity>
-                {/* } */}
 
-                {/* {authState.isAuthenticated && */}
-                <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10 }}>
-                    <View style={{
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        borderTopLeftRadius: 30,
-                        width: '100%',
-                        height: '100%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                        <Image source={require('images/icon_detective2.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, resizeMode: 'contain' }} />
+                {!authState.isAuthenticated &&
+                    <View style={[tw("absolute bottom-2 right-2")]}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Login")}
+                            style={tw("mb-2 py-2 px-4 bg-blue-500 bg-opacity-70 rounded-xl")}>
+                            <Text style={tw("text-center text-white text-lg")}>Se connecter</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("SignUpScreen")}
+                            style={tw("py-2 px-4 bg-green-500 bg-opacity-70 rounded-xl")}>
+                            <Text style={tw("text-center text-white text-lg")}>Créer un compte</Text>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                {/* } */}
+                }
+
+                {authState.isAuthenticated &&
+                    <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10 }}>
+                        <View style={{
+                            backgroundColor: "rgba(0,0,0,0.5)",
+                            borderTopLeftRadius: 30,
+                            width: '100%',
+                            height: '100%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <Image source={require('images/icon_detective2.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, resizeMode: 'contain' }} />
+                        </View>
+                    </TouchableOpacity>
+                }
+
             </View>
 
         </ImageBackground>

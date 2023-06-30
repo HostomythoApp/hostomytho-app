@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -15,6 +15,7 @@ import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 const SignUpScreen = () => {
 
     const [selectedValue, setSelectedValue] = useState('option1');
+    const inputWidth = Math.min(Dimensions.get('window').width * 0.8, 600);
 
     const options = [
         { key: 'option1', label: 'Je suis médecin ou étudiant', value: 'medecin' },
@@ -130,45 +131,47 @@ const SignUpScreen = () => {
         setUsername(`${name} ${keyword}`);
     }
 
-
     return (
-        <View style={tw("flex-1 justify-center items-center")}>
-            <ScrollView style={tw('w-full')}>
+        <View style={tw("flex-1")}>
+            <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Inscription" />
+                {/* Content Container Style is used to center content vertically and limit its width */}
+                <View style={tw("pt-24")}>
 
-                <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} isError={usernameError} />
-                {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                    <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} isError={usernameError} width={inputWidth} maxWidth={600} />
+                    {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-                <FunctionButton text={"Générer un pseudo"} func={generatePseudo} />
+                    <FunctionButton text={"Générer un pseudo"} func={generatePseudo} width={inputWidth} />
 
-                <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} isError={passwordError} />
-                {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                    <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} isError={passwordError} width={inputWidth} maxWidth={600} />
+                    {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-                <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} onSubmitEditing={submit} isError={password2Error} />
-                {password2Error && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                    <MainInput text={"Retaper votre mot de passe"} value={password2} setter={setPassword2} hide={true} onSubmitEditing={submit} isError={password2Error} width={inputWidth} maxWidth={600} />
+                    {password2Error && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-                <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} onSubmitEditing={submit} />
+                    <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} onSubmitEditing={submit} width={inputWidth} maxWidth={600} />
 
-                <View style={tw(' p-4')}>
-                    {options.map((option) => (
-                        <RadioButton
-                            key={option.key}
-                            label={option.label}
-                            selected={selectedValue === option.key}
-                            onPress={() => {
-                                setSelectedValue(option.key)
-                                setDoctor(option.value)
-                            }}
-                        />
-                    ))}
+                    <View style={tw(' p-4 w-full')}>
+                        {options.map((option) => (
+                            <RadioButton
+                                key={option.key}
+                                label={option.label}
+                                selected={selectedValue === option.key}
+                                onPress={() => {
+                                    setSelectedValue(option.key)
+                                    setDoctor(option.value)
+                                }}
+                            />
+                        ))}
 
+                    </View>
+
+                    <FunctionButton text={"Inscription"} func={submit} width={inputWidth} />
+                    <Text>
+                        {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
+                    </Text>
                 </View>
-                <FunctionButton text={"Inscription"} func={submit} />
-                <Text>
-                    {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
-                </Text>
             </ScrollView>
-
         </View>
     );
 };

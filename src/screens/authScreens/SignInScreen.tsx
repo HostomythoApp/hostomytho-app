@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -9,6 +9,7 @@ import { signInUser } from "services/api/user";
 import { useUser } from "services/context/UserContext";
 import { RootStackNavigationProp } from "navigation/Types";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
+import { Dimensions } from "react-native";
 
 const LoginScreen = () => {
     const tw = useTailwind();
@@ -20,6 +21,7 @@ const LoginScreen = () => {
     const { setUser } = useUser();
     const navigation = useNavigation<RootStackNavigationProp<"Main">>();
     const [errorMessage, setErrorMessage] = useState('');
+    const inputWidth = Math.max(Dimensions.get('window').width * 0.4, 50);
 
     const submit = async () => {
         setUsernameError(false);
@@ -51,32 +53,39 @@ const LoginScreen = () => {
     };
 
     return (
-        <View style={tw("flex-1 justify-center items-center")}>
-            <CustomHeaderEmpty title="Connexion" />
-            <MainInput
-                text={"Pseudo"}
-                value={username}
-                setter={setUsername}
-                hide={false}
-                onSubmitEditing={submit}
-                isError={usernameError}
-            />
-            {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
-            {/* TODO Ajouter mot de passe oublié */}
-            <MainInput
-                text={"Mot de passe"}
-                value={password}
-                setter={setPassword}
-                hide={true}
-                onSubmitEditing={submit}
-                isError={passwordError}
-            />
-            {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+        <View style={tw("flex-1")}>
+            <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
+                <CustomHeaderEmpty title="Connexion" />
+                <View style={tw("flex-1 justify-center items-center pt-24")}>
+                    <MainInput
+                        text={"Pseudo"}
+                        value={username}
+                        setter={setUsername}
+                        hide={false}
+                        onSubmitEditing={submit}
+                        isError={usernameError}
+                        width={inputWidth}
+                        maxWidth={600}
+                    />
+                    {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                    <MainInput
+                        text={"Mot de passe"}
+                        value={password}
+                        setter={setPassword}
+                        hide={true}
+                        onSubmitEditing={submit}
+                        isError={passwordError}
+                        width={inputWidth}
+                        maxWidth={600}
+                    />
+                    {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-            <FunctionButton text={"Connexion"} func={submit} />
-            <Text>
-                {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
-            </Text>
+                    <FunctionButton text={"Connexion"} func={submit} width={inputWidth} />
+                    <Text>
+                        {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
+                    </Text>
+                </View>
+            </ScrollView>
         </View>
     );
 };

@@ -4,20 +4,36 @@ import { useTailwind } from "tailwind-rn";
 import PrimaryButton from "components/PrimaryButton";
 import MainTitle from "components/MainTitle";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
+import { useAuth } from "services/context/AuthContext";
 
 const SettingsScreen = ({ }) => {
     const tw = useTailwind();
+    const { authState } = useAuth();
 
     return (
         <View style={tw("flex-1 items-center")}>
             <ScrollView style={tw('w-full')}>
                 <CustomHeaderEmpty title="Paramètres" />
-                <View style={{ minWidth: 100, alignSelf: 'center' }}>
+                <View style={{ minWidth: 100, alignSelf: 'center', paddingTop: 50 }}>
                     <View>
-                        <PrimaryButton title="Thème" destination="Theme" />
-                        <PrimaryButton title="Politique de confidentialité" destination="PrivacyPolicy" />
-                        <PrimaryButton title="Notifications" destination="Notif" />
+                        {!authState.isAuthenticated &&
+                            <View>
+                                <PrimaryButton title="Aide et contact" destination="Help" />
+                            </View>
+                        }
+                        <PrimaryButton title="Objectifs de l'application" destination="PrivacyPolicy" />
+                        <PrimaryButton title="Règles et explications" destination="PrivacyPolicy" />
                         <PrimaryButton title="Aide et contact" destination="Help" />
+                        <PrimaryButton title="Politique de confidentialité" destination="PrivacyPolicy" />
+                        {authState.isAuthenticated &&
+                            <View>
+                                <PrimaryButton title="Thème" destination="Theme" />
+                                <PrimaryButton title="Notifications" destination="Notif" />
+                            </View>
+                        }
+
+
+
                     </View>
                 </View>
             </ScrollView>
