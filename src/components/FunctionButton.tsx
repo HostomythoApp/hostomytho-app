@@ -17,7 +17,7 @@ const FunctionButton = ({
   return (
     <TouchableOpacity
       onPress={func}
-      style={{ ...tw("bg-primary rounded py-2 px-12 my-2 font-medium"), ...widthStyle }}
+      style={{ ...tw("bg-primary rounded py-2 px-12 my-2 font-medium "), ...widthStyle }}
     >
       <Text style={tw("text-white text-center text-lg")}>{text}</Text>
     </TouchableOpacity>

@@ -826,6 +826,11 @@
 			"paddingLeft": 16
 		}
 	},
+	"pt-20": {
+		"style": {
+			"paddingTop": 80
+		}
+	},
 	"pt-24": {
 		"style": {
 			"paddingTop": 96
@@ -834,11 +839,6 @@
 	"pt-4": {
 		"style": {
 			"paddingTop": 16
-		}
-	},
-	"pt-20": {
-		"style": {
-			"paddingTop": 80
 		}
 	},
 	"text-center": {

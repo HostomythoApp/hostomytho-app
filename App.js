@@ -19,6 +19,7 @@ const linking = {
   config: {
     screens: {
       Admin: "admin",
+      // Admin: "HMe1sj",
     },
   },
 };

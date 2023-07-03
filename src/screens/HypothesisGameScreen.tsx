@@ -103,12 +103,13 @@ const HypothesisGameScreen = ({ }) => {
 
 
   const addSentenceSpecification = () => {
+    // TODO Crash quand pas de le selection
     const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
     selectedWords.forEach(word => {
       word.sentenceId = nextId;
       word.isSelected = true;
       word.isCurrentSelection = false;
-      delete word.color; // Remove the temporary color from the word
+      delete word.color;
     });
 
     const startPosition = selectedWords[0].position;

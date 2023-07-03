@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -54,6 +54,7 @@ const LoginScreen = () => {
 
     return (
         <View style={tw("flex-1")}>
+
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Connexion" />
                 <View style={tw("flex-1 justify-center items-center pt-24")}>
@@ -80,10 +81,13 @@ const LoginScreen = () => {
                     />
                     {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-                    <FunctionButton text={"Connexion"} func={submit} width={inputWidth} />
                     <Text>
                         {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
                     </Text>
+                    <FunctionButton text={"Connexion"} func={submit} width={inputWidth} />
+                    <TouchableOpacity onPress={() => navigation.navigate("Main")}> 
+                        <Text style={tw("text-blue-500 mt-4")}>Mot de passe oublié ?</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </View>
