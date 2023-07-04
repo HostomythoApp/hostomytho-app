@@ -4,10 +4,10 @@ import MainScreen from "screens/MainScreen";
 import MainScreenBoard from "screens/MainScreenBoard";
 import MainScreenEmptyBoard from "screens/MainScreenEmptyBoard";
 import ProfileScreen from "screens/ProfileScreen";
-import HomeScreen from "screens/HomeScreen";
-import { TouchableOpacity } from 'react-native';
+// import HomeScreen from "screens/HomeScreen";
 import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
+import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
 import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
 import PlausibilityGameDetailedScreen from "screens/PlausibilityGameDetailedScreen";
 import TemporalEntityScreen from "screens/TemporalEntityGameScreen";
@@ -95,11 +95,13 @@ const StackNavigator = ({ }) => {
 
         <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
 
-        <Stack.Screen name="Home" component={HomeScreen} />
+        {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
 
         <Stack.Screen name="Login" component={SignInScreen} />
 
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+
+        <Stack.Screen name="ForgetPassword" component={ForgetPasswordScreen} />
 
         <Stack.Screen name="Settings" component={SettingsScreen} />
 
@@ -112,7 +114,7 @@ const StackNavigator = ({ }) => {
         <Stack.Screen name="Theme" component={ThemeScreen} />
 
         <Stack.Screen name="Ranking" component={RankingScreen} />
-        
+
         <Stack.Screen name="Stats" component={StatisticsScreen} />
 
         {/* Partie admin */}
@@ -125,43 +127,20 @@ const StackNavigator = ({ }) => {
           {(props) => <AdminNavigator {...props} />}
         </Stack.Screen>
 
-        <Stack.Screen name="AdminHome"
-          component={AdminHomeScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Espace administrateur" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="AdminLogin"
-          component={AdminLoginScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Connexion admin" navigation={navigation} />,
-          })} />
-        <Stack.Screen name="EditRewards"
-          component={EditRewardsSreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Gérer les récompenses" navigation={navigation} />,
-          })} />
 
-        <Stack.Screen name="ExportData"
-          component={ExportDataSreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Exporter des données" navigation={navigation} />,
-          })} />
+        <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
 
-        <Stack.Screen name="ManageTexts"
-          component={ManageTextsScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Gestion des textes" navigation={navigation} />,
-          })} />
+        <Stack.Screen name="EditRewards" component={EditRewardsSreen} />
 
-        <Stack.Screen name="ManageUsers"
-          component={ManageUsersSreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Gestion des utilisateurs" navigation={navigation} />,
-          })} />
+        <Stack.Screen name="ExportData" component={ExportDataSreen} />
 
-        <Stack.Screen name="Statistics"
-          component={AdminStatisticsScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Statistiques générales de l'application" navigation={navigation} />,
-          })} />
+        <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
 
-        <Stack.Screen name="UserMessaging"
-          component={UserMessagingScreen} options={({ navigation }) => ({
-            header: () => <CustomHeader title="Contact avec les utilisateurs" navigation={navigation} />,
-          })} />
+        <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
+
+        <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
+
+        <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
       </Stack.Group>
 
     </Stack.Navigator>

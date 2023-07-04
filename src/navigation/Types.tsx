@@ -7,7 +7,7 @@ export type RootStackParamList = {
     TemporalLinkGameScreen: undefined;
     PlausibilityGame: undefined;
     TemporalEntityScreen: undefined;
-    Home: undefined;
+    // Home: undefined;
     Connected: undefined;
     Login: undefined;
     SignUpScreen: undefined;
@@ -18,6 +18,7 @@ export type RootStackParamList = {
     Theme: undefined;
     Ranking: undefined;
     AdminHome: undefined;
+    ForgetPassword: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

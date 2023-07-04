@@ -1,8 +1,5 @@
 module.exports = {
-  content: [
-    "./App.js",
-   './src/**/*.{js,jsx,ts,tsx}',
-  ],
+  content: ["./App.js", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -14,18 +11,18 @@ module.exports = {
         textPrimary: "##000000",
       },
       fontFamily: {
-        primary: ['Pally'],
-        secondary: ['Pally'],
-        MarckScript: ['MarckScript'],
-        SpringSnowstorm: ['SpringSnowstorm'],
-        HandleeRegular: ['HandleeRegular'],
-        PatrickHandRegular: ['PatrickHandRegular'],
-        BubblegumSans: ['BubblegumSans'],
-        IrishGrover: ['IrishGrover'],
-        MochiyPopOne: ['MochiyPopOne'],
-      }
+        primary: ["Pally"],
+        secondary: ["Pally"],
+        MarckScript: ["MarckScript"],
+        SpringSnowstorm: ["SpringSnowstorm"],
+        HandleeRegular: ["HandleeRegular"],
+        PatrickHandRegular: ["PatrickHandRegular"],
+        BubblegumSans: ["BubblegumSans"],
+        IrishGrover: ["IrishGrover"],
+        MochiyPopOne: ["MochiyPopOne"],
+      },
     },
   },
   plugins: [],
-  corePlugins: require('tailwind-rn/unsupported-core-plugins'),
-}
+  corePlugins: require("tailwind-rn/unsupported-core-plugins"),
+};
