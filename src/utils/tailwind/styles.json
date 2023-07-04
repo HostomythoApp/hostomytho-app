@@ -714,6 +714,14 @@
 			"paddingLeft": 8
 		}
 	},
+	"p-20": {
+		"style": {
+			"paddingTop": 80,
+			"paddingRight": 80,
+			"paddingBottom": 80,
+			"paddingLeft": 80
+		}
+	},
 	"p-3": {
 		"style": {
 			"paddingTop": 12,
@@ -760,38 +768,6 @@
 			"paddingRight": 2,
 			"paddingBottom": 2,
 			"paddingLeft": 2
-		}
-	},
-	"p-6": {
-		"style": {
-			"paddingTop": 24,
-			"paddingRight": 24,
-			"paddingBottom": 24,
-			"paddingLeft": 24
-		}
-	},
-	"p-8": {
-		"style": {
-			"paddingTop": 32,
-			"paddingRight": 32,
-			"paddingBottom": 32,
-			"paddingLeft": 32
-		}
-	},
-	"p-10": {
-		"style": {
-			"paddingTop": 40,
-			"paddingRight": 40,
-			"paddingBottom": 40,
-			"paddingLeft": 40
-		}
-	},
-	"p-20": {
-		"style": {
-			"paddingTop": 80,
-			"paddingRight": 80,
-			"paddingBottom": 80,
-			"paddingLeft": 80
 		}
 	},
 	"px-1": {
