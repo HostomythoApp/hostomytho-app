@@ -62,7 +62,7 @@ const ForgetPasswordScreen = () => {
                         maxWidth={600}
                     />
                     {mailError && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
-                    <FunctionButton text={"Envoyer"} func={submit} width={inputWidth} />
+                    <FunctionButton text={"Réinitialiser le mot de passe"} func={submit} width={inputWidth} />
                 </View>
             </ScrollView>
         </View>

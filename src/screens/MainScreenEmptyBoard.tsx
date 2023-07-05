@@ -34,7 +34,6 @@ const MainScreenEmptyBoard = ({ }) => {
                         ]}
                     >
                         {"HostoMytho"}
-                        {/* TODO problème font sur android */}
                     </Text>
 
                     <View style={StyleSheet.absoluteFill}>
