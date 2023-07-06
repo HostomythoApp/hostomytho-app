@@ -38,7 +38,7 @@ const LoginScreen = () => {
                     const token = response.data.token;
                     await storeToken(token);
                     setUser(response.data.user);
-                    navigation.navigate("Main");
+                    navigation.navigate("MainEmptyBoard");
                 }
             } catch (error: any) {
                 if (error.response.status === 401) {
@@ -85,7 +85,7 @@ const LoginScreen = () => {
                         {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
                     </Text>
                     <FunctionButton text={"Connexion"} func={submit} width={inputWidth} />
-                    <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}> 
+                    <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
                         <Text style={tw("text-blue-500 mt-2")}>Mot de passe oublié ?</Text>
                     </TouchableOpacity>
                 </View>

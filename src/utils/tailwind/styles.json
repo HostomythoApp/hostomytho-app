@@ -14,6 +14,11 @@
 			"bottom": 8
 		}
 	},
+	"right-0": {
+		"style": {
+			"right": 0
+		}
+	},
 	"right-2": {
 		"style": {
 			"right": 8
@@ -336,14 +341,14 @@
 			"width": 20
 		}
 	},
-	"w-full": {
-		"style": {
-			"width": "100%"
-		}
-	},
 	"w-auto": {
 		"style": {
 			"width": "auto"
+		}
+	},
+	"w-full": {
+		"style": {
+			"width": "100%"
 		}
 	},
 	"min-w-[1200px]": {
@@ -906,6 +911,12 @@
 		"style": {
 			"fontSize": 18,
 			"lineHeight": 28
+		}
+	},
+	"text-sm": {
+		"style": {
+			"fontSize": 14,
+			"lineHeight": 20
 		}
 	},
 	"text-xl": {

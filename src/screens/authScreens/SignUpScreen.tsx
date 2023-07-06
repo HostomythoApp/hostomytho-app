@@ -182,11 +182,10 @@ const SignUpScreen = () => {
                         ))}
 
                     </View>
-
-                    <FunctionButton text={"Inscription"} func={submit}  />
                     <Text>
                         {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
                     </Text>
+                    <FunctionButton text={"Inscription"} func={submit}  />
                 </View>
             </ScrollView>
         </View>

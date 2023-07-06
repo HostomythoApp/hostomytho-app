@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, Text, ImageBackground, Image, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { useAuth } from "services/context/AuthContext";
@@ -6,7 +6,6 @@ import { useUser } from "services/context/UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 import { getMessageMenu } from "services/api/utils";
-import { MessageMenu } from 'models/MessageMenu';
 
 const MainScreenEmptyBoard = ({ }) => {
     const tw = useTailwind();
@@ -14,41 +13,10 @@ const MainScreenEmptyBoard = ({ }) => {
     const { user } = useUser();
     const navigation = useNavigation<RootStackNavigationProp<"Main">>();
     const windowWidth = Dimensions.get('window').width;
-    const [menuMessage, setMenuMessage] = useState<MessageMenu | null>(null);
-    const [messageExpanded, setMessageExpanded] = useState(false);
-
-    useEffect(() => {
-        getMessageMenu()
-            .then((message) => {
-
-                setMenuMessage(message);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
-
-    const toggleMessage = () => {
-        setMessageExpanded(!messageExpanded);
-    }
 
     return (
         <ImageBackground source={require('images/board_empty.png')} style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}>
             <View style={tw("flex-1 items-center")}>
-                {menuMessage && menuMessage.active &&
-                    <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 bg-blue-500 bg-opacity-70 rounded-xl"), { zIndex: 1 }]}>
-                        {messageExpanded ? (
-                            <>
-                                <Text style={tw("text-white text-lg")}>{menuMessage.title}</Text>
-                                <Text style={tw("text-white")}>{menuMessage.message}</Text>
-                                <Text style={tw("text-white text-center text-sm mt-2 italic")}>Cliquez sur le message pour le réduire</Text>
-                            </>
-                        ) : (
-                            <Text style={tw("text-white text-lg")}>Cliquez ici</Text>
-                        )}
-                    </TouchableOpacity>
-                }
-
 
                 <View style={StyleSheet.absoluteFill}>
 

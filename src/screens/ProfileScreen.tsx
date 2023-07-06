@@ -55,8 +55,7 @@ const ProfileScreen = (props: any) => {
         <View style={tw("flex-1")}>
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Profil" />
-                <View style={tw('w-full pt-20 px-2 m-px-0 max-w-5xl')}>
-
+                <View style={tw('w-full pt-20 px-2 max-w-5xl')}>
                     <Text style={tw('text-2xl font-bold mb-2 text-center')}>{user?.username}</Text>
                     {/* TODO Vérifier la synchronisation des points avec la bdd */}
                     <Text style={tw('text-lg mb-4 text-center')}>Points: {user?.points}</Text>
