@@ -19,6 +19,12 @@ export type RootStackParamList = {
     Ranking: undefined;
     AdminHome: undefined;
     ForgetPassword: undefined;
+    MainEmptyBoard: undefined;
+    HypothesisGame: undefined;
+    TemporalEntity: undefined;
+    PlausibilityGameDetailed: undefined;
+    ConditionGame: undefined;
+    NegationGame: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

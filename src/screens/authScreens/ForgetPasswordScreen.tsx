@@ -7,14 +7,15 @@ import { useNavigation } from "@react-navigation/native";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { Dimensions } from "react-native";
 import { sendMail } from "services/api/utils";
+import { RootStackNavigationProp } from "navigation/Types";
 
 const ForgetPasswordScreen = () => {
     const tw = useTailwind();
     const [mail, setMail] = useState('');
     const [mailError, setMailError] = useState(false);
-    const navigation = useNavigation();
     const [errorMessage, setErrorMessage] = useState('');
     const inputWidth = Math.max(Dimensions.get('window').width * 0.4, 50);
+    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
 
     const validateEmail = (email: string) => {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

@@ -864,16 +864,6 @@
 			"fontFamily": "BubblegumSans"
 		}
 	},
-	"font-IrishGrover": {
-		"style": {
-			"fontFamily": "IrishGrover"
-		}
-	},
-	"font-MochiyPopOne": {
-		"style": {
-			"fontFamily": "MochiyPopOne"
-		}
-	},
 	"font-primary": {
 		"style": {
 			"fontFamily": "Pally"
