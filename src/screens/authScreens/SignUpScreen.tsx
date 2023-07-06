@@ -15,7 +15,6 @@ import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 const SignUpScreen = () => {
 
     const [selectedValue, setSelectedValue] = useState('option1');
-    const inputWidth = Math.min(Dimensions.get('window').width * 0.8, 600);
 
     const options = [
         { key: 'option1', label: 'Je suis médecin ou étudiant', value: 'medecin' },
@@ -36,6 +35,12 @@ const SignUpScreen = () => {
     const navigation = useNavigation<RootStackNavigationProp<"MainEmptyBoard">>();
     const { storeToken } = useAuth();
     const { setUser } = useUser();
+
+    const screenWidth = Dimensions.get('window').width;
+    const isMobile = screenWidth < 768;
+
+    const inputWidth = isMobile ? '100%' : '70%';
+    const buttonWidth = isMobile ? '100%' : '60%';
 
     const submit = () => {
         setUsernameError(false);
@@ -135,13 +140,25 @@ const SignUpScreen = () => {
         <View style={tw("flex-1")}>
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Inscription" />
-                {/* Content Container Style is used to center content vertically and limit its width */}
-                <View style={tw("pt-24")}>
-
-                    <MainInput text={'Pseudo'} value={username} setter={setUsername} hide={false} onSubmitEditing={submit} isError={usernameError} width={inputWidth} maxWidth={600} />
+                <View style={tw('w-full pt-20 px-2 max-w-5xl justify-center items-center')}>
+                    <MainInput
+                        text={'Pseudo'}
+                        value={username}
+                        setter={setUsername}
+                        hide={false}
+                        onSubmitEditing={submit}
+                        isError={usernameError}
+                        width={inputWidth}
+                        minWidth={300}
+                        maxWidth={600}
+                    />
                     {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                    {/* <FunctionButton text={"Générer un pseudo"} func={generatePseudo} width={inputWidth} /> */}
 
-                    <FunctionButton text={"Générer un pseudo"} func={generatePseudo} width={inputWidth} />
+                    <FunctionButton
+                        text={"Générer un pseudo"}
+                        func={generatePseudo}
+                    />
 
                     <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} isError={passwordError} width={inputWidth} maxWidth={600} />
                     {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
@@ -151,7 +168,7 @@ const SignUpScreen = () => {
 
                     <MainInput text={"email (facultatif)"} value={email} setter={setEmail} hide={false} onSubmitEditing={submit} width={inputWidth} maxWidth={600} />
 
-                    <View style={tw(' p-4 w-full')}>
+                    <View style={tw('p-4 w-auto')}>
                         {options.map((option) => (
                             <RadioButton
                                 key={option.key}
@@ -166,7 +183,7 @@ const SignUpScreen = () => {
 
                     </View>
 
-                    <FunctionButton text={"Inscription"} func={submit} width={inputWidth} />
+                    <FunctionButton text={"Inscription"} func={submit}  />
                     <Text>
                         {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
                     </Text>

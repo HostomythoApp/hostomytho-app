@@ -10,8 +10,9 @@ const MainInput = ({
   value,
   onSubmitEditing,
   isError,
-  width,
-  maxWidth,
+  width = '80%',
+  minWidth = 300,
+  maxWidth = 600
 }: {
   setter: any;
   text: string,
@@ -19,12 +20,13 @@ const MainInput = ({
   value: string,
   onSubmitEditing?: any;
   isError?: boolean,
-  width?: number,
-  maxWidth?: number
+  width?: string | number,
+  minWidth?: string | number,
+  maxWidth?: string | number
 }) => {
   const tw = useTailwind();
   const errorStyle = isError ? tw("border-red-500") : {};
-  const widthStyle = { minWidth: 300, maxWidth: maxWidth || width || 50 };
+  const widthStyle = { minWidth, maxWidth, width };
 
   return (
     <TextInput

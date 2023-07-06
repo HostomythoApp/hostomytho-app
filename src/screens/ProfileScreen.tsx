@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Text, View, ScrollView } from 'react-native';
+import { TouchableOpacity, Text, View, ScrollView, Dimensions } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
@@ -22,22 +22,20 @@ interface Rank {
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user } = useUser();
-
     const [ranking, setRanking] = useState<Rank[]>([]);
-
     const stats = [
         { id: 1, title: 'Textes validés', count: 5 },
         { id: 2, title: 'Annotations créées', count: 15 },
     ];
 
     const { navigation } = props;
-
     const currentPoints = user?.points || 0;
     const nextRewardPoints = 1000;
     const pointsForProgress = currentPoints % nextRewardPoints;
     const pointsPercentage = (pointsForProgress / nextRewardPoints) * 100;
-
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
+    const window = Dimensions.get('window');
+    const isMobile = window.width < 768;
 
     useEffect(() => {
         const fetchRanking = async () => {
@@ -57,7 +55,8 @@ const ProfileScreen = (props: any) => {
         <View style={tw("flex-1")}>
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Profil" />
-                <View style={tw('mx-auto min-w-[540px] pt-20')}>
+                <View style={tw('w-full pt-20 px-2 m-px-0 max-w-5xl')}>
+
                     <Text style={tw('text-2xl font-bold mb-2 text-center')}>{user?.username}</Text>
                     {/* TODO Vérifier la synchronisation des points avec la bdd */}
                     <Text style={tw('text-lg mb-4 text-center')}>Points: {user?.points}</Text>
@@ -106,9 +105,8 @@ const ProfileScreen = (props: any) => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={tw('flex-row justify-between my-6')}>
-
-                        <View style={tw('flex-1 mr-2')}>
+                    <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col') : tw('flex-row')]}>
+                        <View style={[tw('flex-1'), isMobile ? tw('mr-0 mb-4') : tw('mr-2')]}>
                             <Text style={tw('text-lg font-bold mb-2')}>Hauts faits</Text>
                             {userAchievements.length > 0 ? (
                                 <>
@@ -136,8 +134,8 @@ const ProfileScreen = (props: any) => {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={tw('border-r border-gray-300 h-full mx-2')} />
-                        <View style={tw('flex-1 ml-2')}>
+                        {!isMobile && <View style={tw('border-r border-gray-300 h-full mx-2')} />}
+                        <View style={tw('flex-1')}>
                             <Text style={tw('text-xl font-bold mb-2')}>Statistiques</Text>
                             <View style={tw(" p-4 bg-white rounded-lg")}>
                                 {stats.map((stat) => (
