@@ -9,7 +9,7 @@ const CustomHeaderEmpty = ({
   backgroundColor = 'bg-white',
   textColor = 'black',
 }: {
-  title: string;
+  title?: string;
   backgroundColor?: string;
   textColor?: string;
 }) => {

@@ -55,6 +55,8 @@ const StackNavigator = ({ }) => {
 
         })}
       >
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+
         <Stack.Screen name="MainEmptyBoard"
           component={MainScreenEmptyBoard}
           options={({ }) => ({
@@ -83,7 +85,6 @@ const StackNavigator = ({ }) => {
 
         <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
 
-        <Stack.Screen name="Profile" component={ProfileScreen} />
 
         <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
 
@@ -94,8 +95,6 @@ const StackNavigator = ({ }) => {
         <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
 
         <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
-
-        {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
 
         <Stack.Screen name="Login" component={SignInScreen} />
 

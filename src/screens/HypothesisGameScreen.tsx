@@ -36,7 +36,7 @@ const HypothesisGameScreen = ({ }) => {
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
-  
+
   useEffect(() => {
     const fetchTexts = async () => {
       try {
@@ -230,32 +230,43 @@ const HypothesisGameScreen = ({ }) => {
         <View style={tw("flex-1 justify-center items-center")}>
           {renderText(texts[currentIndex], currentIndex)}
         </View>
-        <View style={tw("flex-row mb-4 mt-8 justify-center")}>
-          <View style={tw("mx-4")}>
-            {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
-          </View>
-          <View style={tw(' flex')}
-          >
-            <TouchableOpacity
-              style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
-              onPress={addSentenceSpecification}
-            >
-              <View style={tw("py-2 text-center")}>
-                <Text style={tw("text-white font-primary text-lg")}>Nouvelle hypothèse</Text>
-              </View>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
-              onPress={onNextCard}
-            >
-              <View style={tw("py-2 text-center")}>
-                <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
+
+
       </ScrollView>
+
+
+
+      <View style={tw("flex-row py-2 justify-center")}>
+        <ScrollView
+          style={tw("mx-4")}
+          contentContainerStyle={{ maxHeight: 110 }} // ou bien utilisez "10%" pour 10% de la hauteur de l'écran
+        >
+          {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
+        </ScrollView>
+
+        <View style={tw(' flex')}>
+          <TouchableOpacity
+            style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
+            onPress={addSentenceSpecification}
+          >
+            <View style={tw("py-2 text-center")}>
+              <Text style={tw("text-white font-primary text-lg")}>Nouvelle hypothèse</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
+            onPress={onNextCard}
+          >
+            <View style={tw("py-2 text-center")}>
+              <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+
     </SafeAreaView>
   );
 };
