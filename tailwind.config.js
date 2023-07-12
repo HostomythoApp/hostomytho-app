@@ -3,9 +3,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#B36700",
+        primary: "#B05E00",
         secondary: "#0377fc",
-        teriary: "#B36700",
+        tertiary: "#B36700",
         white: "#fff",
         black: "#000000",
         textPrimary: "##000000",

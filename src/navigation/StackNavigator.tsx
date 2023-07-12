@@ -55,7 +55,6 @@ const StackNavigator = ({ }) => {
 
         })}
       >
-        <Stack.Screen name="Profile" component={ProfileScreen} />
 
         <Stack.Screen name="MainEmptyBoard"
           component={MainScreenEmptyBoard}
@@ -74,6 +73,7 @@ const StackNavigator = ({ }) => {
           options={({ }) => ({
             headerShown: false
           })} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
 
         <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 
