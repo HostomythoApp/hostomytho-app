@@ -42,6 +42,8 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, []);
 
   const setUser = async (newUser: User | null) => {
+    console.log("setUser ");
+    console.log(newUser);
     setUserState(newUser);
     await storeUser(newUser);
   };
@@ -71,14 +73,11 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const incrementPoints = async (points: number) => {
+  const incrementPoints = async (pointsToAdd: number) => {
     if (user) {
-      const newUser = { ...user, points: user.points + points };
-      await storeUser(newUser);
-      setUserState(newUser);
+      const response = await updateUserPoints(user.id, pointsToAdd);
 
-      // Mise à jour des points de l'utilisateur et récupération des nouvelles réalisations
-      const response = await updateUserPoints(user.id, newUser.points);
+      setUser({ ...user, points: response.data.newPoints });
 
       // Si il y a de nouvelles réalisations, on déclenche l'affichage du modal pour chacune d'entre elles
       if (response.data.newAchievements && response.data.newAchievements.length > 0) {

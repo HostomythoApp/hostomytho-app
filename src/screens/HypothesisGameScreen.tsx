@@ -32,10 +32,10 @@ const HypothesisGameScreen = ({ }) => {
   const [colorIndex, setColorIndex] = useState(0);
   const { incrementPoints } = useUser();
   const [startWordIndex, setStartWordIndex] = useState<number | null>(null);
-  // const [selectionFinished, setSelectionFinished] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
+  const [isSelectionStarted, setSelectionStarted] = useState(false);
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -72,6 +72,7 @@ const HypothesisGameScreen = ({ }) => {
             // Si l'index du mot cliqué est l'index de départ
             if (idx === wordIndex) {
               // Cancel the previous selection if not added
+              setSelectionStarted(true);
               const wordsToDeselect = text.content.filter(w => w.isCurrentSelection && w.sentenceId === userSentenceSpecifications.length);
               wordsToDeselect.forEach(w => {
                 w.isCurrentSelection = false;
@@ -103,7 +104,7 @@ const HypothesisGameScreen = ({ }) => {
 
 
   const addSentenceSpecification = () => {
-    // TODO Crash quand pas de le selection
+    setSelectionStarted(false);
     const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
     selectedWords.forEach(word => {
       word.sentenceId = nextId;
@@ -223,7 +224,7 @@ const HypothesisGameScreen = ({ }) => {
 
 
   return (
-    <SafeAreaView style={tw("flex-1 bg-white")}>
+    <SafeAreaView style={tw("flex-1 bg-transparent")}>
       <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
         <CustomHeaderInGame title="Trouver les hypothèses" />
 
@@ -240,20 +241,22 @@ const HypothesisGameScreen = ({ }) => {
       <View style={tw("flex-row py-2 justify-center")}>
         <ScrollView
           style={tw("mx-4")}
-          contentContainerStyle={{ maxHeight: 110 }} // ou bien utilisez "10%" pour 10% de la hauteur de l'écran
+          contentContainerStyle={{ maxHeight: 110 }}
         >
           {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
         </ScrollView>
 
         <View style={tw(' flex')}>
           <TouchableOpacity
-            style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
+            style={tw(`px-4 rounded-lg mx-4 h-10 mb-1 bg-blue-500 ${isSelectionStarted ? '' : 'opacity-50'}`)}
             onPress={addSentenceSpecification}
+            disabled={!isSelectionStarted}
           >
             <View style={tw("py-2 text-center")}>
               <Text style={tw("text-white font-primary text-lg")}>Nouvelle hypothèse</Text>
             </View>
           </TouchableOpacity>
+
 
           <TouchableOpacity
             style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}

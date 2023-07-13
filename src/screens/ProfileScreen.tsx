@@ -122,11 +122,11 @@ const ProfileScreen = (props: any) => {
                                                     rank.id === user?.id && tw('bg-blue-100'),
                                                 ]}
                                             >
-                                                <Text style={tw('font-primary text-lg')}
+                                                <Text style={tw('font-primary')}
                                                 >
                                                     {rank.ranking}. {rank.username}
                                                 </Text>
-                                                <Text style={tw('font-primary text-lg')}
+                                                <Text style={tw('font-primary')}
                                                 >{rank.points} points</Text>
                                             </View>
                                         ))}
@@ -175,7 +175,7 @@ const ProfileScreen = (props: any) => {
                                     <Text style={tw('text-xl font-bold mb-2 text-white font-primary')}>Statistiques</Text>
                                     <View style={tw("p-4 bg-white rounded-lg")}>
                                         {stats.map((stat) => (
-                                            <Text style={tw('my-2 font-primary text-lg')}
+                                            <Text style={tw('my-2 font-primary')}
                                                 key={stat.id}>
                                                 {stat.title}: {stat.count}
                                             </Text>
@@ -213,7 +213,7 @@ const ProfileScreen = (props: any) => {
                                     onPress={() => navigation.navigate('ProfileSettings')}
                                 >
                                     <FontAwesome5 name='cog' size={24} color='white' />
-                                    <Text style={tw('text-white ml-2')}>Paramètres</Text>
+                                    <Text style={tw('text-white ml-2')}>Paramètres du compte</Text>
                                 </TouchableOpacity>
                             </View>
 

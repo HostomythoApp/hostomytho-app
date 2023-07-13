@@ -11,10 +11,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#25292e"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "userInterfaceStyle": "light"
+      "userInterfaceStyle": "light",
+      "bundleIdentifier": "com.hostomytho.hostomytho"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +29,12 @@
     "web": {
       "favicon": "./src/assets/images/favicon.png"
     },
-    "plugins": [["./src/utils/plugins/withDisableForcedDarkModeAndroid.js", {}]],
+    "plugins": [
+      [
+        "./src/utils/plugins/withDisableForcedDarkModeAndroid.js",
+        {}
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "adad8738-a861-4171-8186-e2133adc05bc"

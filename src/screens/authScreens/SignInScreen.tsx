@@ -35,6 +35,9 @@ const LoginScreen = () => {
             try {
                 const response = await signInUser(username, password);
                 if (response.status === 200) {
+                    console.log("réponse signInUser ");
+                    console.log(response.data.user);
+                    
                     const token = response.data.token;
                     await storeToken(token);
                     setUser(response.data.user);

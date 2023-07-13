@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTailwind } from "tailwind-rn";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
@@ -27,6 +27,8 @@ const CustomHeaderInGame = ({
   const scale = useSharedValue(1);
 
   const [displayPoints, setDisplayPoints] = useState(user?.points || 0);
+  const window = Dimensions.get('window');
+  const isMobile = window.width < 960;
 
   useEffect(() => {
     if (user?.points !== points.value) {
@@ -45,11 +47,11 @@ const CustomHeaderInGame = ({
   });
 
   return (
-    <View style={tw(`flex-row justify-between items-center p-[18px] ${backgroundColor}`)}>
+    <View style={[tw(`flex-row justify-between items-center  ${backgroundColor}`), isMobile ? tw('p-3') : tw('p-[18px]')]}>
       <TouchableOpacity style={tw('pl-4')} onPress={() => navigation.goBack()}>
-      <Ionicons name="chevron-back" size={30} color={textColor} />
+        <Ionicons name="chevron-back" size={30} color={textColor} />
       </TouchableOpacity>
-      <Text style={tw(`font-primary text-center flex-grow text-2xl font-bold text-${textColor}`)}>{title}</Text>
+      <Text style={[tw(`font-primary text-center flex-grow font-bold text-${textColor}`), isMobile ? tw('text-xl ') : tw('text-2xl ')]}>{title}</Text>
       {user?.points !== undefined &&
         <Animated.Text style={[tw(`font-primary text-${textColor}`), animatedStyle]}>
           <MaterialIcons style={tw(`mr-1 text-${textColor}`)} name="person-search" size={16} color={textColor} />
