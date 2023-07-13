@@ -6,7 +6,7 @@ export const getUsers = async (): Promise<User[]> => {
   return await api.get("/users");
 };
 
-export const getUserById = async (id: number): Promise<User[]> => {
+export const getUserById = async (id: number): Promise<User> => {
   return await api.get(`/users/${id}`);
 };
 

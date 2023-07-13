@@ -6,7 +6,7 @@ import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { Word } from "models/Word";
 import { useUser } from 'services/context/UserContext';
 import { getAllTexts } from "services/api/texts";
-import shuffleArray from "utils/functions";
+import { shuffleArray, splitText } from "utils/functions";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 
@@ -42,17 +42,9 @@ const HypothesisGameScreen = ({ }) => {
       try {
         const response = await getAllTexts();
         const shuffledTexts = shuffleArray(response);
+        // TODO A faire sur tous les autres splitText
         const newtexts = shuffledTexts.slice(0, 10).map((text) => {
-          const words = text.content.split(' ').map((word: string, idx: number) => {
-            if (word.includes("\n")) {
-              return [
-                { text: word.replace("\n", ""), isSelected: false, sentenceId: null, isCurrentSelection: false, position: idx },
-              ];
-            } else {
-              return { text: word, isSelected: false, sentenceId: null, isCurrentSelection: false, position: idx };
-            }
-          }).flat();
-          return { ...text, content: words };
+          return splitText(text);
         });
 
         setTexts(newtexts);

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { updateUserPoints } from "services/api/user";
+import { updateUserPoints, getUserById } from "services/api/user";
 import { AchievementContext } from 'services/context/AchievementContext';
 import { Achievement } from "models/Achievement";
 
@@ -17,6 +17,7 @@ interface UserContextProps {
   setUser: (user: User | null) => Promise<void>;
   removeUser: () => Promise<void>;
   incrementPoints: (points: number) => void;
+  updateStorageUserFromAPI: () => Promise<void>;
 }
 
 interface UserProviderProps {
@@ -87,9 +88,24 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       }
     }
   };
+  
+  const updateStorageUserFromAPI = async (userId: number) => {
+    console.log("updateStorageUserFromAPI");
+    console.log(userId);
+    
+    if (userId) {
+      try {
+        const updatedUser = await getUserById(userId);
+        setUser(updatedUser);
+      } catch (error) {
+        console.error('Failed to update user from API:', error);
+      }
+    }
+  };
+
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, incrementPoints }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, incrementPoints, updateStorageUserFromAPI }}>
       {children}
     </UserContext.Provider>
   );

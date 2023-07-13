@@ -6,7 +6,7 @@ import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { Word } from "models/Word";
 import { useUser } from 'services/context/UserContext';
 import { getAllTexts } from "services/api/texts";
-import shuffleArray from "utils/functions";
+import { shuffleArray } from "utils/functions";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 
@@ -216,10 +216,10 @@ const NegationGameScreen = ({ }) => {
       setCurrentIndex(currentIndex + 1);
       setUserSentenceSpecifications([]); // Réinitialiser le récapitulatif des entités
       incrementPoints(5);
-      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true }); 
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     }
   };
-  
+
 
   return (
     <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>

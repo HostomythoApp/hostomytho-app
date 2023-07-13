@@ -8,7 +8,7 @@ import { TemporalEntity } from "models/TemporalEntity";
 import { getAllTexts } from "services/api/texts";
 import Modal from 'react-native-modal';
 import ErrorButtonPlausibilityGame from "components/ErrorButtonPlausibilityGame";
-import shuffleArray from "utils/functions";
+import { shuffleArray } from "utils/functions";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 
 export interface SplitText {
@@ -99,7 +99,6 @@ const PlausibilityGameDetailedScreen = ({ }) => {
         const shuffledTexts = shuffleArray(response);
         const newtexts = shuffledTexts.slice(0, 10).map((text) => {
           const words = text.content.split(' ').map((word: string) => {
-            // Ajouter un marqueur de fin de ligne à chaque saut de ligne
             if (word.includes("\n")) {
               return [
                 { text: word.replace("\n", ""), isSelected: false, sentenceId: null },

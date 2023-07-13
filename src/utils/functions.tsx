@@ -1,4 +1,4 @@
-function shuffleArray(array: any) {
+export function shuffleArray(array: any) {
   const newArr = [...array];
   for (let i = newArr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -8,4 +8,16 @@ function shuffleArray(array: any) {
 }
 
 
-export default shuffleArray;
+export function splitText(text: any): any {
+
+  const words = text.content.split(' ').map((word: string, idx: number) => {
+    if (word.includes("\n")) {
+      return [
+        { text: word.replace("\n", ""), isSelected: false, sentenceId: null, isCurrentSelection: false, position: idx },
+      ];
+    } else {
+      return { text: word, isSelected: false, sentenceId: null, isCurrentSelection: false, position: idx };
+    }
+  }).flat();
+  return { ...text, content: words };
+};

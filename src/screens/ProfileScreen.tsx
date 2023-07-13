@@ -19,7 +19,7 @@ interface Rank {
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
-    const { user } = useUser();
+    const { user, updateStorageUserFromAPI } = useUser();
     const [ranking, setRanking] = useState<Rank[]>([]);
     const stats = [
         { id: 1, title: 'Textes validés', count: 5 },
@@ -36,6 +36,11 @@ const ProfileScreen = (props: any) => {
     const isMobile = window.width < 768;
 
     useEffect(() => {
+        console.log("useEffect ProfileScreen");
+        if (user?.id) {
+
+            updateStorageUserFromAPI(user.id);
+        }
         const fetchRanking = async () => {
             if (user?.id) {
                 const result = await getUserRankingRange(user.id);
