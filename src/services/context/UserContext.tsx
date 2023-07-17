@@ -17,7 +17,7 @@ interface UserContextProps {
   setUser: (user: User | null) => Promise<void>;
   removeUser: () => Promise<void>;
   incrementPoints: (points: number) => void;
-  updateStorageUserFromAPI: () => Promise<void>;
+  updateStorageUserFromAPI: (userId: number) => Promise<void>;
 }
 
 interface UserProviderProps {
@@ -43,8 +43,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, []);
 
   const setUser = async (newUser: User | null) => {
-    console.log("setUser ");
-    console.log(newUser);
     setUserState(newUser);
     await storeUser(newUser);
   };
@@ -90,9 +88,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
   
   const updateStorageUserFromAPI = async (userId: number) => {
-    console.log("updateStorageUserFromAPI");
-    console.log(userId);
-    
     if (userId) {
       try {
         const updatedUser = await getUserById(userId);

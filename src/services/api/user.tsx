@@ -1,13 +1,16 @@
 import { User } from "models/User";
 import api from "./index";
+import { log } from "react-native-reanimated";
 // TODO mettre des try catch
 
 export const getUsers = async (): Promise<User[]> => {
-  return await api.get("/users");
+  const response = await api.get(`/users`);
+  return response.data;
 };
 
 export const getUserById = async (id: number): Promise<User> => {
-  return await api.get(`/users/${id}`);
+  const response = await api.get(`/users/${id}`);
+  return response.data;
 };
 
 export const signUpUser = async (user: Partial<User>) => {

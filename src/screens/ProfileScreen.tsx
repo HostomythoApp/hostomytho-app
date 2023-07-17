@@ -36,9 +36,7 @@ const ProfileScreen = (props: any) => {
     const isMobile = window.width < 768;
 
     useEffect(() => {
-        console.log("useEffect ProfileScreen");
         if (user?.id) {
-
             updateStorageUserFromAPI(user.id);
         }
         const fetchRanking = async () => {
@@ -52,7 +50,7 @@ const ProfileScreen = (props: any) => {
         };
 
         fetchRanking();
-    }, [user]);
+    }, []);
 
     return (
         <ImageBackground
