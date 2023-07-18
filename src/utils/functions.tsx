@@ -8,9 +8,7 @@ export function shuffleArray(array: any) {
 }
 
 export function splitText(text: any): any {
-  const standardizedText = text.content.replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'");
-
-  const words = standardizedText.split(/(\p{L}+[']?|['']\p{L}+|\s+)/gui)
+  const words = text.content.split(/(\p{L}+[']?|['']\p{L}+|\s+)/gui)
     .filter(word => word.trim().length > 0)
     .map((word: string, idx: number) => {
       if (word.includes("\n")) {
