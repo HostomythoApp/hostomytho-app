@@ -58,7 +58,7 @@ const ProfileScreen = (props: any) => {
             style={tw("absolute bottom-0 left-0 w-full h-full")}
             resizeMode="cover"
         >
-            <View style={tw("absolute inset-0 bg-black opacity-50")}></View>
+            {/* <View style={tw("absolute inset-0 bg-black opacity-50")}></View> */}
 
             <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' />
             <View style={tw('flex-1 flex-row items-start justify-start relative')}>

@@ -10,8 +10,6 @@ export const AchievementProvider = ({ children }: { children: any }) => {
     const [achievement, setAchievement] = useState<Achievement | null>(null);
 
     const unlockAchievement = (newAchievement: Achievement) => {
-        console.log(newAchievement);
-
         setAchievement(newAchievement);
     };
 

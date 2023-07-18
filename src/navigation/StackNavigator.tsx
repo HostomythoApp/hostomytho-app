@@ -44,12 +44,13 @@ const StackNavigator = ({ }) => {
       screenOptions={{
         contentStyle: {
           backgroundColor: '#FFF'
-        }
+        },
+        headerShown: false
       }}
     >
       <Stack.Group
         screenOptions={({ navigation }) => ({
-          presentation: 'modal',
+          // presentation: 'modal',
           // headerLeft: () => <TouchableOpacity onPress={navigation.goBack} />,
           headerShown: false
 
@@ -84,7 +85,6 @@ const StackNavigator = ({ }) => {
         <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
 
         <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
-
 
         <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
 

@@ -8,7 +8,7 @@ import { TemporalEntity } from "models/TemporalEntity";
 import { getAllTexts } from "services/api/texts";
 import Modal from 'react-native-modal';
 import ErrorButtonPlausibilityGame from "components/ErrorButtonPlausibilityGame";
-import { shuffleArray } from "utils/functions";
+import { shuffleArray, splitText } from "utils/functions";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 
 export interface SplitText {
@@ -97,17 +97,8 @@ const PlausibilityGameDetailedScreen = ({ }) => {
       try {
         const response = await getAllTexts();
         const shuffledTexts = shuffleArray(response);
-        const newtexts = shuffledTexts.slice(0, 10).map((text) => {
-          const words = text.content.split(' ').map((word: string) => {
-            if (word.includes("\n")) {
-              return [
-                { text: word.replace("\n", ""), isSelected: false, sentenceId: null },
-              ];
-            } else {
-              return { text: word, isSelected: false, sentenceId: null };
-            }
-          }).flat();
-          return { ...text, content: words };
+        const newtexts = shuffledTexts.map((text) => {
+          return splitText(text);
         });
 
         setTexts(newtexts);

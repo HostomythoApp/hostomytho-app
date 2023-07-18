@@ -13,6 +13,7 @@ import { TemporalEntity } from "models/TemporalEntity";
 import { Word } from "models/Word";
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
+import { splitText } from "utils/functions";
 
 const colors = [
   "bg-yellow-300",
@@ -47,8 +48,13 @@ const TypeSentenceGameScreen = ({ }) => {
   useEffect(() => {
     const shuffledSentences = shuffleArray(data.sentences);
     setSentences(shuffledSentences.slice(0, 10).map((sentence) => {
-      const words = sentence.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, sentenceId: null }));
-      return { ...sentence, content: words };
+
+      // const words = sentence.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, sentenceId: null }));
+      // return { ...sentence, content: words };
+
+      const words = splitText(sentence)
+      return words;
+
     }));
   }, []);
 

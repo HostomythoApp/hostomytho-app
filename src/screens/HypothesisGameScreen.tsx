@@ -42,8 +42,7 @@ const HypothesisGameScreen = ({ }) => {
       try {
         const response = await getAllTexts();
         const shuffledTexts = shuffleArray(response);
-        // TODO A faire sur tous les autres splitText
-        const newtexts = shuffledTexts.slice(0, 10).map((text) => {
+        const newtexts = shuffledTexts.map((text) => {
           return splitText(text);
         });
 
