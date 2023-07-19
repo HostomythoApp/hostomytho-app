@@ -1,6 +1,6 @@
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AdminHomeScreen from "screens/AdminScreens/AdminHomeScreen";
+import AdminHomeScreen from "screens/adminScreens/AdminHomeScreen";
 
 const Stack = createNativeStackNavigator();
 

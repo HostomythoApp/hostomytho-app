@@ -3,36 +3,35 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "screens/MainScreen";
 import MainScreenBoard from "screens/MainScreenBoard";
 import MainScreenEmptyBoard from "screens/MainScreenEmptyBoard";
-import ProfileScreen from "screens/ProfileScreen";
-// import HomeScreen from "screens/HomeScreen";
+import ProfileScreen from "screens/profilScreens/ProfileScreen";
 import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
-import PlausibilityGameScreen from "screens/PlausibilityGameScreen";
-import PlausibilityGameDetailedScreen from "screens/PlausibilityGameDetailedScreen";
-import TemporalEntityScreen from "screens/TemporalEntityGameScreen";
-import AdminLoginScreen from "screens/AdminScreens/AdminLoginScreen";
-import AdminHomeScreen from "screens/AdminScreens/AdminHomeScreen";
-import EditRewardsSreen from "screens/AdminScreens/EditRewardsSreen";
-import ExportDataSreen from "screens/AdminScreens/ExportDataSreen";
-import ManageTextsScreen from "screens/AdminScreens/ManageTextsScreen";
-import ManageUsersSreen from "screens/AdminScreens/ManageUsersSreen";
-import AdminStatisticsScreen from "screens/AdminScreens/AdminStatisticsScreen";
-import UserMessagingScreen from "screens/AdminScreens/UserMessagingScreen";
-import HypothesisGameScreen from "screens/HypothesisGameScreen";
-import ConditionGameScreen from "screens/ConditionGameScreen";
-import NegationGameScreen from "screens/NegationGameScreen";
-import AchievementsScreen from "screens/AchievementsScreen";
-import RankingScreen from "screens/RankingScreen";
+import PlausibilityGameScreen from "screens/gamesScreens/PlausibilityGameScreen";
+import PlausibilityGameDetailedScreen from "screens/gamesScreens/PlausibilityGameDetailedScreen";
+import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
+import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
+import AdminHomeScreen from "screens/adminScreens/AdminHomeScreen";
+import EditRewardsSreen from "screens/adminScreens/EditRewardsSreen";
+import ExportDataSreen from "screens/adminScreens/ExportDataSreen";
+import ManageTextsScreen from "screens/adminScreens/ManageTextsScreen";
+import ManageUsersSreen from "screens/adminScreens/ManageUsersSreen";
+import AdminStatisticsScreen from "screens/adminScreens/AdminStatisticsScreen";
+import UserMessagingScreen from "screens/adminScreens/UserMessagingScreen";
+import HypothesisGameScreen from "screens/gamesScreens/HypothesisGameScreen";
+import ConditionGameScreen from "screens/gamesScreens/ConditionGameScreen";
+import NegationGameScreen from "screens/gamesScreens/NegationGameScreen";
+import AchievementsScreen from "screens/profilScreens/AchievementsScreen";
+import RankingScreen from "screens/profilScreens/RankingScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
 import HelpScreen from "screens/settingsScreens/HelpScreen";
 import PrivacyPolicyScreen from "screens/settingsScreens/PrivacyPolicyScreen";
 import SettingsScreen from "screens/settingsScreens/SettingsScreen";
 import ThemeScreen from "screens/settingsScreens/ThemeScreen";
-import ProfileSettingsScreen from "screens/ProfileSettingsScreen";
-import TemporalLinkGameScreen from "screens/TemporalLinkGameScreen";
-import StatisticsScreen from "screens/StatisticsScreen";
-import TypeSentenceGameScreen from "screens/TypeSentenceGameScreen";
+import ProfileSettingsScreen from "screens/profilScreens/ProfileSettingsScreen";
+import TemporalLinkGameScreen from "screens/gamesScreens/TemporalLinkGameScreen";
+import StatisticsScreen from "screens/profilScreens/StatisticsScreen";
+import TypeSentenceGameScreen from "screens/gamesScreens/TypeSentenceGameScreen";
 import CustomHeader from "components/header/CustomHeader";
 import AdminNavigator from "./AdminNavigator";
 
@@ -56,7 +55,6 @@ const StackNavigator = ({ }) => {
 
         })}
       >
-        <Stack.Screen name="NegationGame" component={NegationGameScreen} />
 
         <Stack.Screen name="MainEmptyBoard"
           component={MainScreenEmptyBoard}
@@ -79,6 +77,7 @@ const StackNavigator = ({ }) => {
 
         <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 
+        <Stack.Screen name="NegationGame" component={NegationGameScreen} />
 
         <Stack.Screen name="ConditionGame" component={ConditionGameScreen} />
 

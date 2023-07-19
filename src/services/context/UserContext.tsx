@@ -91,6 +91,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     if (userId) {
       try {
         const updatedUser = await getUserById(userId);
+        // @ts-ignore
         setUser(updatedUser);
       } catch (error) {
         console.error('Failed to update user from API:', error);
