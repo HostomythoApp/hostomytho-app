@@ -10,14 +10,7 @@ import Modal from 'react-native-modal';
 import ErrorButtonPlausibilityGame from "components/ErrorButtonPlausibilityGame";
 import { shuffleArray, splitText } from "utils/functions";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
-import { ErrorDetail } from "models/ErrorDetail";
 
-const colors = [
-  "bg-yellow-300",
-  "bg-green-300",
-  "bg-indigo-300",
-  "bg-pink-300",
-];
 export interface SplitText {
   id: number;
   content: Word[];
@@ -34,7 +27,10 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   const tw = useTailwind();
   const [texts, setTexts] = useState<SplitText[]>([]);
   const { incrementPoints } = useUser();
+  const [startWordIndex, setStartWordIndex] = useState<number | null>(null); // Nouvel état pour le début de la sélection
+  const [endWordIndex, setEndWordIndex] = useState<number | null>(null); // Nouvel état pour la fin de la sélection
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
   const [errorSpecifying, setErrorSpecifying] = useState(false);
@@ -42,10 +38,6 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   const [wordsSelected, setWordsSelected] = useState(false);
   const [coherenceSelected, setCoherenceSelected] = useState(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
-  const [isSelectionStarted, setSelectionStarted] = useState(false);
-  const [errorDetails, setErrorDetails] = useState<ErrorDetail[]>([]);
-  const [nextId, setNextId] = useState(0);
-  const [colorIndex, setColorIndex] = useState(0);
 
 
   const ModalPlausibilityGameDetailed: FC<ModalPlausibilityGameDetailedProps> = ({ isVisible, closeModal, setIsModalVisible, setHighlightEnabled }) => {
@@ -122,64 +114,41 @@ const PlausibilityGameDetailedScreen = ({ }) => {
     setCoherenceSelected(true); // Ajouter cette ligne
   };
 
-  const addErrorDetail = () => {
-    setSelectionStarted(false);
-    const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
-    selectedWords.forEach(word => {
-      word.sentenceId = nextId;
-      word.isSelected = true;
-      word.isCurrentSelection = false;
-      delete word.color; // Remove the temporary color from the word
-    });
-
-    const startPosition = selectedWords[0].position;
-    const endPosition = selectedWords[selectedWords.length - 1].position;
-
-    // @ts-ignore
-    setErrorDetails([...errorDetails, {
-      id: nextId,
-      user_text_rating_id: texts[currentIndex].id, //mettre l'id du text rating
-      content: selectedWords.map(word => word.text).join(' '),
-      startPosition: startPosition,
-      endPosition: endPosition,
-      type: 1, //mettre en fonction du medical ou linguistique
-      color: colors[colorIndex]
-    }]);
-
-    setNextId(nextId + 1);
-    setColorIndex((colorIndex + 1) % colors.length);
-  };
-
-
-  const getSentenceColor = (sentenceId: number | null) => {
-    if (sentenceId === null) {
-      return "bg-transparent";
-    }
-    const sentence = errorDetails.find(spec => spec.id === sentenceId);
-    return sentence ? sentence.color : "bg-transparent";
-  };
-
   const onWordPress = (wordIndex: number, textIndex: number) => {
     if (!highlightEnabled) {
       return;
     }
-
     const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
         const newWords = text.content.map((word: Word, idx: number) => {
-          if (idx === wordIndex) {
-            word.isCurrentSelection = !word.isCurrentSelection;
-            if (word.isCurrentSelection) {
-              word.color = 'bg-blue-200';
-              setSelectionStarted(true);
-            } else {
-              delete word.color;
-              setSelectionStarted(false);
+          if (startWordIndex === null) { // Si c'est le premier clic
+            if (idx === wordIndex) {
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
             }
-            return word;
+          } else if (startWordIndex !== null && endWordIndex === null) { // Si c'est le deuxième clic
+            if (idx >= Math.min(startWordIndex, wordIndex) && idx <= Math.max(startWordIndex, wordIndex)) {
+              return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
+            }
+          } else { // Si on a déjà sélectionné une plage de mots
+            if (idx === wordIndex) { // Si c'est le début d'une nouvelle sélection
+              return { ...word, isSelected: true, sentenceId: null };
+            } else { // Si c'est un mot précédemment sélectionné
+              return { ...word, isSelected: false, sentenceId: null };
+            }
           }
           return word;
         });
+
+        // Réinitialiser les indices de début et de fin lorsqu'un mot est sélectionné après une plage de mots
+        if (startWordIndex !== null && endWordIndex !== null) {
+          setStartWordIndex(wordIndex);
+          setEndWordIndex(null);
+        } else if (startWordIndex !== null && endWordIndex === null) { // Après le deuxième clic
+          setEndWordIndex(wordIndex);
+        } else { // Après le premier clic
+          setStartWordIndex(wordIndex);
+        }
+
         return { ...text, content: newWords };
       }
       return text;
@@ -217,8 +186,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
                   key={`${idx}-${word.text}`}
                   onPress={() => onWordPress(idx, index)}
                   style={tw(
-                    `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
-
+                    `m-0 p-[1px] lg:p-[2px] ${word.isSelected ? "bg-yellow-300" : "bg-transparent"}`
                   )}
                 >
                   <Text style={tw("text-2xl font-secondary")}>{word.text + " "}</Text>
@@ -263,15 +231,6 @@ const PlausibilityGameDetailedScreen = ({ }) => {
               selectedErrorType={selectedErrorType}
             />
           </View>
-          <TouchableOpacity
-            key={"add"}
-            style={tw(`items-center justify-center rounded-full w-12 h-12 mr-2 ${wordsSelected && coherenceSelected ? 'bg-blue-200' : 'bg-blue-50'}`)}
-            onPress={addErrorDetail}
-            disabled={!wordsSelected || !coherenceSelected}
-          >
-            <MaterialIcons name="add" size={22} color="white" />
-            <Text style={tw("text-white font-primary text-lg")}>Valider la sélection</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             key={"next"}
             style={tw(`items-center justify-center rounded-full w-12 h-12 mr-2 ${wordsSelected && coherenceSelected ? 'bg-blue-200' : 'bg-blue-50'}`)}

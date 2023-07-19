@@ -6,5 +6,6 @@ export interface UserSentenceSpecification {
   content: string;
   startPosition: number;
   endPosition: number;
+  createdAt?: string;
   color: string; 
 }

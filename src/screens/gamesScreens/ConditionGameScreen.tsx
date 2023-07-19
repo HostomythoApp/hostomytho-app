@@ -95,7 +95,7 @@ const ConditionGameScreen = ({ }) => {
       id: nextId,
       user_id: user?.id,
       text_id: texts[currentIndex].id,
-      type: 1,
+      type: 3,
       content: selectedWords.map(word => word.text).join(' '),
       startPosition: startPosition,
       endPosition: endPosition,
