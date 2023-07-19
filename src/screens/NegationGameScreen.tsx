@@ -13,7 +13,6 @@ import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 const colors = [
   "bg-yellow-300",
   "bg-green-300",
-  "bg-blue-300",
   "bg-indigo-300",
   "bg-pink-300",
 ];
@@ -31,8 +30,7 @@ const NegationGameScreen = ({ }) => {
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
   const { incrementPoints } = useUser();
-  const [startWordIndex, setStartWordIndex] = useState<number | null>(null);
-  // const [selectionFinished, setSelectionFinished] = useState(false);
+  const [isSelectionStarted, setSelectionStarted] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
@@ -58,30 +56,16 @@ const NegationGameScreen = ({ }) => {
     const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
         const newWords = text.content.map((word: Word, idx: number) => {
-          // Si l'index de départ n'a pas encore été défini
-          if (startWordIndex === null) {
-            // Si l'index du mot cliqué est l'index de départ
-            if (idx === wordIndex) {
-              // Cancel the previous selection if not added
-              const wordsToDeselect = text.content.filter(w => w.isCurrentSelection && w.sentenceId === userSentenceSpecifications.length);
-              wordsToDeselect.forEach(w => {
-                w.isCurrentSelection = false;
-                w.isSelected = false;  // Also reset isSelected
-              });
-              // Begin the new selection
-              setStartWordIndex(wordIndex);
-              return { ...word, isCurrentSelection: true, sentenceId: userSentenceSpecifications.length, color: colors[colorIndex] };
+          if (idx === wordIndex) {
+            word.isCurrentSelection = !word.isCurrentSelection;
+            if (word.isCurrentSelection) {
+              word.color = 'bg-blue-200';
+              setSelectionStarted(true);
+            } else {
+              delete word.color;
+              setSelectionStarted(false);
             }
-          } else {
-            // Si un index de départ a été défini, sélectionnez tous les mots entre l'index de départ et l'index du mot cliqué
-            if ((idx >= startWordIndex && idx <= wordIndex) || (idx <= startWordIndex && idx >= wordIndex)) {
-              // Réinitialisez l'index de départ à null seulement si un deuxième mot a été cliqué
-              if (startWordIndex !== null && startWordIndex !== wordIndex) {
-                setStartWordIndex(null);
-              }
-              const isSelected = (idx >= startWordIndex && idx <= wordIndex) || (idx <= startWordIndex && idx >= wordIndex);
-              return { ...word, isSelected, isCurrentSelection: isSelected, sentenceId: userSentenceSpecifications.length, color: colors[colorIndex] };
-            }
+            return word;
           }
           return word;
         });
@@ -89,11 +73,12 @@ const NegationGameScreen = ({ }) => {
       }
       return text;
     });
+
     setTexts(newTexts);
   };
 
-
   const addSentenceSpecification = () => {
+    setSelectionStarted(false);
     const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
     selectedWords.forEach(word => {
       word.sentenceId = nextId;
@@ -126,7 +111,6 @@ const NegationGameScreen = ({ }) => {
     if (sentenceId === null) {
       return "bg-transparent";
     }
-
     const sentence = userSentenceSpecifications.find(spec => spec.id === sentenceId);
     return sentence ? sentence.color : "bg-transparent";
   };
@@ -174,7 +158,6 @@ const NegationGameScreen = ({ }) => {
                 style={tw(
                   `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
                 )}
-
               >
                 <Text style={tw("text-2xl font-secondary text-gray-800")}>{word.text}</Text>
               </TouchableOpacity>
@@ -222,36 +205,38 @@ const NegationGameScreen = ({ }) => {
           <View style={tw("flex-1 justify-center items-center")}>
             {renderText(texts[currentIndex], currentIndex)}
           </View>
-          <View style={tw("flex-row mb-4 mt-8 justify-center")}>
-            <View style={tw("mx-4")}>
-              {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
-            </View>
-            <View style={tw(' flex')}
-            >
-              <TouchableOpacity
-                style={tw("bg-blue-500 px-4 rounded-lg mx-4 h-10 mb-1")}
-                onPress={addSentenceSpecification}
-              >
-                <View style={tw("py-2 text-center")}>
-                  <Text style={tw("text-white font-primary text-lg")}>Nouvelle négation</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
-                onPress={onNextCard}
-              >
-                <View style={tw("py-2 text-center")}>
-                  <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+          <View style={tw("mx-4")}>
+            {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
         </ScrollView>
+
+        <View style={tw('absolute bottom-4 right-4 flex-col')}>
+          {isSelectionStarted &&
+            <TouchableOpacity
+              style={tw(`pr-2 pl-2 rounded-lg mx-4 h-10 mb-1 bg-blue-500 flex-row items-center`)}
+              onPress={addSentenceSpecification}
+            >
+              <MaterialIcons name="add" size={22} color="white" />
+              <Text style={tw("text-white font-primary text-lg")}>Valider la sélection</Text>
+            </TouchableOpacity>
+          }
+
+          <TouchableOpacity
+            style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1 flex-row items-center")}
+            onPress={onNextCard}
+          >
+            <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+            <View style={tw('bg-red-600 rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
+              <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+
       </SafeAreaView>
     </ImageBackground>
-
   );
+
 };
 
 export default NegationGameScreen;
