@@ -55,7 +55,6 @@ const StackNavigator = ({ }) => {
 
         })}
       >
-        <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
 
         <Stack.Screen name="MainEmptyBoard"
           component={MainScreenEmptyBoard}
@@ -75,6 +74,8 @@ const StackNavigator = ({ }) => {
             headerShown: false
           })} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
 
         <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 

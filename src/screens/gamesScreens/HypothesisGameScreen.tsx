@@ -219,15 +219,10 @@ const HypothesisGameScreen = ({ }) => {
       <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
         <CustomHeaderInGame title="Trouver les hypothèses" />
 
-        <View style={tw("flex-1 justify-center items-center")}>
+        <View style={tw("mb-2 flex-1 justify-center items-center")}>
           {renderText(texts[currentIndex], currentIndex)}
         </View>
-
-
-
       </ScrollView>
-
-
 
       <View style={tw("flex-row py-2 justify-center")}>
         <ScrollView
