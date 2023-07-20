@@ -4,7 +4,7 @@ export interface ErrorDetail {
     content: string;
     startPosition: number;
     endPosition: number;
-    type: number;
+    type?: string;
     createdAt?: Date;
     color: string; 
 }

@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState, FC } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons, MaterialIcons, EvilIcons } from '@expo/vector-icons';
 import { useUser } from 'services/context/UserContext';
 import { Word } from "models/Word";
-import { TemporalEntity } from "models/TemporalEntity";
 import { getAllTexts } from "services/api/texts";
 import Modal from 'react-native-modal';
-import ErrorButtonPlausibilityGame from "components/ErrorButtonPlausibilityGame";
 import { shuffleArray, splitText } from "utils/functions";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import { ErrorDetail } from "models/ErrorDetail";
@@ -40,13 +38,13 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   const [errorSpecifying, setErrorSpecifying] = useState(false);
   const [selectedErrorType, setSelectedErrorType] = useState<string | null>(null);
   const [wordsSelected, setWordsSelected] = useState(false);
-  const [coherenceSelected, setCoherenceSelected] = useState(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
   const [isSelectionStarted, setSelectionStarted] = useState(false);
   const [errorDetails, setErrorDetails] = useState<ErrorDetail[]>([]);
   const [nextId, setNextId] = useState(0);
   const [colorIndex, setColorIndex] = useState(0);
-
+  const window = Dimensions.get('window');
+  const isMobile = window.width < 795;
 
   const ModalPlausibilityGameDetailed: FC<ModalPlausibilityGameDetailedProps> = ({ isVisible, closeModal, setIsModalVisible, setHighlightEnabled }) => {
     const tw = useTailwind();
@@ -92,7 +90,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
                 closeModal();
               }}
             >
-              <Text style={tw(" text-green-700 font-semibold")}>Aller au texte suivant</Text>
+              <Text style={tw("text-green-700 font-semibold")}>Aller au texte suivant</Text>
             </TouchableOpacity>
           </>
         </View>
@@ -117,11 +115,6 @@ const PlausibilityGameDetailedScreen = ({ }) => {
     fetchTexts();
   }, []);
 
-  const onCoherenceSelected = (type: string) => {
-    setSelectedErrorType(type);
-    setCoherenceSelected(true); // Ajouter cette ligne
-  };
-
   const addErrorDetail = () => {
     setSelectionStarted(false);
     const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
@@ -129,12 +122,18 @@ const PlausibilityGameDetailedScreen = ({ }) => {
       word.sentenceId = nextId;
       word.isSelected = true;
       word.isCurrentSelection = false;
-      delete word.color; // Remove the temporary color from the word
+      delete word.color;
     });
 
     const startPosition = selectedWords[0].position;
     const endPosition = selectedWords[selectedWords.length - 1].position;
 
+    let errorType;
+    if (selectedErrorType === "Cohérence linguistique") {
+      errorType = "linguistique";
+    } else if (selectedErrorType === "Cohérence médicale") {
+      errorType = "médical";
+    }
     // @ts-ignore
     setErrorDetails([...errorDetails, {
       id: nextId,
@@ -142,7 +141,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
       content: selectedWords.map(word => word.text).join(' '),
       startPosition: startPosition,
       endPosition: endPosition,
-      type: 1, //mettre en fonction du medical ou linguistique
+      type: errorType,
       color: colors[colorIndex]
     }]);
 
@@ -163,7 +162,6 @@ const PlausibilityGameDetailedScreen = ({ }) => {
     if (!highlightEnabled) {
       return;
     }
-
     const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
         const newWords = text.content.map((word: Word, idx: number) => {
@@ -186,6 +184,34 @@ const PlausibilityGameDetailedScreen = ({ }) => {
     });
     setTexts(newTexts);
     setWordsSelected(true);
+  };
+
+  const renderErrorDetail = (errorDetail: ErrorDetail) => (
+    <View key={errorDetail.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
+      <View style={tw("flex-shrink")}>
+        <Text style={tw(`text-lg mr-2 ${errorDetail.color ? errorDetail.color : ''} font-primary`)}>{errorDetail.content}</Text>
+      </View>
+      <Text style={tw('font-primary text-lg')}
+      >{errorDetail.type}</Text>
+      <TouchableOpacity onPress={() => removeErrorDetail(errorDetail.id)}>
+        <Entypo name="cross" size={24} color="red" />
+      </TouchableOpacity>
+    </View>
+  );
+
+  const removeErrorDetail = (errorDetailId: number) => {
+    setErrorDetails(errorDetails.filter(errorDetail => errorDetail.id !== errorDetailId));
+
+    const newTexts = texts.map(text => {
+      const newWords = text.content.map(word => {
+        if (word.sentenceId === errorDetailId) {
+          return { ...word, isSelected: false, isCurrentSelection: false };
+        }
+        return word;
+      });
+      return { ...text, content: newWords };
+    });
+    setTexts(newTexts);
   };
 
   // TODO Séparer dans d'autres fichiers pour plus de visibilité
@@ -234,11 +260,14 @@ const PlausibilityGameDetailedScreen = ({ }) => {
   return (
 
     <SafeAreaView style={tw("flex-1 bg-white")}>
-      <ScrollView ref={scrollViewRef} contentContainerStyle={tw("flex-grow")}>
+      <ScrollView ref={scrollViewRef}>
         <CustomHeaderInGame title="Plausibilité de textes" />
         {/* Cards */}
-        <View style={tw("flex-1")}>
+        <View style={tw("flex-1 mb-2")}>
           {renderText(texts[currentIndex], currentIndex)}
+        </View>
+        <View style={tw("mx-4 mt-2")}>
+          {errorDetails.map(errorDetail => renderErrorDetail(errorDetail))}
         </View>
       </ScrollView>
 
@@ -251,32 +280,64 @@ const PlausibilityGameDetailedScreen = ({ }) => {
 
       {errorSpecifying ? (
         <View style={tw('my-3 flex flex-row justify-between items-center')}>
+
+          <TouchableOpacity
+            style={tw("pl-2 ml-2 items-center flex-row justify-center rounded-full h-12 ")}
+            onPress={() => {
+              setHighlightEnabled(false);
+              setErrorSpecifying(false);
+              setSelectedErrorType(null);
+              setWordsSelected(false);
+              setErrorDetails([]);
+            }}
+          >
+            <EvilIcons name="close" size={26} color="black" />
+          </TouchableOpacity>
+
           <View style={tw('flex flex-row self-center mx-auto')}>
-            <ErrorButtonPlausibilityGame
-              type="Cohérence médicale"
-              setSelectedErrorType={onCoherenceSelected}
-              selectedErrorType={selectedErrorType}
-            />
-            <ErrorButtonPlausibilityGame
-              type="Cohérence linguistique"
-              setSelectedErrorType={onCoherenceSelected}
-              selectedErrorType={selectedErrorType}
-            />
+            <TouchableOpacity
+              style={[
+                tw(' mx-2 items-center justify-center rounded-lg border border-blue-500 py-2 px-1'),
+                selectedErrorType === "Cohérence médicale" ? tw('bg-blue-500') : tw('bg-white'),
+              ]}
+              onPress={() => {
+                setSelectedErrorType("Cohérence médicale");
+              }}
+            >
+              <Text style={tw(`${selectedErrorType === "Cohérence médicale" ? 'text-white' : 'text-blue-500'} font-primary text-lg`)}>Cohérence médicale</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                tw(' mx-2 items-center justify-center rounded-lg border border-blue-500 py-2 px-1 '),
+                selectedErrorType === "Cohérence linguistique" ? tw('bg-blue-500') : tw('bg-white'),
+              ]}
+              onPress={() => {
+                setSelectedErrorType("Cohérence linguistique");
+              }}
+            >
+              <Text style={tw(`${selectedErrorType === "Cohérence linguistique" ? 'text-white' : 'text-blue-500'} font-primary text-lg`)}>Cohérence linguistique</Text>
+            </TouchableOpacity>
           </View>
+
           <TouchableOpacity
             key={"add"}
-            style={tw(`items-center justify-center rounded-full w-12 h-12 mr-2 ${wordsSelected && coherenceSelected ? 'bg-blue-200' : 'bg-blue-50'}`)}
-            onPress={addErrorDetail}
-            disabled={!wordsSelected || !coherenceSelected}
+            style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 ${wordsSelected && selectedErrorType ? 'bg-blue-500' : 'bg-blue-50'}`)}
+            onPress={() => {
+              setSelectedErrorType(null);
+              addErrorDetail();
+            }}
+            disabled={!wordsSelected || !selectedErrorType}
           >
             <MaterialIcons name="add" size={22} color="white" />
             <Text style={tw("text-white font-primary text-lg")}>Valider la sélection</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             key={"next"}
-            style={tw(`items-center justify-center rounded-full w-12 h-12 mr-2 ${wordsSelected && coherenceSelected ? 'bg-blue-200' : 'bg-blue-50'}`)}
+            style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 ${errorDetails.length > 0 ? 'bg-primary' : 'bg-red-50'}`)}
             onPress={async () => {
-              if (wordsSelected && coherenceSelected) {
+              if (errorDetails.length > 0) {
                 if (currentIndex + 1 < texts.length) {
                   setCurrentIndex(currentIndex + 1);
                   incrementPoints(10)
@@ -295,17 +356,27 @@ const PlausibilityGameDetailedScreen = ({ }) => {
                   });
                   setTexts(newTexts);
                   setSelectedErrorType(null);
+                  setErrorDetails([]);
                   setWordsSelected(false);
-                  setCoherenceSelected(false);
+                  // setCoherenceSelected(false);
                 } else {
                   // TODO afficher qu'il n'y a plus de texte
                 }
               }
             }}
-            disabled={!wordsSelected || !coherenceSelected} // Le bouton est désactivé si les mots ne sont pas surlignés ou si la cohérence n'est pas sélectionnée
+            disabled={errorDetails.length === 0}
           >
-            <Ionicons name="arrow-forward" size={24} color={wordsSelected && coherenceSelected ? "blue" : "lightblue"} />
+            {!isMobile &&
+              <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+            }
+            {isMobile &&
+              <Ionicons name="arrow-forward" size={24} color={wordsSelected && selectedErrorType ? "blue" : "lightblue"} />
+            }
+            <View style={tw(`rounded-full h-6 w-6 flex items-center justify-center ml-2 ${errorDetails.length > 0 ? 'bg-red-600' : 'bg-red-200'}`)}>
+              <Text style={tw('text-white font-bold')}>{errorDetails.length}</Text>
+            </View>
           </TouchableOpacity>
+
         </View>
       ) : (
         // Boutons de plausibilité  

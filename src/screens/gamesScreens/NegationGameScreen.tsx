@@ -127,9 +127,9 @@ const NegationGameScreen = ({ }) => {
       });
       return { ...text, content: newWords };
     });
-
     setTexts(newTexts);
   };
+
   const renderText = (text: SplitText, index: number) => {
     if (typeof text === "undefined") {
       return null;
