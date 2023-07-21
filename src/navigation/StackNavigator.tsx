@@ -55,7 +55,6 @@ const StackNavigator = ({ }) => {
 
         })}
       >
-        <Stack.Screen name="NegationGame" component={NegationGameScreen} />
 
         <Stack.Screen name="MainEmptyBoard"
           component={MainScreenEmptyBoard}
@@ -77,6 +76,8 @@ const StackNavigator = ({ }) => {
         <Stack.Screen name="Profile" component={ProfileScreen} />
 
         <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
+
+        <Stack.Screen name="NegationGame" component={NegationGameScreen} />
 
         <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 

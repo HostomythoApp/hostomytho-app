@@ -125,6 +125,26 @@ const NegationGameScreen = ({ }) => {
     }));
   }, [userSentenceSpecifications, texts]);
 
+  interface WordProps {
+    word: Word;
+    index: number;
+    onWordPress: () => void;
+  }
+
+  const WordComponent = React.memo(({ word, index, onWordPress }: WordProps) => {
+    const tw = useTailwind();
+    return (
+      <TouchableOpacity
+        key={index}
+        onPress={onWordPress}
+        style={tw(
+          `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
+        )}
+      >
+        <Text style={tw("text-2xl font-secondary text-gray-800")}>{word.text}</Text>
+      </TouchableOpacity>
+    )
+  })
 
   const renderText = (text: SplitText, index: number) => {
     if (typeof text === "undefined") {
@@ -132,7 +152,6 @@ const NegationGameScreen = ({ }) => {
     }
     return (
       <SafeAreaView style={tw("flex-1 ")}>
-
         <View
           style={[
             tw("bg-[#FFFEE0] rounded-xl justify-center mx-2"),
@@ -148,34 +167,54 @@ const NegationGameScreen = ({ }) => {
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
             {text.content.map((word: any, idx: number) => (
-              <TouchableOpacity
-                key={idx}
-                onPress={() => onWordPress(idx, index)}
-                style={tw(
-                  `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
-                )}
-              >
-                <Text style={tw("text-2xl font-secondary text-gray-800")}>{word.text}</Text>
-              </TouchableOpacity>
+              <WordComponent
+                key={idx}   // Add key here
+                word={word}
+                index={idx}
+                onWordPress={() => onWordPress(idx, index)}
+              />
             ))}
           </View>
-
         </View>
       </SafeAreaView>
     );
   };
 
-  const renderUserSentenceSpecification = (sentenceSpecification: any) => (
-    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
-      <View style={tw("flex-shrink")}>
-        <Text style={tw(`text-lg mr-2 ${sentenceSpecification.color ? sentenceSpecification.color : ''} font-primary`)}>{sentenceSpecification.content}</Text>
+  interface UserSentenceSpecificationProps {
+    sentenceSpecification: UserSentenceSpecification;
+    removeUserSentenceSpecification: (id: number) => void;
+  }
+
+  const UserSentenceSpecificationComponent = React.memo(({ sentenceSpecification, removeUserSentenceSpecification }: UserSentenceSpecificationProps) => {
+    const tw = useTailwind();
+    return (
+      <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
+        <View style={tw("flex-shrink")}>
+          <Text style={tw(`text-lg mr-2 ${sentenceSpecification.color ? sentenceSpecification.color : ''} font-primary`)}>{sentenceSpecification.content}</Text>
+        </View>
+        <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
+          <Entypo name="cross" size={24} color="red" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
-        <Entypo name="cross" size={24} color="red" />
-      </TouchableOpacity>
+    )
+  });
+
+  interface UserSentenceSpecificationsProps {
+    userSentenceSpecifications: UserSentenceSpecification[];
+    removeUserSentenceSpecification: (id: number) => void;
+  }
+
+  const UserSentenceSpecifications = ({ userSentenceSpecifications, removeUserSentenceSpecification }: UserSentenceSpecificationsProps) => (
+    <View style={tw("mx-4")}>
+      {userSentenceSpecifications.map(sentenceSpecification =>
+        <UserSentenceSpecificationComponent
+          key={sentenceSpecification.id}   // Add key here
+          sentenceSpecification={sentenceSpecification}
+          removeUserSentenceSpecification={removeUserSentenceSpecification}
+        />
+      )}
     </View>
   );
-
 
   const onNextCard = async () => {
     if (currentIndex < texts.length - 1) {
@@ -201,9 +240,11 @@ const NegationGameScreen = ({ }) => {
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {renderText(texts[currentIndex], currentIndex)}
           </View>
-          <View style={tw("mx-4")}>
-            {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
-          </View>
+          <UserSentenceSpecifications
+            userSentenceSpecifications={userSentenceSpecifications}
+            removeUserSentenceSpecification={removeUserSentenceSpecification}
+          />
+
         </ScrollView>
 
         <View style={tw('absolute bottom-4 right-4 flex-col')}>

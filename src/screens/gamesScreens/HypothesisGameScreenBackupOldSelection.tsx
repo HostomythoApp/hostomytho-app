@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
@@ -13,6 +13,7 @@ import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 const colors = [
   "bg-yellow-300",
   "bg-green-300",
+  "bg-blue-300",
   "bg-indigo-300",
   "bg-pink-300",
 ];
@@ -30,10 +31,11 @@ const HypothesisGameScreen = ({ }) => {
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
   const { incrementPoints } = useUser();
-  const [isSelectionStarted, setSelectionStarted] = useState(false);
+  const [startWordIndex, setStartWordIndex] = useState<number | null>(null);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
+  const [isSelectionStarted, setSelectionStarted] = useState(false);
 
   useEffect(() => {
     const fetchTexts = async () => {
@@ -52,24 +54,44 @@ const HypothesisGameScreen = ({ }) => {
     fetchTexts();
   }, []);
 
-  const onWordPress = useCallback((wordIndex: number, textIndex: number) => {
-    setTexts(texts => texts.map((text, idx) => {
+  const onWordPress = (wordIndex: number, textIndex: number) => {
+    const newTexts = texts.map((text, idx) => {
       if (idx === textIndex) {
-        const newWords = [...text.content];
-        const word = newWords[wordIndex];
-        word.isCurrentSelection = !word.isCurrentSelection;
-        if (word.isCurrentSelection) {
-          word.color = 'bg-blue-200';
-          setSelectionStarted(true);
-        } else {
-          delete word.color;
-          setSelectionStarted(false);
-        }
+        const newWords = text.content.map((word: Word, idx: number) => {
+          // Si l'index de départ n'a pas encore été défini
+          if (startWordIndex === null) {
+            // Si l'index du mot cliqué est l'index de départ
+            if (idx === wordIndex) {
+              // Cancel the previous selection if not added
+              setSelectionStarted(true);
+              const wordsToDeselect = text.content.filter(w => w.isCurrentSelection && w.sentenceId === userSentenceSpecifications.length);
+              wordsToDeselect.forEach(w => {
+                w.isCurrentSelection = false;
+                w.isSelected = false;  // Also reset isSelected
+              });
+              // Begin the new selection
+              setStartWordIndex(wordIndex);
+              return { ...word, isCurrentSelection: true, sentenceId: userSentenceSpecifications.length, color: colors[colorIndex] };
+            }
+          } else {
+            // Si un index de départ a été défini, sélectionnez tous les mots entre l'index de départ et l'index du mot cliqué
+            if ((idx >= startWordIndex && idx <= wordIndex) || (idx <= startWordIndex && idx >= wordIndex)) {
+              // Réinitialisez l'index de départ à null seulement si un deuxième mot a été cliqué
+              if (startWordIndex !== null && startWordIndex !== wordIndex) {
+                setStartWordIndex(null);
+              }
+              const isSelected = (idx >= startWordIndex && idx <= wordIndex) || (idx <= startWordIndex && idx >= wordIndex);
+              return { ...word, isSelected, isCurrentSelection: isSelected, sentenceId: userSentenceSpecifications.length, color: colors[colorIndex] };
+            }
+          }
+          return word;
+        });
         return { ...text, content: newWords };
       }
       return text;
-    }));
-  }, []);
+    });
+    setTexts(newTexts);
+  };
 
 
   const addSentenceSpecification = () => {
@@ -79,7 +101,7 @@ const HypothesisGameScreen = ({ }) => {
       word.sentenceId = nextId;
       word.isSelected = true;
       word.isCurrentSelection = false;
-      delete word.color; // Remove the temporary color from the word
+      delete word.color;
     });
 
     const startPosition = selectedWords[0].position;
@@ -90,7 +112,7 @@ const HypothesisGameScreen = ({ }) => {
       id: nextId,
       user_id: user?.id,
       text_id: texts[currentIndex].id,
-      type: 2,
+      type: 1,
       content: selectedWords.map(word => word.text).join(' '),
       startPosition: startPosition,
       endPosition: endPosition,
@@ -106,32 +128,32 @@ const HypothesisGameScreen = ({ }) => {
     if (sentenceId === null) {
       return "bg-transparent";
     }
+
     const sentence = userSentenceSpecifications.find(spec => spec.id === sentenceId);
     return sentence ? sentence.color : "bg-transparent";
   };
 
-  const removeUserSentenceSpecification = useCallback((sentenceId: number) => {
+  const removeUserSentenceSpecification = (sentenceId: number) => {
     setUserSentenceSpecifications(userSentenceSpecifications.filter(sentenceSpecification => sentenceSpecification.id !== sentenceId));
 
-    setTexts(texts => texts.map(text => {
-      let newText = { ...text };
-      newText.content = newText.content.map(word => {
+    const newTexts = texts.map(text => {
+      const newWords = text.content.map(word => {
         if (word.sentenceId === sentenceId) {
           return { ...word, isSelected: false, isCurrentSelection: false };
         }
         return word;
       });
-      return newText;
-    }));
-  }, [userSentenceSpecifications, texts]);
+      return { ...text, content: newWords };
+    });
 
-
+    setTexts(newTexts);
+  };
   const renderText = (text: SplitText, index: number) => {
     if (typeof text === "undefined") {
       return null;
     }
     return (
-      <SafeAreaView style={tw("flex-1 ")}>
+      <SafeAreaView style={tw("flex-1 bg-white")}>
 
         <View
           style={[
@@ -154,6 +176,7 @@ const HypothesisGameScreen = ({ }) => {
                 style={tw(
                   `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
                 )}
+
               >
                 <Text style={tw("text-2xl font-secondary text-gray-800")}>{word.text}</Text>
               </TouchableOpacity>
@@ -192,47 +215,49 @@ const HypothesisGameScreen = ({ }) => {
 
 
   return (
-    <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>
+    <SafeAreaView style={tw("flex-1 bg-transparent")}>
+      <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
+        <CustomHeaderInGame title="Trouver les hypothèses" />
 
-      <SafeAreaView style={tw("flex-1 ")}>
-        <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
-          <CustomHeaderInGame title="Trouver les hypothèses" backgroundColor="bg-transparent" textColor="white" />
+        <View style={tw("mb-2 flex-1 justify-center items-center")}>
+          {renderText(texts[currentIndex], currentIndex)}
+        </View>
+      </ScrollView>
 
-          <View style={tw("mb-2 flex-1 justify-center items-center")}>
-            {renderText(texts[currentIndex], currentIndex)}
-          </View>
-          <View style={tw("mx-4")}>
-            {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
-          </View>
+      <View style={tw("flex-row py-2 justify-center")}>
+        <ScrollView
+          style={tw("mx-4")}
+          contentContainerStyle={{ maxHeight: 110 }}
+        >
+          {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
         </ScrollView>
 
-        <View style={tw('absolute bottom-4 right-4 flex-col')}>
-          {isSelectionStarted &&
-            <TouchableOpacity
-              style={tw(`pr-2 pl-2 rounded-lg mx-4 h-10 mb-1 bg-blue-500 flex-row items-center`)}
-              onPress={addSentenceSpecification}
-            >
-              <MaterialIcons name="add" size={22} color="white" />
-              <Text style={tw("text-white font-primary text-lg")}>Valider la sélection</Text>
-            </TouchableOpacity>
-          }
+        <View style={tw(' flex')}>
+          <TouchableOpacity
+            style={tw(`px-4 rounded-lg mx-4 h-10 mb-1 bg-blue-500 ${isSelectionStarted ? '' : 'opacity-50'}`)}
+            onPress={addSentenceSpecification}
+            disabled={!isSelectionStarted}
+          >
+            <View style={tw("py-2 text-center")}>
+              <Text style={tw("text-white font-primary text-lg")}>Nouvelle hypothèse</Text>
+            </View>
+          </TouchableOpacity>
+
 
           <TouchableOpacity
-            style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1 flex-row items-center")}
+            style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1")}
             onPress={onNextCard}
           >
-            <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-            <View style={tw('bg-red-600 rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
-              <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
+            <View style={tw("py-2 text-center")}>
+              <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
             </View>
           </TouchableOpacity>
         </View>
+      </View>
 
 
-      </SafeAreaView>
-    </ImageBackground>
+    </SafeAreaView>
   );
-
 };
 
 export default HypothesisGameScreen;

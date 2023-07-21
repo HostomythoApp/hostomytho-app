@@ -289,11 +289,23 @@ const PlausibilityGameDetailedScreen = ({ }) => {
               setSelectedErrorType(null);
               setWordsSelected(false);
               setErrorDetails([]);
+              const newTexts = texts.map((text, idx) => {
+                if (idx === currentIndex) {
+                  const newWords = text.content.map(word => {
+                    if (word.isCurrentSelection) {
+                      return { ...word, isCurrentSelection: false };
+                    }
+                    return word;
+                  });
+                  return { ...text, content: newWords };
+                }
+                return text;
+              });
+              setTexts(newTexts);
             }}
           >
             <EvilIcons name="close" size={26} color="black" />
           </TouchableOpacity>
-
           <View style={tw('flex flex-row self-center mx-auto')}>
             <TouchableOpacity
               style={[
