@@ -200,7 +200,7 @@ const ConditionGameScreen = ({ }) => {
 
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
-          <CustomHeaderInGame title="Trouver les négations" backgroundColor="bg-transparent" textColor="white" />
+          <CustomHeaderInGame title="Trouver les conditions" backgroundColor="bg-transparent" textColor="white" />
 
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {renderText(texts[currentIndex], currentIndex)}

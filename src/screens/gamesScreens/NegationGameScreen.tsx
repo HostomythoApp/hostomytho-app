@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
@@ -52,30 +52,25 @@ const NegationGameScreen = ({ }) => {
     fetchTexts();
   }, []);
 
-  const onWordPress = (wordIndex: number, textIndex: number) => {
-    const newTexts = texts.map((text, idx) => {
+  const onWordPress = useCallback((wordIndex: number, textIndex: number) => {
+    setTexts(texts => texts.map((text, idx) => {
       if (idx === textIndex) {
-        const newWords = text.content.map((word: Word, idx: number) => {
-          if (idx === wordIndex) {
-            word.isCurrentSelection = !word.isCurrentSelection;
-            if (word.isCurrentSelection) {
-              word.color = 'bg-blue-200';
-              setSelectionStarted(true);
-            } else {
-              delete word.color;
-              setSelectionStarted(false);
-            }
-            return word;
-          }
-          return word;
-        });
+        const newWords = [...text.content];
+        const word = newWords[wordIndex];
+        word.isCurrentSelection = !word.isCurrentSelection;
+        if (word.isCurrentSelection) {
+          word.color = 'bg-blue-200';
+          setSelectionStarted(true);
+        } else {
+          delete word.color;
+          setSelectionStarted(false);
+        }
         return { ...text, content: newWords };
       }
       return text;
-    });
+    }));
+  }, []);
 
-    setTexts(newTexts);
-  };
 
   const addSentenceSpecification = () => {
     setSelectionStarted(false);
@@ -115,20 +110,21 @@ const NegationGameScreen = ({ }) => {
     return sentence ? sentence.color : "bg-transparent";
   };
 
-  const removeUserSentenceSpecification = (sentenceId: number) => {
+  const removeUserSentenceSpecification = useCallback((sentenceId: number) => {
     setUserSentenceSpecifications(userSentenceSpecifications.filter(sentenceSpecification => sentenceSpecification.id !== sentenceId));
 
-    const newTexts = texts.map(text => {
-      const newWords = text.content.map(word => {
+    setTexts(texts => texts.map(text => {
+      let newText = { ...text };
+      newText.content = newText.content.map(word => {
         if (word.sentenceId === sentenceId) {
           return { ...word, isSelected: false, isCurrentSelection: false };
         }
         return word;
       });
-      return { ...text, content: newWords };
-    });
-    setTexts(newTexts);
-  };
+      return newText;
+    }));
+  }, [userSentenceSpecifications, texts]);
+
 
   const renderText = (text: SplitText, index: number) => {
     if (typeof text === "undefined") {

@@ -370,9 +370,9 @@ const PlausibilityGameDetailedScreen = ({ }) => {
               <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
             }
             {isMobile &&
-              <Ionicons name="arrow-forward" size={24} color={wordsSelected && selectedErrorType ? "blue" : "lightblue"} />
+              <Ionicons name="arrow-forward" size={24} color={errorDetails.length > 0 ? "white" : "#FECACA"} />
             }
-            <View style={tw(`rounded-full h-6 w-6 flex items-center justify-center ml-2 ${errorDetails.length > 0 ? 'bg-red-600' : 'bg-red-200'}`)}>
+            <View style={tw(`rounded-full h-6 w-6 flex items-center justify-center ml-2 ${errorDetails.length > 0 ? 'bg-red-400' : 'bg-red-200'}`)}>
               <Text style={tw('text-white font-bold')}>{errorDetails.length}</Text>
             </View>
           </TouchableOpacity>

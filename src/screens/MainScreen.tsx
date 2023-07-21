@@ -24,8 +24,8 @@ const MainScreen = ({ }) => {
                         <PrimaryButton title="Plausibilité des textes détaillée" destination="PlausibilityGameDetailed" />
                         <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
                         <PrimaryButton title="Trouver les hypothèses" destination="HypothesisGame" />
-                        <PrimaryButton title="Trouver les conditions" destination="NegationGame" />
-                        <PrimaryButton title="Trouver les négations" destination="ConditionGame" />
+                        <PrimaryButton title="Trouver les conditions" destination="ConditionGame" />
+                        <PrimaryButton title="Trouver les négations" destination="NegationGame" />
                         <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
                         <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />
                         <PrimaryButton title="Spécifier les liens temporelles" destination="TemporalLinkGame" />
