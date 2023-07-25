@@ -8,6 +8,7 @@ import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
 import { Text as TextType } from "models/Text";
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const PlausibilityGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -22,6 +23,7 @@ const PlausibilityGameScreen = ({ }) => {
   const [swiperKey, setSwiperKey] = useState(0);
   const { incrementPoints } = useUser();
   const [isVisible, setIsVisible] = useState(false);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     setTexts(data.texts)
@@ -81,163 +83,163 @@ const PlausibilityGameScreen = ({ }) => {
 
 
   return (
-    <SafeAreaView style={tw("flex-1 bg-white")}>
-      <ScrollView contentContainerStyle={tw("flex-grow")}>
-        <CustomHeaderInGame title="Plausibilité de textes" />
+  <SafeAreaView style={{ flex: 1, backgroundColor: "white", marginLeft: insets.left, marginRight: insets.right }}>
+    <ScrollView contentContainerStyle={tw("flex-grow")}>
+      <CustomHeaderInGame title="Plausibilité de textes" />
 
-        {/* Cards */}
-        <View style={tw("flex-1 -mt-6")}>
-          <Swiper
+      {/* Cards */}
+      <View style={tw("flex-1 -mt-6")}>
+        <Swiper
 
-            key={swiperKey}
-            ref={swipeRef}
-            containerStyle={{ backgroundColor: "transparent" }}
-            cards={data.texts}
-            onSwipedLeft={(cardIndex) => {
-              handleSwipe('left');
-              swipeLeft(cardIndex);
-              incrementPoints(10);
-            }}
-            onSwipedRight={(cardIndex) => {
-              handleSwipe('right');
-              swipeRight(cardIndex);
-              incrementPoints(10);
-            }}
-            onSwipedAll={() => {
-              onSwipedAll();
-            }}
-            cardIndex={0}
-            backgroundColor={"#4FD0E9"}
-            stackSize={5}
-            disableBottomSwipe={true}
-            overlayLabels={{
-              left: {
-                title: "Suspect",
-                style: {
-                  label: {
-                    textAlign: "right",
-                    color: "red",
-                    fontFamily: "Pally",
-                  },
+          key={swiperKey}
+          ref={swipeRef}
+          containerStyle={{ backgroundColor: "transparent" }}
+          cards={data.texts}
+          onSwipedLeft={(cardIndex) => {
+            handleSwipe('left');
+            swipeLeft(cardIndex);
+            incrementPoints(10);
+          }}
+          onSwipedRight={(cardIndex) => {
+            handleSwipe('right');
+            swipeRight(cardIndex);
+            incrementPoints(10);
+          }}
+          onSwipedAll={() => {
+            onSwipedAll();
+          }}
+          cardIndex={0}
+          backgroundColor={"#4FD0E9"}
+          stackSize={5}
+          disableBottomSwipe={true}
+          overlayLabels={{
+            left: {
+              title: "Suspect",
+              style: {
+                label: {
+                  textAlign: "right",
+                  color: "red",
+                  fontFamily: "Pally",
                 },
               },
-              right: {
-                title: "Valide",
-                style: {
-                  label: {
-                    color: "#81dba0",
-                    fontFamily: "Pally",
-                  },
+            },
+            right: {
+              title: "Valide",
+              style: {
+                label: {
+                  color: "#81dba0",
+                  fontFamily: "Pally",
                 },
               },
-              top: {
-                title: "Doute",
-                style: {
-                  label: {
-                    color: "yellow",
-                    fontFamily: "Pally",
-                  },
+            },
+            top: {
+              title: "Doute",
+              style: {
+                label: {
+                  color: "yellow",
+                  fontFamily: "Pally",
                 },
               },
-            }}
-            renderCard={(card: any, index) => {
-              const isExpanded = expandedCards[index];
-              return (
-                <View style={[
-                  tw("bg-[#FFFEE0] rounded-xl justify-center"),
+            },
+          }}
+          renderCard={(card: any, index) => {
+            const isExpanded = expandedCards[index];
+            return (
+              <View style={[
+                tw("bg-[#FFFEE0] rounded-xl justify-center"),
+                {
+                  minHeight: 400, // Increased card size
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                  cursor: 'grab'
+                }
+              ]}>
+                <Text style={[
+                  tw("text-2xl tracking-wider mb-2 m-7 font-secondary"),
                   {
-                    minHeight: 400, // Increased card size
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    elevation: 5,
-                    cursor: 'grab'
-                  }
+                    WebkitUserSelect: 'none',
+                    userSelect: 'none'
+                  },
                 ]}>
-                  <Text style={[
-                    tw("text-2xl tracking-wider mb-2 m-7 font-secondary"),
-                    {
-                      WebkitUserSelect: 'none',
-                      userSelect: 'none'
-                    },
-                  ]}>
-                    {displayedTexts[index]}
-                  </Text>
-                  {card.content.length > 750 && (
-                    <View style={tw("flex items-center mb-2")}>
-                      <TouchableOpacity onPress={() => toggleExpandCard(index)} >
-                        {isExpanded ? (
-                          <AntDesign name="up" size={24} color="black" />
-                        ) : (
-                          <AntDesign name="down" size={24} color="black" />
-                        )}
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                </View>
-              );
-            }}
-          ></Swiper>
-          {swipedAll && (
-            <View style={tw('relative  h-3/4 rounded-xl justify-center items-center')}>
-              <Text style={tw('font-bold pb-5')} > Plus de texte pour le moment. Reviens plus tard</Text>
-            </View>
-          )}
-        </View>
-      </ScrollView>
+                  {displayedTexts[index]}
+                </Text>
+                {card.content.length > 750 && (
+                  <View style={tw("flex items-center mb-2")}>
+                    <TouchableOpacity onPress={() => toggleExpandCard(index)} >
+                      {isExpanded ? (
+                        <AntDesign name="up" size={24} color="black" />
+                      ) : (
+                        <AntDesign name="down" size={24} color="black" />
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+            );
+          }}
+        ></Swiper>
+        {swipedAll && (
+          <View style={tw('relative  h-3/4 rounded-xl justify-center items-center')}>
+            <Text style={tw('font-bold pb-5')} > Plus de texte pour le moment. Reviens plus tard</Text>
+          </View>
+        )}
+      </View>
+    </ScrollView>
 
 
-      <ModalPlausibilityGame
-        isVisible={isModalVisible}
-        swipeType={swipeType}
-        closeModal={() => setIsModalVisible(false)}
-        setIsModalVisible={setIsModalVisible}
-      />
+    <ModalPlausibilityGame
+      isVisible={isModalVisible}
+      swipeType={swipeType}
+      closeModal={() => setIsModalVisible(false)}
+      setIsModalVisible={setIsModalVisible}
+    />
 
-      {/* Boutons de plausibilité */}
-      {!swipedAll && (
-        < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
-            onPress={async () => {
-              await updateSwipeFromButton('left');
-              swipeRef.current?.swipeLeft();
-            }} >
-            <Entypo name="cross" size={32} color="red" />
-          </TouchableOpacity>
+    {/* Boutons de plausibilité */}
+    {!swipedAll && (
+      < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
+          onPress={async () => {
+            await updateSwipeFromButton('left');
+            swipeRef.current?.swipeLeft();
+          }} >
+          <Entypo name="cross" size={32} color="red" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
-            onPress={async () => {
-              await updateSwipeFromButton('left');
-              swipeRef.current?.swipeLeft();
-            }} >
-            <Entypo name="flag" size={28} color="orange" />
-          </TouchableOpacity>
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
+          onPress={async () => {
+            await updateSwipeFromButton('left');
+            swipeRef.current?.swipeLeft();
+          }} >
+          <Entypo name="flag" size={28} color="orange" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
-            onPress={() => swipeRef.current?.swipeTop()}  >
-            <AntDesign name="question" size={30} color="orange" />
-          </TouchableOpacity>
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
+          onPress={() => swipeRef.current?.swipeTop()}  >
+          <AntDesign name="question" size={30} color="orange" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
-            onPress={async () => {
-              await updateSwipeFromButton('right');
-              swipeRef.current?.swipeRight();
-            }} >
-            <Ionicons name="checkmark" size={24} color="#48d1cc" />
-          </TouchableOpacity>
+        <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
+          onPress={async () => {
+            await updateSwipeFromButton('right');
+            swipeRef.current?.swipeRight();
+          }} >
+          <Ionicons name="checkmark" size={24} color="#48d1cc" />
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
-            onPress={async () => {
-              await updateSwipeFromButton('right');
-              swipeRef.current?.swipeRight();
-            }} >
-            <Ionicons name="checkmark-done-sharp" size={24} color="green" />
-          </TouchableOpacity>
-        </View>
-      )}
-    </SafeAreaView>
+        <TouchableOpacity
+          style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
+          onPress={async () => {
+            await updateSwipeFromButton('right');
+            swipeRef.current?.swipeRight();
+          }} >
+          <Ionicons name="checkmark-done-sharp" size={24} color="green" />
+        </TouchableOpacity>
+      </View>
+    )}
+  </SafeAreaView>
   );
 };
 

@@ -25,6 +25,7 @@ export type RootStackParamList = {
     PlausibilityGameDetailed: undefined;
     ConditionGame: undefined;
     NegationGame: undefined;
+    ModalPlausibilityGame: { swipeType: 'right' | 'left' | null };
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<
