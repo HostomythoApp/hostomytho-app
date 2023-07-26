@@ -106,20 +106,9 @@ const TemporalEntityScreen = ({ }) => {
     }
     return (
       <SafeAreaView style={tw("flex-1 ")}>
-
-        <View style={tw("flex-row justify-end items-center mb-4 mr-2")}>
-          <TouchableOpacity
-            style={tw("bg-primary py-2 px-4 rounded-lg flex-row items-center")}
-            onPress={onNextCard}
-          >
-            <Text style={tw('font-primary mr-2 text-white text-base')}>Phrase suivante</Text>
-            <MaterialIcons name="navigate-next" size={28} color="white" />
-          </TouchableOpacity>
-        </View>
-
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
             {
               minHeight: 300,
               shadowColor: "#000",
@@ -168,7 +157,7 @@ const TemporalEntityScreen = ({ }) => {
   };
 
   return (
-    <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
 
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView contentContainerStyle={tw("")}>
@@ -189,6 +178,14 @@ const TemporalEntityScreen = ({ }) => {
                 <Text style={tw("text-white font-primary text-lg")}>Nouvelle entité</Text>
               </View>
             </TouchableOpacity>
+
+            <TouchableOpacity
+            style={tw("bg-primary px-4 rounded-lg mx-4 h-10 flex-row items-center")}
+            onPress={onNextCard}
+          >
+            <Text style={tw('font-primary mr-2 text-white text-lg')}>Phrase suivante</Text>
+            <MaterialIcons name="navigate-next" size={28} color="white" />
+          </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>

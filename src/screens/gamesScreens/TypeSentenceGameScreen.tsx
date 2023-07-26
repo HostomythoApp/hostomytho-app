@@ -145,7 +145,7 @@ const TypeSentenceGameScreen = ({ }) => {
 
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
             {
               minHeight: 300,
               shadowColor: "#000",

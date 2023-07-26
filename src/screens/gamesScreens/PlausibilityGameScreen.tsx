@@ -146,7 +146,7 @@ const PlausibilityGameScreen = ({ }) => {
             const isExpanded = expandedCards[index];
             return (
               <View style={[
-                tw("bg-[#FFFEE0] rounded-xl justify-center"),
+                tw("bg-[#FFFEE0] rounded-xl justify-center mt-4"),
                 {
                   minHeight: 400, // Increased card size
                   shadowColor: "#000",

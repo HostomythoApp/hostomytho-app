@@ -79,7 +79,7 @@ const NegationGameScreen = ({ }) => {
       word.sentenceId = nextId;
       word.isSelected = true;
       word.isCurrentSelection = false;
-      delete word.color; // Remove the temporary color from the word
+      delete word.color;
     });
 
     const startPosition = selectedWords[0].position;
@@ -154,7 +154,7 @@ const NegationGameScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1 ")}>
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
             {
               minHeight: 300,
               shadowColor: "#000",
@@ -168,7 +168,7 @@ const NegationGameScreen = ({ }) => {
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
             {text.content.map((word: any, idx: number) => (
               <WordComponent
-                key={idx}   // Add key here
+                key={idx}
                 word={word}
                 index={idx}
                 onWordPress={() => onWordPress(idx, index)}
@@ -208,7 +208,7 @@ const NegationGameScreen = ({ }) => {
     <View style={tw("mx-4")}>
       {userSentenceSpecifications.map(sentenceSpecification =>
         <UserSentenceSpecificationComponent
-          key={sentenceSpecification.id}   // Add key here
+          key={sentenceSpecification.id}
           sentenceSpecification={sentenceSpecification}
           removeUserSentenceSpecification={removeUserSentenceSpecification}
         />
@@ -231,11 +231,11 @@ const NegationGameScreen = ({ }) => {
 
 
   return (
-    <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_1.jpeg')} style={tw('flex-1')}>
 
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
-          <CustomHeaderInGame title="Trouver les négations" backgroundColor="bg-transparent" textColor="white" />
+          <CustomHeaderInGame title="Trouver les négations" backgroundColor="bg-whiteTransparent" />
 
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {renderText(texts[currentIndex], currentIndex)}
@@ -244,7 +244,6 @@ const NegationGameScreen = ({ }) => {
             userSentenceSpecifications={userSentenceSpecifications}
             removeUserSentenceSpecification={removeUserSentenceSpecification}
           />
-
         </ScrollView>
 
         <View style={tw('absolute bottom-4 right-4 flex-col')}>

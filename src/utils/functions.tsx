@@ -9,6 +9,7 @@ export function shuffleArray(array: any) {
 
 export function splitText(text: any): any {
   const words = text.content.split(/(\p{L}+[']?|['']\p{L}+|\s+)/gui)
+  // @ts-ignore
     .filter(word => word.trim().length > 0)
     .map((word: string, idx: number) => {
       if (word.includes("\n")) {

@@ -135,7 +135,7 @@ const HypothesisGameScreen = ({ }) => {
 
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
             {
               minHeight: 300,
               shadowColor: "#000",
@@ -192,11 +192,11 @@ const HypothesisGameScreen = ({ }) => {
 
 
   return (
-    <ImageBackground source={require('images/Hospital_Room.jpeg')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
 
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
-          <CustomHeaderInGame title="Trouver les hypothèses" backgroundColor="bg-transparent" textColor="white" />
+          <CustomHeaderInGame title="Trouver les hypothèses" backgroundColor="bg-whiteTransparent" />
 
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {renderText(texts[currentIndex], currentIndex)}

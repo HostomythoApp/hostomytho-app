@@ -224,7 +224,7 @@ const PlausibilityGameDetailedScreen = ({ }) => {
 
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-2 lg:mt-8 xl:mt-12"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4 lg:mt-8 xl:mt-12"),
             {
               minHeight: 300,
               shadowColor: "#000",

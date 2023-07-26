@@ -8,7 +8,8 @@ module.exports = {
         tertiary: "#B36700",
         white: "#fff",
         black: "#000000",
-        textPrimary: "##000000",
+        textPrimary: "#000000",
+        whiteTransparent: 'rgb(255, 255, 255, 0.8)',
       },
       fontFamily: {
         primary: ["Pally"],

@@ -54,7 +54,7 @@ const ProfileScreen = (props: any) => {
 
     return (
         <ImageBackground
-            source={require('images/bg_desk_dark.png')}
+            source={require('images/bg_bureau.png')}
             style={tw("absolute bottom-0 left-0 w-full h-full")}
             resizeMode="cover"
         >
@@ -65,8 +65,8 @@ const ProfileScreen = (props: any) => {
                 {!isMobile &&
                     <View style={tw('w-1/4 h-full items-end justify-center')}>
                         <Image
-                            source={require('images/character.png')}
-                            style={tw('w-full h-4/5 mb-0 ml-0 mr-auto mt-auto')}
+                            source={require('images/character/man.png')}
+                            style={tw('w-full h-4/5 mb-10 ml-0 mr-auto mt-auto')}
                             resizeMode="contain"
                         />
                     </View>
@@ -101,7 +101,7 @@ const ProfileScreen = (props: any) => {
                         {isMobile &&
                             <View style={tw('w-full h-1/4 items-center justify-start')}>
                                 <Image
-                                    source={require('images/character.png')}
+                                    source={require('images/character/man.png')}
                                     style={tw('w-2/3 h-full mb-0 ml-auto mr-auto mt-0')}
                                     resizeMode="contain"
                                 />
