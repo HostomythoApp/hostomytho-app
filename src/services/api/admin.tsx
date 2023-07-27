@@ -1,29 +1,57 @@
 import { Admin } from "models/Admin";
 import api from "./index";
-// TODO mettre des try catch
 
 export const getAdmins = async (): Promise<Admin[]> => {
-  return await api.get("/admins");
+  try {
+    const response = await api.get("/admins");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const getAdminById = async (id: number): Promise<Admin[]> => {
-  return await api.get(`/admins/${id}`);
+  try {
+    const response = await api.get(`/admins/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const signUpAdmin = async (admin: Admin) => {
-
-  return await api.post("/admins/signup", { admin });
+  try {
+    const response = await api.post("/admins/signup", { admin });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const signInAdmin = async (username: string, password: string) => {
-  return await api.post("/admins/signin", {
-    username,
-    password,
-  });
+  try {
+    const response = await api.post("/admins/signin", {
+      username,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const updateAdmin = async (id: number, points: number) => {
-  return await api.put(`/admins/${id}`, {
-    points,
-  });
+  try {
+    const response = await api.put(`/admins/${id}`, {
+      points,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };

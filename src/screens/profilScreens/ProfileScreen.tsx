@@ -9,6 +9,9 @@ import { getUserAchievements } from 'services/api/achievements';
 import { Achievement } from 'models/Achievement';
 import AchievementIcon from 'components/AchievementIcon';
 import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
+import { getEquippedUserSkins } from 'services/api/skins';
+import { Skin } from 'models/Skin';
+import skinImages from 'utils/skinImages';
 
 interface Rank {
     id: number;
@@ -34,6 +37,7 @@ const ProfileScreen = (props: any) => {
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
+    const [equippedSkins, setEquippedSkins] = useState<Skin[]>([]);
 
     useEffect(() => {
         if (user?.id) {
@@ -46,9 +50,10 @@ const ProfileScreen = (props: any) => {
                 setUserAchievements(achievementsData);
                 const allUsers = result.data;
                 setRanking(allUsers);
+                const skins = await getEquippedUserSkins(user.id);
+                setEquippedSkins(skins);
             }
         };
-
         fetchRanking();
     }, []);
 
@@ -58,17 +63,26 @@ const ProfileScreen = (props: any) => {
             style={tw("absolute bottom-0 left-0 w-full h-full")}
             resizeMode="cover"
         >
-            {/* <View style={tw("absolute inset-0 bg-black opacity-50")}></View> */}
-
             <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' />
             <View style={tw('flex-1 flex-row items-start justify-start relative')}>
                 {!isMobile &&
-                    <View style={tw('w-1/4 h-full items-end justify-center')}>
+                    <View style={tw('w-1/4 h-3/4 mb-10 ml-0 mr-auto mt-auto items-end justify-center')}>
                         <Image
                             source={require('images/character/man.png')}
-                            style={tw('w-full h-4/5 mb-10 ml-0 mr-auto mt-auto')}
+                            style={tw('absolute w-full h-full ')}
                             resizeMode="contain"
                         />
+
+                        {Object.values(equippedSkins).map((skin: Skin) => (
+                            <Image
+                                key={skin.id}
+                                // @ts-ignore
+                                source={skinImages[skin.image_url]}
+                            style={tw(' absolute w-full h-full')}
+
+                                resizeMode="contain"
+                            />
+                        ))}
                     </View>
                 }
 
