@@ -33,7 +33,7 @@ const MainScreenEmptyBoard = ({ }) => {
     }
 
     return (
-        <ImageBackground source={require('images/board_empty.png')} style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}>
+        <ImageBackground source={require('images/board empty.jpeg')} style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}>
             <View style={tw("flex-1 items-center")}>
                 {menuMessage && menuMessage.active &&
                     <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 bg-blue-500 bg-opacity-70 rounded-xl"), { zIndex: 1 }]}>
@@ -73,60 +73,80 @@ const MainScreenEmptyBoard = ({ }) => {
                         <TouchableOpacity onPress={() => navigation.navigate("Main")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '15%' : '18%',
-                                left: windowWidth > 768 ? '25%' : '17%',
+                                top: windowWidth > 768 ? '28%' : '20%',
+                                left: windowWidth > 768 ? '25%' : '25%',
                             }}>
-                            <Image source={require('images/post_it.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
+                            <Image source={require('images/map.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("PlausibilityGame")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '34%' : '50%',
-                                left: windowWidth > 768 ? '17%' : '17%',
+                                top: windowWidth > 768 ? '50%' : '50%',
+                                left: windowWidth > 768 ? '21%' : '21%',
                             }}>
-                            <Image source={require('images/paper.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
+                            <Image source={require('images/article.png')}
+                                style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }}
+                                resizeMode="contain"
+                            />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("HypothesisGame")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '20%' : '30%',
-                                left: windowWidth > 768 ? '70%' : '70%',
+                                top: windowWidth > 768 ? '25%' : '20%',
+                                left: windowWidth > 768 ? '56%' : '56%',
                             }}>
-                            <Image source={require('images/post_it2.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
+                            <Image source={require('images/postit hypothese.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("TemporalEntity")} style={{ position: 'absolute', top: '40%', left: '40%' }}>
-                            <Image source={require('images/paper_3.png')} style={{ width: windowWidth * 0.12, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
+                        <TouchableOpacity onPress={() => navigation.navigate("TemporalEntity")}
+                            style={{
+                                position: 'absolute',
+                                top: windowWidth > 768 ? '43%' : '43%',
+                                left: windowWidth > 768 ? '48%' : '48%',
+                            }}>
+                            <Image
+                                resizeMode="contain"
+
+                                source={require('images/paper_2.png')} style={{ width: windowWidth * 0.12, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("PlausibilityGameDetailed")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '52%' : '55%',
-                                left: windowWidth > 768 ? '70%' : '80%',
+                                top: windowWidth > 768 ? '53%' : '53%',
+                                left: windowWidth > 768 ? '37%' : '37%',
+
                             }}>
-                            <Image source={require('images/paper_2.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
+                            <Image source={require('images/postit plausibility.png')}
+                                style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }}
+                                resizeMode="contain"
+                            />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("ConditionGame")}
-                            style={{
-                                position: 'absolute',
-                                top: windowWidth > 768 ? '17%' : '20%',
-                                left: windowWidth > 768 ? '50%' : '50%',
-                            }}>
-                            <Image source={require('images/polaroid_picture.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
-                        </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("NegationGame")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '50%' : '55%',
-                                left: windowWidth > 768 ? '57%' : '57%',
+                                top: windowWidth > 768 ? '40%' : '40%',
+                                left: windowWidth > 768 ? '65%' : '65%',
                             }}>
-                            <Image source={require('images/polaroid_smile.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
+                            <Image source={require('images/postit negation.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }} />
                         </TouchableOpacity>
+
+
+
+                        <TouchableOpacity onPress={() => navigation.navigate("ConditionGame")}
+                            style={{
+                                position: 'absolute',
+                                top: windowWidth > 768 ? '25%' : '28%',
+                                left: windowWidth > 768 ? '38%' : '38%',
+                            }}>
+                            <Image source={require('images/postit condition.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }} />
+                        </TouchableOpacity>
+
+
                     </View>
 
                 </View>
