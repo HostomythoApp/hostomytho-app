@@ -23,6 +23,7 @@ import ConditionGameScreen from "screens/gamesScreens/ConditionGameScreen";
 import NegationGameScreen from "screens/gamesScreens/NegationGameScreen";
 import AchievementsScreen from "screens/profilScreens/AchievementsScreen";
 import RankingScreen from "screens/profilScreens/RankingScreen";
+import SkinsManagementScreen from "screens/profilScreens/SkinsManagementScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
 import HelpScreen from "screens/settingsScreens/HelpScreen";
 import PrivacyPolicyScreen from "screens/settingsScreens/PrivacyPolicyScreen";
@@ -73,7 +74,10 @@ const StackNavigator = ({ }) => {
           options={({ }) => ({
             headerShown: false
           })} />
+
         <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        <Stack.Screen name="SkinsManagement" component={SkinsManagementScreen} />
 
         <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
 

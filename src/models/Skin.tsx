@@ -5,4 +5,5 @@ export interface Skin {
   gender: string,
   rarity: number,
   image_url: string,
+  equipped: boolean
 }

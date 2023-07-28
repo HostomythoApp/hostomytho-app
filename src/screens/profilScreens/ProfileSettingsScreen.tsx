@@ -32,7 +32,7 @@ const ProfileSettingsScreen = (props: any) => {
                     </Text>
 
                     <LogoutButton />
-                    <FunctionButton text={"Supprimer son compte"} func={deleteAccount} />
+                    <FunctionButton text={"Supprimer le compte"} func={deleteAccount} />
                 </View>
             </ScrollView>
         </View>

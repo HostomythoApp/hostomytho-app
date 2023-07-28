@@ -12,6 +12,7 @@ import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
 import { getEquippedUserSkins } from 'services/api/skins';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
+import { AntDesign } from '@expo/vector-icons';
 
 interface Rank {
     id: number;
@@ -40,6 +41,9 @@ const ProfileScreen = (props: any) => {
     const [equippedSkins, setEquippedSkins] = useState<Skin[]>([]);
 
     useEffect(() => {
+        // TODO Quand page de profil direct dans StackNavigator, données pas chargées
+        console.log("USEeFFECT");
+
         if (user?.id) {
             updateStorageUserFromAPI(user.id);
         }
@@ -78,7 +82,7 @@ const ProfileScreen = (props: any) => {
                                 key={skin.id}
                                 // @ts-ignore
                                 source={skinImages[skin.image_url]}
-                            style={tw(' absolute w-full h-full')}
+                                style={tw(' absolute w-full h-full')}
 
                                 resizeMode="contain"
                             />
@@ -174,10 +178,12 @@ const ProfileScreen = (props: any) => {
                                                 </View>
                                             ))}
                                         </>
-                                    ) : (
-                                        <Text style={tw('text-gray-600')}>Aucun haut fait pour le moment</Text>
-                                    )}
+                                    ) : null}
                                     <TouchableOpacity onPress={() => navigation.navigate('Achievements')} style={tw('p-2 pb-2 pt-1 mt-1 bg-white rounded-lg')}>
+                                        {userAchievements.length === 0 ? (
+                                            <Text style={tw('font-primary')}>Aucun haut fait pour le moment</Text>
+
+                                        ) : null}
                                         <Text style={tw('text-center text-lg')}
                                         >. . .</Text>
                                         <Text style={tw('text-blue-500 text-center font-primary')}>Afficher tous les hauts faits</Text>
@@ -238,6 +244,19 @@ const ProfileScreen = (props: any) => {
                         </View>
                     </View>
                 </ScrollView>
+
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("SkinsManagement")}
+                    style={tw('absolute bottom-0 left-0 min-w-[50px] min-h-[50px] max-h-[100px] justify-end')}
+                >
+                    <View style={tw('bg-black bg-opacity-50 rounded-tr-lg w-full h-full justify-center items-center flex-row')}>
+                        <AntDesign name="skin" size={30} color="#ffffff" style={tw('m-1')}
+                        />
+                        <Text style={tw('text-white font-primary ml-1 mr-3 text-lg')}
+                        >Changer d'apparence</Text>
+                    </View>
+                </TouchableOpacity>
+
             </View>
         </ImageBackground>
     );

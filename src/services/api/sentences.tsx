@@ -3,7 +3,6 @@
 
 // import api from "./index";
 
-// // TODO mettre des try catch
 
 
 // export const getAllAchievements = async (): Promise<Achievement[]> => {
