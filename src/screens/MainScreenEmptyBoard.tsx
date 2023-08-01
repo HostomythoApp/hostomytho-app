@@ -33,7 +33,7 @@ const MainScreenEmptyBoard = ({ }) => {
     }
 
     return (
-        <ImageBackground source={require('images/board empty.jpeg')} style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}>
+        <ImageBackground source={require('images/01 décor tableau 2 renversé.jpeg')} style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}>
             <View style={tw("flex-1 items-center")}>
                 {menuMessage && menuMessage.active &&
                     <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 bg-blue-500 bg-opacity-70 rounded-xl"), { zIndex: 1 }]}>
@@ -54,14 +54,14 @@ const MainScreenEmptyBoard = ({ }) => {
 
                     <Text
                         style={[
-                            tw("mb-8  text-center text-orange-400 font-BubblegumSans"),
+                            tw("mb-8  text-center text-[#6BC900] font-BubblegumSans"),
                             {
                                 position: 'absolute',
-                                top: '74%',
-                                left: windowWidth > 768 ? '16%' : '10%',
+                                top: '78%',
+                                left: windowWidth > 768 ? '10%' : '10%',
                                 fontSize: windowWidth > 768 ? windowWidth * 0.11 : 60,
                                 textShadowColor: '#000',
-                                textShadowOffset: { width: -8, height: 11 },
+                                textShadowOffset: { width: -2, height: 2 },
                                 textShadowRadius: 7,
                             }
                         ]}

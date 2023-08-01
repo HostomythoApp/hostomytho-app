@@ -4,6 +4,7 @@ import MainScreen from "screens/MainScreen";
 import MainScreenBoard from "screens/MainScreenBoard";
 import MainScreenEmptyBoard from "screens/MainScreenEmptyBoard";
 import ProfileScreen from "screens/profilScreens/ProfileScreen";
+import ContentProfileScreen from "screens/profilScreens/ContentProfileScreen";
 import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
@@ -76,6 +77,8 @@ const StackNavigator = ({ }) => {
           })} />
 
         <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        <Stack.Screen name="ContentProfile" component={ContentProfileScreen} />
 
         <Stack.Screen name="SkinsManagement" component={SkinsManagementScreen} />
 

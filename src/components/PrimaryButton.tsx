@@ -20,7 +20,7 @@ const PrimaryButton = ({
       onPress={() => navigation.navigate(destination)}
       style={tw("bg-primary rounded mr-2 py-2 px-12 my-2 font-medium w-full")}
     >
-      <Text style={tw('text-white text-center text-lg')}
+      <Text style={tw('text-white text-center text-lg font-primary')}
       >{title}</Text>
     </TouchableOpacity>
 
