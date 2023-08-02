@@ -5,42 +5,27 @@ import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
-import { getEquippedUserSkins } from 'services/api/skins';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import ContentProfileScreen from 'screens/profilScreens/ContentProfileScreen';
 import SkinsManagementScreen from 'screens/profilScreens/SkinsManagementScreen';
+import { useSkins } from 'services/context/SkinsContext';
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user, updateStorageUserFromAPI } = useUser();
-    const stats = [
-        { id: 1, title: 'Textes validés', count: 5 },
-        { id: 2, title: 'Annotations créées', count: 15 },
-    ];
 
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
-    const [equippedSkins, setEquippedSkins] = useState<Skin[]>([]);
-
     const [viewMode, setViewMode] = useState<'profile' | 'skinsManagement'>('profile');
+    const { equippedSkins, setEquippedSkins } = useSkins();
 
     useEffect(() => {
-        // TODO Quand page de profil direct dans StackNavigator, données pas chargées
-        console.log("USEeFFECT");
-
         if (user?.id) {
             updateStorageUserFromAPI(user.id);
         }
-        const fetchRanking = async () => {
-            if (user?.id) {
-                const skins = await getEquippedUserSkins(user.id);
-                setEquippedSkins(skins);
-            }
-        };
-        fetchRanking();
     }, []);
 
     const toggleViewMode = () => {
@@ -65,24 +50,23 @@ const ProfileScreen = (props: any) => {
                         />
 
                         {Object.values(equippedSkins).map((skin: Skin) => (
+
                             <Image
                                 key={skin.id}
-                                // @ts-ignore
                                 source={skinImages[skin.image_url]}
                                 style={tw(' absolute w-full h-full')}
-
                                 resizeMode="contain"
                             />
                         ))}
                     </View>
                 }
                 <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center z-20")} style={[tw('w-3/5 h-full'), { marginright: '5%' }]}>
-                        {viewMode === 'profile' ?
-                            <ContentProfileScreen user={user} />
-                            :
-                            <SkinsManagementScreen user={user} />
+                    {viewMode === 'profile' ?
+                        <ContentProfileScreen user={user} />
+                        :
+                        <SkinsManagementScreen user={user} />
 
-                        }
+                    }
                 </ScrollView>
 
                 <TouchableOpacity

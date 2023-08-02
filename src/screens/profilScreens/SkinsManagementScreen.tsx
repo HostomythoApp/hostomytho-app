@@ -7,20 +7,19 @@ import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { getUserSkins, getEquippedUserSkins, unequipSkin } from 'services/api/skins';
 import { equipSkin } from 'services/api/skins';
+import { useSkins } from 'services/context/SkinsContext';
 
 const SkinsManagementScreen = (props: any) => {
     const tw = useTailwind();
     const { user, updateStorageUserFromAPI } = useUser();
-
-    const { navigation } = props;
-
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
-    const [equippedSkins, setEquippedSkins] = useState<Skin[]>([]);
+    // const [equippedSkins, setEquippedSkins] = useState<Skin[]>([]);
     const skinTypes = ["visage", "lunettes", "chapeau", "veste", "pilosité"];
     const [skins, setSkins] = useState<Record<string, Skin[]>>({});
     const [apiSkins, setApiSkins] = useState<Skin[]>([]);
-
+    const { equippedSkins, setEquippedSkins } = useSkins();
+    
     useEffect(() => {
         const fetchData = async () => {
             if (user?.id) {
@@ -42,12 +41,19 @@ const SkinsManagementScreen = (props: any) => {
     const clickOnSkin = async (skin: Skin) => {
         if (isEquipped(skin)) {
             const updatedSkin = await unequipSkin(user.id, skin.id);
-            setEquippedSkins(equippedSkins.filter(skin => skin.id !== updatedSkin.id));
+            const updatedEquippedSkins = equippedSkins.filter(skin => skin.id !== updatedSkin.id);
+            setEquippedSkins(updatedEquippedSkins);
         } else {
             const updatedSkin = await equipSkin(user.id, skin.id);
             setEquippedSkins([...equippedSkins, updatedSkin]);
         }
+    
+        // Si vous devez mettre à jour les données de l'utilisateur, vous pouvez le faire ici
+        if (user?.id) {
+            updateStorageUserFromAPI(user.id);
+        }
     };
+    
 
 
     const isEquipped = (skin: Skin) => {
@@ -70,7 +76,7 @@ const SkinsManagementScreen = (props: any) => {
 
                         {skinTypes.map(type => {
                             return (
-                                <View style={tw('bg-white mb-2 py-2 rounded-lg')}>
+                                <View key={type} style={tw('bg-white mb-2 py-2 rounded-lg')}>
                                     <View key={type}>
                                         <Text style={tw('text-xl font-bold mb-2 pl-2 text-black font-primary')}>{type}</Text>
 

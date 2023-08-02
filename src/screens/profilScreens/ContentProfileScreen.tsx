@@ -34,8 +34,6 @@ const ContentProfileScreen = (props: any) => {
     const isMobile = window.width < 768;
 
     useEffect(() => {
-        console.log("USEeFFECT");
-
         if (user?.id) {
             updateStorageUserFromAPI(user.id);
         }
@@ -46,7 +44,6 @@ const ContentProfileScreen = (props: any) => {
                 setUserAchievements(achievementsData);
                 const allUsers = result.data;
                 setRanking(allUsers);
-
             }
         };
         fetchRanking();
