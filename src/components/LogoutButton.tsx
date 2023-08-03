@@ -10,7 +10,7 @@ const LogoutButton = () => {
 
   const handleLogout = () => {
     logout();
-    navigation.navigate("Main");
+    navigation.navigate("MainBoard");
 
   };
   return <FunctionButton text={"Déconnexion"} func={handleLogout} />;

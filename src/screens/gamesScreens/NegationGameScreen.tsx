@@ -262,7 +262,7 @@ const NegationGameScreen = ({ }) => {
             onPress={onNextCard}
           >
             <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-            <View style={tw('bg-red-600 rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
+            <View style={tw('bg-primaryLighter rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
               <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
             </View>
           </TouchableOpacity>

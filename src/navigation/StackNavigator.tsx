@@ -1,8 +1,7 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "screens/MainScreen";
-import MainScreenBoard from "screens/MainScreenBoard";
-import MainScreenEmptyBoard from "screens/MainScreenEmptyBoard";
+import MainBoardScreen from "screens/MainBoardScreen";
 import ProfileScreen from "screens/profilScreens/ProfileScreen";
 import ContentProfileScreen from "screens/profilScreens/ContentProfileScreen";
 import SignInScreen from "screens/authScreens/SignInScreen";
@@ -57,24 +56,19 @@ const StackNavigator = ({ }) => {
 
         })}
       >
-
-        <Stack.Screen name="MainEmptyBoard"
-          component={MainScreenEmptyBoard}
+        <Stack.Screen name="MainBoard"
+          component={MainBoardScreen}
           options={({ }) => ({
             headerShown: false
           })} />
-
+          
         <Stack.Screen name="Main"
           component={MainScreen}
           options={({ navigation }) => ({
             header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
           })} />
 
-        <Stack.Screen name="MainBoard"
-          component={MainScreenBoard}
-          options={({ }) => ({
-            headerShown: false
-          })} />
+
 
         <Stack.Screen name="Profile" component={ProfileScreen} />
 

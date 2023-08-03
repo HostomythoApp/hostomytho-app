@@ -14,17 +14,17 @@ const SkinsManagementScreen = (props: any) => {
     const { user, updateStorageUserFromAPI } = useUser();
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
-    // const [equippedSkins, setEquippedSkins] = useState<Skin[]>([]);
     const skinTypes = ["visage", "lunettes", "chapeau", "veste", "pilosité"];
     const [skins, setSkins] = useState<Record<string, Skin[]>>({});
     const [apiSkins, setApiSkins] = useState<Skin[]>([]);
     const { equippedSkins, setEquippedSkins } = useSkins();
-    
+
     useEffect(() => {
         const fetchData = async () => {
             if (user?.id) {
                 const allSkins = await getUserSkins(user.id);
                 const equippedSkinsFromApi = await getEquippedUserSkins(user.id);
+                // @ts-ignore
                 setSkins(allSkins);
                 setApiSkins(equippedSkinsFromApi);
             }
@@ -39,25 +39,39 @@ const SkinsManagementScreen = (props: any) => {
     }, [apiSkins]);
 
     const clickOnSkin = async (skin: Skin) => {
-        if (isEquipped(skin)) {
-            const updatedSkin = await unequipSkin(user.id, skin.id);
-            const updatedEquippedSkins = equippedSkins.filter(skin => skin.id !== updatedSkin.id);
-            setEquippedSkins(updatedEquippedSkins);
-        } else {
-            const updatedSkin = await equipSkin(user.id, skin.id);
-            setEquippedSkins([...equippedSkins, updatedSkin]);
-        }
-    
-        // Si vous devez mettre à jour les données de l'utilisateur, vous pouvez le faire ici
         if (user?.id) {
-            updateStorageUserFromAPI(user.id);
+            if (isEquipped(skin)) {
+                const updatedSkin = await unequipSkin(user.id, skin.id);
+                const updatedEquippedSkins = equippedSkins.filter(skin => skin.id !== updatedSkin.id);
+                setEquippedSkins(updatedEquippedSkins);
+            } else {
+                const updatedSkin = await equipSkin(user.id, skin.id);
+                setEquippedSkins([...equippedSkins, updatedSkin]);
+            }
+
+            if (user?.id) {
+                updateStorageUserFromAPI(user.id);
+            }
         }
     };
-    
-
 
     const isEquipped = (skin: Skin) => {
         return equippedSkins.some(equippedSkin => equippedSkin.id === skin.id);
+    };
+
+    const getImageStyle = (type: string) => {
+        switch (type) {
+            case 'veste':
+                return tw('w-20 h-28 -mt-8');
+            case 'visage':
+                return tw('w-20 h-52 -mt-4');
+            case 'lunettes':
+                return tw('w-20 h-52 -mt-4');
+            case 'pilosité':
+                return tw('w-20 h-52 -mt-3');
+            default:
+                return tw('w-20 h-52');
+        }
     };
 
     return (
@@ -77,14 +91,14 @@ const SkinsManagementScreen = (props: any) => {
                         {skinTypes.map(type => {
                             return (
                                 <View key={type} style={tw('bg-white mb-2 py-2 rounded-lg')}>
-                                    <View key={type}>
+                                    <View>
                                         <Text style={tw('text-xl font-bold mb-2 pl-2 text-black font-primary')}>{type}</Text>
 
                                         <View style={tw('flex-row')}>
                                             {skins[type]?.map(skin => {
                                                 return (
                                                     <TouchableOpacity
-                                                        key={skin.id}
+                                                        key={`skin-${skin.id}`}
                                                         style={[
                                                             tw('p-2 rounded-lg mb-2 overflow-hidden h-16'),
                                                             isEquipped(skin) ? tw('border-2 border-blue-500') : tw('border-2 border-transparent')
@@ -92,8 +106,9 @@ const SkinsManagementScreen = (props: any) => {
                                                         onPress={() => clickOnSkin(skin)}
                                                     >
                                                         <Image
+                                                            // @ts-ignore
                                                             source={skinImages[skin.image_url]}
-                                                            style={type === 'veste' ? tw('w-20 h-16') : tw('w-20 h-40')}
+                                                            style={getImageStyle(type)}
                                                             resizeMode="contain"
                                                         />
                                                     </TouchableOpacity>
@@ -104,7 +119,6 @@ const SkinsManagementScreen = (props: any) => {
                                 </View>
                             );
                         })}
-
                     </View>
 
                     <View style={[tw('flex-1'), isMobile ? tw('') : tw('mr-2')]}>

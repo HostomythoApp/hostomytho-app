@@ -23,11 +23,11 @@ const ProfileSettingsScreen = (props: any) => {
                 <CustomHeaderEmpty title="Paramètre du profil" />
                 <View style={tw('mx-auto min-w-[540px] pt-20 items-center')}>
 
-                    <Text style={tw(' text-base mb-1 my-2')}>
+                    <Text style={tw('text-base mb-1 my-2 font-primary')}>
                         {user?.email ? user.email : "Vous n'avez pas renseigné d'email"}
                     </Text>
 
-                    <Text style={tw('text-base mb-2')}>
+                    <Text style={tw('text-base mb-2 font-primary')}>
                         {user?.status ? `Vous êtes ${user.status}` : "Aucun statut renseigné"}
                     </Text>
 

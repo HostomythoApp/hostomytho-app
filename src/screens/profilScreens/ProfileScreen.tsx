@@ -50,9 +50,9 @@ const ProfileScreen = (props: any) => {
                         />
 
                         {Object.values(equippedSkins).map((skin: Skin) => (
-
                             <Image
-                                key={skin.id}
+                                key={`imageSkin-${skin.id}`}
+                                // @ts-ignore
                                 source={skinImages[skin.image_url]}
                                 style={tw(' absolute w-full h-full')}
                                 resizeMode="contain"

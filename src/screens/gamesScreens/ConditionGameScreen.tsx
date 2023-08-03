@@ -136,10 +136,9 @@ const ConditionGameScreen = ({ }) => {
     }
     return (
       <SafeAreaView style={tw("flex-1 ")}>
-
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4 bg-opacity-90"),
             {
               minHeight: 300,
               shadowColor: "#000",
@@ -226,7 +225,7 @@ const ConditionGameScreen = ({ }) => {
             onPress={onNextCard}
           >
             <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-            <View style={tw('bg-red-600 rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
+            <View style={tw('bg-primaryLighter rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
               <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
             </View>
           </TouchableOpacity>

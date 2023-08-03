@@ -7,7 +7,6 @@ export type RootStackParamList = {
     TemporalLinkGameScreen: undefined;
     PlausibilityGame: undefined;
     TemporalEntityScreen: undefined;
-    // Home: undefined;
     Connected: undefined;
     Login: undefined;
     SignUpScreen: undefined;
@@ -19,12 +18,17 @@ export type RootStackParamList = {
     Ranking: undefined;
     AdminHome: undefined;
     ForgetPassword: undefined;
-    MainEmptyBoard: undefined;
+    MainBoard: undefined;
     HypothesisGame: undefined;
     TemporalEntity: undefined;
     PlausibilityGameDetailed: undefined;
     ConditionGame: undefined;
     NegationGame: undefined;
+    Achievements: undefined;
+    Stats: undefined;
+    Contacts: undefined;
+    Referral: undefined;
+    ProfileSettings: undefined;
     ModalPlausibilityGame: { swipeType: 'right' | 'left' | null };
 };
 

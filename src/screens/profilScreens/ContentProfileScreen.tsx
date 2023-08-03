@@ -8,6 +8,9 @@ import { getUserRankingRange } from 'services/api/user';
 import { getUserAchievements } from 'services/api/achievements';
 import { Achievement } from 'models/Achievement';
 import AchievementIcon from 'components/AchievementIcon';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackNavigationProp } from 'navigation/Types';
+
 interface Rank {
     id: number;
     ranking: number;
@@ -19,12 +22,13 @@ const ContentProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user, updateStorageUserFromAPI } = useUser();
     const [ranking, setRanking] = useState<Rank[]>([]);
+  const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+
     const stats = [
         { id: 1, title: 'Textes validés', count: 5 },
         { id: 2, title: 'Annotations créées', count: 15 },
     ];
 
-    const { navigation } = props;
     const currentPoints = user?.points || 0;
     const nextRewardPoints = 1000;
     const pointsForProgress = currentPoints % nextRewardPoints;
@@ -176,7 +180,7 @@ const ContentProfileScreen = (props: any) => {
                         onPress={() => navigation.navigate('Contacts')}
                     >
                         <FontAwesome5 name='user-friends' size={24} color='white' />
-                        <Text style={tw('text-white ml-2')}>Mes contacts</Text>
+                        <Text style={tw('text-white ml-2 font-primary')}>Mes contacts</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -184,7 +188,7 @@ const ContentProfileScreen = (props: any) => {
                         onPress={() => navigation.navigate('Referral')}
                     >
                         <FontAwesome5 name='gift' size={24} color='white' />
-                        <Text style={tw('text-white ml-2')}>Parrainer</Text>
+                        <Text style={tw('text-white ml-2 font-primary')}>Parrainer</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -192,7 +196,7 @@ const ContentProfileScreen = (props: any) => {
                         onPress={() => navigation.navigate('ProfileSettings')}
                     >
                         <FontAwesome5 name='cog' size={24} color='white' />
-                        <Text style={tw('text-white ml-2')}>Paramètres du compte</Text>
+                        <Text style={tw('text-white ml-2 font-primary')}>Paramètres du compte</Text>
                     </TouchableOpacity>
                 </View>
 

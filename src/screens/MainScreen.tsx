@@ -19,8 +19,7 @@ const MainScreen = ({ }) => {
                 <CustomHeaderEmpty title="Menu" />
                 <View style={[tw('pt-20'), { minWidth: 100, alignSelf: 'center' }]}>
                     <View>
-                        <PrimaryButton title="Tableau de bord" destination="MainEmptyBoard" />
-                        <PrimaryButton title="Tableau de bord - Exemple de rendu" destination="MainBoard" />
+                        <PrimaryButton title="Tableau de bord" destination="MainBoard" />
                         <PrimaryButton title="Plausibilité des textes détaillée" destination="PlausibilityGameDetailed" />
                         <PrimaryButton title="Plausibilité des textes" destination="PlausibilityGame" />
                         <PrimaryButton title="Trouver les hypothèses" destination="HypothesisGame" />

@@ -32,7 +32,7 @@ const SignUpScreen = () => {
     const [passwordError, setPasswordError] = useState(false);
     const [password2Error, setPassword2Error] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const navigation = useNavigation<RootStackNavigationProp<"MainEmptyBoard">>();
+    const navigation = useNavigation<RootStackNavigationProp<"MainBoard">>();
     const { storeToken } = useAuth();
     const { setUser } = useUser();
 
@@ -75,7 +75,7 @@ const SignUpScreen = () => {
                                 alert("Inscription réussie !");
                                 const handleSuccess = async (token: string) => {
                                     await storeToken(token);
-                                    navigation.navigate("MainEmptyBoard");
+                                    navigation.navigate("MainBoard");
                                 };
                                 const token = response.data.token;
                                 setUser(response.data.user);

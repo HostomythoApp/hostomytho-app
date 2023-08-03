@@ -8,7 +8,7 @@ import { RootStackNavigationProp } from "navigation/Types";
 import { getMessageMenu } from "services/api/utils";
 import { MessageMenu } from 'models/MessageMenu';
 
-const MainScreenEmptyBoard = ({ }) => {
+const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
     const { user } = useUser();
@@ -57,7 +57,7 @@ const MainScreenEmptyBoard = ({ }) => {
                             tw("mb-8  text-center text-[#6BC900] font-BubblegumSans"),
                             {
                                 position: 'absolute',
-                                top: '78%',
+                                top: '74%',
                                 left: windowWidth > 768 ? '10%' : '10%',
                                 fontSize: windowWidth > 768 ? windowWidth * 0.11 : 60,
                                 textShadowColor: '#000',
@@ -76,9 +76,9 @@ const MainScreenEmptyBoard = ({ }) => {
                                 top: windowWidth > 768 ? '28%' : '20%',
                                 left: windowWidth > 768 ? '25%' : '25%',
                             }}>
-                            <Image source={require('images/map.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }} />
+                            <Image source={require('images/map.png')} style={{ width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 35, minHeight: 35 }} />
                         </TouchableOpacity>
-
+                        
                         <TouchableOpacity onPress={() => navigation.navigate("PlausibilityGame")}
                             style={{
                                 position: 'absolute',
@@ -86,7 +86,13 @@ const MainScreenEmptyBoard = ({ }) => {
                                 left: windowWidth > 768 ? '21%' : '21%',
                             }}>
                             <Image source={require('images/article.png')}
-                                style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }}
+                                style={{
+                                    width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 35, minHeight: 35,
+                                    shadowColor: 'black',
+                                    shadowOffset: { width: -1, height: 2 },
+                                    shadowOpacity: 0.4,
+                                    shadowRadius: 1,
+                                }}
                                 resizeMode="contain"
                             />
                         </TouchableOpacity>
@@ -97,7 +103,14 @@ const MainScreenEmptyBoard = ({ }) => {
                                 top: windowWidth > 768 ? '25%' : '20%',
                                 left: windowWidth > 768 ? '56%' : '56%',
                             }}>
-                            <Image source={require('images/postit hypothese.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }} />
+                            <Image source={require('images/postit hypothese.png')} 
+                            style={{
+                                width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 35, minHeight: 35,
+                                shadowColor: 'black',
+                                shadowOffset: { width: -1.6, height: 1 },
+                                shadowOpacity: 0.6,
+                                shadowRadius: 1,
+                            }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("TemporalEntity")}
@@ -120,7 +133,13 @@ const MainScreenEmptyBoard = ({ }) => {
 
                             }}>
                             <Image source={require('images/postit plausibility.png')}
-                                style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }}
+                                style={{
+                                    width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 35, minHeight: 35,
+                                    shadowColor: 'black',
+                                    shadowOffset: { width: -0.8, height: 1.5 },
+                                    shadowOpacity: 0.4,
+                                    shadowRadius: 1,
+                                }}
                                 resizeMode="contain"
                             />
                         </TouchableOpacity>
@@ -132,7 +151,13 @@ const MainScreenEmptyBoard = ({ }) => {
                                 top: windowWidth > 768 ? '40%' : '40%',
                                 left: windowWidth > 768 ? '65%' : '65%',
                             }}>
-                            <Image source={require('images/postit negation.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }} />
+                            <Image source={require('images/postit negation.png')} style={{
+                                width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 35, minHeight: 35,
+                                shadowColor: 'black',
+                                shadowOffset: { width: -1, height: 2 },
+                                shadowOpacity: 0.5,
+                                shadowRadius: 1,
+                            }} />
                         </TouchableOpacity>
 
 
@@ -143,7 +168,13 @@ const MainScreenEmptyBoard = ({ }) => {
                                 top: windowWidth > 768 ? '25%' : '28%',
                                 left: windowWidth > 768 ? '38%' : '38%',
                             }}>
-                            <Image source={require('images/postit condition.png')} style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 55, minHeight: 55 }} />
+                            <Image source={require('images/postit condition.png')} style={{
+                                width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 35, minHeight: 35,
+                                shadowColor: 'black',
+                                shadowOffset: { width: 1, height: 1 },
+                                shadowOpacity: 0.5,
+                                shadowRadius: 1,
+                            }} />
                         </TouchableOpacity>
 
 
@@ -200,4 +231,4 @@ const MainScreenEmptyBoard = ({ }) => {
     );
 };
 
-export default MainScreenEmptyBoard;
+export default MainBoardScreen;
