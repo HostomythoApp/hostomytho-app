@@ -3,12 +3,11 @@ import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
-import { Word } from "models/Word";
 import { useUser } from 'services/context/UserContext';
-import { getAllTexts } from "services/api/texts";
-import { shuffleArray, splitText } from "utils/functions";
+import { getTextWithTokens } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
+import { TextWithTokens } from "interfaces/TextWithTokens";
 
 const colors = [
   "bg-yellow-300",
@@ -17,15 +16,9 @@ const colors = [
   "bg-pink-300",
 ];
 
-export interface SplitText {
-  id: number;
-  content: Word[];
-  selectedType: string | null;
-}
-
 const HypothesisGameScreen = ({ }) => {
   const tw = useTailwind();
-  const [texts, setTexts] = useState<SplitText[]>([]);
+  const [text, setText] = useState<TextWithTokens>();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
@@ -34,64 +27,63 @@ const HypothesisGameScreen = ({ }) => {
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchTexts = async () => {
+    const fetchText = async () => {
       try {
-        const response = await getAllTexts();
-        const shuffledTexts = shuffleArray(response);
-        const newtexts = shuffledTexts.map((text) => {
-          return splitText(text);
-        });
-
-        setTexts(newtexts);
+        const response = await getTextWithTokens(user?.id, 'hypothesis');
+        setText(response);
       } catch (error) {
         console.error(error);
       }
     };
-    fetchTexts();
+    fetchText();
   }, []);
 
-  const onWordPress = useCallback((wordIndex: number, textIndex: number) => {
-    setTexts(texts => texts.map((text, idx) => {
-      if (idx === textIndex) {
-        const newWords = [...text.content];
-        const word = newWords[wordIndex];
-        word.isCurrentSelection = !word.isCurrentSelection;
-        if (word.isCurrentSelection) {
-          word.color = 'bg-blue-200';
-          setSelectionStarted(true);
-        } else {
-          delete word.color;
-          setSelectionStarted(false);
-        }
-        return { ...text, content: newWords };
+  const onTokenPress = useCallback((wordIndex: number) => {
+    setText(currentText => {
+      if (!currentText) return currentText; // Si le texte est nul ou non défini, retourner tel quel
+
+      const newTokens = [...currentText.tokens];
+      const token = newTokens[wordIndex];
+      token.isCurrentSelection = !token.isCurrentSelection;
+
+      if (token.isCurrentSelection) {
+        token.color = 'bg-blue-200';
+        setSelectionStarted(true);
+      } else {
+        delete token.color;
+        setSelectionStarted(false);
       }
-      return text;
-    }));
+
+      return { ...currentText, tokens: newTokens };
+    });
   }, []);
 
 
   const addSentenceSpecification = () => {
     setSelectionStarted(false);
-    const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
-    selectedWords.forEach(word => {
-      word.sentenceId = nextId;
-      word.isSelected = true;
-      word.isCurrentSelection = false;
-      delete word.color; // Remove the temporary color from the word
+    if (!text) return; // Si le texte est nul ou non défini, arrêtez-vous ici
+
+    const selectedTokens = text.tokens.filter(token => token.isCurrentSelection);
+
+    selectedTokens.forEach(token => {
+      token.sentenceId = nextId;
+      token.isSelected = true;
+      token.isCurrentSelection = false;
+      delete token.color; // Remove the temporary color from the token
     });
 
-    const startPosition = selectedWords[0].position;
-    const endPosition = selectedWords[selectedWords.length - 1].position;
+    const startPosition = selectedTokens[0].position;
+    const endPosition = selectedTokens[selectedTokens.length - 1].position;
 
-    // @ts-ignore
     setUserSentenceSpecifications([...userSentenceSpecifications, {
       id: nextId,
       user_id: user?.id,
-      text_id: texts[currentIndex].id,
+      text_id: text.id,
       type: 2,
-      content: selectedWords.map(word => word.text).join(' '),
+      content: selectedTokens.map(token => token.content).join(' '),
       startPosition: startPosition,
       endPosition: endPosition,
       color: colors[colorIndex]
@@ -113,20 +105,23 @@ const HypothesisGameScreen = ({ }) => {
   const removeUserSentenceSpecification = useCallback((sentenceId: number) => {
     setUserSentenceSpecifications(userSentenceSpecifications.filter(sentenceSpecification => sentenceSpecification.id !== sentenceId));
 
-    setTexts(texts => texts.map(text => {
-      let newText = { ...text };
-      newText.content = newText.content.map(word => {
-        if (word.sentenceId === sentenceId) {
-          return { ...word, isSelected: false, isCurrentSelection: false };
+    setText(currentText => {
+      if (!currentText) return currentText;
+
+      let newText = { ...currentText };
+      newText.tokens = newText.tokens.map(token => {
+        if (token.sentenceId === sentenceId) {
+          return { ...token, isSelected: false, isCurrentSelection: false };
         }
-        return word;
+        return token;
       });
       return newText;
-    }));
-  }, [userSentenceSpecifications, texts]);
+    });
+  }, [userSentenceSpecifications]);
 
 
-  const renderText = (text: SplitText, index: number) => {
+
+  const renderText = (text: TextWithTokens, index: number) => {
     if (typeof text === "undefined") {
       return null;
     }
@@ -147,15 +142,15 @@ const HypothesisGameScreen = ({ }) => {
           ]}
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-            {text.content.map((word: any, idx: number) => (
+            {text.tokens.map((token: any, idx: number) => (
               <TouchableOpacity
                 key={idx}
-                onPress={() => onWordPress(idx, index)}
+                onPress={() => onTokenPress(idx, index)}
                 style={tw(
-                  `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
+                  `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
                 )}
               >
-                <Text style={tw("text-2xl font-secondary text-gray-800")}>{word.text}</Text>
+                <Text style={tw("text-2xl font-secondary text-gray-800")}>{token.content}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -178,15 +173,26 @@ const HypothesisGameScreen = ({ }) => {
 
 
   const onNextCard = async () => {
-    if (currentIndex < texts.length - 1) {
-      for (let userSentenceSpecification of userSentenceSpecifications) {
-        const { id, ...rest } = userSentenceSpecification;
-        await createUserSentenceSpecification(rest);
-      }
-      setCurrentIndex(currentIndex + 1);
-      setUserSentenceSpecifications([]); // Réinitialiser le récapitulatif des entités
-      incrementPoints(5);
-      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    setLoading(true);
+
+    for (let userSentenceSpecification of userSentenceSpecifications) {
+      const { id, ...rest } = userSentenceSpecification;
+      // await createUserSentenceSpecification(rest);
+    }
+    setUserSentenceSpecifications([]);
+    incrementPoints(5);
+    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+
+    await fetchTextFromAPI();
+    setLoading(false);
+  };
+
+  const fetchTextFromAPI = async () => {
+    try {
+      const response = await getTextWithTokens(user?.id, 'hypothesis');
+      setText(response);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -199,7 +205,7 @@ const HypothesisGameScreen = ({ }) => {
           <CustomHeaderInGame title="Trouver les hypothèses" backgroundColor="bg-whiteTransparent" />
 
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
-            {renderText(texts[currentIndex], currentIndex)}
+            {renderText(text, currentIndex)}
           </View>
           <View style={tw("mx-4")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}

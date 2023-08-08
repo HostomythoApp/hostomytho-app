@@ -1,6 +1,7 @@
 import { Text } from "models/Text";
+import { TextWithTokens } from "interfaces/TextWithTokens";
 import api from "./index";
-import { ReloadInstructions } from "react-native/Libraries/NewAppScreen";
+
 
 export const getAllTexts = async (): Promise<Text[]> => {
   try {
@@ -20,6 +21,23 @@ export const getAllTexts = async (): Promise<Text[]> => {
     throw error;
   }
 };
+
+export const getTextWithTokens = async (userId: number, gameType: string): Promise<TextWithTokens> => {
+  try {
+    const response = await api.get(`/texts/getTextWithTokens/${userId}/${gameType}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
 
 export const getTextById = async (id: number): Promise<Text[]> => {
   try {

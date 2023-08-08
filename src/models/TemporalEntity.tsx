@@ -1,6 +1,6 @@
-// TODO A supprimer
 export interface TemporalEntity {
   id: number;
-  startIndex: number;
-  endIndex: number;
+  sentence_id: number;
+  token_id: number;
+  content: string;
 }

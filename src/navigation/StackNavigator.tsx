@@ -56,19 +56,20 @@ const StackNavigator = ({ }) => {
 
         })}
       >
+
         <Stack.Screen name="MainBoard"
           component={MainBoardScreen}
           options={({ }) => ({
             headerShown: false
           })} />
-          
+
         <Stack.Screen name="Main"
           component={MainScreen}
           options={({ navigation }) => ({
             header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
           })} />
 
-
+        <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 
         <Stack.Screen name="Profile" component={ProfileScreen} />
 
@@ -80,7 +81,6 @@ const StackNavigator = ({ }) => {
 
         <Stack.Screen name="NegationGame" component={NegationGameScreen} />
 
-        <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 
         <Stack.Screen name="ConditionGame" component={ConditionGameScreen} />
 
