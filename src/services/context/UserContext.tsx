@@ -10,6 +10,7 @@ interface User {
   points: number;
   status: string;
   email: string;
+  gender: string;
 }
 
 interface UserContextProps {

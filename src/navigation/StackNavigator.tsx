@@ -56,7 +56,6 @@ const StackNavigator = ({ }) => {
 
         })}
       >
-        <Stack.Screen name="Profile" component={ProfileScreen} />
 
         <Stack.Screen name="MainBoard"
           component={MainBoardScreen}
@@ -72,10 +71,11 @@ const StackNavigator = ({ }) => {
 
         <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 
+        <Stack.Screen name="Profile" component={ProfileScreen} />
 
         <Stack.Screen name="ContentProfile" component={ContentProfileScreen} />
+        
         <Stack.Screen name="SkinsManagement" component={SkinsManagementScreen} />
-
 
         <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
 

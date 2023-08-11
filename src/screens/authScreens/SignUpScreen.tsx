@@ -15,11 +15,17 @@ import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 const SignUpScreen = () => {
 
     const [selectedValue, setSelectedValue] = useState('option1');
-// TODO Ajouter select du sexe
+    // TODO Ajouter select du sexe
     const options = [
         { key: 'option1', label: 'Je suis médecin ou étudiant', value: 'medecin' },
         { key: 'option2', label: 'Je ne suis ni médecin ni étudiant', value: 'autre' },
         { key: 'option3', label: 'Je ne souhaite pas répondre', value: 'etudiant' },
+    ];
+
+    const [gender, setGender] = useState('homme'); // Par défaut à 'homme'
+    const genderOptions = [
+        { key: 'homme', label: 'Homme', value: 'homme' },
+        { key: 'femme', label: 'Femme', value: 'femme' },
     ];
 
     const tw = useTailwind();
@@ -68,6 +74,7 @@ const SignUpScreen = () => {
                         password,
                         email,
                         status: doctor,
+                        gender: gender,
                     };
                     signUpUser(newUser)
                         .then(async (response: any) => {
@@ -123,15 +130,17 @@ const SignUpScreen = () => {
             "l'incorruptible", "la résolue", "la déterminée", "l'implacable", "la tenace", "la patiente",
             "la subtile", "l'infaillible", "la retorse", "la vigilante", "la pénétrante", "l'audacieuse"];
         // TODO liste de noms débiles
-        const gender = Math.random() > 0.5 ? 'male' : 'female';
 
-        const name = (gender === 'male')
+        const genderType = gender === 'homme' ? 'male' : 'female';
+
+        const name = (genderType === 'male')
             ? detectiveNamesMale[Math.floor(Math.random() * detectiveNamesMale.length)]
             : detectiveNamesFemale[Math.floor(Math.random() * detectiveNamesFemale.length)];
 
-        const keyword = (gender === 'male')
+        const keyword = (genderType === 'male')
             ? keywordsMale[Math.floor(Math.random() * keywordsMale.length)]
             : keywordsFemale[Math.floor(Math.random() * keywordsFemale.length)];
+
 
         setUsername(`${name} ${keyword}`);
     }
@@ -155,10 +164,24 @@ const SignUpScreen = () => {
                     {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
                     {/* <FunctionButton text={"Générer un pseudo"} func={generatePseudo} width={inputWidth} /> */}
 
+
+
                     <FunctionButton
                         text={"Générer un pseudo"}
                         func={generatePseudo}
                     />
+
+                    <View style={tw('p-4 w-auto')}>
+
+                        {genderOptions.map((option) => (
+                            <RadioButton
+                                key={option.key}
+                                label={option.label}
+                                selected={gender === option.value}
+                                onPress={() => setGender(option.value)}
+                            />
+                        ))}
+                    </View>
 
                     <MainInput text={"Mot de passe"} value={password} setter={setPassword} hide={true} onSubmitEditing={submit} isError={passwordError} width={inputWidth} maxWidth={600} />
                     {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
@@ -175,17 +198,17 @@ const SignUpScreen = () => {
                                 label={option.label}
                                 selected={selectedValue === option.key}
                                 onPress={() => {
-                                    setSelectedValue(option.key)
-                                    setDoctor(option.value)
+                                    setSelectedValue(option.key);
+                                    setDoctor(option.value);
                                 }}
                             />
                         ))}
-
                     </View>
+
                     <Text>
                         {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
                     </Text>
-                    <FunctionButton text={"Inscription"} func={submit}  />
+                    <FunctionButton text={"Inscription"} func={submit} />
                 </View>
             </ScrollView>
         </View>

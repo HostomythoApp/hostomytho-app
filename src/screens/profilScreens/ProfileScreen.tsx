@@ -21,6 +21,9 @@ const ProfileScreen = (props: any) => {
     const isMobile = window.width < 768;
     const [viewMode, setViewMode] = useState<'profile' | 'skinsManagement'>('profile');
     const { equippedSkins, setEquippedSkins } = useSkins();
+    const characterImage = user?.gender === 'homme'
+        ? require('images/character/man.png')
+        : require('images/character/woman.png');
 
     useEffect(() => {
         if (user?.id) {
@@ -44,7 +47,7 @@ const ProfileScreen = (props: any) => {
                 {!isMobile &&
                     <View style={tw('w-1/4 h-3/4 mb-10 ml-0 mr-auto mt-auto items-end justify-center')}>
                         <Image
-                            source={require('images/character/man.png')}
+                            source={characterImage}
                             style={tw('absolute w-full h-full ')}
                             resizeMode="contain"
                         />
