@@ -54,7 +54,7 @@ const ProfileScreen = (props: any) => {
                                 key={`imageSkin-${skin.id}`}
                                 // @ts-ignore
                                 source={skinImages[skin.image_url]}
-                                style={tw(' absolute w-full h-full')}
+                                style={tw('absolute w-full h-full')}
                                 resizeMode="contain"
                             />
                         ))}
@@ -65,7 +65,6 @@ const ProfileScreen = (props: any) => {
                         <ContentProfileScreen user={user} />
                         :
                         <SkinsManagementScreen user={user} />
-
                     }
                 </ScrollView>
 

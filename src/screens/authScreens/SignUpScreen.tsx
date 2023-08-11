@@ -15,7 +15,7 @@ import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 const SignUpScreen = () => {
 
     const [selectedValue, setSelectedValue] = useState('option1');
-
+// TODO Ajouter select du sexe
     const options = [
         { key: 'option1', label: 'Je suis médecin ou étudiant', value: 'medecin' },
         { key: 'option2', label: 'Je ne suis ni médecin ni étudiant', value: 'autre' },

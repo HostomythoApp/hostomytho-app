@@ -14,7 +14,7 @@ const SkinsManagementScreen = (props: any) => {
     const { user, updateStorageUserFromAPI } = useUser();
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
-    const skinTypes = ["visage", "lunettes", "chapeau", "veste", "pilosité"];
+    const skinTypes = ["face","lunettes", "chapeau", "veste", "pilosité","yeux/nez"];
     const [skins, setSkins] = useState<Record<string, Skin[]>>({});
     const [apiSkins, setApiSkins] = useState<Skin[]>([]);
     const { equippedSkins, setEquippedSkins } = useSkins();
@@ -63,9 +63,9 @@ const SkinsManagementScreen = (props: any) => {
         switch (type) {
             case 'veste':
                 return tw('w-20 h-28 -mt-8');
-            case 'visage':
+            case 'yeux/nez':
                 return tw('w-20 h-52 -mt-4');
-            case 'lunettes':
+            case 'face':
                 return tw('w-20 h-52 -mt-4');
             case 'pilosité':
                 return tw('w-20 h-52 -mt-3');
@@ -76,7 +76,9 @@ const SkinsManagementScreen = (props: any) => {
 
     return (
 
-        <View style={[tw('w-full mt-4 px-2 max-w-5xl'), isMobile ? tw('pt-2') : tw('pt-6')]}>
+        // <View style={[tw('w-full mt-4 px-2 max-w-5xl'), isMobile ? tw('pt-2') : tw('pt-6')]}>
+            <View style={[tw('w-full mt-4 px-2'), isMobile ? tw('pt-2') : tw('pt-6')]}>
+
             <View style={tw('flex-row justify-center')}>
                 <View style={[tw('mt-4'), isMobile ? tw('w-4/5') : tw('w-3/5')]}>
                     <Text style={[tw('font-bold mb-6 text-center text-[whitesmoke] font-MochiyPopOne'), isMobile ? tw('text-1xl') : tw(' text-3xl leading-10')]}>Changement d'apparence</Text>
@@ -94,7 +96,8 @@ const SkinsManagementScreen = (props: any) => {
                                     <View>
                                         <Text style={tw('text-xl font-bold mb-2 pl-2 text-black font-primary')}>{type}</Text>
 
-                                        <View style={tw('flex-row')}>
+                                        <View style={tw('flex-row flex-wrap')}>
+
                                             {skins[type]?.map(skin => {
                                                 return (
                                                     <TouchableOpacity
@@ -129,5 +132,6 @@ const SkinsManagementScreen = (props: any) => {
 
     );
 };
+
 
 export default withAuth(SkinsManagementScreen);
