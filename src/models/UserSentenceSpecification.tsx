@@ -2,10 +2,9 @@ export interface UserSentenceSpecification {
   id: number;
   user_id?: number;
   text_id: number;
-  type: number;
+  type: 'hypothesis' | 'condition' | 'negation';
   content: string;
-  startPosition: number;
-  endPosition: number;
+  word_positions: string;
+  specification_weight: number; 
   createdAt?: string;
-  color: string; 
 }

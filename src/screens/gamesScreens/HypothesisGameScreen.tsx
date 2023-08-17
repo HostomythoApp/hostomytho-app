@@ -8,6 +8,7 @@ import { getTextWithTokens } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
+import { checkUserSelection } from 'utils/gameFunctions';
 
 const colors = [
   "bg-yellow-300",
@@ -43,7 +44,7 @@ const HypothesisGameScreen = ({ }) => {
 
   const onTokenPress = useCallback((wordIndex: number) => {
     setText(currentText => {
-      if (!currentText) return currentText; // Si le texte est nul ou non défini, retourner tel quel
+      if (!currentText) return currentText;
 
       const newTokens = [...currentText.tokens];
       const token = newTokens[wordIndex];
@@ -64,7 +65,7 @@ const HypothesisGameScreen = ({ }) => {
 
   const addSentenceSpecification = () => {
     setSelectionStarted(false);
-    if (!text) return; // Si le texte est nul ou non défini, arrêtez-vous ici
+    if (!text) return;
 
     const selectedTokens = text.tokens.filter(token => token.isCurrentSelection);
 
@@ -72,26 +73,27 @@ const HypothesisGameScreen = ({ }) => {
       token.sentenceId = nextId;
       token.isSelected = true;
       token.isCurrentSelection = false;
-      delete token.color; // Remove the temporary color from the token
+      delete token.color;
     });
 
-    const startPosition = selectedTokens[0].position;
-    const endPosition = selectedTokens[selectedTokens.length - 1].position;
+    const wordPositions = selectedTokens.map(token => token.position).join(', ');
+    console.log("wordPositions");
+    console.log(wordPositions);
 
     setUserSentenceSpecifications([...userSentenceSpecifications, {
       id: nextId,
       user_id: user?.id,
       text_id: text.id,
-      type: 2,
+      type: "hypothesis",
       content: selectedTokens.map(token => token.content).join(' '),
-      startPosition: startPosition,
-      endPosition: endPosition,
+      word_positions: wordPositions,
       color: colors[colorIndex]
     }]);
 
     setNextId(nextId + 1);
     setColorIndex((colorIndex + 1) % colors.length);
   };
+
 
 
   const getSentenceColor = (sentenceId: number | null) => {
@@ -171,22 +173,6 @@ const HypothesisGameScreen = ({ }) => {
     </View>
   );
 
-
-  const onNextCard = async () => {
-    setLoading(true);
-
-    for (let userSentenceSpecification of userSentenceSpecifications) {
-      const { id, ...rest } = userSentenceSpecification;
-      // await createUserSentenceSpecification(rest);
-    }
-    setUserSentenceSpecifications([]);
-    incrementPoints(5);
-    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-
-    await fetchTextFromAPI();
-    setLoading(false);
-  };
-
   const fetchTextFromAPI = async () => {
     try {
       const response = await getTextWithTokens(user?.id, 'hypothesis');
@@ -194,6 +180,34 @@ const HypothesisGameScreen = ({ }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const onNextCard = async () => {
+    setLoading(true);
+
+    // Vérifiez si le texte actuel est un test de spécification
+    if (text?.is_hypothesis_specification_test) {
+      if (!(await checkUserSelection(text.id, userSentenceSpecifications, 'hypothesis'))) {
+        setLoading(false);
+        return;
+      }
+    } else {
+      //TODO Comparez avec les réponses des autres utilisateurs, donner plus ou moins de point
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      incrementPoints(5);
+
+    }
+
+    for (let userSentenceSpecification of userSentenceSpecifications) {
+      const { id, ...rest } = userSentenceSpecification;
+      // await createUserSentenceSpecification(rest);
+    }
+
+    setUserSentenceSpecifications([]);
+
+    await fetchTextFromAPI();
+    setLoading(false);
+
   };
 
 
