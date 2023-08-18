@@ -214,10 +214,8 @@ const HypothesisGameScreen = ({ }) => {
     setLoading(true);
     if (text?.is_hypothesis_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'hypothesis');
-      console.log(checkResult.testSpecifications);
-
       if (!checkResult.isValid) {
-        const correctHypotheses = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
+        const correctSpecification = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
 
         const allPositions = checkResult.testSpecifications.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
         setText(currentText => {
@@ -232,7 +230,7 @@ const HypothesisGameScreen = ({ }) => {
           messageHeader = "Oh non, il n'y avait rien à trouver ici";
         }
 
-        setMessageContent(`${messageHeader}\n${correctHypotheses}`);
+        setMessageContent(`${messageHeader}\n${correctSpecification}`);
         setShowMessage(true);
         setLoading(false);
         setSelectionStarted(false);

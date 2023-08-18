@@ -145,13 +145,13 @@ const MainBoardScreen = ({ }) => {
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity onPress={() => navigation.navigate("NegationGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("ConditionGame")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '40%' : '40%',
                                 left: windowWidth > 768 ? '65%' : '65%',
                             }}>
-                            <Image source={require('images/postit negation.png')} style={{
+                            <Image source={require('images/postit condition.png')} style={{
                                 width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 35, minHeight: 35,
                                 shadowColor: 'black',
                                 shadowOffset: { width: -1, height: 2 },
@@ -162,13 +162,13 @@ const MainBoardScreen = ({ }) => {
 
 
 
-                        <TouchableOpacity onPress={() => navigation.navigate("ConditionGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("NegationGame")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '25%' : '28%',
                                 left: windowWidth > 768 ? '38%' : '38%',
                             }}>
-                            <Image source={require('images/postit condition.png')} style={{
+                            <Image source={require('images/postit negation.png')} style={{
                                 width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 35, minHeight: 35,
                                 shadowColor: 'black',
                                 shadowOffset: { width: 1, height: 1 },

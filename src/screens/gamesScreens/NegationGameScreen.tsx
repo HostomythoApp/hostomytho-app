@@ -3,12 +3,12 @@ import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
-import { Word } from "models/Word";
 import { useUser } from 'services/context/UserContext';
-import { getAllTexts } from "services/api/texts";
-import { shuffleArray, splitText } from "utils/functions";
+import { getTextWithTokens } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
+import { TextWithTokens } from "interfaces/TextWithTokens";
+import { checkUserSelection } from 'utils/gameFunctions';
 
 const colors = [
   "bg-yellow-300",
@@ -17,15 +17,9 @@ const colors = [
   "bg-pink-300",
 ];
 
-export interface SplitText {
-  id: number;
-  content: Word[];
-  selectedType: string | null;
-}
-
 const NegationGameScreen = ({ }) => {
   const tw = useTailwind();
-  const [texts, setTexts] = useState<SplitText[]>([]);
+  const [text, setText] = useState<TextWithTokens>();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
@@ -34,72 +28,73 @@ const NegationGameScreen = ({ }) => {
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageContent, setMessageContent] = useState("");
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const fetchTexts = async () => {
+    const fetchText = async () => {
       try {
-        const response = await getAllTexts();
-        const shuffledTexts = shuffleArray(response);
-        const newtexts = shuffledTexts.map((text) => {
-          return splitText(text);
-        });
-
-        setTexts(newtexts);
+        const response = await getTextWithTokens(user?.id, 'negation');
+        setText(response);
       } catch (error) {
         console.error(error);
       }
     };
-    fetchTexts();
+    fetchText();
   }, []);
 
-  const onWordPress = useCallback((wordIndex: number, textIndex: number) => {
-    setTexts(texts => texts.map((text, idx) => {
-      if (idx === textIndex) {
-        const newWords = [...text.content];
-        const word = newWords[wordIndex];
-        word.isCurrentSelection = !word.isCurrentSelection;
-        if (word.isCurrentSelection) {
-          word.color = 'bg-blue-200';
-          setSelectionStarted(true);
-        } else {
-          delete word.color;
-          setSelectionStarted(false);
-        }
-        return { ...text, content: newWords };
+  const onTokenPress = useCallback((wordIndex: number) => {
+    setText(currentText => {
+      if (!currentText) return currentText;
+
+      const newTokens = [...currentText.tokens];
+      const token = newTokens[wordIndex];
+      token.isCurrentSelection = !token.isCurrentSelection;
+
+      if (token.isCurrentSelection) {
+        token.color = 'bg-blue-200';
+      } else {
+        delete token.color;
       }
-      return text;
-    }));
+
+      const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
+      setSelectionStarted(anyTokenSelected);
+
+      return { ...currentText, tokens: newTokens };
+    });
   }, []);
+
 
 
   const addSentenceSpecification = () => {
     setSelectionStarted(false);
-    const selectedWords = texts[currentIndex].content.filter(word => word.isCurrentSelection);
-    selectedWords.forEach(word => {
-      word.sentenceId = nextId;
-      word.isSelected = true;
-      word.isCurrentSelection = false;
-      delete word.color;
+    if (!text) return;
+    const selectedTokens = text.tokens.filter(token => token.isCurrentSelection);
+    selectedTokens.forEach(token => {
+      token.sentenceId = nextId;
+      token.isSelected = true;
+      token.isCurrentSelection = false;
+      delete token.color;
     });
 
-    const startPosition = selectedWords[0].position;
-    const endPosition = selectedWords[selectedWords.length - 1].position;
-
-    // @ts-ignore
+    const wordPositions = selectedTokens.map(token => token.position).join(', ');
     setUserSentenceSpecifications([...userSentenceSpecifications, {
       id: nextId,
       user_id: user?.id,
-      text_id: texts[currentIndex].id,
-      type: 2,
-      content: selectedWords.map(word => word.text).join(' '),
-      startPosition: startPosition,
-      endPosition: endPosition,
+      text_id: text.id,
+      type: "negation",
+      content: selectedTokens.map(token => token.content).join(' '),
+      word_positions: wordPositions,
       color: colors[colorIndex]
     }]);
 
     setNextId(nextId + 1);
     setColorIndex((colorIndex + 1) % colors.length);
   };
+
 
 
   const getSentenceColor = (sentenceId: number | null) => {
@@ -112,44 +107,27 @@ const NegationGameScreen = ({ }) => {
 
   const removeUserSentenceSpecification = useCallback((sentenceId: number) => {
     setUserSentenceSpecifications(userSentenceSpecifications.filter(sentenceSpecification => sentenceSpecification.id !== sentenceId));
+    setText(currentText => {
+      if (!currentText) return currentText;
 
-    setTexts(texts => texts.map(text => {
-      let newText = { ...text };
-      newText.content = newText.content.map(word => {
-        if (word.sentenceId === sentenceId) {
-          return { ...word, isSelected: false, isCurrentSelection: false };
+      let newText = { ...currentText };
+      newText.tokens = newText.tokens.map(token => {
+        if (token.sentenceId === sentenceId) {
+          return { ...token, isSelected: false, isCurrentSelection: false };
         }
-        return word;
+        return token;
       });
       return newText;
-    }));
-  }, [userSentenceSpecifications, texts]);
+    });
+  }, [userSentenceSpecifications]);
 
-  interface WordProps {
-    word: Word;
-    index: number;
-    onWordPress: () => void;
-  }
 
-  const WordComponent = React.memo(({ word, index, onWordPress }: WordProps) => {
-    const tw = useTailwind();
-    return (
-      <TouchableOpacity
-        key={index}
-        onPress={onWordPress}
-        style={tw(
-          `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
-        )}
-      >
-        <Text style={tw("text-2xl font-secondary text-gray-800")}>{word.text}</Text>
-      </TouchableOpacity>
-    )
-  })
 
-  const renderText = (text: SplitText, index: number) => {
+  const renderText = (text: TextWithTokens) => {
     if (typeof text === "undefined") {
       return null;
     }
+
     return (
       <SafeAreaView style={tw("flex-1 ")}>
         <View
@@ -166,90 +144,141 @@ const NegationGameScreen = ({ }) => {
           ]}
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-            {text.content.map((word: any, idx: number) => (
-              <WordComponent
+            {text.tokens.map((token: any, idx: number) => (
+              <TouchableOpacity
                 key={idx}
-                word={word}
-                index={idx}
-                onWordPress={() => onWordPress(idx, index)}
-              />
+                onPress={showMessage ? undefined : () => onTokenPress(idx)}
+                style={tw(
+                  `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
+                )}
+              >
+                <Text
+                  style={[
+                    tw("text-2xl font-secondary text-gray-800"),
+                    token.color ? tw(token.color) : null
+                  ]}
+                >
+                  {token.content}
+                </Text>
+              </TouchableOpacity>
             ))}
+
           </View>
         </View>
       </SafeAreaView>
     );
   };
 
-  interface UserSentenceSpecificationProps {
-    sentenceSpecification: UserSentenceSpecification;
-    removeUserSentenceSpecification: (id: number) => void;
-  }
 
-  const UserSentenceSpecificationComponent = React.memo(({ sentenceSpecification, removeUserSentenceSpecification }: UserSentenceSpecificationProps) => {
-    const tw = useTailwind();
-    return (
-      <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
-        <View style={tw("flex-shrink")}>
-          <Text style={tw(`text-lg mr-2 ${sentenceSpecification.color ? sentenceSpecification.color : ''} font-primary`)}>{sentenceSpecification.content}</Text>
-        </View>
-        <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
-          <Entypo name="cross" size={24} color="red" />
-        </TouchableOpacity>
+
+  const renderUserSentenceSpecification = (sentenceSpecification: any) => (
+    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
+      <View style={tw("flex-shrink")}>
+        <Text style={tw(`text-lg mr-2 ${sentenceSpecification.color ? sentenceSpecification.color : ''} font-primary`)}>{sentenceSpecification.content}</Text>
       </View>
-    )
-  });
-
-  interface UserSentenceSpecificationsProps {
-    userSentenceSpecifications: UserSentenceSpecification[];
-    removeUserSentenceSpecification: (id: number) => void;
-  }
-
-  const UserSentenceSpecifications = ({ userSentenceSpecifications, removeUserSentenceSpecification }: UserSentenceSpecificationsProps) => (
-    <View style={tw("mx-4")}>
-      {userSentenceSpecifications.map(sentenceSpecification =>
-        <UserSentenceSpecificationComponent
-          key={sentenceSpecification.id}
-          sentenceSpecification={sentenceSpecification}
-          removeUserSentenceSpecification={removeUserSentenceSpecification}
-        />
-      )}
+      <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
+        <Entypo name="cross" size={24} color="red" />
+      </TouchableOpacity>
     </View>
   );
 
-  const onNextCard = async () => {
-    if (currentIndex < texts.length - 1) {
-      for (let userSentenceSpecification of userSentenceSpecifications) {
-        const { id, ...rest } = userSentenceSpecification;
-        await createUserSentenceSpecification(rest);
-      }
-      setCurrentIndex(currentIndex + 1);
-      setUserSentenceSpecifications([]); // Réinitialiser le récapitulatif des entités
-      incrementPoints(5);
-      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+  const fetchTextFromAPI = async () => {
+    try {
+      const response = await getTextWithTokens(user?.id, 'negation');
+      setText(response);
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  const goToNextSentence = async () => {
+    setUserSentenceSpecifications([]);
+    setShowMessage(false);
+    setMessageContent("");
+    await fetchTextFromAPI();
+    setLoading(false);
+  };
+
+  const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
+    const newTokens = [...text.tokens];
+    newTokens.forEach((token, index) => {
+      if (positions.includes(index + 1)) {
+        token.color = 'text-red-500';
+      }
+    });
+    return { ...text, tokens: newTokens };
+  };
+
+
+  const onNextCard = async () => {
+    setLoading(true);
+    if (text?.is_negation_specification_test) {
+      const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
+      if (!checkResult.isValid) {
+        const correctSpecification = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
+
+        const allPositions = checkResult.testSpecifications.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+        setText(currentText => {
+          if (!currentText) return currentText;
+          return updateTokensColor(currentText, allPositions);
+        });
+
+        let messageHeader;
+        if (checkResult.testSpecifications.length > 0) {
+          messageHeader = "Oups, raté! Voilà les négations qu'il fallait trouver :";
+        } else {
+          messageHeader = "Oh non, il n'y avait rien à trouver ici";
+        }
+
+        setMessageContent(`${messageHeader}\n${correctSpecification}`);
+        setShowMessage(true);
+        setLoading(false);
+        setSelectionStarted(false);
+        return;
+      } else {
+        incrementPoints(5);
+      }
+    } else {
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      incrementPoints(5);
+    }
+
+    for (let userSentenceSpecification of userSentenceSpecifications) {
+      const { id, ...rest } = userSentenceSpecification;
+      // await createUserSentenceSpecification(rest);
+    }
+
+    setUserSentenceSpecifications([]);
+    setShowMessage(false);
+    setMessageContent("");
+
+    await fetchTextFromAPI();
+    setLoading(false);
+  };
 
   return (
-    <ImageBackground source={require('images/bg_room_1.jpeg')} style={tw('flex-1')}>
-
+    <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
           <CustomHeaderInGame title="Trouver les négations" backgroundColor="bg-whiteTransparent" />
-
+          {errorMessage && (
+            <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
+              <Text style={tw("text-white")}>{errorMessage}</Text>
+            </View>
+          )}
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
-            {renderText(texts[currentIndex], currentIndex)}
+            {renderText(text, currentIndex)}
           </View>
-          <UserSentenceSpecifications
-            userSentenceSpecifications={userSentenceSpecifications}
-            removeUserSentenceSpecification={removeUserSentenceSpecification}
-          />
+          <View style={tw("mx-4 pb-11")}>
+            {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
+          </View>
         </ScrollView>
 
-        <View style={tw('absolute bottom-4 right-4 flex-col')}>
+        <View style={tw('absolute bottom-3 right-4 flex-col w-52')}>
+
           {isSelectionStarted &&
             <TouchableOpacity
-              style={tw(`pr-2 pl-2 rounded-lg mx-4 h-10 mb-1 bg-blue-500 flex-row items-center`)}
+              style={tw(`py-2 px-4 rounded-lg bg-blue-500 flex-row items-center justify-center mb-1 w-full`)}
               onPress={addSentenceSpecification}
             >
               <MaterialIcons name="add" size={22} color="white" />
@@ -257,18 +286,47 @@ const NegationGameScreen = ({ }) => {
             </TouchableOpacity>
           }
 
-          <TouchableOpacity
-            style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1 flex-row items-center")}
-            onPress={onNextCard}
-          >
-            <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-            <View style={tw('bg-primaryLighter rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
-              <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
-            </View>
-          </TouchableOpacity>
+          {!showMessage &&
+            <TouchableOpacity
+              style={tw("py-2 px-4 rounded-lg bg-primary flex-row items-center justify-center  w-full")}
+              onPress={onNextCard}
+            >
+              <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+              <View style={tw('bg-primaryLighter rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
+                <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
+              </View>
+            </TouchableOpacity>
+          }
         </View>
+        {userSentenceSpecifications.length > 0 && (
+          <TouchableOpacity
+            style={[
+              tw('absolute bottom-3 left-4 w-9 h-9 bg-blue-500 rounded-full justify-center items-center'),
+            ]}
+            onPress={() => {
+              scrollViewRef.current?.scrollToEnd({ animated: true });
+            }}
+          >
+            <MaterialIcons name="arrow-downward" size={25} color="white" />
+          </TouchableOpacity>
+        )}
 
+        <View style={tw('absolute flex-col w-full bottom-0')}>
+          {showMessage &&
+            <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+              <View>
+                <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+              </View>
+              <TouchableOpacity
+                style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+                onPress={goToNextSentence}
+              >
+                <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
+              </TouchableOpacity>
+            </View>
 
+          }
+        </View>
       </SafeAreaView>
     </ImageBackground>
   );
