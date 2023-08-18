@@ -1,3 +1,4 @@
+import { TestSpecification } from "models/TestSpecification";
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { getTestSpecificationsByTextId } from "services/api/testSpecifications";
 
@@ -7,13 +8,13 @@ export const checkUserSelection = async (
     gameType: 'hypothesis' | 'condition' | 'negation',
     errorMargin: number = 1,
     tokenErrorMargin: number = 1,
-): Promise<boolean> => {
+): Promise<{ isValid: boolean, testSpecifications: TestSpecification[] }> => {
     try {
         const testSpecifications = await getTestSpecificationsByTextId(textId, gameType);
 
         if (userSentenceSpecifications.length !== testSpecifications.length) {
-            alert("Le nombre de spécifications ne correspond pas. Veuillez réessayer.");
-            return false;
+            console.log("Le nombre de spécifications ne correspond pas.");
+            return { isValid: false, testSpecifications };
         }
 
         for (let userSentenceSpecification of userSentenceSpecifications) {
@@ -29,17 +30,18 @@ export const checkUserSelection = async (
             });
 
             if (!matchingTestSpec) {
-                alert('Votre sélection est incorrecte. Veuillez réessayer.');
-                return false;
+                console.log('Sélection est incorrecte.');
+                return { isValid: false, testSpecifications };
             } else {
-                alert("Bonne selection");
+                console.log("Bonne sélection");
             }
         }
 
-        return true;
+        return { isValid: true, testSpecifications };
     } catch (error) {
         console.error(error);
-        alert('Une erreur est survenue lors de la vérification de votre sélection.');
-        return false;
+        console.log('Une erreur est survenue lors de la vérification de votre sélection.');
+        return { isValid: false, testSpecifications: [] };
     }
 };
+

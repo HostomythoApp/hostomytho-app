@@ -29,6 +29,9 @@ const HypothesisGameScreen = ({ }) => {
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageContent, setMessageContent] = useState("");
 
   useEffect(() => {
     const fetchText = async () => {
@@ -66,9 +69,7 @@ const HypothesisGameScreen = ({ }) => {
   const addSentenceSpecification = () => {
     setSelectionStarted(false);
     if (!text) return;
-
     const selectedTokens = text.tokens.filter(token => token.isCurrentSelection);
-
     selectedTokens.forEach(token => {
       token.sentenceId = nextId;
       token.isSelected = true;
@@ -123,13 +124,13 @@ const HypothesisGameScreen = ({ }) => {
 
 
 
-  const renderText = (text: TextWithTokens, index: number) => {
+  const renderText = (text: TextWithTokens) => {
     if (typeof text === "undefined") {
       return null;
     }
+
     return (
       <SafeAreaView style={tw("flex-1 ")}>
-
         <View
           style={[
             tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
@@ -147,20 +148,29 @@ const HypothesisGameScreen = ({ }) => {
             {text.tokens.map((token: any, idx: number) => (
               <TouchableOpacity
                 key={idx}
-                onPress={() => onTokenPress(idx, index)}
+                onPress={showMessage ? undefined : () => onTokenPress(idx)}
                 style={tw(
                   `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
                 )}
               >
-                <Text style={tw("text-2xl font-secondary text-gray-800")}>{token.content}</Text>
+                <Text
+                  style={[
+                    tw("text-2xl font-secondary text-gray-800"),
+                    token.color ? tw(token.color) : null  // Utilisez la couleur de la police ici
+                  ]}
+                >
+                  {token.content}
+                </Text>
               </TouchableOpacity>
             ))}
-          </View>
 
+          </View>
         </View>
       </SafeAreaView>
     );
   };
+
+
 
   const renderUserSentenceSpecification = (sentenceSpecification: any) => (
     <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
@@ -182,20 +192,47 @@ const HypothesisGameScreen = ({ }) => {
     }
   };
 
+  const goToNextSentence = async () => {
+    setUserSentenceSpecifications([]);
+    setShowMessage(false);
+    setMessageContent("");
+    await fetchTextFromAPI();
+    setLoading(false);
+  };
+
+  const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
+    const newTokens = [...text.tokens];
+    newTokens.forEach((token, index) => {
+      if (positions.includes(index + 1)) {
+        token.color = 'text-red-500';
+      }
+    });
+    return { ...text, tokens: newTokens };
+  };
+
+
   const onNextCard = async () => {
     setLoading(true);
-
-    // Vérifiez si le texte actuel est un test de spécification
     if (text?.is_hypothesis_specification_test) {
-      if (!(await checkUserSelection(text.id, userSentenceSpecifications, 'hypothesis'))) {
+      const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'hypothesis');
+      if (!checkResult.isValid) {
+        const correctHypotheses = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
+
+        const allPositions = checkResult.testSpecifications.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+        setText(currentText => {
+          if (!currentText) return currentText;
+          return updateTokensColor(currentText, allPositions);
+        });
+
+        setMessageContent(`${correctHypotheses}`);
+        setShowMessage(true);
         setLoading(false);
+        setSelectionStarted(false);
         return;
       }
     } else {
-      //TODO Comparez avec les réponses des autres utilisateurs, donner plus ou moins de point
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       incrementPoints(5);
-
     }
 
     for (let userSentenceSpecification of userSentenceSpecifications) {
@@ -204,20 +241,24 @@ const HypothesisGameScreen = ({ }) => {
     }
 
     setUserSentenceSpecifications([]);
+    setShowMessage(false);
+    setMessageContent("");
 
     await fetchTextFromAPI();
     setLoading(false);
-
   };
 
 
   return (
     <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
-
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
           <CustomHeaderInGame title="Trouver les hypothèses" backgroundColor="bg-whiteTransparent" />
-
+          {errorMessage && (
+            <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
+              <Text style={tw("text-white")}>{errorMessage}</Text>
+            </View>
+          )}
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {renderText(text, currentIndex)}
           </View>
@@ -226,10 +267,11 @@ const HypothesisGameScreen = ({ }) => {
           </View>
         </ScrollView>
 
-        <View style={tw('absolute bottom-4 right-4 flex-col')}>
+        <View style={tw('absolute bottom-4 right-4 flex-col w-52')}>
+
           {isSelectionStarted &&
             <TouchableOpacity
-              style={tw(`pr-2 pl-2 rounded-lg mx-4 h-10 mb-1 bg-blue-500 flex-row items-center`)}
+              style={tw(`py-2 px-4 rounded-lg bg-blue-500 flex-row items-center justify-center mb-1 w-full`)}
               onPress={addSentenceSpecification}
             >
               <MaterialIcons name="add" size={22} color="white" />
@@ -237,18 +279,35 @@ const HypothesisGameScreen = ({ }) => {
             </TouchableOpacity>
           }
 
+          {!showMessage &&
+            <TouchableOpacity
+              style={tw("py-2 px-4 rounded-lg bg-primary flex-row items-center justify-center  w-full")}
+              onPress={onNextCard}
+            >
+              <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+              <View style={tw('bg-primaryLighter rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
+                <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
+              </View>
+            </TouchableOpacity>
+          }
+        </View>
+        <View style={tw('absolute flex-col w-full bottom-0')}>
+          {showMessage &&
+          <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+          <View>
+            <Text style={tw("text-[#B22222] font-primary text-lg font-extrabold flex-shrink")}>Oups, raté! Voilà les hypothèses qu'il fallait trouver :</Text>
+            <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+          </View>
           <TouchableOpacity
-            style={tw("bg-primary px-4 rounded-lg mx-4 h-10 my-1 flex-row items-center")}
-            onPress={onNextCard}
+            style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+            onPress={goToNextSentence}
           >
-            <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-            <View style={tw('bg-primaryLighter rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
-              <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
-            </View>
+            <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
           </TouchableOpacity>
         </View>
-
-
+        
+          }
+        </View>
       </SafeAreaView>
     </ImageBackground>
   );
