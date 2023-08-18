@@ -69,7 +69,7 @@ const StackNavigator = ({ }) => {
             header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
           })} />
 
-        <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
+<Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 
         <Stack.Screen name="Profile" component={ProfileScreen} />
 

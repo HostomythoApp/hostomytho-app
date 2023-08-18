@@ -11,7 +11,6 @@ export const checkUserSelection = async (
 ): Promise<{ isValid: boolean, testSpecifications: TestSpecification[] }> => {
     try {
         const testSpecifications = await getTestSpecificationsByTextId(textId, gameType);
-
         if (userSentenceSpecifications.length !== testSpecifications.length) {
             console.log("Le nombre de spécifications ne correspond pas.");
             return { isValid: false, testSpecifications };
@@ -44,4 +43,5 @@ export const checkUserSelection = async (
         return { isValid: false, testSpecifications: [] };
     }
 };
+
 

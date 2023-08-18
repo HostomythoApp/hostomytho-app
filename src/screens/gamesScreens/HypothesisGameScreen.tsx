@@ -32,6 +32,7 @@ const HypothesisGameScreen = ({ }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const fetchText = async () => {
@@ -55,15 +56,17 @@ const HypothesisGameScreen = ({ }) => {
 
       if (token.isCurrentSelection) {
         token.color = 'bg-blue-200';
-        setSelectionStarted(true);
       } else {
         delete token.color;
-        setSelectionStarted(false);
       }
+
+      const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
+      setSelectionStarted(anyTokenSelected);
 
       return { ...currentText, tokens: newTokens };
     });
   }, []);
+
 
 
   const addSentenceSpecification = () => {
@@ -78,9 +81,6 @@ const HypothesisGameScreen = ({ }) => {
     });
 
     const wordPositions = selectedTokens.map(token => token.position).join(', ');
-    console.log("wordPositions");
-    console.log(wordPositions);
-
     setUserSentenceSpecifications([...userSentenceSpecifications, {
       id: nextId,
       user_id: user?.id,
@@ -107,7 +107,6 @@ const HypothesisGameScreen = ({ }) => {
 
   const removeUserSentenceSpecification = useCallback((sentenceId: number) => {
     setUserSentenceSpecifications(userSentenceSpecifications.filter(sentenceSpecification => sentenceSpecification.id !== sentenceId));
-
     setText(currentText => {
       if (!currentText) return currentText;
 
@@ -156,7 +155,7 @@ const HypothesisGameScreen = ({ }) => {
                 <Text
                   style={[
                     tw("text-2xl font-secondary text-gray-800"),
-                    token.color ? tw(token.color) : null  // Utilisez la couleur de la police ici
+                    token.color ? tw(token.color) : null
                   ]}
                 >
                   {token.content}
@@ -215,6 +214,8 @@ const HypothesisGameScreen = ({ }) => {
     setLoading(true);
     if (text?.is_hypothesis_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'hypothesis');
+      console.log(checkResult.testSpecifications);
+
       if (!checkResult.isValid) {
         const correctHypotheses = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
 
@@ -224,11 +225,20 @@ const HypothesisGameScreen = ({ }) => {
           return updateTokensColor(currentText, allPositions);
         });
 
-        setMessageContent(`${correctHypotheses}`);
+        let messageHeader;
+        if (checkResult.testSpecifications.length > 0) {
+          messageHeader = "Oups, raté! Voilà les hypothèses qu'il fallait trouver :";
+        } else {
+          messageHeader = "Oh non, il n'y avait rien à trouver ici";
+        }
+
+        setMessageContent(`${messageHeader}\n${correctHypotheses}`);
         setShowMessage(true);
         setLoading(false);
         setSelectionStarted(false);
         return;
+      } else {
+        incrementPoints(5);
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
@@ -248,7 +258,6 @@ const HypothesisGameScreen = ({ }) => {
     setLoading(false);
   };
 
-
   return (
     <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
@@ -262,12 +271,12 @@ const HypothesisGameScreen = ({ }) => {
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {renderText(text, currentIndex)}
           </View>
-          <View style={tw("mx-4")}>
+          <View style={tw("mx-4 pb-11")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
         </ScrollView>
 
-        <View style={tw('absolute bottom-4 right-4 flex-col w-52')}>
+        <View style={tw('absolute bottom-3 right-4 flex-col w-52')}>
 
           {isSelectionStarted &&
             <TouchableOpacity
@@ -291,21 +300,33 @@ const HypothesisGameScreen = ({ }) => {
             </TouchableOpacity>
           }
         </View>
+        {userSentenceSpecifications.length > 0 && (
+          <TouchableOpacity
+            style={[
+              tw('absolute bottom-3 left-4 w-9 h-9 bg-blue-500 rounded-full justify-center items-center'),
+            ]}
+            onPress={() => {
+              scrollViewRef.current?.scrollToEnd({ animated: true });
+            }}
+          >
+            <MaterialIcons name="arrow-downward" size={25} color="white" />
+          </TouchableOpacity>
+        )}
+
         <View style={tw('absolute flex-col w-full bottom-0')}>
           {showMessage &&
-          <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
-          <View>
-            <Text style={tw("text-[#B22222] font-primary text-lg font-extrabold flex-shrink")}>Oups, raté! Voilà les hypothèses qu'il fallait trouver :</Text>
-            <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
-          </View>
-          <TouchableOpacity
-            style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
-            onPress={goToNextSentence}
-          >
-            <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
-          </TouchableOpacity>
-        </View>
-        
+            <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+              <View>
+                <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+              </View>
+              <TouchableOpacity
+                style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+                onPress={goToNextSentence}
+              >
+                <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
+              </TouchableOpacity>
+            </View>
+
           }
         </View>
       </SafeAreaView>
