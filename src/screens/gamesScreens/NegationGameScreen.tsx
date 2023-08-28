@@ -269,7 +269,7 @@ const NegationGameScreen = ({ }) => {
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {renderText(text, currentIndex)}
           </View>
-          <View style={tw("mx-4 pb-11")}>
+          <View style={tw("mx-4 pb-5")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
         </ScrollView>
@@ -311,7 +311,7 @@ const NegationGameScreen = ({ }) => {
           </TouchableOpacity>
         )}
 
-        <View style={tw('absolute flex-col w-full bottom-0')}>
+        <View style={tw(' flex-col w-full bottom-0')}>
           {showMessage &&
             <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
               <View>

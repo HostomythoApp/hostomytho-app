@@ -10,6 +10,9 @@ import { Achievement } from 'models/Achievement';
 import AchievementIcon from 'components/AchievementIcon';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProp } from 'navigation/Types';
+import { useSkins } from 'services/context/SkinsContext';
+import { Skin } from 'models/Skin';
+import skinImages from 'utils/skinImages';
 
 interface Rank {
     id: number;
@@ -22,7 +25,8 @@ const ContentProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user, updateStorageUserFromAPI } = useUser();
     const [ranking, setRanking] = useState<Rank[]>([]);
-  const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+    const { equippedSkins, setEquippedSkins } = useSkins();
 
     const stats = [
         { id: 1, title: 'Textes validés', count: 5 },
@@ -36,6 +40,9 @@ const ContentProfileScreen = (props: any) => {
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
+    const characterImage = user?.gender === 'homme'
+        ? require('images/character/man.png')
+        : require('images/character/woman.png');
 
     useEffect(() => {
         if (user?.id) {
@@ -81,10 +88,20 @@ const ContentProfileScreen = (props: any) => {
             {isMobile &&
                 <View style={tw('w-full h-1/4 items-center justify-start')}>
                     <Image
-                        source={require('images/character/man.png')}
-                        style={tw('w-2/3 h-full mb-0 ml-auto mr-auto mt-0')}
+                        source={characterImage}
+                        style={tw('absolute w-full h-full ')}
                         resizeMode="contain"
                     />
+                    {Object.values(equippedSkins).map((skin: Skin) => (
+                        <Image
+                            key={`imageSkin-${skin.id}`}
+                            // @ts-ignore
+                            source={skinImages[skin.image_url]}
+                            style={tw('absolute w-full h-full')}
+                            resizeMode="contain"
+                        />
+                    ))}
+
                 </View>
             }
 

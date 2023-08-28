@@ -269,7 +269,7 @@ const HypothesisGameScreen = ({ }) => {
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {renderText(text, currentIndex)}
           </View>
-          <View style={tw("mx-4 pb-11")}>
+          <View style={tw("mx-4 pb-5")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
         </ScrollView>

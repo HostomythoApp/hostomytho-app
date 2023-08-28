@@ -8,7 +8,6 @@ import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-
 import ContentProfileScreen from 'screens/profilScreens/ContentProfileScreen';
 import SkinsManagementScreen from 'screens/profilScreens/SkinsManagementScreen';
 import { useSkins } from 'services/context/SkinsContext';
@@ -72,7 +71,7 @@ const ProfileScreen = (props: any) => {
                 </ScrollView>
 
                 <TouchableOpacity
-                    onPress={toggleViewMode} // Cela bascule entre les modes
+                    onPress={toggleViewMode} // Bascule entre les modes
                     style={tw('absolute bottom-0 left-0 min-w-[50px] min-h-[50px] max-h-[100px] justify-end')}
                 >
                     {viewMode === 'profile' ?
