@@ -34,7 +34,7 @@ const ContentProfileScreen = (props: any) => {
     ];
 
     const currentPoints = user?.points || 0;
-    const nextRewardPoints = 1000;
+    const nextRewardPoints = 100;
     const pointsForProgress = currentPoints % nextRewardPoints;
     const pointsPercentage = (pointsForProgress / nextRewardPoints) * 100;
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);

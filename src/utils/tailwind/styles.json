@@ -992,6 +992,11 @@
 			"--tw-bg-opacity": 0.9
 		}
 	},
+	"bg-opacity-95": {
+		"style": {
+			"--tw-bg-opacity": 0.95
+		}
+	},
 	"p-2": {
 		"style": {
 			"paddingTop": 8,

@@ -37,8 +37,10 @@ const NegationGameScreen = ({ }) => {
   useEffect(() => {
     const fetchText = async () => {
       try {
-        const response = await getTextWithTokens(user?.id, 'negation');
-        setText(response);
+        if (user) {
+          const response = await getTextWithTokens(user?.id, 'negation');
+          setText(response);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -88,6 +90,7 @@ const NegationGameScreen = ({ }) => {
       type: "negation",
       content: selectedTokens.map(token => token.content).join(' '),
       word_positions: wordPositions,
+      specification_weight: 1,
       color: colors[colorIndex]
     }]);
 
@@ -184,8 +187,10 @@ const NegationGameScreen = ({ }) => {
 
   const fetchTextFromAPI = async () => {
     try {
-      const response = await getTextWithTokens(user?.id, 'negation');
-      setText(response);
+      if (user) {
+        const response = await getTextWithTokens(user?.id, 'negation');
+        setText(response);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -267,7 +272,7 @@ const NegationGameScreen = ({ }) => {
             </View>
           )}
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
-            {renderText(text, currentIndex)}
+            {text && renderText(text)}
           </View>
           <View style={tw("mx-4 pb-5")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}

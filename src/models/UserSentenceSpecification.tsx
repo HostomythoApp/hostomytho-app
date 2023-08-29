@@ -7,4 +7,5 @@ export interface UserSentenceSpecification {
   word_positions: string;
   specification_weight: number; 
   createdAt?: string;
+  color?: string;
 }

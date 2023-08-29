@@ -37,8 +37,10 @@ const HypothesisGameScreen = ({ }) => {
   useEffect(() => {
     const fetchText = async () => {
       try {
-        const response = await getTextWithTokens(user?.id, 'hypothesis');
-        setText(response);
+        if (user) {
+          const response = await getTextWithTokens(user?.id, 'hypothesis');
+          setText(response);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -88,6 +90,7 @@ const HypothesisGameScreen = ({ }) => {
       type: "hypothesis",
       content: selectedTokens.map(token => token.content).join(' '),
       word_positions: wordPositions,
+      specification_weight: 1,
       color: colors[colorIndex]
     }]);
 
@@ -132,7 +135,7 @@ const HypothesisGameScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1 ")}>
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4 bg-opacity-95"),
             {
               minHeight: 300,
               shadowColor: "#000",
@@ -184,8 +187,10 @@ const HypothesisGameScreen = ({ }) => {
 
   const fetchTextFromAPI = async () => {
     try {
-      const response = await getTextWithTokens(user?.id, 'hypothesis');
-      setText(response);
+      if (user) {
+        const response = await getTextWithTokens(user?.id, 'hypothesis');
+        setText(response);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -267,7 +272,7 @@ const HypothesisGameScreen = ({ }) => {
             </View>
           )}
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
-            {renderText(text, currentIndex)}
+            {text && renderText(text)}
           </View>
           <View style={tw("mx-4 pb-5")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
