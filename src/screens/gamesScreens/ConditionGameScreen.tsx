@@ -241,11 +241,16 @@ const ConditionGameScreen = ({ }) => {
         setSelectionStarted(false);
         return;
       } else {
-        incrementPoints(5);
+        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+        setTimeout(() => {
+          incrementPoints(5);
+        }, 100);
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      incrementPoints(5);
+      setTimeout(() => {
+        incrementPoints(5);
+      }, 100);
     }
 
     for (let userSentenceSpecification of userSentenceSpecifications) {
@@ -264,7 +269,7 @@ const ConditionGameScreen = ({ }) => {
   return (
     <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
-        <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
+        <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Trouver les conditions" backgroundColor="bg-whiteTransparent" />
           {errorMessage && (
             <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>

@@ -9,54 +9,93 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import Explosion from 'components/Explosion';
 
-const CustomHeaderInGame = ({
-  title,
-  backgroundColor = 'bg-white',
-  textColor = 'black',
-}: {
+interface Props {
   title: string;
   backgroundColor?: string;
   textColor?: string;
+}
+
+const CustomHeaderInGame: React.FC<Props> = ({
+  title,
+  backgroundColor = 'bg-white',
+  textColor = 'black',
 }) => {
   const tw = useTailwind();
   const navigation = useNavigation();
   const { user } = useUser();
-
-  const points = useSharedValue(user?.points || 0);
-  const scale = useSharedValue(1);
-
-  const [displayPoints, setDisplayPoints] = useState(user?.points || 0);
+  const [displayPoints, setDisplayPoints] = useState<number>(user?.points ?? 0);
   const window = Dimensions.get('window');
   const isMobile = window.width < 960;
+  const [showExplosion, setShowExplosion] = useState(false);
+  const fontSize = useSharedValue(16);
+  const animatedColor = useSharedValue(textColor);
+
+  const animatedCommonStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: fontSize.value / 16 }],
+      alignSelf: 'center'
+    };
+  });
 
   useEffect(() => {
-    if (user?.points !== points.value) {
-      points.value = user?.points || 0;
-      scale.value = withSpring(1.2, { overshootClamping: true }, () => {
-        scale.value = withSpring(1);
-      });
-    }
-    setDisplayPoints(user?.points || 0);
-  }, [user?.points]);
+    let intervalId: NodeJS.Timeout;
+    let initialInterval = 60;
+    let intervalIncrement = 30;
 
-  const animatedStyle = useAnimatedStyle(() => {
+    if (user?.points !== undefined && user.points !== displayPoints) {
+      let currentPoints = displayPoints;
+      setShowExplosion(true);
+      fontSize.value = withSpring(18);
+      animatedColor.value = withSpring('green');
+
+      const incrementPoints = () => {
+        if (currentPoints < user.points) {
+          currentPoints++;
+          setDisplayPoints(currentPoints);
+          clearInterval(intervalId);
+          initialInterval += intervalIncrement;
+          intervalId = setInterval(incrementPoints, initialInterval);
+        } else {
+          clearInterval(intervalId);
+          setShowExplosion(false);
+          fontSize.value = withSpring(16);
+          animatedColor.value = textColor;
+        }
+      };
+
+      intervalId = setInterval(incrementPoints, initialInterval);
+    }
+
+    return () => clearInterval(intervalId);
+
+  }, [user?.points, textColor]);
+
+  const animatedTextStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ scale: scale.value }],
+      fontSize: fontSize.value,
+      color: animatedColor.value,
+      alignSelf: 'center'
     };
   });
 
   return (
-    <View style={[tw(`flex-row justify-between items-center  ${backgroundColor}`), isMobile ? tw('p-3') : tw('p-[18px]')]}>
-      <TouchableOpacity style={tw('pl-4')} onPress={() => navigation.goBack()}>
-        <Ionicons name="chevron-back" size={30} color={textColor} />
+    <View style={tw(`flex-row justify-between items-center ${backgroundColor} p-0`)}>
+      <TouchableOpacity style={[tw('p-5'), isMobile ? tw('p-3') : tw('p-[18px]')]} onPress={() => navigation.goBack()}>
+        <Animated.View style={animatedCommonStyle}>
+          <Ionicons name="chevron-back" size={30} color={animatedColor.value} />
+        </Animated.View>
       </TouchableOpacity>
-      <Text style={[tw(`font-primary text-center flex-grow font-bold text-${textColor}`), isMobile ? tw('text-xl ') : tw('text-2xl ')]}>{title}</Text>
+      <Text style={[tw(`font-primary text-center flex-grow font-bold text-${textColor}`), isMobile ? tw('text-xl') : tw('text-2xl')]}>{title}</Text>
       {user?.points !== undefined &&
-        <Animated.Text style={[tw(`font-primary text-${textColor}`), animatedStyle]}>
-          <MaterialIcons style={tw(`mr-1 text-${textColor}`)} name="person-search" size={16} color={textColor} />
-          {Math.round(displayPoints)} points
-        </Animated.Text>
+        <Animated.View style={tw('flex-row items-center justify-center w-32')}>
+          <Animated.View style={animatedCommonStyle}>
+            <MaterialIcons style={tw(`mr-1`)} name="person-search" size={16} color={animatedColor.value} />
+          </Animated.View>
+          <Animated.Text style={[tw(`font-primary`), animatedTextStyle]}>{Math.round(displayPoints)} points</Animated.Text>
+          {showExplosion && <Explosion x={0} y={0} />}
+        </Animated.View>
       }
     </View>
   );

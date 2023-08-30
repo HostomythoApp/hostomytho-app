@@ -241,11 +241,16 @@ const NegationGameScreen = ({ }) => {
         setSelectionStarted(false);
         return;
       } else {
-        incrementPoints(5);
+        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+        setTimeout(() => {
+          incrementPoints(5);
+        }, 100);
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      incrementPoints(5);
+      setTimeout(() => {
+        incrementPoints(5);
+      }, 100);
     }
 
     for (let userSentenceSpecification of userSentenceSpecifications) {
