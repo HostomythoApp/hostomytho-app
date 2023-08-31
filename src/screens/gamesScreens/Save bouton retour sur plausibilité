@@ -1,0 +1,27 @@
+          <!-- <View style={tw('absolute top-10 left-4 flex-col w-36')}>
+            <TouchableOpacity
+              style={tw("px-2 items-center flex-row justify-center rounded-full h-12 mx-2 bg-blue-500")}
+              onPress={() => {
+                setHighlightEnabled(false);
+                setErrorSpecifying(false);
+                setSelectionStarted(false);
+                setErrorDetails([]);
+                const newTexts = texts.map((text, idx) => {
+                  if (idx === currentIndex) {
+                    const newWords = text.content.map(word => {
+                      if (word.isCurrentSelection) {
+                        return { ...word, isCurrentSelection: false };
+                      }
+                      return word;
+                    });
+                    return { ...text, content: newWords };
+                  }
+                  return text;
+                });
+                setTexts(newTexts);
+              }}
+            >
+              {/* <EvilIcons name="close" size={26} color="black" /> */}
+              <Text style={tw("text-white font-primary text-center leading-6")}>Revenir aux plausibilités</Text>
+            </TouchableOpacity>
+          </View> -->

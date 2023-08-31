@@ -5,7 +5,6 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
 import { getTextWithTokens } from "services/api/texts";
-import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelection } from 'utils/gameFunctions';
@@ -20,7 +19,6 @@ const colors = [
 const ConditionGameScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithTokens>();
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
   const { incrementPoints } = useUser();
@@ -32,7 +30,6 @@ const ConditionGameScreen = ({ }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
-  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const fetchText = async () => {
@@ -127,6 +124,7 @@ const ConditionGameScreen = ({ }) => {
 
 
   const renderText = (text: TextWithTokens) => {
+// TODO Ici ça rappelle le renderText à chaque clic sur un mot. Il faut corriger ça   
     if (typeof text === "undefined") {
       return null;
     }
@@ -155,12 +153,10 @@ const ConditionGameScreen = ({ }) => {
                   `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
                 )}
               >
-                <Text
-                  style={[
-                    tw("text-2xl font-secondary text-gray-800"),
-                    token.color ? tw(token.color) : null
-                  ]}
-                >
+                <Text style={[
+                  tw("text-2xl font-secondary text-gray-800"),
+                  token.color ? tw(token.color) : null
+                ]}>
                   {token.content}
                 </Text>
               </TouchableOpacity>
@@ -175,7 +171,7 @@ const ConditionGameScreen = ({ }) => {
 
 
   const renderUserSentenceSpecification = (sentenceSpecification: any) => (
-    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
+    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px] ml-10`)}>
       <View style={tw("flex-shrink")}>
         <Text style={tw(`text-lg mr-2 ${sentenceSpecification.color ? sentenceSpecification.color : ''} font-primary`)}>{sentenceSpecification.content}</Text>
       </View>
@@ -279,7 +275,7 @@ const ConditionGameScreen = ({ }) => {
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {text && renderText(text)}
           </View>
-          <View style={tw("mx-4 pb-5")}>
+          <View style={tw("mx-4 pb-3")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
         </ScrollView>

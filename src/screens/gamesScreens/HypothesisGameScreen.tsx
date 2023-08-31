@@ -175,7 +175,7 @@ const HypothesisGameScreen = ({ }) => {
 
 
   const renderUserSentenceSpecification = (sentenceSpecification: any) => (
-    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px]`)}>
+    <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px] ml-10`)}>
       <View style={tw("flex-shrink")}>
         <Text style={tw(`text-lg mr-2 ${sentenceSpecification.color ? sentenceSpecification.color : ''} font-primary`)}>{sentenceSpecification.content}</Text>
       </View>
@@ -279,7 +279,7 @@ const HypothesisGameScreen = ({ }) => {
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {text && renderText(text)}
           </View>
-          <View style={tw("mx-4 pb-5")}>
+          <View style={tw("mx-4 pb-3")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
         </ScrollView>

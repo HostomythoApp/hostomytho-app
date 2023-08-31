@@ -19,6 +19,7 @@ const PlausibilityGameScreen = ({ }) => {
   const [swipeType, setSwipeType] = useState<'right' | 'left' | null>(null);
   const [activeModal, setActiveModal] = useState(false);
   const [expandedCards, setExpandedCards] = useState<boolean[]>(data.texts.map(() => false));
+  // @ts-ignore
   const [displayedTexts, setDisplayedTexts] = useState<string[]>(data.texts.map(text => text.content.slice(0, 750) + (text.content.length > 750 ? "..." : "")));
   const [swiperKey, setSwiperKey] = useState(0);
   const { incrementPoints } = useUser();
@@ -183,7 +184,7 @@ const PlausibilityGameScreen = ({ }) => {
         ></Swiper>
         {swipedAll && (
           <View style={tw('relative  h-3/4 rounded-xl justify-center items-center')}>
-            <Text style={tw('font-bold pb-5')} > Plus de texte pour le moment. Reviens plus tard</Text>
+            <Text style={tw('font-bold font-primary pb-5')} > Plus de texte pour le moment. Reviens plus tard</Text>
           </View>
         )}
       </View>
