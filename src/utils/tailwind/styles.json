@@ -171,6 +171,30 @@
 			"marginBottom": "auto"
 		}
 	},
+	"-mx-3": {
+		"style": {
+			"marginLeft": -12,
+			"marginRight": -12
+		}
+	},
+	"-mx-2": {
+		"style": {
+			"marginLeft": -8,
+			"marginRight": -8
+		}
+	},
+	"-mx-5": {
+		"style": {
+			"marginLeft": -20,
+			"marginRight": -20
+		}
+	},
+	"-mx-4": {
+		"style": {
+			"marginLeft": -16,
+			"marginRight": -16
+		}
+	},
 	"-mt-3": {
 		"style": {
 			"marginTop": -12
@@ -334,6 +358,16 @@
 	"ml-10": {
 		"style": {
 			"marginLeft": 40
+		}
+	},
+	"ml-[-18px]": {
+		"style": {
+			"marginLeft": -18
+		}
+	},
+	"mr-[-18px]": {
+		"style": {
+			"marginRight": -18
 		}
 	},
 	"flex": {
