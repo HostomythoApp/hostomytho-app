@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState, FC } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import { AntDesign, Entypo, Ionicons, MaterialIcons, EvilIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useUser } from 'services/context/UserContext';
-import { Word } from "models/Word";
+import { Token } from "models/Token";
 import Modal from 'react-native-modal';
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import { ErrorDetail } from "models/ErrorDetail";
 import { getTextWithTokens } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
+import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 
 const colors = [
   "bg-yellow-300",
@@ -16,12 +17,8 @@ const colors = [
   "bg-indigo-300",
   "bg-pink-300",
 ];
-export interface SplitText {
-  id: number;
-  content: Word[];
-}
 
-// Pour mon jeu de plausibilité, 
+
 interface ModalPlausibilityGameDetailedProps {
   isVisible: boolean;
   closeModal: () => void;
@@ -32,7 +29,6 @@ interface ModalPlausibilityGameDetailedProps {
 
 const PlausibilityGameDetailedScreen = () => {
   const tw = useTailwind();
-  const [texts, setTexts] = useState<SplitText[]>([]);
   const { incrementPoints } = useUser();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -48,7 +44,9 @@ const PlausibilityGameDetailedScreen = () => {
   const { user } = useUser();
   const [text, setText] = useState<TextWithTokens>();
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
-
+  const [messageContent, setMessageContent] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
+  const [noMoreTexts, setNoMoreTexts] = useState(false);
 
   useEffect(() => {
     if (!text && user) {
@@ -64,16 +62,16 @@ const PlausibilityGameDetailedScreen = () => {
     }
   }, [text, user]);
 
-  const HighlightedWord = ({ word, index }: { word: Word; index: number }) => {
+  const HighlightedWord = ({ token, index }: { token: Token; index: number }) => {
     const isSelected = selectedWords.includes(index);
     return (
       <TouchableOpacity
-        onPress={() => onTokenPress(index)}
+        onPress={showMessage ? undefined : () => onTokenPress(index)}
         style={tw(
-          `m-0 p-[2px] ${word.isCurrentSelection ? word.color : word.isSelected ? getSentenceColor(word.sentenceId) : "bg-transparent"}`
+          `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.text_id) : "bg-transparent"}`
         )}
       >
-        <Text style={tw("text-2xl font-secondary")}>{word.content + " "}</Text>
+        <Text style={tw("text-2xl font-secondary")}>{token.content + " "}</Text>
       </TouchableOpacity>
     );
   };
@@ -93,7 +91,6 @@ const PlausibilityGameDetailedScreen = () => {
     const wordPositions = selectedTokens.map(token => token.position).join(', ');
     setErrorDetails([...errorDetails, {
       id: nextId,
-      user_text_rating_id: 1,
       content: selectedTokens.map(token => token.content).join(' '),
       word_positions: wordPositions,
       color: colors[colorIndex]
@@ -129,8 +126,6 @@ const PlausibilityGameDetailedScreen = () => {
 
       const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
       setSelectionStarted(anyTokenSelected);
-      console.log(newTokens);
-
       return { ...currentText, tokens: newTokens };
     });
   };
@@ -159,7 +154,6 @@ const PlausibilityGameDetailedScreen = () => {
                 setIsModalVisible(false);
                 setHighlightEnabled(true);
                 setErrorSpecifying(true);
-                closeModal();
               }}
             >
               <Text style={tw(" text-orange-500 font-semibold")}>Source du doute</Text>
@@ -169,14 +163,7 @@ const PlausibilityGameDetailedScreen = () => {
               style={tw("bg-green-200 p-3 rounded-lg")}
               onPress={() => {
                 setIsModalVisible(false);
-                if (currentIndex + 1 < texts.length) {
-                  setCurrentIndex(currentIndex + 1);
-                  incrementPoints(5)
-                  scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-                } else {
-                  // TODO afficher qu'il n'y a plus de texte
-                }
-                closeModal();
+                onNextCard();
               }}
             >
               <Text style={tw("text-green-700 font-semibold")}>Aller au texte suivant</Text>
@@ -203,26 +190,31 @@ const PlausibilityGameDetailedScreen = () => {
     </View>
   );
 
+  const fetchTextFromAPI = async () => {
+    try {
+      if (user) {
+        const response = await getTextWithTokens(user?.id, 'plausibility');
+        if (response === null || response.tokens.length === 0) {
+          setNoMoreTexts(true);
+          return;
+        }
+
+        setText(response);
+        setNoMoreTexts(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   const removeErrorDetail = (errorDetailId: number) => {
     setErrorDetails(errorDetails.filter(errorDetail => errorDetail.id !== errorDetailId));
-
-    const newTexts = texts.map(text => {
-      const newWords = text.content.map(word => {
-        if (word.sentenceId === errorDetailId) {
-          return { ...word, isSelected: false, isCurrentSelection: false };
-        }
-        return word;
-      });
-      return { ...text, content: newWords };
-    });
-    setTexts(newTexts);
   };
 
   // TODO Séparer dans d'autres fichiers pour plus de visibilité
   const RenderText = React.memo(({ text }) => {
     if (!text) return null;
-    console.log("renderText");
-
     return (
       <SafeAreaView style={tw("flex-1 bg-white")}>
 
@@ -240,8 +232,8 @@ const PlausibilityGameDetailedScreen = () => {
           ]}
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-            {text.tokens.map((word: Word, idx: number) => (
-              <HighlightedWord word={word} index={idx} key={idx} />
+            {text.tokens.map((token: Token, idx: number) => (
+              <HighlightedWord token={token} index={idx} key={idx} />
             ))}
           </View>
         </View>
@@ -251,19 +243,67 @@ const PlausibilityGameDetailedScreen = () => {
     return prevProps.text === nextProps.text;
   });
 
+  const onNextCard = async () => {
+    if (text?.is_plausibility_test) {
+      const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails);
+      if (!checkResult.isValid) {
+        setCurrentIndex(currentIndex + 1);
+        incrementPoints(10)
+        setHighlightEnabled(false)
+        setErrorSpecifying(false)
+        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+        setErrorDetails([]);
+        setSelectionStarted(false);
+        setShowMessage(false);
+        await fetchTextFromAPI();
+        setMessageContent("");
+      } else {
+        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+        setTimeout(() => {
+          incrementPoints(5);
+        }, 100);
+      }
+    } else {
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      setTimeout(() => {
+        incrementPoints(10);
+      }, 100);
+    }
+    for (let errorDetail of errorDetails) {
+      const { id, ...rest } = errorDetail;
+      // await createUsererrorDetails(rest);
+    }
+    setErrorDetails([]);
+    setShowMessage(false);
+    setMessageContent("");
+    setErrorSpecifying(false);
+    setHighlightEnabled(false);
+    await fetchTextFromAPI();
+  };
+
+
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView ref={scrollViewRef}>
         <CustomHeaderInGame title="Plausibilité de textes" />
-        {/* Cards */}
-        <View style={tw("flex-1 mb-2")}>
-          {text && <RenderText text={text} />}
-        </View>
-        <View style={tw("mx-4 mt-2 mb-2")}>
-          {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
 
-          )}
-        </View>
+        {noMoreTexts ? (
+          <View style={tw('items-center justify-center mt-4')}>
+            <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>
+          </View>
+        ) : (
+          <SafeAreaView>
+
+            <View style={tw("flex-1 mb-2")}>
+              {text && <RenderText text={text} />}
+            </View>
+            <View style={tw("mx-4 mt-2 mb-2")}>
+              {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
+              )}
+            </View>
+
+          </SafeAreaView>
+        )}
       </ScrollView>
 
       <ModalPlausibilityGameDetailed
@@ -305,43 +345,20 @@ const PlausibilityGameDetailedScreen = () => {
               </TouchableOpacity>
             }
 
-            <TouchableOpacity
-              key={"next"}
-              style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 ${errorDetails.length > 0 ? 'bg-primary' : 'bg-green-200'}`)}
-              onPress={async () => {
-                if (errorDetails.length > 0) {
-                  if (currentIndex + 1 < texts.length) {
-                    setCurrentIndex(currentIndex + 1);
-                    incrementPoints(10)
-                    setHighlightEnabled(false)
-                    setErrorSpecifying(false)
-                    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-                    // Réinitialisation de l'état
-                    const newTexts = texts.map((text, idx) => {
-                      if (idx === currentIndex) {
-                        const newWords = text.content.map(word => {
-                          return { ...word, isSelected: false };
-                        });
-                        return { ...text, content: newWords };
-                      }
-                      return text;
-                    });
-                    setTexts(newTexts);
-                    setErrorDetails([]);
-                    setSelectionStarted(false);
-                  } else {
-                    // TODO afficher qu'il n'y a plus de texte
-                  }
-                }
-              }}
-              disabled={errorDetails.length === 0}
-            >
-              <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+            {!showMessage &&
+              <TouchableOpacity
+                key={"next"}
+                style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 ${errorDetails.length > 0 ? 'bg-primary' : 'bg-green-200'}`)}
+                disabled={errorDetails.length === 0}
+                onPress={onNextCard}
+              >
+                <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
 
-              <View style={tw(`rounded-full h-6 w-6 flex items-center justify-center ml-2 ${errorDetails.length > 0 ? 'bg-primaryLighter' : 'bg-green-100'}`)}>
-                <Text style={tw('text-white font-bold')}>{errorDetails.length}</Text>
-              </View>
-            </TouchableOpacity>
+                <View style={tw(`rounded-full h-6 w-6 flex items-center justify-center ml-2 ${errorDetails.length > 0 ? 'bg-primaryLighter' : 'bg-green-100'}`)}>
+                  <Text style={tw('text-white font-bold')}>{errorDetails.length}</Text>
+                </View>
+              </TouchableOpacity>
+            }
 
           </View>
         </SafeAreaView>
@@ -378,13 +395,7 @@ const PlausibilityGameDetailedScreen = () => {
           <TouchableOpacity
             style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
             onPress={async () => {
-              if (currentIndex + 1 < texts.length) {
-                setCurrentIndex(currentIndex + 1);
-                incrementPoints(5);
-                scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-              } else {
-                // TODO afficher qu'il n'y a plus de texte
-              }
+              onNextCard();
             }}
           >
             <Ionicons name="checkmark-done-sharp" size={24} color="green" />

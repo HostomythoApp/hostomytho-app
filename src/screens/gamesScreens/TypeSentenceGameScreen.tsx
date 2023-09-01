@@ -10,7 +10,7 @@ import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { TemporalEntity } from "models/TemporalEntity";
-import { Word } from "models/Word";
+import { Token } from "models/Token";
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { splitText } from "utils/functions";
@@ -21,7 +21,7 @@ const colors = [
 
 export interface Sentence {
   id: number;
-  content: Word[];
+  content: Token[];
   temporalEntities: TemporalEntity[];
   selectedType: string | null;
 }
@@ -61,7 +61,7 @@ const TypeSentenceGameScreen = ({ }) => {
   const onWordPress = (wordIndex: number, sentenceIndex: number) => {
     const newSentences = sentences.map((sentence, idx) => {
       if (idx === sentenceIndex) {
-        const newWords = sentence.content.map((word: Word, idx: number) => {
+        const newWords = sentence.content.map((word: Token, idx: number) => {
           if (startWordIndex === null) { // Si c'est le premier clic
             if (idx === wordIndex) {
               return { ...word, isSelected: true, sentenceId: word.isSelected ? null : temporalEntities.length };
@@ -83,7 +83,7 @@ const TypeSentenceGameScreen = ({ }) => {
       }
       return sentence;
     });
-
+    // @ts-ignore
     setSentences(newSentences);
 
     if (startWordIndex === null) {
@@ -112,6 +112,7 @@ const TypeSentenceGameScreen = ({ }) => {
       }
       return sentence;
     });
+    // @ts-ignore
     setSentences(newSentences);
 
     // Réinitialiser la sélection de mot
