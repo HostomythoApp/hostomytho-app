@@ -30,7 +30,6 @@ interface ModalPlausibilityGameDetailedProps {
 const PlausibilityGameDetailedScreen = () => {
   const tw = useTailwind();
   const { incrementPoints } = useUser();
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
   const [errorSpecifying, setErrorSpecifying] = useState(false);
@@ -47,6 +46,7 @@ const PlausibilityGameDetailedScreen = () => {
   const [messageContent, setMessageContent] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [noMoreTexts, setNoMoreTexts] = useState(false);
+  const [userRateSelected, setUserRateSelected] = useState(0);
 
   useEffect(() => {
     if (!text && user) {
@@ -68,10 +68,17 @@ const PlausibilityGameDetailedScreen = () => {
       <TouchableOpacity
         onPress={showMessage ? undefined : () => onTokenPress(index)}
         style={tw(
-          `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.text_id) : "bg-transparent"}`
+          `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getErrorColor(token.sentenceId) : "bg-transparent"}`
         )}
       >
-        <Text style={tw("text-2xl font-secondary")}>{token.content + " "}</Text>
+        <Text
+          style={[
+            tw("text-2xl font-secondary text-gray-800"),
+            token.color ? tw(token.color) : null
+          ]}
+        >
+          {token.content}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -101,7 +108,7 @@ const PlausibilityGameDetailedScreen = () => {
   };
 
 
-  const getSentenceColor = (sentenceId: number | null) => {
+  const getErrorColor = (sentenceId: any) => {
     if (sentenceId === null) {
       return "bg-transparent";
     }
@@ -213,11 +220,11 @@ const PlausibilityGameDetailedScreen = () => {
   };
 
   // TODO Séparer dans d'autres fichiers pour plus de visibilité
-  const RenderText = React.memo(({ text }) => {
+  const renderText = (text: TextWithTokens) => {
     if (!text) return null;
+
     return (
       <SafeAreaView style={tw("flex-1 bg-white")}>
-
         <View
           style={[
             tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4 lg:mt-8 xl:mt-12"),
@@ -239,24 +246,51 @@ const PlausibilityGameDetailedScreen = () => {
         </View>
       </SafeAreaView>
     );
-  }, (prevProps, nextProps) => {
-    return prevProps.text === nextProps.text;
-  });
+  };
+
+  const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
+    const newTokens = [...text.tokens];
+    newTokens.forEach((token, index) => {
+      if (positions.includes(index + 1)) {
+        token.color = 'text-red-500';
+      }
+    });
+    return { ...text, tokens: newTokens };
+  };
+
+
+  const goToNextSentence = async () => {
+    setErrorDetails([]);
+    setShowMessage(false);
+    setMessageContent("");
+    setErrorSpecifying(false);
+    setHighlightEnabled(false);
+    await fetchTextFromAPI();
+  };
 
   const onNextCard = async () => {
     if (text?.is_plausibility_test) {
-      const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails);
+      const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails, userRateSelected);
+      console.log(checkResult);
+
       if (!checkResult.isValid) {
-        setCurrentIndex(currentIndex + 1);
-        incrementPoints(10)
-        setHighlightEnabled(false)
-        setErrorSpecifying(false)
-        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-        setErrorDetails([]);
+        const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
+        const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+        setText(currentText => {
+          if (!currentText) return currentText;
+          return updateTokensColor(currentText, allPositions);
+        });
+
+        let messageHeader;
+        if (checkResult.testPlausibilityError.length > 0) {
+          messageHeader = "Oups, raté! Voilà les erreurs qu'il fallait trouver :";
+        } else {
+          messageHeader = "Oh non, il n'y avait rien à trouver ici";
+        }
+        setMessageContent(`${messageHeader}\n${correctSpecification}`);
+        setShowMessage(true);
         setSelectionStarted(false);
-        setShowMessage(false);
-        await fetchTextFromAPI();
-        setMessageContent("");
+        return;
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         setTimeout(() => {
@@ -273,12 +307,7 @@ const PlausibilityGameDetailedScreen = () => {
       const { id, ...rest } = errorDetail;
       // await createUsererrorDetails(rest);
     }
-    setErrorDetails([]);
-    setShowMessage(false);
-    setMessageContent("");
-    setErrorSpecifying(false);
-    setHighlightEnabled(false);
-    await fetchTextFromAPI();
+    goToNextSentence();
   };
 
 
@@ -295,7 +324,7 @@ const PlausibilityGameDetailedScreen = () => {
           <SafeAreaView>
 
             <View style={tw("flex-1 mb-2")}>
-              {text && <RenderText text={text} />}
+              {text && renderText(text)}
             </View>
             <View style={tw("mx-4 mt-2 mb-2")}>
               {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
@@ -361,6 +390,24 @@ const PlausibilityGameDetailedScreen = () => {
             }
 
           </View>
+
+          <View style={tw(' flex-col w-full bottom-0')}>
+            {showMessage &&
+              <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+                <View>
+                  <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+                </View>
+                <TouchableOpacity
+                  style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+                  onPress={goToNextSentence}
+                >
+                  <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
+                </TouchableOpacity>
+              </View>
+
+            }
+          </View>
+
         </SafeAreaView>
       ) : (
         // Boutons de plausibilité  
@@ -368,6 +415,7 @@ const PlausibilityGameDetailedScreen = () => {
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
             onPress={async () => {
               setIsModalVisible(true);
+              setUserRateSelected(0);
             }} >
             <Entypo name="cross" size={32} color="red" />
           </TouchableOpacity>
@@ -375,6 +423,7 @@ const PlausibilityGameDetailedScreen = () => {
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
             onPress={async () => {
               setIsModalVisible(true);
+              setUserRateSelected(25);
             }} >
             <Entypo name="flag" size={28} color="orange" />
           </TouchableOpacity>
@@ -382,12 +431,14 @@ const PlausibilityGameDetailedScreen = () => {
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
             onPress={() => {
               setIsModalVisible(true);
+              setUserRateSelected(50);
             }}  >
             <AntDesign name="question" size={30} color="orange" />
           </TouchableOpacity>
 
           <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
             onPress={async () => {
+              setUserRateSelected(75);
               setIsModalVisible(true);
             }} >
             <Ionicons name="checkmark" size={24} color="#48d1cc" />
@@ -395,6 +446,7 @@ const PlausibilityGameDetailedScreen = () => {
           <TouchableOpacity
             style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
             onPress={async () => {
+              setUserRateSelected(100);
               onNextCard();
             }}
           >

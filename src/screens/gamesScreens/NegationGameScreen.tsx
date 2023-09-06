@@ -99,8 +99,8 @@ const NegationGameScreen = ({ }) => {
   };
 
 
-
   const getSentenceColor = (sentenceId: number | null) => {
+    console.log(getSentenceColor);
     if (sentenceId === null) {
       return "bg-transparent";
     }
