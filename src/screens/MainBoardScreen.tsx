@@ -54,7 +54,7 @@ const MainBoardScreen = ({ }) => {
 
                     <Text
                         style={[
-                            tw("mb-8  text-center text-[#6BC900] font-BubblegumSans"),
+                            tw("mb-8  text-center text-[#32CD32] font-BubblegumSans"),
                             {
                                 position: 'absolute',
                                 top: '74%',
@@ -82,7 +82,7 @@ const MainBoardScreen = ({ }) => {
                             <Image source={require('images/map.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 90, minHeight: 90 }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("PlausibilityGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("TemporalLinkGame")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '50%' : '50%',
@@ -103,8 +103,8 @@ const MainBoardScreen = ({ }) => {
                         <TouchableOpacity onPress={() => navigation.navigate("HypothesisGame")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '25%' : '20%',
-                                left: windowWidth > 768 ? '56%' : '56%',
+                                top: windowWidth > 768 ? '27%' : '27%',
+                                left: windowWidth > 768 ? '54%' : '54%',
                             }}>
                             <Image source={require('images/postit hypothese.png')}
                                 style={{
@@ -160,10 +160,9 @@ const MainBoardScreen = ({ }) => {
                                 shadowOffset: { width: -1, height: 2 },
                                 shadowOpacity: 0.5,
                                 shadowRadius: 1,
+                                transform: [{ rotate: '4deg' }]
                             }} />
                         </TouchableOpacity>
-
-
 
                         <TouchableOpacity onPress={() => navigation.navigate("NegationGame")}
                             style={{
@@ -177,45 +176,84 @@ const MainBoardScreen = ({ }) => {
                                 shadowOffset: { width: 1, height: 1 },
                                 shadowOpacity: 0.5,
                                 shadowRadius: 1,
+                                transform: [{ rotate: '-8deg' }]
                             }} />
                         </TouchableOpacity>
 
-                        <View
-                            style={[tw("flex-row"), {
-                                position: 'absolute',
-                                top: windowWidth > 768 ? '25%' : '25%',
-                                left: windowWidth > 768 ? '16%' : '16%',
-                            }]}>
-                            <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mt-2')}
-                            >
-                                <Image source={require('images/polaroid_character_3.png')} style={{
-                                    width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 50, minHeight: 50,
-                                    shadowColor: 'black',
-                                    shadowOffset: { width: 1, height: 1 },
-                                    shadowOpacity: 0.5,
-                                    shadowRadius: 1,
-                                }} />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mr-[-18px] ml-[-18px] z-10')}
-                            >
-                                <Image source={require('images/polaroid_character_2.png')} style={{
-                                    width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 50, minHeight: 50,
-                                    shadowColor: 'black',
-                                    shadowOffset: { width: 1, height: 1 },
-                                    shadowOpacity: 0.5,
-                                    shadowRadius: 1,
-                                }} />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mt-4')}>
-                                <Image source={require('images/polaroid_character_1.png')} style={{
-                                    width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 50, minHeight: 50,
-                                    shadowColor: 'black',
-                                    shadowOffset: { width: 1, height: 1 },
-                                    shadowOpacity: 0.5,
-                                    shadowRadius: 1,
-                                }} />
-                            </TouchableOpacity>
+                        <View style={{
+                            position: 'absolute',
+                            top: windowWidth > 768 ? '15%' : '15%',
+                            left: windowWidth > 768 ? '16%' : '16%',
+                        }}>
+                            <Image source={require('images/small postit month.png')} resizeMode="contain" style={{
+                                height: windowWidth * 0.04, minWidth: 40, minHeight: 40,
+                                shadowColor: 'black',
+                                shadowOffset: { width: 1, height: 1 },
+                                shadowOpacity: 0.5,
+                                shadowRadius: 1,
+
+                            }} />
+                            <View
+                                style={tw("flex-row")}>
+                                <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mt-2')}
+                                >
+                                    <Image source={require('images/polaroid_character_3.png')} style={{
+                                        width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 50, minHeight: 50,
+                                        shadowColor: 'black',
+                                        shadowOffset: { width: 1, height: 1 },
+                                        shadowOpacity: 0.5,
+                                        shadowRadius: 1,
+                                    }} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mr-[-18px] ml-[-18px] z-10')}
+                                >
+                                    <Image source={require('images/polaroid_character_2.png')} style={{
+                                        width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 50, minHeight: 50,
+                                        shadowColor: 'black',
+                                        shadowOffset: { width: 1, height: 1 },
+                                        shadowOpacity: 0.5,
+                                        shadowRadius: 1,
+                                    }} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mt-4')}>
+                                    <Image source={require('images/polaroid_character_1.png')} style={{
+                                        width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 50, minHeight: 50,
+                                        shadowColor: 'black',
+                                        shadowOffset: { width: 1, height: 1 },
+                                        shadowOpacity: 0.5,
+                                        shadowRadius: 1,
+                                    }} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
+
+                        <TouchableOpacity onPress={() => navigation.navigate("MainBoard")}
+                            style={{
+                                position: 'absolute',
+                                top: windowWidth > 768 ? '18%' : '18%',
+                                left: windowWidth > 768 ? '63%' : '63%',
+                                flexDirection: 'row',
+
+                            }}>
+                            <Image source={require('images/suspects/suspect_identification_1.png')} style={{
+                                width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 50, minHeight: 50,
+                                shadowColor: 'black',
+                                shadowOffset: { width: 1, height: 1 },
+                                shadowOpacity: 0.5,
+                                shadowRadius: 1,
+                                resizeMode: 'contain',
+                            }} />
+                            <Image source={require('images/suspects/suspect_identification_2.png')} style={{
+                                width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 50, minHeight: 50,
+                                shadowColor: 'black',
+                                shadowOffset: { width: 1, height: 1 },
+                                shadowOpacity: 0.5,
+                                shadowRadius: 1,
+                                resizeMode: 'contain',
+                                marginLeft: '-17%',
+                                marginTop: '8%'
+                            }} />
+                        </TouchableOpacity>
 
                     </View>
 
@@ -260,8 +298,8 @@ const MainBoardScreen = ({ }) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <Image source={require('images/icon_detective2.png')}
-                                style={{ width: windowWidth * 0.08, height: windowWidth * 0.08, resizeMode: 'contain', minWidth: 80, minHeight: 80 }} />
+                            <Image source={require('images/icon_profil.png')}
+                                style={{ width: windowWidth * 0.06, height: windowWidth * 0.06, resizeMode: 'contain', minWidth: 50, minHeight: 50 }} />
                         </View>
                     </TouchableOpacity>
                 }

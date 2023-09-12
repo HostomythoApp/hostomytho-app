@@ -1267,16 +1267,16 @@
 			"color": "rgb(0 128 0 / var(--tw-text-opacity))"
 		}
 	},
+	"text-[#32CD32]": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(50 205 50 / var(--tw-text-opacity))"
+		}
+	},
 	"text-[#48d1cc]": {
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(72 209 204 / var(--tw-text-opacity))"
-		}
-	},
-	"text-[#6BC900]": {
-		"style": {
-			"--tw-text-opacity": 1,
-			"color": "rgb(107 201 0 / var(--tw-text-opacity))"
 		}
 	},
 	"text-[#B22222]": {

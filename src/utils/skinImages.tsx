@@ -71,7 +71,6 @@ export default {
 
 
     // Pilosité
-    // TODO Revoir image pour mettre cheveux derrière la barbe
     "pilosity_1": require("images/character/pilosity_1.png"),
     "pilosity_man_1": require("images/character/pilosity_man_1.png"),
     "pilosity_man_2": require("images/character/pilosity_man_2.png"),

@@ -91,9 +91,7 @@ const TemporalLinkGameScreen = () => {
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("")}>
         <CustomHeaderInGame title="Définir les liens temporels" />
-        <View style={tw("flex-row justify-end mb-2")}>
-          <FunctionButton text={"Phrase suivante"} func={nextSentence} />
-        </View>
+
 
         <View style={tw("m-4 p-2 bg-gray-100 rounded flex-row flex-wrap mb-6")}>
           {sentenceSegments.map((segment, index) => (
@@ -157,7 +155,9 @@ const TemporalLinkGameScreen = () => {
             </TouchableOpacity>
           ))}
         </View>
-
+        <View style={tw("flex-row justify-end mb-2 mt-8")}>
+          <FunctionButton text={"Phrase suivante"} func={nextSentence} />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

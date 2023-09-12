@@ -1,3 +1,4 @@
+// Ca ne marche pas, j'ai des erreurs. React native n'aime pas les url d'image dynamiques, c'est pourquoi j'avais créé et utilisé le composant getIconComponent:
 import {
   FontAwesome5,
   FontAwesome,

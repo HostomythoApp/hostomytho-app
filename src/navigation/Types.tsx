@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 export type RootStackParamList = {
     Main: undefined;
     Profile: undefined;
-    TemporalLinkGameScreen: undefined;
+    TemporalLinkGame: undefined;
     PlausibilityGame: undefined;
     TemporalEntityScreen: undefined;
     Connected: undefined;
