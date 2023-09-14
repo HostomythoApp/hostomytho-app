@@ -62,6 +62,11 @@ export const checkUserSelectionPlausibility = async (
     correctPlausibility?: number,
     testPlausibilityPassed? : boolean,
 }> => {
+    console.log("userErrorDetails");
+    console.log(userErrorDetails);
+    console.log("userRateSelected");
+    console.log(userRateSelected);
+    
     try {
         const testPlausibilityError = await getTestPlausibilityErrorByTextId(textId);
         const textPlausibility = await getCorrectPlausibilityByTextId(textId);
@@ -108,6 +113,11 @@ export const checkUserSelectionPlausibility = async (
             }
         );
         const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
+            console.log("textPlausibility");
+            console.log(textPlausibility);
+            
+        console.log("isPlausibilityCorrect");
+        console.log(isPlausibilityCorrect);
 
         const testPlausibilityPassed = isErrorDetailsCorrect && isPlausibilityCorrect;
 

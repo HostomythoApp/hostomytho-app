@@ -85,7 +85,7 @@ const MainBoardScreen = ({ }) => {
                         <TouchableOpacity onPress={() => navigation.navigate("TemporalLinkGame")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '50%' : '50%',
+                                top: windowWidth > 768 ? '54%' : '54%',
                                 left: windowWidth > 768 ? '21%' : '21%',
                             }}>
                             <Image source={require('images/article.png')}
@@ -182,7 +182,7 @@ const MainBoardScreen = ({ }) => {
 
                         <View style={{
                             position: 'absolute',
-                            top: windowWidth > 768 ? '15%' : '15%',
+                            top: windowWidth > 768 ? '18%' : '18%',
                             left: windowWidth > 768 ? '16%' : '16%',
                         }}>
                             <Image source={require('images/small postit month.png')} resizeMode="contain" style={{
@@ -230,7 +230,7 @@ const MainBoardScreen = ({ }) => {
                         <TouchableOpacity onPress={() => navigation.navigate("MainBoard")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '18%' : '18%',
+                                top: windowWidth > 768 ? '20%' : '20%',
                                 left: windowWidth > 768 ? '63%' : '63%',
                                 flexDirection: 'row',
 

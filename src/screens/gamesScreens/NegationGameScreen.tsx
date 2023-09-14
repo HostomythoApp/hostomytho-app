@@ -266,7 +266,7 @@ const NegationGameScreen = ({ }) => {
 
   return (
     <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
-      <SafeAreaView style={tw("flex-1 ")}>
+      <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
           <CustomHeaderInGame title="Trouver les négations" backgroundColor="bg-whiteTransparent" />
           {errorMessage && (

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState, FC } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Dimensions } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Dimensions, ImageBackground } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useUser } from 'services/context/UserContext';
@@ -224,7 +224,7 @@ const PlausibilityGameDetailedScreen = () => {
     if (!text) return null;
 
     return (
-      <SafeAreaView style={tw("flex-1 bg-white")}>
+      <SafeAreaView style={tw("flex-1")}>
         <View
           style={[
             tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4 lg:mt-8 xl:mt-12"),
@@ -245,6 +245,7 @@ const PlausibilityGameDetailedScreen = () => {
           </View>
         </View>
       </SafeAreaView>
+
     );
   };
 
@@ -273,22 +274,29 @@ const PlausibilityGameDetailedScreen = () => {
       const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails, userRateSelected);
       console.log(checkResult);
 
-      if (!checkResult.isValid) {
-        const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
-        const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
-        setText(currentText => {
-          if (!currentText) return currentText;
-          return updateTokensColor(currentText, allPositions);
-        });
+      if (!checkResult.testPlausibilityPassed) {
 
+        // const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
+        // const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+        // setText(currentText => {
+        //   if (!currentText) return currentText;
+        //   return updateTokensColor(currentText, allPositions);
+        // });
+
+        // let messageHeader;
+        // if (checkResult.testPlausibilityError.length > 0) {
+        //   messageHeader = "Oups, raté! Voilà les erreurs qu'il fallait trouver :";
+        // } else {
+        //   messageHeader = "Oh non, il n'y avait rien à trouver ici";
+        // }
+        // setMessageContent(`${messageHeader}\n${correctSpecification}`);
         let messageHeader;
-        if (checkResult.testPlausibilityError.length > 0) {
-          messageHeader = "Oups, raté! Voilà les erreurs qu'il fallait trouver :";
-        } else {
-          messageHeader = "Oh non, il n'y avait rien à trouver ici";
-        }
-        setMessageContent(`${messageHeader}\n${correctSpecification}`);
+        messageHeader = "Hmm la plausibilité de ce texte était plutôt de " + checkResult.correctPlausibility;
+
+        setMessageContent(`${messageHeader}`);
         setShowMessage(true);
+        console.log("showMessage");
+        console.log(showMessage);
         setSelectionStarted(false);
         return;
       } else {
@@ -312,150 +320,152 @@ const PlausibilityGameDetailedScreen = () => {
 
 
   return (
-    <SafeAreaView style={tw("flex-1 bg-white")}>
-      <ScrollView ref={scrollViewRef}>
-        <CustomHeaderInGame title="Plausibilité de textes" />
-
-        {noMoreTexts ? (
-          <View style={tw('items-center justify-center mt-4')}>
-            <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>
-          </View>
-        ) : (
-          <SafeAreaView>
-
-            <View style={tw("flex-1 mb-2")}>
-              {text && renderText(text)}
+    <ImageBackground source={require('images/bg_corridor_dark.png')} style={tw('flex-1')}>
+      <SafeAreaView style={tw("flex-1")}>
+        <ScrollView ref={scrollViewRef}>
+          <CustomHeaderInGame title="Plausibilité de textes" backgroundColor="bg-whiteTransparent" />
+          {noMoreTexts ? (
+            <View style={tw('items-center justify-center mt-4')}>
+              <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>
             </View>
-            <View style={tw("mx-4 mt-2 mb-2")}>
-              {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
+          ) : (
+            <SafeAreaView>
+
+              <View style={tw("flex-1 mb-2")}>
+                {text && renderText(text)}
+              </View>
+              <View style={tw("mx-4 mt-2 mb-2")}>
+                {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
+                )}
+              </View>
+
+            </SafeAreaView>
+          )}
+        </ScrollView>
+
+        <ModalPlausibilityGameDetailed
+          isVisible={isModalVisible}
+          closeModal={() => setIsModalVisible(false)}
+          setIsModalVisible={setIsModalVisible}
+          setHighlightEnabled={setHighlightEnabled}
+        />
+
+        {errorSpecifying ? (
+          <SafeAreaView>
+            <View style={tw('absolute bottom-3 left-4 flex-col')}>
+              {errorDetails.length > 0 && (
+                <TouchableOpacity
+                  style={[
+                    tw('w-8  bg-blue-500 rounded-full justify-center items-center'),
+                  ]}
+                  onPress={() => {
+                    scrollViewRef.current?.scrollToEnd({ animated: true });
+                  }}
+                >
+                  <MaterialIcons name="arrow-downward" size={25} color="white" />
+                </TouchableOpacity>
               )}
             </View>
 
-          </SafeAreaView>
-        )}
-      </ScrollView>
-
-      <ModalPlausibilityGameDetailed
-        isVisible={isModalVisible}
-        closeModal={() => setIsModalVisible(false)}
-        setIsModalVisible={setIsModalVisible}
-        setHighlightEnabled={setHighlightEnabled}
-      />
-
-      {errorSpecifying ? (
-        <SafeAreaView>
-          <View style={tw('absolute bottom-3 left-4 flex-col')}>
-            {errorDetails.length > 0 && (
-              <TouchableOpacity
-                style={[
-                  tw('w-8  bg-blue-500 rounded-full justify-center items-center'),
-                ]}
-                onPress={() => {
-                  scrollViewRef.current?.scrollToEnd({ animated: true });
-                }}
-              >
-                <MaterialIcons name="arrow-downward" size={25} color="white" />
-              </TouchableOpacity>
-            )}
-          </View>
-
-          <View style={tw('absolute bottom-3 right-4 flex-col w-52')}>
-            {isSelectionStarted &&
-              <TouchableOpacity
-                key={"add"}
-                style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 mb-1 ${isSelectionStarted ? 'bg-blue-500' : 'bg-blue-50'}`)}
-                onPress={() => {
-                  addErrorDetail();
-                }}
-                disabled={!isSelectionStarted}
-              >
-                <MaterialIcons name="add" size={22} color="white" />
-                <Text style={tw("text-white font-primary text-lg")}>Valider la sélection</Text>
-              </TouchableOpacity>
-            }
-
-            {!showMessage &&
-              <TouchableOpacity
-                key={"next"}
-                style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 ${errorDetails.length > 0 ? 'bg-primary' : 'bg-green-200'}`)}
-                disabled={errorDetails.length === 0}
-                onPress={onNextCard}
-              >
-                <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
-
-                <View style={tw(`rounded-full h-6 w-6 flex items-center justify-center ml-2 ${errorDetails.length > 0 ? 'bg-primaryLighter' : 'bg-green-100'}`)}>
-                  <Text style={tw('text-white font-bold')}>{errorDetails.length}</Text>
-                </View>
-              </TouchableOpacity>
-            }
-
-          </View>
-
-          <View style={tw(' flex-col w-full bottom-0')}>
-            {showMessage &&
-              <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
-                <View>
-                  <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
-                </View>
+            <View style={tw('absolute bottom-3 right-4 flex-col w-52')}>
+              {isSelectionStarted &&
                 <TouchableOpacity
-                  style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
-                  onPress={goToNextSentence}
+                  key={"add"}
+                  style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 mb-1 ${isSelectionStarted ? 'bg-blue-500' : 'bg-blue-50'}`)}
+                  onPress={() => {
+                    addErrorDetail();
+                  }}
+                  disabled={!isSelectionStarted}
                 >
-                  <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
+                  <MaterialIcons name="add" size={22} color="white" />
+                  <Text style={tw("text-white font-primary text-lg")}>Valider la sélection</Text>
                 </TouchableOpacity>
-              </View>
+              }
 
-            }
+              {!showMessage &&
+                <TouchableOpacity
+                  key={"next"}
+                  style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 ${errorDetails.length > 0 ? 'bg-primary' : 'bg-green-200'}`)}
+                  disabled={errorDetails.length === 0}
+                  onPress={onNextCard}
+                >
+                  <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+
+                  <View style={tw(`rounded-full h-6 w-6 flex items-center justify-center ml-2 ${errorDetails.length > 0 ? 'bg-primaryLighter' : 'bg-green-100'}`)}>
+                    <Text style={tw('text-white font-bold')}>{errorDetails.length}</Text>
+                  </View>
+                </TouchableOpacity>
+              }
+
+            </View>
+
+            <View style={tw(' flex-col w-full bottom-0')}>
+              {showMessage &&
+                <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+                  <View>
+                    <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+                    onPress={goToNextSentence}
+                  >
+                    <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
+                  </TouchableOpacity>
+                </View>
+
+              }
+            </View>
+
+          </SafeAreaView>
+        ) : (
+          // Boutons de plausibilité  
+          < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
+            <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
+              onPress={async () => {
+                setIsModalVisible(true);
+                setUserRateSelected(0);
+              }} >
+              <Entypo name="cross" size={32} color="red" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
+              onPress={async () => {
+                setIsModalVisible(true);
+                setUserRateSelected(25);
+              }} >
+              <Entypo name="flag" size={28} color="orange" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
+              onPress={() => {
+                setIsModalVisible(true);
+                setUserRateSelected(50);
+              }}  >
+              <AntDesign name="question" size={30} color="orange" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
+              onPress={async () => {
+                setUserRateSelected(75);
+                setIsModalVisible(true);
+              }} >
+              <Ionicons name="checkmark" size={24} color="#48d1cc" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
+              onPress={async () => {
+                setUserRateSelected(100);
+                onNextCard();
+              }}
+            >
+              <Ionicons name="checkmark-done-sharp" size={24} color="green" />
+            </TouchableOpacity>
           </View>
+        )}
 
-        </SafeAreaView>
-      ) : (
-        // Boutons de plausibilité  
-        < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
-            onPress={async () => {
-              setIsModalVisible(true);
-              setUserRateSelected(0);
-            }} >
-            <Entypo name="cross" size={32} color="red" />
-          </TouchableOpacity>
+      </SafeAreaView >
+    </ImageBackground>
 
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
-            onPress={async () => {
-              setIsModalVisible(true);
-              setUserRateSelected(25);
-            }} >
-            <Entypo name="flag" size={28} color="orange" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
-            onPress={() => {
-              setIsModalVisible(true);
-              setUserRateSelected(50);
-            }}  >
-            <AntDesign name="question" size={30} color="orange" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
-            onPress={async () => {
-              setUserRateSelected(75);
-              setIsModalVisible(true);
-            }} >
-            <Ionicons name="checkmark" size={24} color="#48d1cc" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
-            onPress={async () => {
-              setUserRateSelected(100);
-              onNextCard();
-            }}
-          >
-            <Ionicons name="checkmark-done-sharp" size={24} color="green" />
-          </TouchableOpacity>
-        </View>
-      )}
-
-    </SafeAreaView >
   );
 };
 
