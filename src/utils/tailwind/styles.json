@@ -335,6 +335,11 @@
 			"marginTop": "auto"
 		}
 	},
+	"mt-7": {
+		"style": {
+			"marginTop": 28
+		}
+	},
 	"flex": {
 		"style": {
 			"display": "flex"

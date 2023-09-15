@@ -63,7 +63,7 @@ const ContentProfileScreen = (props: any) => {
     return (
         <View style={[tw('w-full mt-4 px-2 max-w-5xl'), isMobile ? tw('pt-2') : tw('pt-6')]}>
             <View style={tw('flex-row justify-center')}>
-                <View style={[tw('mt-4'), isMobile ? tw('w-4/5') : tw('w-3/5')]}>
+                <View style={[tw('mt-7'), isMobile ? tw('w-4/5') : tw('w-3/5')]}>
                     <Text style={[tw('font-bold mb-6 text-center text-[whitesmoke] font-MochiyPopOne'), isMobile ? tw('text-3xl') : tw(' text-5xl leading-10')]}>{user?.username}</Text>
 
                     <Text style={tw('text-lg mb-4 text-center text-white font-primary')}>Points: {user?.points}</Text>

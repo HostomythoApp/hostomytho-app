@@ -22,6 +22,7 @@ export default function AchievementModal({ isVisible, onClose, achievement }: { 
         modal: {
             alignItems: 'center',
             justifyContent: 'flex-start',
+            margin: 0,
         },
         content: {
             backgroundColor: 'white',
@@ -74,6 +75,7 @@ export default function AchievementModal({ isVisible, onClose, achievement }: { 
             coverScreen={false}
             deviceHeight={Dimensions.get('screen').height}
             statusBarTranslucent
+            
         >
             <View style={styles.content}>
                 <Text style={styles.title}>Haut fait débloqué</Text>
