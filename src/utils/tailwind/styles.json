@@ -1158,11 +1158,6 @@
 			"textAlign": "center"
 		}
 	},
-	"font-BubblegumSans": {
-		"style": {
-			"fontFamily": "BubblegumSans"
-		}
-	},
 	"font-MochiyPopOne": {
 		"style": {
 			"fontFamily": "MochiyPopOne"
@@ -1265,12 +1260,6 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(0 128 0 / var(--tw-text-opacity))"
-		}
-	},
-	"text-[#32CD32]": {
-		"style": {
-			"--tw-text-opacity": 1,
-			"color": "rgb(50 205 50 / var(--tw-text-opacity))"
 		}
 	},
 	"text-[#48d1cc]": {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 import { useTailwind } from "tailwind-rn";
 import AchievementIcon from 'components/AchievementIcon';
@@ -63,18 +63,21 @@ export default function AchievementModal({ isVisible, onClose, achievement }: { 
         },
     });
 
-    // Utilisez ces styles dans votre composant
     return (
+
+
         <Modal
             isVisible={isVisible}
             onBackdropPress={onClose}
             backdropColor="transparent"
             style={styles.modal}
+            coverScreen={false}
+            deviceHeight={Dimensions.get('screen').height}
+            statusBarTranslucent
         >
             <View style={styles.content}>
                 <Text style={styles.title}>Haut fait débloqué</Text>
 
-                {/* Ajout du trait de séparation */}
                 <View style={styles.separator} />
 
                 <View style={styles.achievementRow}>

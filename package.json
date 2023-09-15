@@ -10,7 +10,8 @@
     "build:tailwind": "tailwindcss --input src/utils/tailwind/input.css --output src/utils/tailwind/tailwind.css --no-autoprefixer && tailwind-rn -i src/utils/tailwind/tailwind.css -o src/utils/tailwind/styles.json --color-output src/utils/tailwind/colors.json",
     "dev:tailwind:css": "tailwindcss --input src/utils/tailwind/input.css --output src/utils/tailwind/tailwind.css --no-autoprefixer --jit --watch",
     "dev:tailwind:rn": "tailwind-rn -i src/utils/tailwind/tailwind.css -o src/utils/tailwind/styles.json --color-output src/utils/tailwind/colors.json --watch",
-    "dev:tailwind": "npm-run-all --parallel dev:tailwind:*"
+    "dev:tailwind": "npm-run-all --parallel dev:tailwind:*",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
     "@expo/config-plugins": "^6.0.0",
