@@ -38,6 +38,22 @@ export const getTextWithTokens = async (userId: number, gameType: string): Promi
   }
 };
 
+export const getTextWithTokensById = async (textId: number): Promise<TextWithTokens> => {
+  try {
+    const response = await api.get(`/texts/getTextWithTokensById/${textId}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
 
 export const getTextById = async (id: number): Promise<Text[]> => {
   try {

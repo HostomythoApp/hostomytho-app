@@ -325,6 +325,11 @@
 			"marginTop": 24
 		}
 	},
+	"mt-7": {
+		"style": {
+			"marginTop": 28
+		}
+	},
 	"mt-8": {
 		"style": {
 			"marginTop": 32
@@ -333,11 +338,6 @@
 	"mt-auto": {
 		"style": {
 			"marginTop": "auto"
-		}
-	},
-	"mt-7": {
-		"style": {
-			"marginTop": 28
 		}
 	},
 	"flex": {

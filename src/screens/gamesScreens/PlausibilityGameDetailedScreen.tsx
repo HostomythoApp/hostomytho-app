@@ -7,7 +7,7 @@ import { Token } from "models/Token";
 import Modal from 'react-native-modal';
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import { ErrorDetail } from "models/ErrorDetail";
-import { getTextWithTokens } from "services/api/texts";
+import { getTextWithTokensById, getTextWithTokens } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 
@@ -200,7 +200,11 @@ const PlausibilityGameDetailedScreen = () => {
   const fetchTextFromAPI = async () => {
     try {
       if (user) {
-        const response = await getTextWithTokens(user?.id, 'plausibility');
+        // const response = await getTextWithTokens(user?.id, 'plausibility');
+        const response = await getTextWithTokensById(70);
+
+
+
         if (response === null || response.tokens.length === 0) {
           setNoMoreTexts(true);
           return;
@@ -272,51 +276,60 @@ const PlausibilityGameDetailedScreen = () => {
   const onNextCard = async () => {
     if (text?.is_plausibility_test) {
       const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails, userRateSelected);
-      console.log(checkResult);
+      const noErrorSpecified = errorDetails.length === 0;
+      let messageHeader = "";
 
-      if (!checkResult.testPlausibilityPassed) {
-
-        // const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
-        // const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
-        // setText(currentText => {
-        //   if (!currentText) return currentText;
-        //   return updateTokensColor(currentText, allPositions);
-        // });
-
-        // let messageHeader;
-        // if (checkResult.testPlausibilityError.length > 0) {
-        //   messageHeader = "Oups, raté! Voilà les erreurs qu'il fallait trouver :";
-        // } else {
-        //   messageHeader = "Oh non, il n'y avait rien à trouver ici";
-        // }
-        // setMessageContent(`${messageHeader}\n${correctSpecification}`);
-        let messageHeader;
-        messageHeader = "Hmm la plausibilité de ce texte était plutôt de " + checkResult.correctPlausibility;
-
-        setMessageContent(`${messageHeader}`);
-        setShowMessage(true);
-        console.log("showMessage");
-        console.log(showMessage);
-        setSelectionStarted(false);
-        return;
+      if (noErrorSpecified) {
+        if (checkResult.testPlausibilityPassed) {
+          // Plausibilité correcte, passer au texte suivant
+          goToNextSentence();
+          return;
+        } else {
+          messageHeader = `Hmm la plausibilité de ce texte était de ${checkResult.correctPlausibility}`;
+        }
       } else {
-        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-        setTimeout(() => {
-          incrementPoints(5);
-        }, 100);
+        const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
+
+        // Mettre à jour les couleurs des tokens, si nécessaire
+        const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+        setText(currentText => {
+          if (!currentText) return currentText;
+          return updateTokensColor(currentText, allPositions);
+        });
+
+        // Maintenant, vérifions les 4 cas quand des erreurs sont spécifiées
+        if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
+          messageHeader = `Vous avez bien identifié les zones de doute, mais la plausibilité de ce texte était de ${checkResult.correctPlausibility}`;
+        } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
+          messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nEt la bonne plausibilité était de ${checkResult.correctPlausibility}`;
+        } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
+          messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nPar contre, vous avez trouvé la bonne plausibilité!`;
+        } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
+          // Pas de message, passer au texte suivant
+          goToNextSentence();
+          return;
+        }
       }
+
+      setMessageContent(`${messageHeader}`);
+      setShowMessage(true);
+      setSelectionStarted(false);
+      return;
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       setTimeout(() => {
         incrementPoints(10);
       }, 100);
     }
+
     for (let errorDetail of errorDetails) {
       const { id, ...rest } = errorDetail;
       // await createUsererrorDetails(rest);
     }
     goToNextSentence();
   };
+
+
 
 
   return (
@@ -342,6 +355,7 @@ const PlausibilityGameDetailedScreen = () => {
             </SafeAreaView>
           )}
         </ScrollView>
+
 
         <ModalPlausibilityGameDetailed
           isVisible={isModalVisible}
@@ -396,75 +410,77 @@ const PlausibilityGameDetailedScreen = () => {
                   </View>
                 </TouchableOpacity>
               }
-
-            </View>
-
-            <View style={tw(' flex-col w-full bottom-0')}>
-              {showMessage &&
-                <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
-                  <View>
-                    <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
-                  </View>
-                  <TouchableOpacity
-                    style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
-                    onPress={goToNextSentence}
-                  >
-                    <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
-                  </TouchableOpacity>
-                </View>
-
-              }
             </View>
 
           </SafeAreaView>
         ) : (
-          // Boutons de plausibilité  
-          < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
-            <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
-              onPress={async () => {
-                setIsModalVisible(true);
-                setUserRateSelected(0);
-              }} >
-              <Entypo name="cross" size={32} color="red" />
-            </TouchableOpacity>
+          <>
+            {!showMessage &&
 
-            <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
-              onPress={async () => {
-                setIsModalVisible(true);
-                setUserRateSelected(25);
-              }} >
-              <Entypo name="flag" size={28} color="orange" />
-            </TouchableOpacity>
 
-            <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
-              onPress={() => {
-                setIsModalVisible(true);
-                setUserRateSelected(50);
-              }}  >
-              <AntDesign name="question" size={30} color="orange" />
-            </TouchableOpacity>
+              // Boutons de plausibilité  
+              < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
+                <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
+                  onPress={async () => {
+                    setIsModalVisible(true);
+                    setUserRateSelected(0);
+                  }} >
+                  <Entypo name="cross" size={32} color="red" />
+                </TouchableOpacity>
 
-            <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
-              onPress={async () => {
-                setUserRateSelected(75);
-                setIsModalVisible(true);
-              }} >
-              <Ionicons name="checkmark" size={24} color="#48d1cc" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
-              onPress={async () => {
-                setUserRateSelected(100);
-                onNextCard();
-              }}
-            >
-              <Ionicons name="checkmark-done-sharp" size={24} color="green" />
-            </TouchableOpacity>
-          </View>
+                <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
+                  onPress={async () => {
+                    setIsModalVisible(true);
+                    setUserRateSelected(25);
+                  }} >
+                  <Entypo name="flag" size={28} color="orange" />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
+                  onPress={() => {
+                    setIsModalVisible(true);
+                    setUserRateSelected(50);
+                  }}  >
+                  <AntDesign name="question" size={30} color="orange" />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
+                  onPress={async () => {
+                    setUserRateSelected(75);
+                    setIsModalVisible(true);
+                  }} >
+                  <Ionicons name="checkmark" size={24} color="#48d1cc" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
+                  onPress={async () => {
+                    setUserRateSelected(100);
+                    onNextCard();
+                  }}
+                >
+                  <Ionicons name="checkmark-done-sharp" size={24} color="green" />
+                </TouchableOpacity>
+              </View>
+            }
+          </>
         )}
-
+        {showMessage &&
+          <View style={tw(' flex-col w-full bottom-0')} >
+            <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+              <View>
+                <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+              </View>
+              <TouchableOpacity
+                style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+                onPress={goToNextSentence}
+              >
+                <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        }
       </SafeAreaView >
-    </ImageBackground>
+    </ImageBackground >
 
   );
 };

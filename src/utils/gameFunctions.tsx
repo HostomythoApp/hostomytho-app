@@ -48,32 +48,36 @@ export const checkUserSelection = async (
     }
 };
 
-// TODO A revoir
 export const checkUserSelectionPlausibility = async (
     textId: number,
     userErrorDetails: ErrorDetail[],
     userRateSelected: number,
     errorMargin: number = 3,
     plausibilityMargin: number = 15,
-    tokenErrorMargin: number = 3,
+    tokenErrorMargin: number = 3
 ): Promise<{
     isValid: boolean,
     testPlausibilityError: TestPlausibilityError[],
     correctPlausibility?: number,
-    testPlausibilityPassed? : boolean,
+    testPlausibilityPassed?: boolean,
+    isErrorDetailsCorrect?: boolean,
 }> => {
-    console.log("userErrorDetails");
-    console.log(userErrorDetails);
-    console.log("userRateSelected");
-    console.log(userRateSelected);
-    
     try {
         const testPlausibilityError = await getTestPlausibilityErrorByTextId(textId);
         const textPlausibility = await getCorrectPlausibilityByTextId(textId);
+        const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
+
+        console.log("userErrorDetails");
+        console.log(userErrorDetails);
+
+
+        console.log("testPlausibilityError");
+        console.log(testPlausibilityError);
+
+
 
         // Cas 1: L'utilisateur n'a pas spécifié d'erreurs
         if (userErrorDetails.length === 0) {
-            const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
             return {
                 isValid: isPlausibilityCorrect,
                 testPlausibilityError: [],
@@ -82,10 +86,8 @@ export const checkUserSelectionPlausibility = async (
             };
         }
 
-        // Cas 2: Le texte n'a pas d'erreur enregistrée
-        if (!testPlausibilityError.length) {
-            const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
-            console.log(isPlausibilityCorrect);
+        // Cas 2: Le texte a une correction de plausibilité mais pas d'erreurs de correction
+        if (testPlausibilityError.length === 0) {
             return {
                 isValid: isPlausibilityCorrect,
                 testPlausibilityError: [],
@@ -95,38 +97,21 @@ export const checkUserSelectionPlausibility = async (
         }
 
         // Cas 3: L'utilisateur a spécifié des erreurs
-        const isErrorDetailsCorrect = userErrorDetails.every(
-            errorDetail => {
-                const userWordPositions = errorDetail.word_positions.split(',').map(pos => parseInt(pos));
-                const matchingTestSpec = testPlausibilityError.find(spec => {
-                    const testWordPositions = spec.word_positions.split(',').map(pos => parseInt(pos));
-                    const matchingPositions = testWordPositions.filter(testPos => {
-                        return userWordPositions.some(
-                            userPos => Math.abs(userPos - testPos) <= errorMargin
-                        );
-                    });
-
-                    const tokenDifference = Math.abs(testWordPositions.length - errorDetail.word_positions.length);
-                    return matchingPositions.length > 0 && tokenDifference <= tokenErrorMargin;
-                });
-                return !!matchingTestSpec;
-            }
-        );
-        const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
-            console.log("textPlausibility");
-            console.log(textPlausibility);
-            
-        console.log("isPlausibilityCorrect");
-        console.log(isPlausibilityCorrect);
+        const isErrorDetailsCorrect = areUserErrorsCorrect(userErrorDetails, testPlausibilityError, errorMargin, tokenErrorMargin);
+        console.log("isErrorDetailsCorrect");
+        console.log(isErrorDetailsCorrect);
 
         const testPlausibilityPassed = isErrorDetailsCorrect && isPlausibilityCorrect;
 
         return {
-            isValid: testPlausibilityPassed,
-            testPlausibilityError: testPlausibilityError,
+            isValid: isPlausibilityCorrect && isErrorDetailsCorrect,
+            testPlausibilityError,
             correctPlausibility: textPlausibility,
-            testPlausibilityPassed: testPlausibilityPassed,
+            testPlausibilityPassed: isPlausibilityCorrect,
+            isErrorDetailsCorrect 
         };
+        
+
     } catch (error) {
         console.error(error);
         console.log('Une erreur est survenue lors de la vérification de votre sélection.');
@@ -135,4 +120,34 @@ export const checkUserSelectionPlausibility = async (
             testPlausibilityError: [],
         };
     }
+};
+const areUserErrorsCorrect = (
+    userErrorDetails: ErrorDetail[],
+    testPlausibilityError: TestPlausibilityError[],
+    errorMargin: number,
+    tokenErrorMargin: number
+): boolean => {
+    return userErrorDetails.every(errorDetail => {
+        const userWordPositions = errorDetail.word_positions.split(',').map(pos => parseInt(pos));
+        const matchingTestSpec = testPlausibilityError.find(spec => {
+            const testWordPositions = spec.word_positions.split(',').map(pos => parseInt(pos));
+            return hasMatchingPositions(userWordPositions, testWordPositions, errorMargin, tokenErrorMargin);
+        });
+        return !!matchingTestSpec;
+    });
+};
+
+const hasMatchingPositions = (
+    userWordPositions: number[],
+    testWordPositions: number[],
+    errorMargin: number,
+    tokenErrorMargin: number
+): boolean => {
+    const matchingPositions = testWordPositions.filter(testPos => {
+        return userWordPositions.some(
+            userPos => Math.abs(userPos - testPos) <= errorMargin
+        );
+    });
+    const tokenDifference = Math.abs(testWordPositions.length - userWordPositions.length);
+    return matchingPositions.length > 0 && tokenDifference <= tokenErrorMargin;
 };
