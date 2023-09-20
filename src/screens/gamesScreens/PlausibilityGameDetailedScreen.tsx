@@ -277,9 +277,11 @@ const PlausibilityGameDetailedScreen = () => {
     if (text?.is_plausibility_test) {
       const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails, userRateSelected);
       const noErrorSpecified = errorDetails.length === 0;
+      const noErrorInDatabase = !checkResult.testPlausibilityError || checkResult.testPlausibilityError.length === 0;
+
       let messageHeader = "";
 
-      if (noErrorSpecified) {
+      if (noErrorSpecified || noErrorInDatabase) {
         if (checkResult.testPlausibilityPassed) {
           // Plausibilité correcte, passer au texte suivant
           goToNextSentence();
@@ -300,16 +302,20 @@ const PlausibilityGameDetailedScreen = () => {
         // Maintenant, vérifions les 4 cas quand des erreurs sont spécifiées
         if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = `Vous avez bien identifié les zones de doute, mais la plausibilité de ce texte était de ${checkResult.correctPlausibility}`;
+          animationGainPoints(5);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nEt la bonne plausibilité était de ${checkResult.correctPlausibility}`;
         } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
           messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nPar contre, vous avez trouvé la bonne plausibilité!`;
+          animationGainPoints(5);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
+          animationGainPoints(10);
           // Pas de message, passer au texte suivant
           goToNextSentence();
           return;
         }
       }
+      // TODO Il faut revoir les cas où l'utilisateur ne spécifie pas d'erreurs, et quand il n'y en a pas en bdd
 
       setMessageContent(`${messageHeader}`);
       setShowMessage(true);
@@ -317,9 +323,7 @@ const PlausibilityGameDetailedScreen = () => {
       return;
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      setTimeout(() => {
-        incrementPoints(10);
-      }, 100);
+      animationGainPoints(10);
     }
 
     for (let errorDetail of errorDetails) {
@@ -329,8 +333,14 @@ const PlausibilityGameDetailedScreen = () => {
     goToNextSentence();
   };
 
+  const animationGainPoints = (pointsEarned: number) => {
+    console.log("animationGainPoints");
 
-
+    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    setTimeout(() => {
+      incrementPoints(pointsEarned);
+    }, 100);
+  }
 
   return (
     <ImageBackground source={require('images/bg_corridor_dark.png')} style={tw('flex-1')}>

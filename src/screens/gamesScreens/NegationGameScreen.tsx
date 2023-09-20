@@ -70,7 +70,6 @@ const NegationGameScreen = ({ }) => {
   }, []);
 
 
-
   const addSentenceSpecification = () => {
     setSelectionStarted(false);
     if (!text) return;
@@ -130,7 +129,6 @@ const NegationGameScreen = ({ }) => {
     if (typeof text === "undefined") {
       return null;
     }
-
     return (
       <SafeAreaView style={tw("flex-1 ")}>
         <View
@@ -147,25 +145,42 @@ const NegationGameScreen = ({ }) => {
           ]}
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-            {text.tokens.map((token: any, idx: number) => (
-              <TouchableOpacity
-                key={idx}
-                onPress={showMessage ? undefined : () => onTokenPress(idx)}
-                style={tw(
-                  `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
-                )}
-              >
-                <Text
-                  style={[
-                    tw("text-2xl font-secondary text-gray-800"),
-                    token.color ? tw(token.color) : null
-                  ]}
-                >
-                  {token.content}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {text.tokens.map((token: any, idx: number) => {
+              const isPunctuation = token.is_punctuation;
 
+              if (isPunctuation) {
+                return (
+                  <Text
+                    key={idx}
+                    style={[
+                      tw("text-2xl font-secondary text-gray-800 p-[2px]"),
+                      token.color ? tw(token.color) : null,
+                    ]}
+                  >
+                    {token.content}
+                  </Text>
+                );
+              }
+
+              return (
+                <TouchableOpacity
+                  key={idx}
+                  onPress={showMessage ? undefined : () => onTokenPress(idx)}
+                  style={tw(
+                    `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
+                  )}
+                >
+                  <Text
+                    style={[
+                      tw("text-2xl font-secondary text-gray-800"),
+                      token.color ? tw(token.color) : null,
+                    ]}
+                  >
+                    {token.content}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
       </SafeAreaView>
@@ -319,7 +334,7 @@ const NegationGameScreen = ({ }) => {
           </TouchableOpacity>
         )}
 
-        <View style={tw(' flex-col w-full bottom-0')}>
+        <View style={tw('absolute flex-col w-full bottom-0')}>
           {showMessage &&
             <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
               <View>

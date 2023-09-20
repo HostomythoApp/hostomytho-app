@@ -122,13 +122,10 @@ const ConditionGameScreen = ({ }) => {
   }, [userSentenceSpecifications]);
 
 
-
   const renderText = (text: TextWithTokens) => {
-// TODO Ici ça rappelle le renderText à chaque clic sur un mot. Il faut corriger ça   
     if (typeof text === "undefined") {
       return null;
     }
-
     return (
       <SafeAreaView style={tw("flex-1 ")}>
         <View
@@ -145,30 +142,47 @@ const ConditionGameScreen = ({ }) => {
           ]}
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-            {text.tokens.map((token: any, idx: number) => (
-              <TouchableOpacity
-                key={idx}
-                onPress={showMessage ? undefined : () => onTokenPress(idx)}
-                style={tw(
-                  `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
-                )}
-              >
-                <Text style={[
-                  tw("text-2xl font-secondary text-gray-800"),
-                  token.color ? tw(token.color) : null
-                ]}>
-                  {token.content}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {text.tokens.map((token: any, idx: number) => {
+              const isPunctuation = token.is_punctuation;
 
+              if (isPunctuation) {
+                return (
+                  <Text
+                    key={idx}
+                    style={[
+                      tw("text-2xl font-secondary text-gray-800 p-[2px]"),
+                      token.color ? tw(token.color) : null,
+                    ]}
+                  >
+                    {token.content}
+                  </Text>
+                );
+              }
+
+              return (
+                <TouchableOpacity
+                  key={idx}
+                  onPress={showMessage ? undefined : () => onTokenPress(idx)}
+                  style={tw(
+                    `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
+                  )}
+                >
+                  <Text
+                    style={[
+                      tw("text-2xl font-secondary text-gray-800"),
+                      token.color ? tw(token.color) : null,
+                    ]}
+                  >
+                    {token.content}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
       </SafeAreaView>
     );
   };
-
-
 
   const renderUserSentenceSpecification = (sentenceSpecification: any) => (
     <View key={sentenceSpecification.id} style={tw(`flex-row items-center m-1 max-w-[400px] ml-10`)}>
