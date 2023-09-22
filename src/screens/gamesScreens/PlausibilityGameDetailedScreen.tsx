@@ -46,7 +46,7 @@ const PlausibilityGameDetailedScreen = () => {
   const [messageContent, setMessageContent] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [noMoreTexts, setNoMoreTexts] = useState(false);
-  const [userRateSelected, setUserRateSelected] = useState(0);
+  const [userRateSelected, setUserRateSelected] = useState(100);
 
   useEffect(() => {
     if (!text && user) {
@@ -83,6 +83,14 @@ const PlausibilityGameDetailedScreen = () => {
     );
   };
 
+  const plausibilityDescription = (value: any) => {
+    if (value === 0) return "très peu plausible";
+    if (value <= 25.00) return "peu plausible";
+    if (value <= 50.00) return "moyennement plausible";
+    if (value <= 75.00) return "plausible";
+    return "complètement plausible";
+  };
+  
   const addErrorDetail = () => {
     setSelectionStarted(false);
     if (!text) return;
@@ -201,7 +209,7 @@ const PlausibilityGameDetailedScreen = () => {
     try {
       if (user) {
         // const response = await getTextWithTokens(user?.id, 'plausibility');
-        const response = await getTextWithTokensById(70);
+        const response = await getTextWithTokensById(85);
 
 
 
@@ -270,6 +278,7 @@ const PlausibilityGameDetailedScreen = () => {
     setMessageContent("");
     setErrorSpecifying(false);
     setHighlightEnabled(false);
+    setUserRateSelected(100);
     await fetchTextFromAPI();
   };
 
@@ -283,39 +292,41 @@ const PlausibilityGameDetailedScreen = () => {
 
       if (noErrorSpecified || noErrorInDatabase) {
         if (checkResult.testPlausibilityPassed) {
-          // Plausibilité correcte, passer au texte suivant
+          // Si l'utilisateur a spécifié des erreurs mais que la base de données n'en contient pas, accorder 10 points pour la bonne plausibilité.
+          if (!noErrorSpecified && noErrorInDatabase) {
+            animationGainPoints(10);
+          } else {
+            animationGainPoints(5);
+          }
           goToNextSentence();
           return;
         } else {
-          messageHeader = `Hmm la plausibilité de ce texte était de ${checkResult.correctPlausibility}`;
+          messageHeader = `Hmm ce texte était plutôt ${plausibilityDescription(checkResult.correctPlausibility)}`;
         }
       } else {
         const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
 
-        // Mettre à jour les couleurs des tokens, si nécessaire
+        // Mettre à jour les couleurs des tokens
         const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
         setText(currentText => {
           if (!currentText) return currentText;
           return updateTokensColor(currentText, allPositions);
         });
 
-        // Maintenant, vérifions les 4 cas quand des erreurs sont spécifiées
         if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
-          messageHeader = `Vous avez bien identifié les zones de doute, mais la plausibilité de ce texte était de ${checkResult.correctPlausibility}`;
+          messageHeader = `Vous avez bien identifié les zones de doute, mais le texte était plutôt ${plausibilityDescription(checkResult.correctPlausibility)}`;
           animationGainPoints(5);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
-          messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nEt la bonne plausibilité était de ${checkResult.correctPlausibility}`;
+          messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nEt le texte était ${plausibilityDescription(checkResult.correctPlausibility)}`;
         } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
           messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nPar contre, vous avez trouvé la bonne plausibilité!`;
           animationGainPoints(5);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
           animationGainPoints(10);
-          // Pas de message, passer au texte suivant
           goToNextSentence();
           return;
         }
       }
-      // TODO Il faut revoir les cas où l'utilisateur ne spécifie pas d'erreurs, et quand il n'y en a pas en bdd
 
       setMessageContent(`${messageHeader}`);
       setShowMessage(true);
@@ -334,8 +345,6 @@ const PlausibilityGameDetailedScreen = () => {
   };
 
   const animationGainPoints = (pointsEarned: number) => {
-    console.log("animationGainPoints");
-
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     setTimeout(() => {
       incrementPoints(pointsEarned);

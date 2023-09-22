@@ -53,7 +53,7 @@ export const checkUserSelectionPlausibility = async (
     userErrorDetails: ErrorDetail[],
     userRateSelected: number,
     errorMargin: number = 3,
-    plausibilityMargin: number = 15,
+    plausibilityMargin: number = 25,
     tokenErrorMargin: number = 3
 ): Promise<{
     isValid: boolean,
@@ -66,15 +66,6 @@ export const checkUserSelectionPlausibility = async (
         const testPlausibilityError = await getTestPlausibilityErrorByTextId(textId);
         const textPlausibility = await getCorrectPlausibilityByTextId(textId);
         const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
-
-        console.log("userErrorDetails");
-        console.log(userErrorDetails);
-
-
-        console.log("testPlausibilityError");
-        console.log(testPlausibilityError);
-
-
 
         // Cas 1: L'utilisateur n'a pas spécifié d'erreurs
         if (userErrorDetails.length === 0) {
@@ -98,8 +89,6 @@ export const checkUserSelectionPlausibility = async (
 
         // Cas 3: L'utilisateur a spécifié des erreurs
         const isErrorDetailsCorrect = areUserErrorsCorrect(userErrorDetails, testPlausibilityError, errorMargin, tokenErrorMargin);
-        console.log("isErrorDetailsCorrect");
-        console.log(isErrorDetailsCorrect);
 
         const testPlausibilityPassed = isErrorDetailsCorrect && isPlausibilityCorrect;
 
@@ -121,6 +110,7 @@ export const checkUserSelectionPlausibility = async (
         };
     }
 };
+
 const areUserErrorsCorrect = (
     userErrorDetails: ErrorDetail[],
     testPlausibilityError: TestPlausibilityError[],
