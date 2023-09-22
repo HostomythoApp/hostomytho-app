@@ -485,6 +485,11 @@
 			"width": 128
 		}
 	},
+	"w-36": {
+		"style": {
+			"width": 144
+		}
+	},
 	"w-4/5": {
 		"style": {
 			"width": "80%"
@@ -630,6 +635,11 @@
 	"justify-evenly": {
 		"style": {
 			"justifyContent": "space-evenly"
+		}
+	},
+	"self-center": {
+		"style": {
+			"alignSelf": "center"
 		}
 	},
 	"overflow-hidden": {
@@ -978,11 +988,6 @@
 	"bg-opacity-70": {
 		"style": {
 			"--tw-bg-opacity": 0.7
-		}
-	},
-	"bg-opacity-95": {
-		"style": {
-			"--tw-bg-opacity": 0.95
 		}
 	},
 	"p-0": {

@@ -13,6 +13,7 @@ import { RootStackNavigationProp } from 'navigation/Types';
 import { useSkins } from 'services/context/SkinsContext';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
+import { characterImagesMapping } from 'utils/characterImagesMapping';
 
 interface Rank {
     id: number;
@@ -26,7 +27,10 @@ const ContentProfileScreen = (props: any) => {
     const { user, updateStorageUserFromAPI } = useUser();
     const [ranking, setRanking] = useState<Rank[]>([]);
     const navigation = useNavigation<RootStackNavigationProp<"Main">>();
-    const { equippedSkins, setEquippedSkins } = useSkins();
+    const { equippedSkins } = useSkins();
+
+    // @ts-ignore
+    const characterImage = characterImagesMapping[user?.gender || 'homme'][user?.color_skin || 'clear'];
 
     const stats = [
         { id: 1, title: 'Textes validés', count: 5 },
@@ -40,9 +44,6 @@ const ContentProfileScreen = (props: any) => {
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
-    const characterImage = user?.gender === 'homme'
-        ? require('images/character/man.png')
-        : require('images/character/woman.png');
 
     useEffect(() => {
         if (user?.id) {

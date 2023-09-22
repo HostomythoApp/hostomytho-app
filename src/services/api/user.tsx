@@ -30,8 +30,10 @@ export const signUpUser = async (user: Partial<User>) => {
       notifications_enabled: true,
     };
     return await api.post("/users/signup", { ...defaultValues, ...user });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    if (error.response && error.response.status !== 409) {
+      console.error(error);
+    }
     throw error;
   }
 };
@@ -42,8 +44,10 @@ export const signInUser = async (username: string, password: string) => {
       username,
       password,
     });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    if (error.response && error.response.status !== 404 && error.response.status !== 401  ) {
+      console.error(error);
+    }
     throw error;
   }
 };

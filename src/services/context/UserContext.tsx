@@ -11,6 +11,7 @@ interface User {
   status: string;
   email: string;
   gender: string;
+  color_skin: string;
 }
 
 interface UserContextProps {

@@ -8,7 +8,6 @@ const MainInput = ({
   hide,
   setter,
   value,
-  onSubmitEditing,
   isError,
   width = '80%',
   minWidth = 300,
@@ -35,7 +34,6 @@ const MainInput = ({
       secureTextEntry={hide}
       onChangeText={setter}
       value={value}
-      onSubmitEditing={onSubmitEditing}
     />
   );
 };

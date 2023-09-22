@@ -11,6 +11,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import ContentProfileScreen from 'screens/profilScreens/ContentProfileScreen';
 import SkinsManagementScreen from 'screens/profilScreens/SkinsManagementScreen';
 import { useSkins } from 'services/context/SkinsContext';
+import { characterImagesMapping } from 'utils/characterImagesMapping';
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
@@ -19,10 +20,10 @@ const ProfileScreen = (props: any) => {
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
     const [viewMode, setViewMode] = useState<'profile' | 'skinsManagement'>('profile');
-    const { equippedSkins, setEquippedSkins } = useSkins();
-    const characterImage = user?.gender === 'homme'
-        ? require('images/character/man.png')
-        : require('images/character/woman.png');
+    const { equippedSkins } = useSkins();
+
+    // @ts-ignore
+    const characterImage = characterImagesMapping[user?.gender || 'homme'][user?.color_skin || 'clear'];
 
     useEffect(() => {
         if (user?.id) {
@@ -33,7 +34,6 @@ const ProfileScreen = (props: any) => {
     const toggleViewMode = () => {
         setViewMode(viewMode === 'profile' ? 'skinsManagement' : 'profile');
     };
-
 
     return (
         <ImageBackground

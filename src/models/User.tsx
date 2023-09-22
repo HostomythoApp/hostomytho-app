@@ -9,6 +9,7 @@ export interface User {
     theme: string;
     notifications_enabled: boolean;
     gender: string;
+    color_skin: string;
     ranking?: number;
   }
   
