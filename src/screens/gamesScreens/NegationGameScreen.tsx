@@ -332,8 +332,8 @@ const NegationGameScreen = ({ }) => {
             <MaterialIcons name="arrow-downward" size={25} color="white" />
           </TouchableOpacity>
         )}
-        {/* TODO Augmenter marge, parce que quand trop de correction, ça cache le texte */}
-        <View style={tw('absolute flex-col w-full bottom-0')}>
+        
+        <View style={tw('flex-col w-full bottom-0')}>
           {showMessage &&
             <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
               <View>

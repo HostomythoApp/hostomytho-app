@@ -30,7 +30,7 @@ const CustomHeaderInGame: React.FC<Props> = ({
   const isMobile = window.width < 960;
   const [showExplosion, setShowExplosion] = useState(false);
   const fontSize = useSharedValue(16);
-  const animatedColor = useSharedValue(textColor);
+  const [animatedColor, setAnimatedColor] = useState(textColor);
 
   const animatedCommonStyle = useAnimatedStyle(() => {
     return {
@@ -48,7 +48,6 @@ const CustomHeaderInGame: React.FC<Props> = ({
       let currentPoints = displayPoints;
       setShowExplosion(true);
       fontSize.value = withSpring(18);
-      animatedColor.value = withSpring('green');
 
       const incrementPoints = () => {
         if (currentPoints < user.points) {
@@ -61,7 +60,6 @@ const CustomHeaderInGame: React.FC<Props> = ({
           clearInterval(intervalId);
           setShowExplosion(false);
           fontSize.value = withSpring(16);
-          animatedColor.value = textColor;
         }
       };
 
@@ -72,10 +70,20 @@ const CustomHeaderInGame: React.FC<Props> = ({
 
   }, [user?.points, textColor]);
 
+
+  useEffect(() => {
+    if (showExplosion) {
+      setAnimatedColor('green');
+    } else {
+      setAnimatedColor(textColor);
+    }
+  }, [showExplosion, textColor]);
+
+
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
       fontSize: fontSize.value,
-      color: animatedColor.value,
+      color: animatedColor,
       alignSelf: 'center'
     };
   });
@@ -83,15 +91,16 @@ const CustomHeaderInGame: React.FC<Props> = ({
   return (
     <View style={tw(`flex-row justify-between items-center ${backgroundColor} p-0`)}>
       <TouchableOpacity style={[tw('p-5'), isMobile ? tw('p-3') : tw('p-[18px]')]} onPress={() => navigation.goBack()}>
-        <Animated.View style={animatedCommonStyle}>
-          <Ionicons name="chevron-back" size={30} color={animatedColor.value} />
-        </Animated.View>
+        <View >
+          <Ionicons name="chevron-back" size={30} color={textColor} />
+        </View>
       </TouchableOpacity>
       <Text style={[tw(`font-primary text-center flex-grow font-bold text-${textColor}`), isMobile ? tw('text-xl') : tw('text-2xl')]}>{title}</Text>
       {user?.points !== undefined &&
         <Animated.View style={tw('flex-row items-center justify-center w-32')}>
           <Animated.View style={animatedCommonStyle}>
-            <MaterialIcons style={tw(`mr-1`)} name="person-search" size={16} color={animatedColor.value} />
+            <MaterialIcons style={tw(`mr-1`)} name="person-search" size={16} color={animatedColor} />
+
           </Animated.View>
           <Animated.Text style={[tw(`font-primary`), animatedTextStyle]}>{Math.round(displayPoints)} points</Animated.Text>
           {showExplosion && <Explosion x={0} y={0} />}
