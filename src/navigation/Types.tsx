@@ -20,6 +20,7 @@ export type RootStackParamList = {
     ForgetPassword: undefined;
     MainBoard: undefined;
     HypothesisGame: undefined;
+    ErrorTypeGame: undefined;
     TemporalEntity: undefined;
     PlausibilityGameDetailed: undefined;
     ConditionGame: undefined;

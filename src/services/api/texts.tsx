@@ -1,6 +1,7 @@
 import { Text } from "models/Text";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import api from "./index";
+import { TextWithError } from "interfaces/TextWithError";
 
 
 export const getAllTexts = async (): Promise<Text[]> => {
@@ -37,6 +38,23 @@ export const getTextWithTokens = async (userId: number, gameType: string): Promi
     throw error;
   }
 };
+
+export const getTextWithErrorValidated = async (userId: number): Promise<TextWithError> => {
+  try {
+    const response = await api.get(`/texts/getTextWithErrorValidated/${userId}/`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
 
 export const getTextWithTokensById = async (textId: number): Promise<TextWithTokens> => {
   try {

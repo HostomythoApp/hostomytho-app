@@ -208,10 +208,8 @@ const PlausibilityGameDetailedScreen = () => {
   const fetchTextFromAPI = async () => {
     try {
       if (user) {
-        // const response = await getTextWithTokens(user?.id, 'plausibility');
-        const response = await getTextWithTokensById(85);
-
-
+        const response = await getTextWithTokens(user?.id, 'plausibility');
+        // const response = await getTextWithTokensById(85);
 
         if (response === null || response.tokens.length === 0) {
           setNoMoreTexts(true);

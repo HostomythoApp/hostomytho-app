@@ -98,7 +98,7 @@ const MainBoardScreen = ({ }) => {
                                 }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("TemporalEntity")}
+                        <TouchableOpacity onPress={() => navigation.navigate("ErrorTypeGame")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '56%' : '56%',

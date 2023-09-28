@@ -19,6 +19,7 @@ import ManageUsersSreen from "screens/adminScreens/ManageUsersSreen";
 import AdminStatisticsScreen from "screens/adminScreens/AdminStatisticsScreen";
 import UserMessagingScreen from "screens/adminScreens/UserMessagingScreen";
 import HypothesisGameScreen from "screens/gamesScreens/HypothesisGameScreen";
+import ErrorTypeGameScreen from "screens/gamesScreens/ErrorTypeGameScreen";
 import ConditionGameScreen from "screens/gamesScreens/ConditionGameScreen";
 import NegationGameScreen from "screens/gamesScreens/NegationGameScreen";
 import AchievementsScreen from "screens/profilScreens/AchievementsScreen";
@@ -84,6 +85,8 @@ const StackNavigator = ({ }) => {
         <Stack.Screen name="ConditionGame" component={ConditionGameScreen} />
 
         <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
+
+        <Stack.Screen name="ErrorTypeGame" component={ErrorTypeGameScreen} />
 
         <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
 
