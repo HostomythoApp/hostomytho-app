@@ -7,66 +7,95 @@ import { getTextWithErrorValidated } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
 import { getTypesError } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
+import { MaterialIcons } from '@expo/vector-icons';
 
 const ErrorTypeGameScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithError>();
   const [errorTypes, setErrorTypes] = useState<ErrorType[]>([]);
   const { user } = useUser();
+  const [selectedErrorTypes, setSelectedErrorTypes] = useState<number[]>([]);
+
+  const fetchData = async () => {
+    try {
+      if (user) {
+        const response = await getTextWithErrorValidated(user?.id);
+        setText(response);
+
+        const responseTypeError = await getTypesError();
+        setErrorTypes(responseTypeError);
+        setSelectedErrorTypes([]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (user) {
-          const response = await getTextWithErrorValidated(user?.id);
-          setText(response);
-          console.log("getTextWithErrorValidated");
-
-          const responseTypeError = await getTypesError();
-          setErrorTypes(responseTypeError);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
     fetchData();
   }, [user]);
 
+
   const renderErrorTypeButtons = () => {
-    return errorTypes.map((errorType) => (
-      <TouchableOpacity
-        key={errorType.id}
-        style={tw("bg-blue-500 m-2 p-2 rounded-full")}
-        onPress={() => onTypeErrorPress(errorType)}
-      >
-        <Text style={tw("text-white text-base")}>{errorType.name}</Text>
-      </TouchableOpacity>
-    ));
+    return errorTypes.map((errorType) => {
+      const isSelected = selectedErrorTypes.includes(errorType.id);
+      return (
+        <TouchableOpacity
+          key={errorType.id}
+          style={[
+            tw("m-2 p-2 rounded-full border border-[#5077BE] text-center"),
+            {
+              backgroundColor: isSelected ? '#5077BE' : 'white',
+              minWidth: '150px',
+            }
+          ]}
+          onPress={() => onTypeErrorPress(errorType)}
+        >
+          <Text style={[
+            tw("text-base font-primary"),
+            isSelected ? tw("text-white") : tw("text-[#5077BE]")
+          ]}>
+            {errorType.name}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
   };
 
   const onTypeErrorPress = (errorType: ErrorType) => {
-    // TODO: handle error type selection
+    if (selectedErrorTypes.includes(errorType.id)) {
+      setSelectedErrorTypes(prevState => prevState.filter(id => id !== errorType.id));
+    } else {
+      setSelectedErrorTypes(prevState => [...prevState, errorType.id]);
+    }
   };
 
   const renderText = () => {
-    console.log(text);
 
     if (typeof text === "undefined") {
       return null;
     }
     const errorPositions = text.positionErrorTokens.split(", ").map(Number);
     return (
-      <View style={tw("flex-row flex-wrap")}>
+      <View style={[
+        tw("bg-gray-100 p-6 m-4 rounded-xl flex-row flex-wrap "),
+        {
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          shadowColor: 'black',
+          shadowOffset: { width: -2.6, height: 3 },
+          shadowOpacity: 0.6,
+          shadowRadius: 5,
+        }
+      ]}>
         {text && text.tokens.map((token, idx) => (
-
           <Text
             key={idx}
             style={[
-              tw("text-xl"),
+              tw("text-xl font-primary p-[2px]"),
               errorPositions.includes(token.position) && tw("bg-red-200")
             ]}
           >
-            {token.content + (token.is_punctuation ? "" : " ")}
+            {token.content}
           </Text>
         ))}
       </View>
@@ -77,18 +106,25 @@ const ErrorTypeGameScreen = ({ }) => {
     <ImageBackground source={require('images/bg_corridor_dark.png')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView >
-          <CustomHeaderInGame title="Spécification des types d'erreurs" backgroundColor="bg-whiteTransparent" />
-          <View style={tw("flex-1 p-4 justify-center items-center")}>
-            {text && renderText()}
-          </View>
-          <View style={tw("flex-wrap flex-row justify-around mb-4")}>
+          <CustomHeaderInGame title="Spécifiez le ou les types de l'erreur surlignée" backgroundColor="bg-whiteTransparent" />
+          <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>
             {renderErrorTypeButtons()}
           </View>
+          <View style={tw("flex-1 p-4 pt-0 justify-center items-center")}>
+            {text && renderText()}
+          </View>
         </ScrollView>
+
+        <View style={tw('absolute bottom-3 right-4 flex-col w-auto')}>
+          <TouchableOpacity style={tw("bg-primary p-3 flex-row items-center justify-center rounded-full")} onPress={fetchData}>
+            <Text style={tw("text-white text-lg font-primary")}>Erreur suivante</Text>
+            <MaterialIcons name="navigate-next" size={24} color={'white'} />
+          </TouchableOpacity>
+        </View>
+
       </SafeAreaView >
     </ImageBackground >
   );
-
 };
 
 export default ErrorTypeGameScreen;
