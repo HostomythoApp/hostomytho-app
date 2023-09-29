@@ -15,6 +15,8 @@ const ErrorTypeGameScreen = ({ }) => {
   const [errorTypes, setErrorTypes] = useState<ErrorType[]>([]);
   const { user } = useUser();
   const [selectedErrorTypes, setSelectedErrorTypes] = useState<number[]>([]);
+  const isNextButtonDisabled = selectedErrorTypes.length === 0;
+  const { incrementPoints } = useUser();
 
   const fetchData = async () => {
     try {
@@ -34,6 +36,20 @@ const ErrorTypeGameScreen = ({ }) => {
   useEffect(() => {
     fetchData();
   }, [user]);
+
+  const handleNextError = () => {
+    const isOtherSelected = selectedErrorTypes.some(errorTypeId => {
+      const errorType = errorTypes.find(et => et.id === errorTypeId);
+      return errorType?.name === "Autre";
+    });
+
+    if (isOtherSelected && selectedErrorTypes.length === 1) {
+    } else if (selectedErrorTypes.length > 0) {
+      incrementPoints(2);
+    }
+
+    fetchData();
+  };
 
 
   const renderErrorTypeButtons = () => {
@@ -80,7 +96,7 @@ const ErrorTypeGameScreen = ({ }) => {
       <View style={[
         tw("bg-gray-100 p-6 m-4 rounded-xl flex-row flex-wrap "),
         {
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
           shadowColor: 'black',
           shadowOffset: { width: -2.6, height: 3 },
           shadowOpacity: 0.6,
@@ -115,12 +131,17 @@ const ErrorTypeGameScreen = ({ }) => {
           </View>
         </ScrollView>
 
-        <View style={tw('absolute bottom-3 right-4 flex-col w-auto')}>
-          <TouchableOpacity style={tw("bg-primary p-3 flex-row items-center justify-center rounded-full")} onPress={fetchData}>
-            <Text style={tw("text-white text-lg font-primary")}>Erreur suivante</Text>
-            <MaterialIcons name="navigate-next" size={24} color={'white'} />
-          </TouchableOpacity>
-        </View>
+        {!isNextButtonDisabled && (
+          <View style={tw('absolute bottom-3 right-4 flex-col w-auto')}>
+            <TouchableOpacity
+              style={tw("bg-primary p-3 flex-row items-center justify-center rounded-full")}
+              onPress={handleNextError}
+            >
+              <Text style={tw("text-white text-lg font-primary")}>Erreur suivante</Text>
+              <MaterialIcons name="navigate-next" size={24} color={'white'} />
+            </TouchableOpacity>
+          </View>
+        )}
 
       </SafeAreaView >
     </ImageBackground >
