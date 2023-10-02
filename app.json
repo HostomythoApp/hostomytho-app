@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./src/assets/images/icon.png",
-    "userInterfaceStyle": "light",
+    // "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
@@ -16,13 +16,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "userInterfaceStyle": "light",
+      // "userInterfaceStyle": "light",
       "bundleIdentifier": "com.hostomytho.hostomytho"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
-        "userInterfaceStyle": "light"
+        // "userInterfaceStyle": "light"
       },
       "package": "com.hostomytho.hostomytho"
     },

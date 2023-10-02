@@ -51,7 +51,6 @@ const ErrorTypeGameScreen = ({ }) => {
     fetchData();
   };
 
-
   const renderErrorTypeButtons = () => {
     return errorTypes.map((errorType) => {
       const isSelected = selectedErrorTypes.includes(errorType.id);
@@ -62,7 +61,7 @@ const ErrorTypeGameScreen = ({ }) => {
             tw("m-2 p-2 rounded-full border border-[#5077BE] text-center"),
             {
               backgroundColor: isSelected ? '#5077BE' : 'white',
-              minWidth: '150px',
+              minWidth: 150,
             }
           ]}
           onPress={() => onTypeErrorPress(errorType)}
