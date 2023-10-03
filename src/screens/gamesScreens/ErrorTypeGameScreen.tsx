@@ -58,7 +58,7 @@ const ErrorTypeGameScreen = ({ }) => {
         <TouchableOpacity
           key={errorType.id}
           style={[
-            tw("m-2 p-2 rounded-full border border-[#5077BE] text-center"),
+            tw("m-2 p-2 rounded-full border border-[#5077BE] text-center items-center justify-center "),
             {
               backgroundColor: isSelected ? '#5077BE' : 'white',
               minWidth: 150,
