@@ -23,5 +23,3 @@ web-build/
 src/utils/tailwind/tailwind.css
 # src/utils/tailwind/styles.json
 
-ios/
-android/
