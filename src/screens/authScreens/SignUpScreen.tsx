@@ -51,7 +51,7 @@ const SignUpScreen = () => {
     const woman_3 = require('images/character/woman_3.png');
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const charactersArray = [man_1, woman_1, man_2, woman_2, woman_3, man_3];
+    const charactersArray = [man_1, woman_2, man_2, woman_3, woman_1, man_3];
 
     const submit = (values: Partial<User>) => {
         setErrorMessage('');
@@ -120,11 +120,11 @@ const SignUpScreen = () => {
                 break;
             case 3:
                 gender = 'femme';
-                color_skin = 'medium';
+                color_skin = 'clear';
                 break;
             case 4:
                 gender = 'femme';
-                color_skin = 'clear';
+                color_skin = 'medium';
                 break;
             case 5:
                 gender = 'homme';

@@ -14,7 +14,7 @@ const SkinsManagementScreen = (props: any) => {
     const { user, updateStorageUserFromAPI } = useUser();
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
-    const skinTypes = ["face", "lunettes", "chapeau", "veste", "pilosité", "yeux/nez"];
+    const skinTypes = ["visage", "lunettes", "chapeau", "veste", "cheveux", "stetho"];
     const [skins, setSkins] = useState<Record<string, Skin[]>>({});
     const [apiSkins, setApiSkins] = useState<Skin[]>([]);
     const { equippedSkins, setEquippedSkins } = useSkins();
@@ -68,11 +68,11 @@ const SkinsManagementScreen = (props: any) => {
         switch (type) {
             case 'veste':
                 return tw('w-20 h-28 -mt-8');
-            case 'yeux/nez':
+            case 'visage':
                 return tw('w-20 h-52 -mt-4');
-            case 'face':
-                return tw('w-20 h-52 -mt-4');
-            case 'pilosité':
+            case 'stetho':
+                return tw('w-20 h-52 -mt-[66px]');
+            case 'cheveux':
                 return tw('w-20 h-52 -mt-3');
             default:
                 return tw('w-20 h-52');

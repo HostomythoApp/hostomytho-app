@@ -340,6 +340,16 @@
 			"marginTop": "auto"
 		}
 	},
+	"-mt-10": {
+		"style": {
+			"marginTop": -40
+		}
+	},
+	"-mt-[66px]": {
+		"style": {
+			"marginTop": -66
+		}
+	},
 	"flex": {
 		"style": {
 			"display": "flex"
