@@ -180,6 +180,11 @@
 			"marginTop": -32
 		}
 	},
+	"-mt-[66px]": {
+		"style": {
+			"marginTop": -66
+		}
+	},
 	"mb-1": {
 		"style": {
 			"marginBottom": 4
@@ -338,16 +343,6 @@
 	"mt-auto": {
 		"style": {
 			"marginTop": "auto"
-		}
-	},
-	"-mt-10": {
-		"style": {
-			"marginTop": -40
-		}
-	},
-	"-mt-[66px]": {
-		"style": {
-			"marginTop": -66
 		}
 	},
 	"flex": {
