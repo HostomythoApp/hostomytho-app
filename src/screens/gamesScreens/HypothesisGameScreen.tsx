@@ -136,7 +136,7 @@ const HypothesisGameScreen = ({ }) => {
           style={[
             tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
             {
-              minHeight: 300,
+              minHeight: 150,
               shadowColor: "#000",
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.25,
@@ -285,7 +285,7 @@ const HypothesisGameScreen = ({ }) => {
     <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
-          <CustomHeaderInGame title="Trouver les hypothèses" backgroundColor="bg-whiteTransparent" />
+          <CustomHeaderInGame title="Mytho-Hypo" backgroundColor="bg-whiteTransparent" />
           {errorMessage && (
             <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
               <Text style={tw("text-white")}>{errorMessage}</Text>
@@ -316,7 +316,7 @@ const HypothesisGameScreen = ({ }) => {
               style={tw("py-2 px-4 rounded-lg bg-primary flex-row items-center justify-center  w-full")}
               onPress={onNextCard}
             >
-              <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+              <Text style={tw("text-white font-primary text-lg")}>Texte suivant</Text>
               <View style={tw('bg-primaryLighter rounded-full h-6 w-6 flex items-center justify-center ml-2')}>
                 <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
               </View>

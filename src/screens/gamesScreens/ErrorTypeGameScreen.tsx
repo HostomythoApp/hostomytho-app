@@ -121,7 +121,7 @@ const ErrorTypeGameScreen = ({ }) => {
     <ImageBackground source={require('images/bg_corridor_dark.png')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView >
-          <CustomHeaderInGame title="Spécifiez le ou les types de l'erreur surlignée" backgroundColor="bg-whiteTransparent" />
+          <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
           <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>
             {renderErrorTypeButtons()}
           </View>

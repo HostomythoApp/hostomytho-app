@@ -90,7 +90,7 @@ const TemporalLinkGameScreen = () => {
   return (
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <ScrollView contentContainerStyle={tw("")}>
-        <CustomHeaderInGame title="Définir les liens temporels" />
+        <CustomHeaderInGame title="Mytho-Tempo" />
 
 
         <View style={tw("m-4 p-2 bg-gray-100 rounded flex-row flex-wrap mb-6")}>

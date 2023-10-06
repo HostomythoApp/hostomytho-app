@@ -32,6 +32,7 @@ const CustomHeaderInGame: React.FC<Props> = ({
   const fontSize = useSharedValue(16);
   const [animatedColor, setAnimatedColor] = useState(textColor);
 
+  // @ts-ignore
   const animatedCommonStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: fontSize.value / 16 }],

@@ -15,14 +15,6 @@ const ThemeScreen = ({ }) => {
 
   const colors = ['red', 'blue', 'green', 'yellow', 'white', 'purple', 'orange', 'pink'];
 
-  // return (
-  //     <View style={[tw('flex-1 justify-center items-center'), { backgroundColor }]}>
-  //         <MainTitle title={"Thème"} />
-  //         {/* @ts-ignore */}
-  //         <ColorCircles colors={colors} func={handleBackgroundColorChange} />
-  //     </View>
-  // );
-
   return (
     <View style={tw("flex-1 items-center")}>
       <ScrollView style={tw('w-full')}>

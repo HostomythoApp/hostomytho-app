@@ -10,6 +10,7 @@ import { ErrorDetail } from "models/ErrorDetail";
 import { getTextWithTokensById, getTextWithTokens } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
+import InfoText from 'components/InfoText';
 
 const colors = [
   "bg-yellow-300",
@@ -18,14 +19,12 @@ const colors = [
   "bg-pink-300",
 ];
 
-
 interface ModalPlausibilityGameDetailedProps {
   isVisible: boolean;
   closeModal: () => void;
   setIsModalVisible: (isVisible: boolean) => void;
   setHighlightEnabled: (highlight: boolean) => void;
 }
-
 
 const PlausibilityGameDetailedScreen = () => {
   const tw = useTailwind();
@@ -239,7 +238,7 @@ const PlausibilityGameDetailedScreen = () => {
           style={[
             tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4 lg:mt-8 xl:mt-12"),
             {
-              minHeight: 300,
+              minHeight: 150,
               shadowColor: "#000",
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.25,
@@ -353,7 +352,7 @@ const PlausibilityGameDetailedScreen = () => {
     <ImageBackground source={require('images/bg_corridor_dark.png')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
-          <CustomHeaderInGame title="Plausibilité de textes" backgroundColor="bg-whiteTransparent" />
+          <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
           {noMoreTexts ? (
             <View style={tw('items-center justify-center mt-4')}>
               <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>
@@ -420,7 +419,7 @@ const PlausibilityGameDetailedScreen = () => {
                   disabled={errorDetails.length === 0}
                   onPress={onNextCard}
                 >
-                  <Text style={tw("text-white font-primary text-lg")}>Phrase suivante</Text>
+                  <Text style={tw("text-white font-primary text-lg")}>Texte suivant</Text>
 
                   <View style={tw(`rounded-full h-6 w-6 flex items-center justify-center ml-2 ${errorDetails.length > 0 ? 'bg-primaryLighter' : 'bg-green-100'}`)}>
                     <Text style={tw('text-white font-bold')}>{errorDetails.length}</Text>

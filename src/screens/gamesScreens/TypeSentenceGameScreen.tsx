@@ -148,7 +148,7 @@ const TypeSentenceGameScreen = ({ }) => {
           style={[
             tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
             {
-              minHeight: 300,
+              minHeight: 150,
               shadowColor: "#000",
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.25,

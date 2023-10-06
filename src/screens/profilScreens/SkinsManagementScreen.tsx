@@ -43,8 +43,8 @@ const SkinsManagementScreen = (props: any) => {
             if (isEquipped(skin)) {
                 const sameTypeEquippedSkins = equippedSkins.filter(s => s.type === skin.type);
     
-                // Vérification qu'une face ou un yeux/nez est équippé
-                if (sameTypeEquippedSkins.length > 1 || (skin.type !== 'face' && skin.type !== 'yeux/nez')) {
+                // Vérification qu'un visage est équippé
+                if (sameTypeEquippedSkins.length > 1 || skin.type !== 'visage') {
                     const updatedSkin = await unequipSkin(user.id, skin.id);
                     const updatedEquippedSkins = equippedSkins.filter(s => s.id !== updatedSkin.id);
                     setEquippedSkins(updatedEquippedSkins);
