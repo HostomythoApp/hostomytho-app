@@ -8,6 +8,7 @@ import { getTextWithTokens } from "services/api/texts";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelection } from 'utils/gameFunctions';
+import InfoText from "components/InfoText";
 
 const colors = [
   "bg-yellow-300",
@@ -291,6 +292,20 @@ const ConditionGameScreen = ({ }) => {
           </View>
           <View style={tw("mx-4 pb-3")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
+          </View>
+          <View>
+            {user?.moderator && (
+              <View style={tw("mb-4 mx-2")}>
+                <InfoText
+                  textId={text?.id ?? 0}
+                  num={text?.num ?? ''}
+                  origin={text?.origin ?? ''}
+                  test_plausibility={text?.test_plausibility ?? 0}
+                  is_plausibility_test={text?.is_plausibility_test ?? false}
+                  is_negation_test={text?.is_negation_specification_test ?? false}
+                />
+              </View>
+            )}
           </View>
         </ScrollView>
 

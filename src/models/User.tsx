@@ -10,6 +10,7 @@ export interface User {
     notifications_enabled: boolean;
     gender: string;
     color_skin: string;
+    moderator: boolean;
     ranking?: number;
   }
   

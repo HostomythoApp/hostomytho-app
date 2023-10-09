@@ -8,6 +8,7 @@ import { TextWithError } from "interfaces/TextWithError";
 import { getTypesError } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { MaterialIcons } from '@expo/vector-icons';
+import InfoText from "components/InfoText";
 
 const ErrorTypeGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -128,6 +129,15 @@ const ErrorTypeGameScreen = ({ }) => {
           <View style={tw("flex-1 p-4 pt-0 justify-center items-center")}>
             {text && renderText()}
           </View>
+          {user?.moderator && (
+            <View style={tw("mb-4 mx-2")}>
+              <InfoText
+                textId={text?.id ?? 0}
+                num={text?.num ?? ''}
+                origin={text?.origin ?? ''}
+              />
+            </View>
+          )}
         </ScrollView>
 
         {!isNextButtonDisabled && (

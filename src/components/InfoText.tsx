@@ -7,9 +7,9 @@ interface InfoTextProps {
     textId: number;
     num: string;
     origin: string;
-    test_plausibility: number;
-    is_plausibility_test: boolean;
-    is_negation_test: boolean;
+    test_plausibility?: number;
+    is_plausibility_test?: boolean;
+    is_negation_test?: boolean;
 }
 
 interface TestSpecification {
@@ -50,7 +50,7 @@ const InfoText: React.FC<InfoTextProps> = ({ num, origin, test_plausibility, is_
                     <Text style={tw('mb-1 text-sm')}>Num: {num}</Text>
                     <Text style={tw('mb-1 text-sm')}>Origine: {origin}</Text>
                     {is_plausibility_test && <Text style={tw('mb-1 text-sm')}>C'est un test de plausibilité</Text>}
-                    <Text style={tw('mb-1 text-sm')}>Taux de plausibilité: {test_plausibility}</Text>
+                    {test_plausibility &&  <Text style={tw('mb-1 text-sm')}>Taux de plausibilité: {test_plausibility}</Text>}
                     {is_negation_test && (
                         <>
                             <Text style={tw('mb-1 text-sm')}>C'est un test de négation</Text>

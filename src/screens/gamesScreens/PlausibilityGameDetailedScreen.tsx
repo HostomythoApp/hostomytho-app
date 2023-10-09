@@ -38,7 +38,6 @@ const PlausibilityGameDetailedScreen = () => {
   const [nextId, setNextId] = useState(0);
   const [colorIndex, setColorIndex] = useState(0);
   const window = Dimensions.get('window');
-  const isMobile = window.width < 795;
   const { user } = useUser();
   const [text, setText] = useState<TextWithTokens>();
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
@@ -89,7 +88,7 @@ const PlausibilityGameDetailedScreen = () => {
     if (value <= 75.00) return "plausible";
     return "complètement plausible";
   };
-  
+
   const addErrorDetail = () => {
     setSelectionStarted(false);
     if (!text) return;
@@ -359,7 +358,6 @@ const PlausibilityGameDetailedScreen = () => {
             </View>
           ) : (
             <SafeAreaView>
-
               <View style={tw("flex-1 mb-2")}>
                 {text && renderText(text)}
               </View>
@@ -370,6 +368,20 @@ const PlausibilityGameDetailedScreen = () => {
 
             </SafeAreaView>
           )}
+          <View>
+            {user?.moderator && (
+              <View style={tw("mb-4 mx-2")}>
+                <InfoText
+                  textId={text?.id ?? 0}
+                  num={text?.num ?? ''}
+                  origin={text?.origin ?? ''}
+                  test_plausibility={text?.test_plausibility ?? 0}
+                  is_plausibility_test={text?.is_plausibility_test ?? false}
+                  is_negation_test={text?.is_negation_specification_test ?? false}
+                />
+              </View>
+            )}
+          </View>
         </ScrollView>
 
 

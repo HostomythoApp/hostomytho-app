@@ -3,16 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateUserPoints, getUserById } from "services/api/user";
 import { AchievementContext } from 'services/context/AchievementContext';
 import { Achievement } from "models/Achievement";
-
-interface User {
-  id: number;
-  username: string;
-  points: number;
-  status: string;
-  email: string;
-  gender: string;
-  color_skin: string;
-}
+import { User } from "models/User";
 
 interface UserContextProps {
   user: User | null;
