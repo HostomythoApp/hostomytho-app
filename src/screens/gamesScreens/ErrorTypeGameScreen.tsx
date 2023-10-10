@@ -107,7 +107,7 @@ const ErrorTypeGameScreen = ({ }) => {
           <Text
             key={idx}
             style={[
-              tw("text-xl font-primary p-[2px]"),
+              tw("text-xl font-primary p-[1px]"),
               errorPositions.includes(token.position) && tw("bg-red-200")
             ]}
           >

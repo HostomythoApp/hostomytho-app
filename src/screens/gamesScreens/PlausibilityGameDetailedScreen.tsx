@@ -66,7 +66,7 @@ const PlausibilityGameDetailedScreen = () => {
       <TouchableOpacity
         onPress={showMessage ? undefined : () => onTokenPress(index)}
         style={tw(
-          `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getErrorColor(token.sentenceId) : "bg-transparent"}`
+          `m-0 ${token.isCurrentSelection ? token.color : token.isSelected ? getErrorColor(token.sentenceId) : "bg-transparent"}`
         )}
       >
         <Text

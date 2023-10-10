@@ -1090,6 +1090,30 @@
 			"paddingLeft": 2
 		}
 	},
+	"p-[1px]": {
+		"style": {
+			"paddingTop": 1,
+			"paddingRight": 1,
+			"paddingBottom": 1,
+			"paddingLeft": 1
+		}
+	},
+	"p-[4px]": {
+		"style": {
+			"paddingTop": 4,
+			"paddingRight": 4,
+			"paddingBottom": 4,
+			"paddingLeft": 4
+		}
+	},
+	"p-[0px]": {
+		"style": {
+			"paddingTop": 0,
+			"paddingRight": 0,
+			"paddingBottom": 0,
+			"paddingLeft": 0
+		}
+	},
 	"px-1": {
 		"style": {
 			"paddingLeft": 4,

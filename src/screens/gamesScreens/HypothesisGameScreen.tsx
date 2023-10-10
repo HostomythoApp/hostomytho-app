@@ -155,7 +155,7 @@ const HypothesisGameScreen = ({ }) => {
                   <Text
                     key={idx}
                     style={[
-                      tw("text-2xl font-secondary text-gray-800 p-[2px]"),
+                      tw("text-2xl font-secondary text-gray-800"),
                       token.color ? tw(token.color) : null,
                     ]}
                   >
@@ -169,7 +169,7 @@ const HypothesisGameScreen = ({ }) => {
                   key={idx}
                   onPress={showMessage ? undefined : () => onTokenPress(idx)}
                   style={tw(
-                    `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
+                    `m-0 p-[1px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
                   )}
                 >
                   <Text

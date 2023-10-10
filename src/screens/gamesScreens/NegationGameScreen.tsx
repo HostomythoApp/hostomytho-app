@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextWithTokens } from "services/api/texts";
+import { getTextWithTokens, getTextWithTokensById } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
@@ -39,7 +39,9 @@ const NegationGameScreen = ({ }) => {
     const fetchText = async () => {
       try {
         if (user) {
-          const response = await getTextWithTokens(user?.id, 'negation');
+          // const response = await getTextWithTokens(user?.id, 'negation');
+          const response = await getTextWithTokensById(99);
+
           setText(response);
         }
       } catch (error) {
@@ -154,7 +156,7 @@ const NegationGameScreen = ({ }) => {
                   <Text
                     key={idx}
                     style={[
-                      tw("text-2xl font-secondary text-gray-800 p-[2px]"),
+                      tw("text-2xl font-secondary text-gray-800"),
                       token.color ? tw(token.color) : null,
                     ]}
                   >
@@ -168,7 +170,7 @@ const NegationGameScreen = ({ }) => {
                   key={idx}
                   onPress={showMessage ? undefined : () => onTokenPress(idx)}
                   style={tw(
-                    `m-0 p-[2px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
+                    `m-0 p-[1px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
                   )}
                 >
                   <Text

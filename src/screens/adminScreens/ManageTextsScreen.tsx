@@ -176,6 +176,7 @@ export default function ManageTextsScreen() {
                         onPress={handleCreateSubmit}
                         style={tw('px-4 py-2 bg-blue-500 text-white rounded-md mt-2')}
                     >
+                        {/* TODO remplacer les sauts de lignes par \\n */}
                         <Text style={tw('text-white')}>Créer</Text>
                     </TouchableOpacity>
                 </View>
