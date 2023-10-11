@@ -39,9 +39,9 @@ const NegationGameScreen = ({ }) => {
     const fetchText = async () => {
       try {
         if (user) {
-          // const response = await getTextWithTokens(user?.id, 'negation');
-          const response = await getTextWithTokensById(99);
-
+          // TODO ne récupérer que les tokens pour ne pas donner la réponse dans les logs
+          const response = await getTextWithTokens(user?.id, 'negation');
+          // const response = await getTextWithTokensById(64);
           setText(response);
         }
       } catch (error) {
@@ -205,6 +205,8 @@ const NegationGameScreen = ({ }) => {
     try {
       if (user) {
         const response = await getTextWithTokens(user?.id, 'negation');
+        // const response = await getTextWithTokensById(64);
+
         setText(response);
       }
     } catch (error) {
@@ -306,7 +308,6 @@ const NegationGameScreen = ({ }) => {
                   num={text?.num ?? ''}
                   origin={text?.origin ?? ''}
                   test_plausibility={text?.test_plausibility ?? 0}
-                  is_plausibility_test={text?.is_plausibility_test ?? false}
                   is_negation_test={text?.is_negation_specification_test ?? false}
                 />
               </View>

@@ -6,11 +6,14 @@ import { useUser } from 'services/context/UserContext';
 import { Token } from "models/Token";
 import Modal from 'react-native-modal';
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
+import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
 import { getTextWithTokensById, getTextWithTokens } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
+import { ButtonConfig } from "interfaces/ButtonConfig";
+import { plausibilityConfigs } from "utils/plausibilityConfigs";
 
 const colors = [
   "bg-yellow-300",
@@ -41,16 +44,19 @@ const PlausibilityGameDetailedScreen = () => {
   const { user } = useUser();
   const [text, setText] = useState<TextWithTokens>();
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
-  const [messageContent, setMessageContent] = useState("");
+  const [messageContent, setMessageContent] = useState<JSX.Element>(<></>);
   const [showMessage, setShowMessage] = useState(false);
   const [noMoreTexts, setNoMoreTexts] = useState(false);
   const [userRateSelected, setUserRateSelected] = useState(100);
+
 
   useEffect(() => {
     if (!text && user) {
       const fetchText = async () => {
         try {
+          // TODO ne récupérer que les tokens pour ne pas donner la réponse dans les logs
           const response = await getTextWithTokens(user.id, 'plausibility');
+          // const response = await getTextWithTokensById(70);
           setText(response);
         } catch (error) {
           console.error(error);
@@ -66,7 +72,7 @@ const PlausibilityGameDetailedScreen = () => {
       <TouchableOpacity
         onPress={showMessage ? undefined : () => onTokenPress(index)}
         style={tw(
-          `m-0 ${token.isCurrentSelection ? token.color : token.isSelected ? getErrorColor(token.sentenceId) : "bg-transparent"}`
+          `m-0 p-[1px] ${token.isCurrentSelection ? token.color : token.isSelected ? getErrorColor(token.sentenceId) : "bg-transparent"}`
         )}
       >
         <Text
@@ -79,14 +85,6 @@ const PlausibilityGameDetailedScreen = () => {
         </Text>
       </TouchableOpacity>
     );
-  };
-
-  const plausibilityDescription = (value: any) => {
-    if (value === 0) return "très peu plausible";
-    if (value <= 25.00) return "peu plausible";
-    if (value <= 50.00) return "moyennement plausible";
-    if (value <= 75.00) return "plausible";
-    return "complètement plausible";
   };
 
   const addErrorDetail = () => {
@@ -208,7 +206,6 @@ const PlausibilityGameDetailedScreen = () => {
       if (user) {
         const response = await getTextWithTokens(user?.id, 'plausibility');
         // const response = await getTextWithTokensById(85);
-
         if (response === null || response.tokens.length === 0) {
           setNoMoreTexts(true);
           return;
@@ -271,11 +268,28 @@ const PlausibilityGameDetailedScreen = () => {
   const goToNextSentence = async () => {
     setErrorDetails([]);
     setShowMessage(false);
-    setMessageContent("");
+    setMessageContent(<></>);
     setErrorSpecifying(false);
     setHighlightEnabled(false);
     setUserRateSelected(100);
     await fetchTextFromAPI();
+  };
+
+  const plausibilityDescription = (value: any) => {
+    if (value === 0) return "très peu plausible";
+    if (value <= 25.00) return "peu plausible";
+    if (value <= 50.00) return "moyennement plausible";
+    if (value <= 75.00) return "assez plausible ";
+    return "complètement plausible";
+  };
+
+
+
+  const getPlausibilityConfig = (plausibility?: number) => {
+    if (plausibility === undefined) {
+      return plausibilityConfigs[plausibilityConfigs.length - 1];
+    }
+    return plausibilityConfigs.find(config => plausibility <= config.maxThreshold) || plausibilityConfigs[plausibilityConfigs.length - 1];
   };
 
   const onNextCard = async () => {
@@ -284,7 +298,7 @@ const PlausibilityGameDetailedScreen = () => {
       const noErrorSpecified = errorDetails.length === 0;
       const noErrorInDatabase = !checkResult.testPlausibilityError || checkResult.testPlausibilityError.length === 0;
 
-      let messageHeader = "";
+      let messageHeader: JSX.Element = <></>;
 
       if (noErrorSpecified || noErrorInDatabase) {
         if (checkResult.testPlausibilityPassed) {
@@ -297,12 +311,18 @@ const PlausibilityGameDetailedScreen = () => {
           goToNextSentence();
           return;
         } else {
-          messageHeader = `Hmm ce texte était plutôt ${plausibilityDescription(checkResult.correctPlausibility)}`;
+          messageHeader = (
+            <View style={tw('flex-row items-center')}>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}
+              >Hmm ce texte était plutôt </Text>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}>{getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+            </View>
+          );
         }
       } else {
         const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
 
-        // Mettre à jour les couleurs des tokens
         const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
         setText(currentText => {
           if (!currentText) return currentText;
@@ -310,12 +330,36 @@ const PlausibilityGameDetailedScreen = () => {
         });
 
         if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
-          messageHeader = `Vous avez bien identifié les zones de doute, mais le texte était plutôt ${plausibilityDescription(checkResult.correctPlausibility)}`;
+          <Text>
+            {plausibilityDescription(checkResult.correctPlausibility)}
+          </Text>;
+          messageHeader = (
+            <View style={tw('flex-row items-center')}>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}
+              >Vous avez bien identifié les zones de doute, mais le texte était plutôt {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+            </View>
+          );
           animationGainPoints(5);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
-          messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nEt le texte était ${plausibilityDescription(checkResult.correctPlausibility)}`;
+          messageHeader = (
+            <View>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}
+              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
+              <View style={tw('flex-row items-center')}>
+                <Text style={tw('text-[#B22222] font-primary text-lg')}>Et le texte était {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+                <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+              </View>
+            </View>
+          );
         } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          messageHeader = `Oups, raté! Voilà les erreurs qu'il fallait trouver: \n${correctSpecification}. \nPar contre, vous avez trouvé la bonne plausibilité!`;
+          messageHeader = (
+            <View>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}
+              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
+            </View>
+          );
           animationGainPoints(5);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
           animationGainPoints(10);
@@ -324,7 +368,7 @@ const PlausibilityGameDetailedScreen = () => {
         }
       }
 
-      setMessageContent(`${messageHeader}`);
+      setMessageContent(messageHeader);
       setShowMessage(true);
       setSelectionStarted(false);
       return;
@@ -377,7 +421,6 @@ const PlausibilityGameDetailedScreen = () => {
                   origin={text?.origin ?? ''}
                   test_plausibility={text?.test_plausibility ?? 0}
                   is_plausibility_test={text?.is_plausibility_test ?? false}
-                  is_negation_test={text?.is_negation_specification_test ?? false}
                 />
               </View>
             )}
@@ -445,7 +488,6 @@ const PlausibilityGameDetailedScreen = () => {
           <>
             {!showMessage &&
 
-
               // Boutons de plausibilité  
               < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
                 <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
@@ -496,7 +538,7 @@ const PlausibilityGameDetailedScreen = () => {
           <View style={tw(' flex-col w-full bottom-0')} >
             <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
               <View>
-                <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+                {messageContent}
               </View>
               <TouchableOpacity
                 style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}

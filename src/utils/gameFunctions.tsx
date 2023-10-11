@@ -4,7 +4,6 @@ import { TestSpecification } from "models/TestSpecification";
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { getTestSpecificationsByTextId } from "services/api/testSpecifications";
 import { getTestPlausibilityErrorByTextId, getCorrectPlausibilityByTextId } from "services/api/plausibility";
-import { log } from "react-native-reanimated";
 
 export const checkUserSelection = async (
     textId: number,

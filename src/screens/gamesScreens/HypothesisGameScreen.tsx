@@ -306,7 +306,6 @@ const HypothesisGameScreen = ({ }) => {
                   num={text?.num ?? ''}
                   origin={text?.origin ?? ''}
                   test_plausibility={text?.test_plausibility ?? 0}
-                  is_plausibility_test={text?.is_plausibility_test ?? false}
                   is_negation_test={text?.is_negation_specification_test ?? false}
                 />
               </View>
