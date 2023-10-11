@@ -74,6 +74,7 @@ export default function AchievementModal({ isVisible, onClose, achievement }: { 
             style={styles.modal}
             coverScreen={false}
             deviceHeight={Dimensions.get('screen').height}
+            deviceWidth={Dimensions.get('screen').width}
             statusBarTranslucent
             
         >
