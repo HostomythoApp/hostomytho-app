@@ -24,6 +24,7 @@ export type RootStackParamList = {
     TemporalEntity: undefined;
     PlausibilityGameDetailed: undefined;
     ConditionGame: undefined;
+    CriminalsCaught: undefined;
     NegationGame: undefined;
     Achievements: undefined;
     Stats: undefined;

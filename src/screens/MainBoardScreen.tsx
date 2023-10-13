@@ -208,7 +208,7 @@ const MainBoardScreen = ({ }) => {
                             </View>
                         </View>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("MainBoard")}
+                        <TouchableOpacity onPress={() => navigation.navigate("CriminalsCaught")}
                             style={{
                                 position: 'absolute',
                                 top: '17%',

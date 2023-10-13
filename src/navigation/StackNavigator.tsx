@@ -36,6 +36,7 @@ import StatisticsScreen from "screens/profilScreens/StatisticsScreen";
 import TypeSentenceGameScreen from "screens/gamesScreens/TypeSentenceGameScreen";
 import CustomHeader from "components/header/CustomHeader";
 import AdminNavigator from "./AdminNavigator";
+import CriminalsCaughtScreen from "screens/criminals/CriminalsCaughtScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,8 @@ const StackNavigator = ({ }) => {
             header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
           })} />
         <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
+
+        <Stack.Screen name="CriminalsCaught" component={CriminalsCaughtScreen} />
 
         <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 
