@@ -129,7 +129,7 @@ const MainBoardScreen = ({ }) => {
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity onPress={() => navigation.navigate("ConditionGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '56%' : '56%',
@@ -231,8 +231,8 @@ const MainBoardScreen = ({ }) => {
                                 shadowOpacity: 0.5,
                                 shadowRadius: 1,
                                 resizeMode: 'contain',
-                                marginLeft: '-17%',
-                                marginTop: '8%'
+                                marginLeft: '-25px',
+                                marginTop: '10px'
                             }} />
                         </TouchableOpacity>
 

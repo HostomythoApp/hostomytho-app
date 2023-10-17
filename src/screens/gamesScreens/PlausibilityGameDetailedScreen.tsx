@@ -224,7 +224,6 @@ const PlausibilityGameDetailedScreen = () => {
     setErrorDetails(errorDetails.filter(errorDetail => errorDetail.id !== errorDetailId));
   };
 
-  // TODO Séparer dans d'autres fichiers pour plus de visibilité
   const renderText = (text: TextWithTokens) => {
     if (!text) return null;
 
@@ -401,7 +400,7 @@ const PlausibilityGameDetailedScreen = () => {
               <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>
             </View>
           ) : (
-            <SafeAreaView>
+            <View>
               <View style={tw("flex-1 mb-2")}>
                 {text && renderText(text)}
               </View>
@@ -409,8 +408,7 @@ const PlausibilityGameDetailedScreen = () => {
                 {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
                 )}
               </View>
-
-            </SafeAreaView>
+            </View>
           )}
           <View>
             {user?.moderator && (

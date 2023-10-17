@@ -31,6 +31,8 @@ export type RootStackParamList = {
     Contacts: undefined;
     Referral: undefined;
     ProfileSettings: undefined;
+    Investigation: undefined;
+    Modal: undefined;
     ModalPlausibilityGame: { swipeType: 'right' | 'left' | null };
 };
 

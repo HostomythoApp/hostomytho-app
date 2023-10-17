@@ -36,7 +36,9 @@ import StatisticsScreen from "screens/profilScreens/StatisticsScreen";
 import TypeSentenceGameScreen from "screens/gamesScreens/TypeSentenceGameScreen";
 import CustomHeader from "components/header/CustomHeader";
 import AdminNavigator from "./AdminNavigator";
+import InvestigationScreen from "screens/criminals/InvestigationScreen";
 import CriminalsCaughtScreen from "screens/criminals/CriminalsCaughtScreen";
+import { TouchableOpacity, Text, View, ScrollView, Modal, Pressable, StyleSheet, Alert } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,20 +54,16 @@ const StackNavigator = ({ }) => {
     >
       <Stack.Group
         screenOptions={({ navigation }) => ({
-          // presentation: 'modal',
-          // headerLeft: () => <TouchableOpacity onPress={navigation.goBack} />,
           headerShown: false
-
         })}
       >
-
 
         <Stack.Screen name="MainBoard"
           component={MainBoardScreen}
           options={({ }) => ({
             headerShown: false
           })} />
-
+          
         <Stack.Screen name="Main"
           component={MainScreen}
           options={({ navigation }) => ({
@@ -73,6 +71,8 @@ const StackNavigator = ({ }) => {
           })} />
         <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
 
+        <Stack.Screen name="Investigation" component={InvestigationScreen} />
+        
         <Stack.Screen name="CriminalsCaught" component={CriminalsCaughtScreen} />
 
         <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
@@ -91,7 +91,7 @@ const StackNavigator = ({ }) => {
 
         <Stack.Screen name="ErrorTypeGame" component={ErrorTypeGameScreen} />
 
-        <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
+        <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} options={{ headerShown: false }}/>
 
         <Stack.Screen name="Achievements" component={AchievementsScreen} />
 
@@ -150,4 +150,49 @@ const StackNavigator = ({ }) => {
     </Stack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+  },
+  modalView: {
+      margin: 20,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 35,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+          width: 0,
+          height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+  },
+  button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2,
+  },
+  buttonOpen: {
+      backgroundColor: 'green',
+  },
+  buttonClose: {
+      backgroundColor: '#2196F3',
+  },
+  textStyle: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+  },
+  modalText: {
+      marginBottom: 15,
+      textAlign: 'center',
+  },
+});
+
 export default StackNavigator;
