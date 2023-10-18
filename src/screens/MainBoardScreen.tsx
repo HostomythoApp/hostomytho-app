@@ -216,14 +216,6 @@ const MainBoardScreen = ({ }) => {
                                 flexDirection: 'row',
 
                             }}>
-                            <Image source={require('images/suspects/suspect_identification_1.png')} style={{
-                                width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 65, minHeight: 65,
-                                shadowColor: 'black',
-                                shadowOffset: { width: 1, height: 1 },
-                                shadowOpacity: 0.5,
-                                shadowRadius: 1,
-                                resizeMode: 'contain',
-                            }} />
                             <Image source={require('images/suspects/suspect_identification_2.png')} style={{
                                 width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 65, minHeight: 65,
                                 shadowColor: 'black',
@@ -231,8 +223,15 @@ const MainBoardScreen = ({ }) => {
                                 shadowOpacity: 0.5,
                                 shadowRadius: 1,
                                 resizeMode: 'contain',
-                                marginLeft: '-25px',
-                                marginTop: '10px'
+                            }} />
+                            <Image source={require('images/suspects/suspect_identification_1.png')} style={{
+                                width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 65, minHeight: 65,
+                                shadowColor: 'black',
+                                shadowOffset: { width: 1, height: 1 },
+                                shadowOpacity: 0.5,
+                                shadowRadius: 1,
+                                resizeMode: 'contain',
+                                transform: [{ translateX: -25 }, { translateY: 10 }]
                             }} />
                         </TouchableOpacity>
 

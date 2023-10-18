@@ -7,7 +7,7 @@ import { getUserCriminals } from 'services/api/criminals';
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 import PrimaryButton from "components/PrimaryButton";
-import ModalDeleteProfil from "components/modals/ModalDeleteProfil";
+import CustomModal from "components/modals/CustomModal";
 
 
 export interface Criminal {
@@ -22,8 +22,13 @@ const InvestigationScreen = () => {
     const [criminals, setCriminals] = useState<Criminal[]>([]);
     const navigation = useNavigation<RootStackNavigationProp<"Main">>();
     // const investigationProgress = user?.percentageInvestigation || 0;
-    const investigationProgress = 65;
+    // const investigationProgress = 65;
+    const [investigationProgress, setInvestigationProgress] = useState(65);
+
     const [modalVisible, setModalVisible] = useState(false);
+    const [resultModalVisible, setResultModalVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [arrestSuccess, setArrestSuccess] = useState<boolean | null>(null);
 
     useEffect(() => {
         const loadCriminals = async () => {
@@ -34,21 +39,26 @@ const InvestigationScreen = () => {
                 console.error(error);
             }
         };
-
         loadCriminals();
     }, [user.id]);
 
 
-    const modalArrestAttempt = () => {
-        console.log("Tenter l'arrestation !");
-    };
-
-
     const handleArrestAttempt = () => {
-        // Logique pour gérer la tentative d'arrestation
-        console.log("Tenter l'arrestation !");
-        // Par exemple, naviguer vers un autre écran ou ouvrir un modal
+        const randomNumber = Math.floor(Math.random() * 101);
+        console.log(randomNumber);
+        console.log(investigationProgress);
+
+        if (randomNumber <= investigationProgress) {
+            setArrestSuccess(true);
+            setInvestigationProgress(0);
+        } else {
+            setArrestSuccess(false);
+            setInvestigationProgress(prevProgress => prevProgress - 15);
+        }
+        setModalVisible(false);
+        setResultModalVisible(true);
     };
+
 
     return (
         <View style={tw('flex-1')}>
@@ -87,15 +97,43 @@ const InvestigationScreen = () => {
                     </ScrollView>
                 </SafeAreaView>
             </ImageBackground>
-            <ModalDeleteProfil
+            <CustomModal
                 isVisible={modalVisible}
                 onClose={() => setModalVisible(false)}
             >
                 <View >
                     <Text style={tw('text-lg font-primary')}>Etes-vous sûr de vouloir tenter l'arrestation?</Text>
                     <Text style={tw('text-lg font-primary')}>Si celle-ci échoue, votre taux de certitude baissera.</Text>
+                    <TouchableOpacity onPress={handleArrestAttempt} style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}>
+                        <Text style={tw('text-white font-bold text-center')}>Je suis sûr de moi, je me lance</Text>
+                    </TouchableOpacity>
                 </View>
-            </ModalDeleteProfil>
+            </CustomModal>
+
+            <CustomModal isVisible={resultModalVisible} onClose={() => setResultModalVisible(false)}>
+                {arrestSuccess === true ? (
+                    <>
+                        <Text style={tw('font-primary text-lg')}>
+                            Dans un ultime espoir, le suspect s'enfuit dans une bouche d'aération. Vous le poursuivez en rampant dans les conduits pendant de longues minutes.
+                            Vous finissez par attraper l'un de ses lacets qui était défait et qui traînait derrière.
+                            Après l'avoir livré à la police, il est interrogé et enfermé. Il s'agit bien de la personne recherchée.
+                            {"\n\n"}
+                            Félicitations, vous avez eu du flair et votre enquête a mené à la bonne piste !
+                        </Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('CriminalsCaught')} style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}>
+                            <Text style={tw('text-white font-bold text-center')}>Voir le criminel</Text>
+                        </TouchableOpacity>
+                    </>
+                ) : (
+                    <>
+                        <Text style={tw('font-primary text-lg')}>
+                            La personne que vous arrêtez s'appelle Kévin Bontrain. Il est menuisier, construit de belles armoires, et ne ferait pas de mal à une mouche. Ce n'est donc malheureusement pas le criminel.
+                            {"\n\n"}
+                            Votre enquête continue !
+                        </Text>
+                    </>
+                )}
+            </CustomModal>
         </View>
     );
 };

@@ -43,7 +43,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-snap-carousel": "^4.0.0-beta.6",
     "react-native-swiper-flatlist": "^3.2.3",
-    "react-native-web": "~0.18.10",
+    "react-native-web": "^0.18.12",
     "react-query": "^3.39.3",
     "tailwind-rn": "^4.2.0",
     "yup": "^1.2.0"
