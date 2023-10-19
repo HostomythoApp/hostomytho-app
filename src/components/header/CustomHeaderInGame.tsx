@@ -31,6 +31,8 @@ const CustomHeaderInGame: React.FC<Props> = ({
   const [showExplosion, setShowExplosion] = useState(false);
   const fontSize = useSharedValue(16);
   const [animatedColor, setAnimatedColor] = useState(textColor);
+  const achievements = 5;
+  const multiplier = 1 + achievements * 0.1;
 
   // @ts-ignore
   const animatedCommonStyle = useAnimatedStyle(() => {
@@ -100,10 +102,20 @@ const CustomHeaderInGame: React.FC<Props> = ({
       {user?.points !== undefined &&
         <Animated.View style={tw('flex-row items-center justify-center w-32')}>
           <Animated.View style={animatedCommonStyle}>
-            <MaterialIcons style={tw(`mr-1`)} name="person-search" size={16} color={animatedColor} />
+            <MaterialIcons style={tw(`mr-2`)} name="person-search" size={18} color={animatedColor} />
 
           </Animated.View>
           <Animated.Text style={[tw(`font-primary`), animatedTextStyle]}>{Math.round(displayPoints)} points</Animated.Text>
+          <View
+
+            style={[tw('absolute bottom-0 right-0 bg-green-700 rounded-full w-6 h-5 flex items-center justify-center left-0'), {
+              transform: [{ translateX: 19 }, { translateY: -16 }],
+            }]}
+          >
+            <Text style={tw('text-white text-xs font-primary font-bold')}>
+              x{multiplier.toFixed(1)}
+            </Text>
+          </View>
           {showExplosion && <Explosion x={0} y={0} />}
         </Animated.View>
       }

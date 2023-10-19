@@ -355,6 +355,16 @@
 			"marginTop": "auto"
 		}
 	},
+	"-mb-4": {
+		"style": {
+			"marginBottom": -16
+		}
+	},
+	"-mr-4": {
+		"style": {
+			"marginRight": -16
+		}
+	},
 	"flex": {
 		"style": {
 			"display": "flex"
@@ -448,6 +458,11 @@
 	"h-full": {
 		"style": {
 			"height": "100%"
+		}
+	},
+	"h-7": {
+		"style": {
+			"height": 28
 		}
 	},
 	"max-h-[100px]": {
@@ -568,6 +583,16 @@
 	"w-full": {
 		"style": {
 			"width": "100%"
+		}
+	},
+	"w-12": {
+		"style": {
+			"width": 48
+		}
+	},
+	"w-7": {
+		"style": {
+			"width": 28
 		}
 	},
 	"min-w-[1200px]": {
@@ -749,6 +774,11 @@
 			"borderLeftWidth": 2
 		}
 	},
+	"border-b": {
+		"style": {
+			"borderBottomWidth": 1
+		}
+	},
 	"border-b-2": {
 		"style": {
 			"borderBottomWidth": 2
@@ -802,6 +832,15 @@
 			"borderRightColor": "rgb(209 213 219 / var(--tw-border-opacity))",
 			"borderBottomColor": "rgb(209 213 219 / var(--tw-border-opacity))",
 			"borderLeftColor": "rgb(209 213 219 / var(--tw-border-opacity))"
+		}
+	},
+	"border-gray-400": {
+		"style": {
+			"--tw-border-opacity": 1,
+			"borderTopColor": "rgb(156 163 175 / var(--tw-border-opacity))",
+			"borderRightColor": "rgb(156 163 175 / var(--tw-border-opacity))",
+			"borderBottomColor": "rgb(156 163 175 / var(--tw-border-opacity))",
+			"borderLeftColor": "rgb(156 163 175 / var(--tw-border-opacity))"
 		}
 	},
 	"border-gray-500": {
@@ -1042,6 +1081,18 @@
 		"style": {
 			"--tw-bg-opacity": 1,
 			"backgroundColor": "rgb(253 224 71 / var(--tw-bg-opacity))"
+		}
+	},
+	"bg-green-800": {
+		"style": {
+			"--tw-bg-opacity": 1,
+			"backgroundColor": "rgb(22 101 52 / var(--tw-bg-opacity))"
+		}
+	},
+	"bg-green-700": {
+		"style": {
+			"--tw-bg-opacity": 1,
+			"backgroundColor": "rgb(21 128 61 / var(--tw-bg-opacity))"
 		}
 	},
 	"bg-opacity-50": {
@@ -1443,6 +1494,12 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(31 41 55 / var(--tw-text-opacity))"
+		}
+	},
+	"text-green-500": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(34 197 94 / var(--tw-text-opacity))"
 		}
 	},
 	"text-green-700": {

@@ -14,9 +14,6 @@ const AchievementIcon = ({ achievement }: { achievement: Achievement | null}) =>
     const iconName = achievement.picto || "checkcircleo";
     const iconColor = achievement.color || "mediumseagreen";
 
-// console.log(iconName);
-
-
     if (LibToLoad === "image") {
         return (
             <Image

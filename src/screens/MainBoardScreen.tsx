@@ -64,7 +64,7 @@ const MainBoardScreen = ({ }) => {
                             <Image source={require('images/map.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 90, minHeight: 90 }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("TemporalLinkGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '54%' : '54%',
@@ -118,7 +118,7 @@ const MainBoardScreen = ({ }) => {
                             }}>
                             <Image source={require('images/postit_plausibility.png')}
                                 style={{
-                                    width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60,
+                                    width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
                                     shadowColor: 'black',
                                     shadowOffset: { width: -0.8, height: 1.5 },
                                     shadowOpacity: 0.4,
@@ -129,7 +129,7 @@ const MainBoardScreen = ({ }) => {
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
+                        <TouchableOpacity onPress={() => navigation.navigate("TemporalLinkGame")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '56%' : '56%',
@@ -152,7 +152,7 @@ const MainBoardScreen = ({ }) => {
                                 left: windowWidth > 768 ? '40%' : '40%',
                             }}>
                             <Image source={require('images/postit_negation.png')} style={{
-                                width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60,
+                                width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
                                 shadowColor: 'black',
                                 shadowOffset: { width: 1, height: 1 },
                                 shadowOpacity: 0.5,

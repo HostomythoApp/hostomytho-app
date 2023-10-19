@@ -24,7 +24,6 @@ const InvestigationScreen = () => {
     // const investigationProgress = user?.percentageInvestigation || 0;
     // const investigationProgress = 65;
     const [investigationProgress, setInvestigationProgress] = useState(65);
-
     const [modalVisible, setModalVisible] = useState(false);
     const [resultModalVisible, setResultModalVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
