@@ -14,6 +14,7 @@ import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
 import { ButtonConfig } from "interfaces/ButtonConfig";
 import { plausibilityConfigs } from "utils/plausibilityConfigs";
+import CustomModal from "components/modals/CustomModal";
 
 const colors = [
   "bg-yellow-300",
@@ -21,13 +22,6 @@ const colors = [
   "bg-indigo-300",
   "bg-pink-300",
 ];
-
-interface ModalPlausibilityGameDetailedProps {
-  isVisible: boolean;
-  closeModal: () => void;
-  setIsModalVisible: (isVisible: boolean) => void;
-  setHighlightEnabled: (highlight: boolean) => void;
-}
 
 const PlausibilityGameDetailedScreen = () => {
   const tw = useTailwind();
@@ -141,50 +135,6 @@ const PlausibilityGameDetailedScreen = () => {
     });
   };
 
-  //Modal
-  const ModalPlausibilityGameDetailed: FC<ModalPlausibilityGameDetailedProps> = ({ isVisible, closeModal, setIsModalVisible, setHighlightEnabled }) => {
-    const tw = useTailwind();
-    return (
-      <Modal
-        isVisible={isVisible}
-        onBackdropPress={() => setIsModalVisible(false)}
-        backdropColor="transparent"
-        style={tw("items-center justify-center")}
-      >
-        <View style={[tw("bg-white rounded-lg p-4 flex-row mb-14"), {
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 3,
-        }]}>
-          <>
-            <TouchableOpacity
-              style={tw("bg-orange-100 p-3 mr-3 rounded-lg")}
-              onPress={() => {
-                setIsModalVisible(false);
-                setHighlightEnabled(true);
-                setErrorSpecifying(true);
-              }}
-            >
-              <Text style={tw(" text-orange-500 font-semibold")}>Source du doute</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={tw("bg-green-200 p-3 rounded-lg")}
-              onPress={() => {
-                setIsModalVisible(false);
-                onNextCard();
-              }}
-            >
-              <Text style={tw("text-green-700 font-semibold")}>Aller au texte suivant</Text>
-            </TouchableOpacity>
-          </>
-        </View>
-      </Modal>
-    );
-  };
-  //finmodal
 
   const renderErrorDetail = (errorDetail: ErrorDetail) => (
     <View key={errorDetail.id} style={tw(`flex-row items-center m-1 max-w-[400px] ml-9`)}>
@@ -219,6 +169,9 @@ const PlausibilityGameDetailedScreen = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
 
   const removeErrorDetail = (errorDetailId: number) => {
     setErrorDetails(errorDetails.filter(errorDetail => errorDetail.id !== errorDetailId));
@@ -425,13 +378,34 @@ const PlausibilityGameDetailedScreen = () => {
           </View>
         </ScrollView>
 
-
-        <ModalPlausibilityGameDetailed
+        <CustomModal
           isVisible={isModalVisible}
-          closeModal={() => setIsModalVisible(false)}
-          setIsModalVisible={setIsModalVisible}
-          setHighlightEnabled={setHighlightEnabled}
-        />
+          onClose={handleCloseModal}
+        >
+          <View style={tw('flex-row ')}
+          >
+            <TouchableOpacity
+              style={tw("bg-orange-100 p-3 mr-3 rounded-lg")}
+              onPress={() => {
+                setIsModalVisible(false);
+                setHighlightEnabled(true);
+                setErrorSpecifying(true);
+              }}
+            >
+              <Text style={tw("text-orange-500 font-semibold")}>Source du doute</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={tw("bg-green-200 p-3 rounded-lg")}
+              onPress={() => {
+                setIsModalVisible(false);
+                onNextCard();
+              }}
+            >
+              <Text style={tw("text-green-700 font-semibold")}>Aller au texte suivant</Text>
+            </TouchableOpacity>
+          </View>
+        </CustomModal>
 
         {errorSpecifying ? (
           <SafeAreaView>

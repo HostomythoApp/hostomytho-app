@@ -33,7 +33,6 @@ export type RootStackParamList = {
     ProfileSettings: undefined;
     Investigation: undefined;
     Modal: undefined;
-    ModalPlausibilityGame: { swipeType: 'right' | 'left' | null };
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

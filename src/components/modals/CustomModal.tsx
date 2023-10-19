@@ -42,22 +42,26 @@ const CustomModal = ({ isVisible, onClose, children }: { isVisible: boolean, onC
             <Animated.View
                 style={{
                     transform: [{ translateY }],
-                    maxWidth: '700px',
-                    margin: '20px'
+                    maxWidth: 700,
+                    margin: 20
                 }}>
                 <TouchableOpacity
                     onPress={onClose}
-                    style={[tw('absolute top-0 right-0 z-10 rounded-full h-[29px] w-[29px]'), {
-                        backgroundColor: 'white',
-                        transform: [{ translateX: 10 }, { translateY: -13 }]
+                    style={[tw('absolute top-0 right-0 z-10 rounded-full h-8 w-8 justify-center items-center'), {
+                        transform: [{ translateX: 13 }, { translateY: -12 }],
+                        backgroundColor: 'transparent'
                     }]}
                 >
-                    <AntDesign name="closecircle" size={32} color="seagreen"
-                        style={{
-                            transform: [{ translateY: -3 }]
-                        }}
-                    />
+                    <View style={[tw('absolute rounded-full'), {
+                        height: 26,
+                        width: 26,
+                        backgroundColor: 'white',
+                        zIndex: 1
+                    }]} />
+
+                    <AntDesign name="closecircle" size={31} color="seagreen" style={{ zIndex: 2 }} />
                 </TouchableOpacity>
+
                 <TouchableOpacity
                     activeOpacity={1}
                     onPress={e => e.stopPropagation()}

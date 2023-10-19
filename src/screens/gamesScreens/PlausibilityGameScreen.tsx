@@ -4,7 +4,6 @@ import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import Swiper from "react-native-deck-swiper";
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
-import ModalPlausibilityGame from 'components/ModalPlausibilityGame';
 import { Text as TextType } from "models/Text";
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
@@ -189,14 +188,6 @@ const PlausibilityGameScreen = ({ }) => {
         )}
       </View>
     </ScrollView>
-
-
-    <ModalPlausibilityGame
-      isVisible={isModalVisible}
-      swipeType={swipeType}
-      closeModal={() => setIsModalVisible(false)}
-      setIsModalVisible={setIsModalVisible}
-    />
 
     {/* Boutons de plausibilité */}
     {!swipedAll && (

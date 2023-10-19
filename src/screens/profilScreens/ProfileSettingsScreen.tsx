@@ -6,6 +6,7 @@ import { useUser } from 'services/context/UserContext';
 import FunctionButton from "components/FunctionButton";
 import LogoutButton from "components/LogoutButton";
 import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
+import CustomModal from "components/modals/CustomModal";
 
 const ProfileSettingsScreen = (props: any) => {
     const tw = useTailwind();
@@ -13,35 +14,11 @@ const ProfileSettingsScreen = (props: any) => {
     const [modalVisible, setModalVisible] = useState(false);
     const deleteAccount = () => {
         // TODO A faire
-        // alert('deleteAccount');
+        setModalVisible(false);
     }
 
     return (
         <View style={tw("flex-1")}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Profil supprimé</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}>
-                            <Text style={styles.textStyle}>Fermer</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
-            <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}>
-                <Text style={styles.textStyle}>Supprimer le profil</Text>
-            </Pressable>
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
 
                 <CustomHeaderEmpty title="Paramètre du profil" />
@@ -56,53 +33,22 @@ const ProfileSettingsScreen = (props: any) => {
                     </Text>
 
                     <LogoutButton />
-                    <FunctionButton text={"Supprimer le compte"} func={deleteAccount} />
+                    <FunctionButton text={"Supprimer le compte"} func={() => setModalVisible(true)} />
+
                 </View>
+
+                <CustomModal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
+                    <Text style={tw('text-center mb-4 font-primary text-lg')}>Etes-vous sûr de vouloir supprimer votre compte ?</Text>
+                    <Pressable
+                        style={[tw('bg-red-600 px-4 py-2 rounded'), { alignSelf: 'center' }]}
+                        onPress={deleteAccount}
+                    >
+                        <Text style={tw('text-white font-primary text-lg')}>Confirmer la suppression</Text>
+                    </Pressable>
+                </CustomModal>
             </ScrollView>
         </View>
     );
 };
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        backgroundColor: 'green',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-    },
-});
+
 export default withAuth(ProfileSettingsScreen);
