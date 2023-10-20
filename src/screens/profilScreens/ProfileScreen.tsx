@@ -37,7 +37,7 @@ const ProfileScreen = (props: any) => {
 
     return (
         <ImageBackground
-            source={require('images/bg_bureau.png')}
+            source={require('images/bg_bureau.webp')}
             style={tw("absolute bottom-0 left-0 w-full h-full")}
             resizeMode="cover"
         >

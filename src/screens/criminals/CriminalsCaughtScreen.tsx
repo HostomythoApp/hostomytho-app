@@ -53,13 +53,13 @@ const CriminalsCaughtScreen = () => {
     const styles = StyleSheet.create({
         container: { flex: 1, paddingTop: 96 },
         child: { width, justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center', padding: 48 },
-        text: { fontSize: width * 0.5, textAlign: 'center' },
-        pagination: { position: 'absolute', top: 100 }
+        pagination: { position: 'absolute', top: 100 },
+        paginationItem: { height: 40, width: 40 }
     });
 
     return (
         <View style={tw('flex-1')}>
-            <ImageBackground source={require('images/bg_bureau.png')} style={tw('flex-1')} resizeMode="cover">
+            <ImageBackground source={require('images/bg_bureau.webp')} style={tw('flex-1')} resizeMode="cover">
             </ImageBackground>
             <SafeAreaView style={[tw('flex-1'), StyleSheet.absoluteFillObject]}>
                 <ScrollView>
@@ -72,6 +72,7 @@ const CriminalsCaughtScreen = () => {
                                 index={0}
                                 showPagination
                                 paginationStyle={styles.pagination}
+                                paginationStyleItem={styles.paginationItem}
                                 data={criminals}
                                 showsHorizontalScrollIndicator
                                 automaticallyAdjustContentInsets
@@ -83,11 +84,11 @@ const CriminalsCaughtScreen = () => {
                                             resizeMode="contain"
                                         />
                                         <View style={tw('bg-black bg-opacity-50 p-2 rounded')}>
-                                            <Text style={[styles.text, tw('font-bold mt-2 text-white text-center font-primary text-xl')]}>{item.name}</Text>
+                                            <Text style={[tw('font-bold mt-2 text-white text-center font-primary text-xl')]}>{item.name}</Text>
                                         </View>
                                         {item.description ? (
                                             <View style={tw('bg-black bg-opacity-50 p-2 rounded')}>
-                                                <Text style={[styles.text, tw('text-white text-center font-primary text-lg')]}>{item.description}</Text>
+                                                <Text style={[tw('text-white font-primary text-lg')]}>{item.description}</Text>
                                             </View>
                                         ) : null}
                                     </View>

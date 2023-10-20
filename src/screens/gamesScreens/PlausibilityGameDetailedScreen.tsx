@@ -365,7 +365,7 @@ const PlausibilityGameDetailedScreen = () => {
           )}
           <View>
             {user?.moderator && (
-              <View style={tw("mb-4 mx-2")}>
+              <View style={tw("mb-4 mx-2 h-[300px]")}>
                 <InfoText
                   textId={text?.id ?? 0}
                   num={text?.num ?? ''}
@@ -454,12 +454,10 @@ const PlausibilityGameDetailedScreen = () => {
                 </TouchableOpacity>
               }
             </View>
-
           </SafeAreaView>
         ) : (
           <>
             {!showMessage &&
-
               // Boutons de plausibilité  
               < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
                 <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
