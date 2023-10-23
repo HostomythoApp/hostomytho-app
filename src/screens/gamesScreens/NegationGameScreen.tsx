@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelection } from 'utils/gameFunctions';
 import InfoText from "components/InfoText";
+import ModalContext from "services/context/ModalContext";
 
 const colors = [
   "bg-yellow-300",
@@ -17,7 +18,6 @@ const colors = [
   "bg-indigo-300",
   "bg-pink-300",
 ];
-
 const NegationGameScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithTokens>();
@@ -34,6 +34,7 @@ const NegationGameScreen = ({ }) => {
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
   const [scrollY, setScrollY] = useState(0);
+  const modalContext = useContext(ModalContext);
 
   useEffect(() => {
     const fetchText = async () => {
@@ -51,8 +52,14 @@ const NegationGameScreen = ({ }) => {
     fetchText();
   }, []);
 
-  const onTokenPress = useCallback((wordIndex: number) => {
+  const handleShowModal = () => {
+    modalContext.setContent(
+      <Text>Voici le contenu de ma modal pour le jeu de négation !</Text>
+    );
+    modalContext.showModal();
+  }
 
+  const onTokenPress = useCallback((wordIndex: number) => {
     setText(currentText => {
       if (!currentText) return currentText;
 
@@ -289,6 +296,11 @@ const NegationGameScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
+
+
+          <TouchableOpacity onPress={handleShowModal}><Text>Afficher modal</Text></TouchableOpacity>
+
+
           {errorMessage && (
             <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
               <Text style={tw("text-white")}>{errorMessage}</Text>

@@ -382,8 +382,7 @@ const PlausibilityGameDetailedScreen = () => {
           isVisible={isModalVisible}
           onClose={handleCloseModal}
         >
-          <View style={tw('flex-row ')}
-          >
+          <View style={tw('flex-row ')}>
             <TouchableOpacity
               style={tw("bg-orange-100 p-3 mr-3 rounded-lg")}
               onPress={() => {
