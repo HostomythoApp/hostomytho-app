@@ -42,6 +42,8 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useRef, useEffect, useState, useContext } from 'react';
 import { useTailwind } from "tailwind-rn";
 import ModalContext from "services/context/ModalContext";
+import TimedModalContext from "components/modals/TimedModalContext";
+import { UserProvider } from "services/context/UserContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,192 +55,133 @@ const StackNavigator = ({ }) => {
   const [content, setContent] = useState(null);
 
   useEffect(() => {
-    if (isModalVisible) {
-      Animated.spring(translateY, {
-        toValue: 0,
-        useNativeDriver: true,
-        stiffness: 400,
-        damping: 30,
-        mass: 1
-      }).start();
-    } else {
-      Animated.spring(translateY, {
-        toValue: 300,
-        useNativeDriver: true,
-        stiffness: 150,
-        damping: 15,
-        mass: 1
-      }).start();
-    }
+    console.log("useEffect");
+    console.log(isModalVisible);
   }, [isModalVisible]);
 
-  const hideModal = () => {
-    setModalVisible(false);
-  }
 
   return (
-    <ModalContext.Provider value={{
-      isModalVisible: isModalVisible,
-      showModal: () => {
-        setModalVisible(true);
-      },
-      hideModal: () => {
-        setModalVisible(false);
-      },
-      content: content,
-      setContent: setContent
-    }}>
-      <View style={{ flex: 1, position: 'relative' }}>
-        <Stack.Navigator
-          screenOptions={{
-            contentStyle: {
-              backgroundColor: '#FFF',
+    <ModalContext.Provider
+      value={{
+        isModalVisible: isModalVisible,
+        showModal: () => setModalVisible(true),
+        hideModal: () => setModalVisible(false),
+        content: content,
+        setContent: setContent
+      }}>
 
-            },
-            headerShown: false
-          }}
-        >
-          <Stack.Group
-            screenOptions={({ navigation }) => ({
+      <UserProvider>
+        <View style={{ flex: 1, position: 'relative' }}>
+          <Stack.Navigator
+            screenOptions={{
+              contentStyle: {
+                backgroundColor: '#FFF',
+
+              },
               headerShown: false
-            })}
+            }}
           >
-            <Stack.Screen name="NegationGame" component={NegationGameScreen} />
-
-            <Stack.Screen name="MainBoard"
-              component={MainBoardScreen}
-              options={({ }) => ({
+            <Stack.Group
+              screenOptions={({ navigation }) => ({
                 headerShown: false
-              })} />
-
-            <Stack.Screen name="Main"
-              component={MainScreen}
-              options={({ navigation }) => ({
-                header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
-              })} />
-            <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
-
-            <Stack.Screen name="Investigation" component={InvestigationScreen} />
-
-            <Stack.Screen name="CriminalsCaught" component={CriminalsCaughtScreen} />
-
-            <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
-
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-
-            <Stack.Screen name="ContentProfile" component={ContentProfileScreen} />
-
-            <Stack.Screen name="SkinsManagement" component={SkinsManagementScreen} />
-
-
-            <Stack.Screen name="ConditionGame" component={ConditionGameScreen} />
-
-            <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
-
-            <Stack.Screen name="ErrorTypeGame" component={ErrorTypeGameScreen} />
-
-            <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} options={{ headerShown: false }} />
-
-            <Stack.Screen name="Achievements" component={AchievementsScreen} />
-
-            <Stack.Screen name="TemporalLinkGame" component={TemporalLinkGameScreen} />
-
-            <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
-
-            <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
-
-            <Stack.Screen name="Login" component={SignInScreen} />
-
-            <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-
-            <Stack.Screen name="ForgetPassword" component={ForgetPasswordScreen} />
-
-            <Stack.Screen name="Settings" component={SettingsScreen} />
-
-            <Stack.Screen name="Notif" component={NotifScreen} />
-
-            <Stack.Screen name="Help" component={HelpScreen} />
-
-            <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
-
-            <Stack.Screen name="Theme" component={ThemeScreen} />
-
-            <Stack.Screen name="Ranking" component={RankingScreen} />
-
-            <Stack.Screen name="Stats" component={StatisticsScreen} />
-
-            {/* Partie admin */}
-            <Stack.Screen name="Admin"
-              options={{
-                headerShown: false
-              }}
+              })}
             >
-              {/* @ts-ignore */}
-              {(props) => <AdminNavigator {...props} />}
-            </Stack.Screen>
 
+              <Stack.Screen name="MainBoard"
+                component={MainBoardScreen}
+                options={({ }) => ({
+                  headerShown: false
+                })} />
 
-            <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
+              <Stack.Screen name="Main"
+                component={MainScreen}
+                options={({ navigation }) => ({
+                  header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
+                })} />
+              <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
 
-            <Stack.Screen name="EditRewards" component={EditRewardsSreen} />
+              <Stack.Screen name="NegationGame" component={NegationGameScreen} />
 
-            <Stack.Screen name="ExportData" component={ExportDataSreen} />
+              <Stack.Screen name="Investigation" component={InvestigationScreen} />
 
-            <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
+              <Stack.Screen name="CriminalsCaught" component={CriminalsCaughtScreen} />
 
-            <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
+              <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
 
-            <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
 
-            <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
-          </Stack.Group>
+              <Stack.Screen name="ContentProfile" component={ContentProfileScreen} />
 
-        </Stack.Navigator>
+              <Stack.Screen name="SkinsManagement" component={SkinsManagementScreen} />
 
-        {isModalVisible && (
-          <TouchableOpacity
-            style={tw('absolute inset-0 justify-center items-center w-full h-full')}
-            activeOpacity={1}
-            onPress={hideModal}
-          >
-            <Animated.View
-              style={{
-                transform: [{ translateY }],
-                maxWidth: 700,
-                margin: 20
-              }}>
-              <TouchableOpacity
-                onPress={hideModal}
-                style={[tw('absolute top-0 right-0 z-10 rounded-full h-8 w-8 justify-center items-center'), {
-                  transform: [{ translateX: 13 }, { translateY: -12 }],
-                  backgroundColor: 'transparent'
-                }]}
+              <Stack.Screen name="ConditionGame" component={ConditionGameScreen} />
+
+              <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
+
+              <Stack.Screen name="ErrorTypeGame" component={ErrorTypeGameScreen} />
+
+              <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} options={{ headerShown: false }} />
+
+              <Stack.Screen name="Achievements" component={AchievementsScreen} />
+
+              <Stack.Screen name="TemporalLinkGame" component={TemporalLinkGameScreen} />
+
+              <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
+
+              <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
+
+              <Stack.Screen name="Login" component={SignInScreen} />
+
+              <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+
+              <Stack.Screen name="ForgetPassword" component={ForgetPasswordScreen} />
+
+              <Stack.Screen name="Settings" component={SettingsScreen} />
+
+              <Stack.Screen name="Notif" component={NotifScreen} />
+
+              <Stack.Screen name="Help" component={HelpScreen} />
+
+              <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+
+              <Stack.Screen name="Theme" component={ThemeScreen} />
+
+              <Stack.Screen name="Ranking" component={RankingScreen} />
+
+              <Stack.Screen name="Stats" component={StatisticsScreen} />
+
+              {/* Partie admin */}
+              <Stack.Screen name="Admin"
+                options={{
+                  headerShown: false
+                }}
               >
-                <View style={[tw('absolute rounded-full'), {
-                  height: 26,
-                  width: 26,
-                  backgroundColor: 'white',
-                  zIndex: 1
-                }]} />
-                <AntDesign name="closecircle" size={31} color="seagreen" style={{ zIndex: 2 }} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={e => e.stopPropagation()}
-                style={[tw('p-5 bg-white rounded-lg items-center'), {
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 3,
-                }]}
-              >
-                {content}
-              </TouchableOpacity>
-            </Animated.View>
-          </TouchableOpacity>
-        )}
-      </View>
+                {/* @ts-ignore */}
+                {(props) => <AdminNavigator {...props} />}
+              </Stack.Screen>
+
+
+              <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
+
+              <Stack.Screen name="EditRewards" component={EditRewardsSreen} />
+
+              <Stack.Screen name="ExportData" component={ExportDataSreen} />
+
+              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
+
+              <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
+
+              <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
+
+              <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
+            </Stack.Group>
+
+          </Stack.Navigator>
+
+          <TimedModalContext />
+        </View>
+      </UserProvider>
+
     </ModalContext.Provider>
   );
 };

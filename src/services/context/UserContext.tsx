@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTailwind } from "tailwind-rn";
 import { updateUserPoints, getUserById } from "services/api/user";
-import { AchievementContext } from 'services/context/AchievementContext';
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
+import ModalContext from "services/context/ModalContext";
+import { View, Text } from "react-native";
 
 interface UserContextProps {
   user: User | null;
@@ -21,8 +23,9 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 const useUser = () => useContext(UserContext);
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+  const tw = useTailwind();
   const [user, setUserState] = useState<User | null>(null);
-  const { unlockAchievement } = useContext(AchievementContext);
+  const modalContext = useContext(ModalContext);
 
   useEffect(() => {
   }, [user]);
@@ -74,12 +77,32 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       // Si il y a de nouvelles réalisations, on déclenche l'affichage du modal pour chacune d'entre elles
       if (response.data.newAchievements && response.data.newAchievements.length > 0) {
         response.data.newAchievements.forEach((achievement: Achievement) => {
-          unlockAchievement(achievement);
+          unlockAchievementModal(achievement);
         });
       }
     }
   };
-  
+
+  const unlockAchievementModal = async (achievement: Achievement) => {
+    console.log("unlockAchievement");
+
+    modalContext.setContent(
+      <View style={tw('bg-white rounded-xl p-5')}>
+        <Text style={tw('text-center text-green-500 font-bold text-lg')}>Haut fait débloqué</Text>
+
+        <View style={tw('border-b border-gray-400 my-4')} />
+
+        <View style={tw('flex-row items-center justify-center mb-5')}>
+          {/* <AchievementIcon achievement={achievement} /> */}
+          <Text style={tw('ml-3 text-lg font-bold')}>{achievement?.name}</Text>
+        </View>
+        <Text style={tw('text-center')}>{achievement?.description}</Text>
+      </View>
+    );
+    modalContext.showModal();
+  };
+
+
   const updateStorageUserFromAPI = async (userId: number) => {
     if (userId) {
       try {
