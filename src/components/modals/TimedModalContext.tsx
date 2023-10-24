@@ -51,7 +51,7 @@ const TimedModalContext = () => {
                     <TouchableOpacity
                         activeOpacity={1}
                         onPress={e => e.stopPropagation()}
-                        style={[tw('p-5 bg-white rounded-lg items-center'), {
+                        style={[tw('p-1 bg-white rounded-lg items-center'), {
                             shadowColor: "#000",
                             shadowOffset: { width: 0, height: 2 },
                             shadowOpacity: 0.25,

@@ -21,7 +21,6 @@ const colors = [
 const NegationGameScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithTokens>();
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
   const { incrementPoints } = useUser();
@@ -33,7 +32,6 @@ const NegationGameScreen = ({ }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
-  const [scrollY, setScrollY] = useState(0);
   const modalContext = useContext(ModalContext);
 
   useEffect(() => {
@@ -132,7 +130,6 @@ const NegationGameScreen = ({ }) => {
       return newText;
     });
   }, [userSentenceSpecifications]);
-
 
 
   const renderText = (text: TextWithTokens) => {
@@ -286,7 +283,6 @@ const NegationGameScreen = ({ }) => {
     setUserSentenceSpecifications([]);
     setShowMessage(false);
     setMessageContent("");
-
     await fetchTextFromAPI();
     setLoading(false);
   };

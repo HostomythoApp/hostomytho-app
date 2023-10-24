@@ -7,7 +7,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useLoadFonts } from "fonts/useLoadFonts";
 import { AuthProvider } from "services/context/AuthContext";
 import { UserProvider } from "services/context/UserContext";
-import { AchievementProvider } from "services/context/AchievementContext";
 import { SkinsProvider } from "services/context/SkinsContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import utilities from "./src/utils/tailwind/styles.json";
@@ -35,24 +34,22 @@ export default function App() {
   }
 
   return (
-    <AchievementProvider>
-      <UserProvider>
-        <AuthProvider>
-          <SkinsProvider>
-            <QueryClientProvider client={queryClient}>
-              <View style={styles.container} onLayout={onLayoutRootView}>
-                <StatusBar hidden />
-                <NavigationContainer linking={linking}>
-                  <TailwindProvider utilities={utilities}>
-                    <StackNavigator />
-                  </TailwindProvider>
-                </NavigationContainer>
-              </View>
-            </QueryClientProvider>
-          </SkinsProvider>
-        </AuthProvider>
-      </UserProvider>
-    </AchievementProvider>
+    <UserProvider>
+      <AuthProvider>
+        <SkinsProvider>
+          <QueryClientProvider client={queryClient}>
+            <View style={styles.container} onLayout={onLayoutRootView}>
+              <StatusBar hidden />
+              <NavigationContainer linking={linking}>
+                <TailwindProvider utilities={utilities}>
+                  <StackNavigator />
+                </TailwindProvider>
+              </NavigationContainer>
+            </View>
+          </QueryClientProvider>
+        </SkinsProvider>
+      </AuthProvider>
+    </UserProvider>
   );
 }
 

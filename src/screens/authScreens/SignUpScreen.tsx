@@ -19,6 +19,7 @@ import { detectiveNamesMale, detectiveNamesFemale, keywordsMale, keywordsFemale 
 const SignUpSchema = Yup.object().shape({
     username: Yup.string().required('Ce champ est obligatoire.'),
     password: Yup.string().min(6, 'Mot de passe trop court. Celui-ci doit contenir 6 caractères minimum.').required('Ce champ est obligatoire.'),
+    // @ts-ignore
     password2: Yup.string().oneOf([Yup.ref('password'), null], 'Les mots de passe ne correspondent pas').required('Ce champ est obligatoire.'),
     email: Yup.string().email('Email non valide'),
 });
@@ -167,7 +168,7 @@ const SignUpScreen = () => {
                         <CustomHeaderEmpty title="Inscription" />
                         <View style={tw('w-full pt-20 px-2 max-w-5xl justify-center items-center')}>
 
-                           <Text> {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}</Text>
+                            <Text> {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}</Text>
 
                             <MainInput
                                 text={'Pseudo'}

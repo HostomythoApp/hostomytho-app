@@ -17,6 +17,7 @@ const Particle = ({ x, y, angle, index, shape }: { x: number, y: number, angle: 
     opacity.value = withTiming(0, { duration: 700 });
   }, []);
 
+  // @ts-ignore
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [

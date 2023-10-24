@@ -55,8 +55,6 @@ const StackNavigator = ({ }) => {
   const [content, setContent] = useState(null);
 
   useEffect(() => {
-    console.log("useEffect");
-    console.log(isModalVisible);
   }, [isModalVisible]);
 
 

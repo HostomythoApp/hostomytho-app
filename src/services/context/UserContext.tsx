@@ -6,6 +6,7 @@ import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
 import { View, Text } from "react-native";
+import AchievementIcon from "components/AchievementIcon";
 
 interface UserContextProps {
   user: User | null;
@@ -84,16 +85,14 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const unlockAchievementModal = async (achievement: Achievement) => {
-    console.log("unlockAchievement");
-
     modalContext.setContent(
-      <View style={tw('bg-white rounded-xl p-5')}>
-        <Text style={tw('text-center text-green-500 font-bold text-lg')}>Haut fait débloqué</Text>
+      <View style={tw('bg-white rounded-xl p-2')}>
+        <Text style={tw('text-center text-green-600 font-bold text-lg')}>Haut fait débloqué</Text>
 
         <View style={tw('border-b border-gray-400 my-4')} />
 
-        <View style={tw('flex-row items-center justify-center mb-5')}>
-          {/* <AchievementIcon achievement={achievement} /> */}
+        <View style={tw('flex-row items-center justify-center mb-1')}>
+          <AchievementIcon achievement={achievement} />
           <Text style={tw('ml-3 text-lg font-bold')}>{achievement?.name}</Text>
         </View>
         <Text style={tw('text-center')}>{achievement?.description}</Text>
