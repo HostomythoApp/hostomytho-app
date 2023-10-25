@@ -11,6 +11,7 @@ import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelection } from 'utils/gameFunctions';
 import InfoText from "components/InfoText";
 import ModalContext from "services/context/ModalContext";
+import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 
 const colors = [
   "bg-yellow-300",
@@ -32,7 +33,8 @@ const NegationGameScreen = ({ }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
-  const modalContext = useContext(ModalContext);
+  // const modalContext = useContext(ModalContext);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchText = async () => {
@@ -50,12 +52,22 @@ const NegationGameScreen = ({ }) => {
     fetchText();
   }, []);
 
-  const handleShowModal = () => {
-    modalContext.setContent(
-      <Text>Voici le contenu de ma modal pour le jeu de négation !</Text>
-    );
-    modalContext.showModal();
-  }
+  // const handleShowModal = () => {
+  //   modalContext.setContent(
+  //     <Text>Voici le contenu de ma modal pour le jeu de négation !</Text>
+  //   );
+  //   modalContext.showModal();
+  // }
+
+
+  // *********** Gestion Tuto *******************
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+
+  // *****************************************************
+
 
   const onTokenPress = useCallback((wordIndex: number) => {
     setText(currentText => {
@@ -294,7 +306,11 @@ const NegationGameScreen = ({ }) => {
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
 
 
-          <TouchableOpacity onPress={handleShowModal}><Text>Afficher modal</Text></TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setIsModalVisible(true);
+            }}
+          ><Text>Afficher modal</Text></TouchableOpacity>
 
 
           {errorMessage && (
@@ -376,10 +392,22 @@ const NegationGameScreen = ({ }) => {
 
           }
         </View>
+        <ModalDoctorsExplanation
+          isVisible={isModalVisible}
+          onClose={handleCloseModal}
+        >
+          <View style={tw('')}>
+            <Text style={tw('font-primary')}
+            > Chabadabada bidibi di ! Chabadabada bidibi di ! Chabadabada bidibi di !</Text>
+            <Text style={tw('font-primary')}
+            >Chabadabada bidibi di !</Text>
+            <Text style={tw('font-primary')}
+            >Chabadabada bidibi di !</Text>
+          </View>
+        </ModalDoctorsExplanation>
       </SafeAreaView>
     </ImageBackground>
   );
-
 };
 
 export default NegationGameScreen;
