@@ -33,8 +33,8 @@ const TypeSentenceGameScreen = ({ }) => {
   const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const { incrementPoints } = useUser();
-  const [startWordIndex, setStartWordIndex] = useState<number | null>(null); // Nouvel état pour le début de la sélection
-  const [endWordIndex, setEndWordIndex] = useState<number | null>(null); // Nouvel état pour la fin de la sélection
+  const [startWordIndex, setStartWordIndex] = useState<number | null>(null);
+  const [endWordIndex, setEndWordIndex] = useState<number | null>(null);
 
   function shuffleArray(array: any) {
     const newArr = [...array];
@@ -48,9 +48,6 @@ const TypeSentenceGameScreen = ({ }) => {
   useEffect(() => {
     const shuffledSentences = shuffleArray(data.sentences);
     setSentences(shuffledSentences.slice(0, 10).map((sentence) => {
-
-      // const words = sentence.content.split(' ').map((word: Word) => ({ text: word, isSelected: false, sentenceId: null }));
-      // return { ...sentence, content: words };
 
       const words = splitText(sentence)
       return words;
@@ -90,7 +87,7 @@ const TypeSentenceGameScreen = ({ }) => {
       setStartWordIndex(wordIndex);
     } else if (endWordIndex === null) {
       setEndWordIndex(wordIndex);
-    } else { // Si on a déjà sélectionné une plage de mots, commencer une nouvelle sélection
+    } else {
       setStartWordIndex(wordIndex);
       setEndWordIndex(null);
     }
@@ -101,7 +98,7 @@ const TypeSentenceGameScreen = ({ }) => {
     setSelectedButton(type);
     const newSentences = sentences.map((sentence, index) => {
       if (index === currentIndex) {
-        if (type === 'none') { // Si le bouton 'Aucun' est appuyé
+        if (type === 'none') {
           const newWords = sentence.content.map(word => {
             return { ...word, isSelected: false, sentenceId: null }; // Désélectionner tous les mots
           });

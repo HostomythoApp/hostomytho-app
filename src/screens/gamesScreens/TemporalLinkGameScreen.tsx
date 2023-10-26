@@ -46,11 +46,11 @@ const TemporalLinkGameScreen = () => {
   };
 
   const colors = [
-    "bg-[#87CEFA]", // Jaune pastel
-    "bg-[#FFB6B9]", // Rose pastel
-    "bg-[#A2D9D3]", // Vert pastel
-    "bg-[#C3B1E1]", // Violet pastel
-    "bg-[#F5D5BA]", // Beige pastel
+    "bg-[#87CEFA]",
+    "bg-[#FFB6B9]",
+    "bg-[#A2D9D3]",
+    "bg-[#C3B1E1]",
+    "bg-[#F5D5BA]",
   ];
 
 

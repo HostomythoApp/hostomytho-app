@@ -6,6 +6,7 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
     const translateX = useRef(new Animated.Value(-1000)).current;
     const bubbleOpacity = useRef(new Animated.Value(0)).current;
     const [bubbleVisible, setBubbleVisible] = useState(false);
+
     const tw = useTailwind();
 
     useEffect(() => {
@@ -44,7 +45,7 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
                     bottom: 0,
                     left: 0,
                     flexDirection: 'row',
-                    alignItems: 'flex-start'
+                    alignItems: 'flex-start',
                 }}
             >
                 <Image
@@ -53,7 +54,7 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
                     resizeMode="contain"
                 />
                 {bubbleVisible && (
-                    <Animated.View style={{ paddingLeft: 10, opacity: bubbleOpacity }}>
+                    <Animated.View style={{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 500 }}>
 
                         <View style={[tw('p-3 rounded-lg bg-white'),
                         {

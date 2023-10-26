@@ -12,6 +12,8 @@ import { checkUserSelection } from 'utils/gameFunctions';
 import InfoText from "components/InfoText";
 import ModalContext from "services/context/ModalContext";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
+import { getTutorialContentForStep } from "tutorials/tutorialNegationGame";
+import HelpButton from "components/button/HelpButton";
 
 const colors = [
   "bg-yellow-300",
@@ -35,36 +37,88 @@ const NegationGameScreen = ({ }) => {
   const [messageContent, setMessageContent] = useState("");
   // const modalContext = useContext(ModalContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [isTutorial, setIsTutorial] = useState(true);
+  const [tutorialStep, setTutorialStep] = useState(1);
 
   useEffect(() => {
+    console.log("useEffect user and isTutorial");
     const fetchText = async () => {
       try {
         if (user) {
-          // TODO ne récupérer que les tokens pour ne pas donner la réponse dans les logs
-          const response = await getTextWithTokens(user?.id, 'negation');
-          // const response = await getTextWithTokensById(64);
+          let response;
+          if (isTutorial) {
+            response = await getTextWithTokensById(72);
+            // TODO Faire avec 76 après
+          } else {
+            // Sinon, continuez avec la logique habituelle.
+            response = await getTextWithTokens(user.id, 'negation');
+          }
           setText(response);
         }
       } catch (error) {
         console.error(error);
       }
     };
+    // Lancez la récupération du texte.
     fetchText();
-  }, []);
+  }, [isTutorial]);
 
-  // const handleShowModal = () => {
-  //   modalContext.setContent(
-  //     <Text>Voici le contenu de ma modal pour le jeu de négation !</Text>
-  //   );
-  //   modalContext.showModal();
-  // }
+
+  useEffect(() => {
+    console.log("useEffect isTutorial");
+
+    if (isTutorial) {
+
+      const initialContent = getTutorialContentForStep(tutorialStep, tw);
+      showModal(initialContent);
+    }
+  }, [isTutorial]);
 
 
   // *********** Gestion Tuto *******************
+  const nextTutorialStep = () => {
+    if (!isTutorial) return;
+
+    const nextStep = tutorialStep + 1;
+    setTutorialStep(nextStep); // Mise à jour de l'étape actuelle
+
+    const tutorialContent = getTutorialContentForStep(nextStep, tw);
+    if (tutorialContent) {
+      showModal(tutorialContent);
+    } else {
+      // Si aucun contenu n'est retourné (par exemple, si nous avons terminé le tutoriel), vous pouvez définir la logique pour terminer le tutoriel.
+      console.log('Fin du tutoriel');
+    }
+  };
+
+  const showModal = (content: any) => {
+    setModalContent(content);
+    setIsModalVisible(true);
+  };
+
   const handleCloseModal = () => {
     setIsModalVisible(false);
   };
 
+  // const onUserAction = () => {
+  //   const newContent = (
+
+  //   );
+  //   showModal(newContent);
+  // };
+
+  // const nextTutorialStep = () => {
+  //   const nextStep = tutorialStep + 1;
+  //   setTutorialStep(nextStep);
+
+  //   const content = getTutorialContentForStep(nextStep); // fonction pour obtenir le contenu basé sur l'étape
+  //   showModal(content);
+  // };
+
+  const showHelpModal = () => {
+    alert("Ouverture modal help")
+  };
 
   // *****************************************************
 
@@ -218,10 +272,12 @@ const NegationGameScreen = ({ }) => {
   );
 
   const fetchTextFromAPI = async () => {
+    console.log("fetchTextFromAPI");
+
     try {
       if (user) {
-        const response = await getTextWithTokens(user?.id, 'negation');
-        // const response = await getTextWithTokensById(64);
+        // const response = await getTextWithTokens(user?.id, 'negation');
+        const response = await getTextWithTokensById(72); // ID de votre texte de tutoriel
 
         setText(response);
       }
@@ -304,11 +360,12 @@ const NegationGameScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
+          <HelpButton onHelpPress={showHelpModal} />
 
 
           <TouchableOpacity
             onPress={() => {
-              setIsModalVisible(true);
+              nextTutorialStep();
             }}
           ><Text>Afficher modal</Text></TouchableOpacity>
 
@@ -396,14 +453,7 @@ const NegationGameScreen = ({ }) => {
           isVisible={isModalVisible}
           onClose={handleCloseModal}
         >
-          <View style={tw('')}>
-            <Text style={tw('font-primary')}
-            > Chabadabada bidibi di ! Chabadabada bidibi di ! Chabadabada bidibi di !</Text>
-            <Text style={tw('font-primary')}
-            >Chabadabada bidibi di !</Text>
-            <Text style={tw('font-primary')}
-            >Chabadabada bidibi di !</Text>
-          </View>
+          {modalContent}
         </ModalDoctorsExplanation>
       </SafeAreaView>
     </ImageBackground>
