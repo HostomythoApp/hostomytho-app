@@ -8,7 +8,7 @@ const HelpButton = ({ onHelpPress }: { onHelpPress: any }) => {
 
   return (
     <TouchableOpacity 
-      style={tw('top-0 mr-0 ml-auto bg-[#FFFEE0] p-2 text-center w-11 rounded-t-none rounded-b-md')} 
+      style={tw('top-0 mr-2 ml-auto bg-[#FFFEE0] p-2 text-center w-11 rounded-t-none rounded-b-md')} 
       onPress={onHelpPress}
     >
       <Entypo name="help" size={16} color="#253529" />

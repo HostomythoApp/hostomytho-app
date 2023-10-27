@@ -26,7 +26,6 @@ const InvestigationScreen = () => {
     const [investigationProgress, setInvestigationProgress] = useState(65);
     const [modalVisible, setModalVisible] = useState(false);
     const [resultModalVisible, setResultModalVisible] = useState(false);
-    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [arrestSuccess, setArrestSuccess] = useState<boolean | null>(null);
 
     useEffect(() => {

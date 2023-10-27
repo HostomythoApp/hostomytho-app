@@ -3,8 +3,6 @@ import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import { useTailwind } from "tailwind-rn";
 import { AntDesign } from '@expo/vector-icons';
 
-
-
 const CustomModal = ({ isVisible, onClose, children }: { isVisible: boolean, onClose: any, children: any }) => {
     const translateY = useRef(new Animated.Value(300)).current;
     const tw = useTailwind();

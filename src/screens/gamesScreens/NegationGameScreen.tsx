@@ -12,8 +12,9 @@ import { checkUserSelection } from 'utils/gameFunctions';
 import InfoText from "components/InfoText";
 import ModalContext from "services/context/ModalContext";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
-import { getTutorialContentForStep } from "tutorials/tutorialNegationGame";
+import { getModalHelpContent, getTutorialContentForStep } from "tutorials/tutorialNegationGame";
 import HelpButton from "components/button/HelpButton";
+import CustomModal from "components/modals/CustomModal";
 
 const colors = [
   "bg-yellow-300",
@@ -35,49 +36,81 @@ const NegationGameScreen = ({ }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
-  // const modalContext = useContext(ModalContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [isTutorial, setIsTutorial] = useState(true);
   const [tutorialStep, setTutorialStep] = useState(1);
+  const [isFirstClickValidate, setIsFirstClickValidate] = useState(true);
 
   useEffect(() => {
-    console.log("useEffect user and isTutorial");
+    let isMounted = true;
+
     const fetchText = async () => {
-      try {
-        if (user) {
-          let response;
-          if (isTutorial) {
+      if (!user) return;
+
+      let response;
+      if (isTutorial) {
+        switch (tutorialStep) {
+          case 1:
             response = await getTextWithTokensById(72);
-            // TODO Faire avec 76 après
-          } else {
-            // Sinon, continuez avec la logique habituelle.
+            break;
+          case 2:
+            response = await getTextWithTokensById(72);
+            break;
+          case 3:
+            response = await getTextWithTokensById(76);
+            break;
+          case 4:
+            response = await getTextWithTokensById(80);
+            break;
+          default:
             response = await getTextWithTokens(user.id, 'negation');
-          }
-          setText(response);
+            break;
         }
-      } catch (error) {
-        console.error(error);
+      } else {
+        response = await getTextWithTokens(user.id, 'negation');
+      }
+
+      if (isMounted) {
+        setText(response);
       }
     };
-    // Lancez la récupération du texte.
     fetchText();
-  }, [isTutorial]);
+    return () => {
+      isMounted = false;
+    };
+  }, [isTutorial, tutorialStep, user]);
+
 
 
   useEffect(() => {
-    console.log("useEffect isTutorial");
-
+    setIsFirstClickValidate(true);
     if (isTutorial) {
+      const delayModal = setTimeout(() => {
+        const initialContent = getTutorialContentForStep(tutorialStep, tw);
+        showModal(initialContent);
+      }, 1000);
+      return () => clearTimeout(delayModal);
+    }
+  }, [isTutorial]);
 
-      const initialContent = getTutorialContentForStep(tutorialStep, tw);
-      showModal(initialContent);
+  useEffect(() => {
+    setIsFirstClickValidate(true);
+    if (isTutorial) {
+      const delayModal = setTimeout(() => {
+        const initialContent = getTutorialContentForStep(tutorialStep, tw);
+        showModal(initialContent);
+      }, 1000);
+      return () => clearTimeout(delayModal);
     }
   }, [isTutorial]);
 
 
   // *********** Gestion Tuto *******************
   const nextTutorialStep = () => {
+    console.log("nextTuto");
+
     if (!isTutorial) return;
 
     const nextStep = tutorialStep + 1;
@@ -88,6 +121,7 @@ const NegationGameScreen = ({ }) => {
       showModal(tutorialContent);
     } else {
       // Si aucun contenu n'est retourné (par exemple, si nous avons terminé le tutoriel), vous pouvez définir la logique pour terminer le tutoriel.
+      setIsTutorial(false);
       console.log('Fin du tutoriel');
     }
   };
@@ -101,23 +135,13 @@ const NegationGameScreen = ({ }) => {
     setIsModalVisible(false);
   };
 
-  // const onUserAction = () => {
-  //   const newContent = (
-
-  //   );
-  //   showModal(newContent);
-  // };
-
-  // const nextTutorialStep = () => {
-  //   const nextStep = tutorialStep + 1;
-  //   setTutorialStep(nextStep);
-
-  //   const content = getTutorialContentForStep(nextStep); // fonction pour obtenir le contenu basé sur l'étape
-  //   showModal(content);
-  // };
-
   const showHelpModal = () => {
-    alert("Ouverture modal help")
+    setIsHelpModalVisible(true)
+  };
+
+
+  const launchTuto = () => {
+    console.log("Lancement du tuto");
   };
 
   // *****************************************************
@@ -146,6 +170,11 @@ const NegationGameScreen = ({ }) => {
 
 
   const addSentenceSpecification = () => {
+    if (isTutorial && isFirstClickValidate) {
+      nextTutorialStep();
+      setIsFirstClickValidate(false);
+    }
+
     setSelectionStarted(false);
     if (!text) return;
     const selectedTokens = text.tokens.filter(token => token.isCurrentSelection);
@@ -287,11 +316,16 @@ const NegationGameScreen = ({ }) => {
   };
 
   const goToNextSentence = async () => {
+    console.log("isTutorial");
+    console.log(isTutorial);
     setUserSentenceSpecifications([]);
     setShowMessage(false);
     setMessageContent("");
     await fetchTextFromAPI();
     setLoading(false);
+    if (isTutorial) {
+      nextTutorialStep();
+    }
   };
 
   const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
@@ -361,14 +395,6 @@ const NegationGameScreen = ({ }) => {
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
           <HelpButton onHelpPress={showHelpModal} />
-
-
-          <TouchableOpacity
-            onPress={() => {
-              nextTutorialStep();
-            }}
-          ><Text>Afficher modal</Text></TouchableOpacity>
-
 
           {errorMessage && (
             <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
@@ -455,8 +481,21 @@ const NegationGameScreen = ({ }) => {
         >
           {modalContent}
         </ModalDoctorsExplanation>
+
+        <CustomModal
+          isVisible={isHelpModalVisible}
+          onClose={() => setIsHelpModalVisible(false)}
+        >
+          <View >
+            {getModalHelpContent(tw)}
+            <TouchableOpacity onPress={launchTuto} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+              <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
+            </TouchableOpacity>
+          </View>
+        </CustomModal>
       </SafeAreaView>
     </ImageBackground>
+
   );
 };
 
