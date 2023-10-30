@@ -1315,6 +1315,16 @@
 			"paddingTop": 24
 		}
 	},
+	"pt-8": {
+		"style": {
+			"paddingTop": 32
+		}
+	},
+	"pt-7": {
+		"style": {
+			"paddingTop": 28
+		}
+	},
 	"text-center": {
 		"style": {
 			"textAlign": "center"
@@ -1500,12 +1510,6 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
-		}
-	},
-	"text-green-500": {
-		"style": {
-			"--tw-text-opacity": 1,
-			"color": "rgb(34 197 94 / var(--tw-text-opacity))"
 		}
 	},
 	"dark:text-white": {

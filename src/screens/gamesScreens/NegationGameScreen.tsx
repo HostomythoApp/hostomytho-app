@@ -10,11 +10,11 @@ import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelection } from 'utils/gameFunctions';
 import InfoText from "components/InfoText";
-import ModalContext from "services/context/ModalContext";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { getModalHelpContent, getTutorialContentForStep } from "tutorials/tutorialNegationGame";
 import HelpButton from "components/button/HelpButton";
 import CustomModal from "components/modals/CustomModal";
+import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
 
 const colors = [
   "bg-yellow-300",
@@ -95,34 +95,35 @@ const NegationGameScreen = ({ }) => {
     }
   }, [isTutorial]);
 
+  // Vérifier si le tuto a été fait ou pas par l'utilisateur
   useEffect(() => {
-    setIsFirstClickValidate(true);
-    if (isTutorial) {
-      const delayModal = setTimeout(() => {
-        const initialContent = getTutorialContentForStep(tutorialStep, tw);
-        showModal(initialContent);
-      }, 1000);
-      return () => clearTimeout(delayModal);
+    async function checkTutorialCompletion() {
+      if (user) {
+        const completed = await isTutorialCompleted(user.id, 1);
+        setIsTutorial(!completed);
+      }
     }
-  }, [isTutorial]);
-
+    checkTutorialCompletion();
+  }, [user]);
 
   // *********** Gestion Tuto *******************
   const nextTutorialStep = () => {
-    console.log("nextTuto");
-
     if (!isTutorial) return;
 
-    const nextStep = tutorialStep + 1;
-    setTutorialStep(nextStep); // Mise à jour de l'étape actuelle
+    const currentContent = getTutorialContentForStep(tutorialStep, tw);
+    if (currentContent) {
+      showModal(currentContent);
 
-    const tutorialContent = getTutorialContentForStep(nextStep, tw);
-    if (tutorialContent) {
-      showModal(tutorialContent);
-    } else {
-      // Si aucun contenu n'est retourné (par exemple, si nous avons terminé le tutoriel), vous pouvez définir la logique pour terminer le tutoriel.
-      setIsTutorial(false);
-      console.log('Fin du tutoriel');
+      // Vérifiez s'il y a un contenu pour la prochaine étape
+      const nextStepContent = getTutorialContentForStep(tutorialStep + 1, tw);
+      if (!nextStepContent) {
+        setIsTutorial(false);
+        if (user) {
+          completeTutorialForUser(user.id, 1);
+        }
+      } else {
+        setTutorialStep(tutorialStep + 1);
+      }
     }
   };
 
@@ -141,7 +142,8 @@ const NegationGameScreen = ({ }) => {
 
 
   const launchTuto = () => {
-    console.log("Lancement du tuto");
+    setIsTutorial(true);
+    setTutorialStep(1);
   };
 
   // *****************************************************
@@ -300,28 +302,10 @@ const NegationGameScreen = ({ }) => {
     </View>
   );
 
-  const fetchTextFromAPI = async () => {
-    console.log("fetchTextFromAPI");
-
-    try {
-      if (user) {
-        // const response = await getTextWithTokens(user?.id, 'negation');
-        const response = await getTextWithTokensById(72); // ID de votre texte de tutoriel
-
-        setText(response);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const goToNextSentence = async () => {
-    console.log("isTutorial");
-    console.log(isTutorial);
     setUserSentenceSpecifications([]);
     setShowMessage(false);
     setMessageContent("");
-    await fetchTextFromAPI();
     setLoading(false);
     if (isTutorial) {
       nextTutorialStep();
@@ -381,12 +365,7 @@ const NegationGameScreen = ({ }) => {
       const { id, ...rest } = userSentenceSpecification;
       // await createUserSentenceSpecification(rest);
     }
-
-    setUserSentenceSpecifications([]);
-    setShowMessage(false);
-    setMessageContent("");
-    await fetchTextFromAPI();
-    setLoading(false);
+    goToNextSentence();
   };
 
   return (
@@ -488,7 +467,10 @@ const NegationGameScreen = ({ }) => {
         >
           <View >
             {getModalHelpContent(tw)}
-            <TouchableOpacity onPress={launchTuto} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+            <TouchableOpacity onPress={() => {
+              launchTuto();
+              setIsHelpModalVisible(false);
+            }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
               <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
             </TouchableOpacity>
           </View>
