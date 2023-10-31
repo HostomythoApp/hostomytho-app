@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextWithTokens, getTextWithTokensById } from "services/api/texts";
+import { getTextTestNegation, getTextWithTokens, getTextWithTokensById } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
@@ -39,39 +39,35 @@ const NegationGameScreen = ({ }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [isTutorial, setIsTutorial] = useState(true);
-  const [tutorialStep, setTutorialStep] = useState(1);
+  const [isTutorial, setIsTutorial] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
   const [isFirstClickValidate, setIsFirstClickValidate] = useState(true);
+  const [questionsAsked, setQuestionsAsked] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+
+  // Vérifier si le tuto a été fait ou pas par l'utilisateur
+  useEffect(() => {
+    console.log("useEffect [user]");
+    async function checkTutorialCompletion() {
+      if (user) {
+        const completed = await isTutorialCompleted(user.id, 1);
+        console.log(completed);
+        setIsTutorial(!completed);
+      }
+    }
+    checkTutorialCompletion();
+  }, [user]);
 
   useEffect(() => {
+    console.log("useEffect [isTutorial, user]");
+
     let isMounted = true;
-
     const fetchText = async () => {
-      if (!user) return;
 
-      let response;
-      if (isTutorial) {
-        switch (tutorialStep) {
-          case 1:
-            response = await getTextWithTokensById(72);
-            break;
-          case 2:
-            response = await getTextWithTokensById(72);
-            break;
-          case 3:
-            response = await getTextWithTokensById(76);
-            break;
-          case 4:
-            response = await getTextWithTokensById(80);
-            break;
-          default:
-            response = await getTextWithTokens(user.id, 'negation');
-            break;
-        }
-      } else {
-        response = await getTextWithTokens(user.id, 'negation');
-      }
+      if (!user || isTutorial) return;
+      console.log("fetchText");
 
+      const response = await getTextWithTokens(user.id, 'negation');
       if (isMounted) {
         setText(response);
       }
@@ -80,51 +76,84 @@ const NegationGameScreen = ({ }) => {
     return () => {
       isMounted = false;
     };
-  }, [isTutorial, tutorialStep, user]);
-
-
+  }, [isTutorial, user]);
 
   useEffect(() => {
+    console.log("useEffect [isTutorial]");
     setIsFirstClickValidate(true);
-    if (isTutorial) {
-      const delayModal = setTimeout(() => {
-        const initialContent = getTutorialContentForStep(tutorialStep, tw);
-        showModal(initialContent);
-      }, 1000);
-      return () => clearTimeout(delayModal);
-    }
+    nextTutorialStep();
   }, [isTutorial]);
 
-  // Vérifier si le tuto a été fait ou pas par l'utilisateur
-  useEffect(() => {
-    async function checkTutorialCompletion() {
-      if (user) {
-        const completed = await isTutorialCompleted(user.id, 1);
-        setIsTutorial(!completed);
-      }
-    }
-    checkTutorialCompletion();
-  }, [user]);
+
 
   // *********** Gestion Tuto *******************
-  const nextTutorialStep = () => {
+  const nextTutorialStep = async () => {
+    console.log("******************** nextTuto *********************");
+    console.log("tutorialStep", tutorialStep);
+    console.log("questionsAsked", questionsAsked);
+    console.log("correctAnswers", correctAnswers);
+
     if (!isTutorial) return;
 
-    const currentContent = getTutorialContentForStep(tutorialStep, tw);
-    if (currentContent) {
-      showModal(currentContent);
+    const nextStep = tutorialStep + 1;
+    setTutorialStep(nextStep);
+    console.log("nextStep", nextStep);
 
-      // Vérifiez s'il y a un contenu pour la prochaine étape
-      const nextStepContent = getTutorialContentForStep(tutorialStep + 1, tw);
-      if (!nextStepContent) {
-        setIsTutorial(false);
-        if (user) {
-          completeTutorialForUser(user.id, 1);
-        }
+    if (nextStep <= 4) {
+      let response;
+      switch (nextStep) {
+        case 1:
+          response = await getTextWithTokensById(72);
+          break;
+          // TODO bloquer le bouton suivant
+        case 2:
+          response = await getTextWithTokensById(72);
+          break;
+        case 3:
+          response = await getTextWithTokensById(76);
+          break;
+        case 4:
+          response = await getTextTestNegation();
+          break;
+      }
+      setText(response);
+      const tutorialContent = getTutorialContentForStep(nextStep, tw);
+      if (tutorialContent) {
+        showModal(tutorialContent);
+      }
+    } else {
+      if (questionsAsked < 10) {
+        fetchTestText();
+        console.log("text suivant");
       } else {
-        setTutorialStep(tutorialStep + 1);
+        // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
+        if (correctAnswers >= 6) {
+          console.log("Tutoriel réussi!");
+          showModal(getTutorialContentForStep(98, tw));
+          setIsTutorial(false);
+          if (user) {
+            completeTutorialForUser(user.id, 1);
+          }
+        } else {
+          console.log("Tutoriel non réussi, on recommence le tuto");
+          showModal(getTutorialContentForStep(99, tw));
+          setCorrectAnswers(0);
+          setQuestionsAsked(0);
+          setTutorialStep(0);
+        }
       }
     }
+  };
+
+
+  const fetchTestText = async () => {
+    try {
+      const response = await getTextTestNegation();
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du texte de test.", error);
+    }
+
   };
 
   const showModal = (content: any) => {
@@ -143,7 +172,7 @@ const NegationGameScreen = ({ }) => {
 
   const launchTuto = () => {
     setIsTutorial(true);
-    setTutorialStep(1);
+    setTutorialStep(0);
   };
 
   // *****************************************************
@@ -324,6 +353,12 @@ const NegationGameScreen = ({ }) => {
 
 
   const onNextCard = async () => {
+    console.log("questionsAsked");
+    console.log(questionsAsked);
+
+    console.log("correctAnswers");
+    console.log(correctAnswers);
+
     setLoading(true);
     if (text?.is_negation_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
@@ -347,24 +382,48 @@ const NegationGameScreen = ({ }) => {
         setShowMessage(true);
         setLoading(false);
         setSelectionStarted(false);
+        if (tutorialStep > 3) {
+          setQuestionsAsked(questionsAsked + 1);
+        }
         return;
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+        if (tutorialStep > 3) {
+          setQuestionsAsked(questionsAsked + 1);
+        }
+        setCorrectAnswers(correctAnswers + 1);
         setTimeout(() => {
           incrementPoints(5);
         }, 100);
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      if (tutorialStep > 3) {
+        setQuestionsAsked(questionsAsked + 1);
+      }
       setTimeout(() => {
         incrementPoints(5);
       }, 100);
     }
-
-    for (let userSentenceSpecification of userSentenceSpecifications) {
-      const { id, ...rest } = userSentenceSpecification;
-      // await createUserSentenceSpecification(rest);
+    if (questionsAsked === 10) {
+      if (correctAnswers >= 8) {
+        console.log("Tutoriel réussi!");
+        setIsTutorial(false);
+        if (user) {
+          completeTutorialForUser(user.id, 1);
+        }
+      } else {
+        console.log("Tutoriel non réussi, recommencez!");
+        setCorrectAnswers(0);
+        setQuestionsAsked(0);
+        setTutorialStep(0);
+      }
     }
+
+    // for (let userSentenceSpecification of userSentenceSpecifications) {
+    //   const { id, ...rest } = userSentenceSpecification;
+    //   // await createUserSentenceSpecification(rest);
+    // }
     goToNextSentence();
   };
 
@@ -472,6 +531,7 @@ const NegationGameScreen = ({ }) => {
               setIsHelpModalVisible(false);
             }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
               <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
+              {/* TODO  problème avec relance du tuto */}
             </TouchableOpacity>
           </View>
         </CustomModal>

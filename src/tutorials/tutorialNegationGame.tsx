@@ -30,11 +30,27 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 4: return <Text style={tw('font-primary')}>
+            Vous connaissez désormais les bases de l'annotation de négations.
+            {"\n\n"}
+            Essayer de traiter les 10 textes suivants, et si vous obtenez au moins 6 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
+            {"\n\n"}
+            Bon courage !
+        </Text>;
+
+        // TODO dire qu'il peut y avoir rien à trouver dans le texte
+
+        case 98: return <Text style={tw('font-primary')}>
             Vous connaissez désormais les bases de l'annotation de négations. À vous de jouer.
             {"\n\n"}
             Le bouton avec le point d'interrogation en haut à droite vous permet d'accéder au rappel des consignes, et vous pourrez y relancer ce tutoriel si vous le souhaitez.
             {"\n\n"}
             Bon courage dans vos recherches !
+        </Text>;
+
+        case 99: return <Text style={tw('font-primary')}>
+            Vous avez fait un peu trop d'erreurs. Il est plus prudent de refaire l'exercice, sinon vous risquez de partir sur de mauvaises pistes.
+            {"\n\n"}
+            Du coup, recommençons depuis le début..
         </Text>;
 
         default: return null;

@@ -72,6 +72,21 @@ export const getTextWithTokensById = async (textId: number): Promise<TextWithTok
   }
 };
 
+export const getTextTestNegation = async (): Promise<TextWithTokens> => {
+  try {
+    const response = await api.get(`/texts/getTextTestNegation`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
 
 export const getTextById = async (id: number): Promise<Text[]> => {
   try {
