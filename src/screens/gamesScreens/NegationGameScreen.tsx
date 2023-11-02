@@ -51,7 +51,6 @@ const NegationGameScreen = ({ }) => {
     async function checkTutorialCompletion() {
       if (user) {
         const completed = await isTutorialCompleted(user.id, 1);
-        console.log(completed);
         setIsTutorial(!completed);
       }
     }
@@ -59,31 +58,17 @@ const NegationGameScreen = ({ }) => {
   }, [user]);
 
   useEffect(() => {
-    console.log("useEffect [isTutorial, user]");
-
-    let isMounted = true;
-    const fetchText = async () => {
-
-      if (!user || isTutorial) return;
-      console.log("fetchText");
-
-      const response = await getTextWithTokens(user.id, 'negation');
-      if (isMounted) {
-        setText(response);
-      }
-    };
-    fetchText();
-    return () => {
-      isMounted = false;
-    };
-  }, [isTutorial, user]);
-
-  useEffect(() => {
-    console.log("useEffect [isTutorial]");
-    setIsFirstClickValidate(true);
-    nextTutorialStep();
+    if (isTutorial) {
+      setTutorialStep(1);
+      console.log("Tutoriel démarré ou redémarré");
+      console.log("useEffect [isTutorial]");
+      setIsFirstClickValidate(true);
+      nextTutorialStep();
+    } else {
+      if (!user) return;
+      fetchNewText(user.id);
+    }
   }, [isTutorial]);
-
 
 
   // *********** Gestion Tuto *******************
@@ -104,39 +89,40 @@ const NegationGameScreen = ({ }) => {
       switch (nextStep) {
         case 1:
           response = await getTextWithTokensById(72);
-          break;
-          // TODO bloquer le bouton suivant
-        case 2:
-          response = await getTextWithTokensById(72);
+          setText(response);
           break;
         case 3:
           response = await getTextWithTokensById(76);
+          setText(response);
           break;
         case 4:
           response = await getTextTestNegation();
+          setText(response);
           break;
       }
-      setText(response);
       const tutorialContent = getTutorialContentForStep(nextStep, tw);
       if (tutorialContent) {
         showModal(tutorialContent);
       }
     } else {
-      if (questionsAsked < 10) {
+      console.log("questionsAsked", questionsAsked);
+      if (questionsAsked < 3) {
         fetchTestText();
-        console.log("text suivant");
+        console.log("texte suivant");
       } else {
         // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
         if (correctAnswers >= 6) {
           console.log("Tutoriel réussi!");
           showModal(getTutorialContentForStep(98, tw));
           setIsTutorial(false);
+
           if (user) {
             completeTutorialForUser(user.id, 1);
           }
         } else {
           console.log("Tutoriel non réussi, on recommence le tuto");
           showModal(getTutorialContentForStep(99, tw));
+          setIsFirstClickValidate(true);
           setCorrectAnswers(0);
           setQuestionsAsked(0);
           setTutorialStep(0);
@@ -153,7 +139,16 @@ const NegationGameScreen = ({ }) => {
     } catch (error) {
       console.error("Erreur lors de la récupération du texte de test.", error);
     }
+  };
 
+  const fetchNewText = async (userId: any) => {
+    try {
+      const response = await getTextWithTokens(userId, 'negation');
+      setText(response);
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération du nouveau texte :", error);
+    }
   };
 
   const showModal = (content: any) => {
@@ -170,13 +165,85 @@ const NegationGameScreen = ({ }) => {
   };
 
 
-  const launchTuto = () => {
-    setIsTutorial(true);
+  const launchTuto = async () => {
+    setCorrectAnswers(0);
+    setQuestionsAsked(0);
+    setIsFirstClickValidate(true);
     setTutorialStep(0);
+    setIsTutorial(true);
+
+    const response = await getTextWithTokensById(72);
+    setText(response);
+    const tutorialContent = getTutorialContentForStep(1, tw);
+    if (tutorialContent) {
+      showModal(tutorialContent);
+    }
   };
 
   // *****************************************************
 
+
+  const onNextCard = async () => {
+    setLoading(true);
+    if (text?.is_negation_specification_test) {
+      const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
+      if (!checkResult.isValid) {
+        const correctSpecification = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
+
+        const allPositions = checkResult.testSpecifications.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+        setText(currentText => {
+          if (!currentText) return currentText;
+          return updateTokensColor(currentText, allPositions);
+        });
+
+        let messageHeader;
+        if (checkResult.testSpecifications.length > 0) {
+          messageHeader = "Oups, raté! Voilà les négations qu'il fallait trouver :";
+        } else {
+          messageHeader = "Oh non, il n'y avait rien à trouver ici";
+        }
+
+        setMessageContent(`${messageHeader}\n${correctSpecification}`);
+        setShowMessage(true);
+        setLoading(false);
+        setSelectionStarted(false);
+        if (tutorialStep > 3) {
+          setQuestionsAsked(questionsAsked + 1);
+        }
+        return;
+      } else {
+        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+        if (tutorialStep > 2) {
+          setQuestionsAsked(questionsAsked + 1);
+          setCorrectAnswers(correctAnswers + 1);
+        }
+        if (!isTutorial) setTimeout(() => incrementPoints(5), 100);
+      }
+    } else {
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      if (tutorialStep > 3) {
+        setQuestionsAsked(questionsAsked + 1);
+      }
+      if (!isTutorial) setTimeout(() => incrementPoints(5), 100);
+    }
+    if (questionsAsked === 2) {
+      if (correctAnswers >= 7) {
+        setIsTutorial(false);
+        if (user) {
+          completeTutorialForUser(user.id, 1);
+        }
+      } else {
+        setCorrectAnswers(0);
+        setQuestionsAsked(0);
+        setTutorialStep(0);
+      }
+    }
+    // for (let userSentenceSpecification of userSentenceSpecifications) {
+    //   const { id, ...rest } = userSentenceSpecification;
+    //   // await createUserSentenceSpecification(rest);
+    // }
+    goToNextSentence();
+  };
 
   const onTokenPress = useCallback((wordIndex: number) => {
     setText(currentText => {
@@ -338,6 +405,9 @@ const NegationGameScreen = ({ }) => {
     setLoading(false);
     if (isTutorial) {
       nextTutorialStep();
+    } else {
+      if (!user) return;
+      fetchNewText(user.id);
     }
   };
 
@@ -352,80 +422,6 @@ const NegationGameScreen = ({ }) => {
   };
 
 
-  const onNextCard = async () => {
-    console.log("questionsAsked");
-    console.log(questionsAsked);
-
-    console.log("correctAnswers");
-    console.log(correctAnswers);
-
-    setLoading(true);
-    if (text?.is_negation_specification_test) {
-      const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
-      if (!checkResult.isValid) {
-        const correctSpecification = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
-
-        const allPositions = checkResult.testSpecifications.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
-        setText(currentText => {
-          if (!currentText) return currentText;
-          return updateTokensColor(currentText, allPositions);
-        });
-
-        let messageHeader;
-        if (checkResult.testSpecifications.length > 0) {
-          messageHeader = "Oups, raté! Voilà les négations qu'il fallait trouver :";
-        } else {
-          messageHeader = "Oh non, il n'y avait rien à trouver ici";
-        }
-
-        setMessageContent(`${messageHeader}\n${correctSpecification}`);
-        setShowMessage(true);
-        setLoading(false);
-        setSelectionStarted(false);
-        if (tutorialStep > 3) {
-          setQuestionsAsked(questionsAsked + 1);
-        }
-        return;
-      } else {
-        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-        if (tutorialStep > 3) {
-          setQuestionsAsked(questionsAsked + 1);
-        }
-        setCorrectAnswers(correctAnswers + 1);
-        setTimeout(() => {
-          incrementPoints(5);
-        }, 100);
-      }
-    } else {
-      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      if (tutorialStep > 3) {
-        setQuestionsAsked(questionsAsked + 1);
-      }
-      setTimeout(() => {
-        incrementPoints(5);
-      }, 100);
-    }
-    if (questionsAsked === 10) {
-      if (correctAnswers >= 8) {
-        console.log("Tutoriel réussi!");
-        setIsTutorial(false);
-        if (user) {
-          completeTutorialForUser(user.id, 1);
-        }
-      } else {
-        console.log("Tutoriel non réussi, recommencez!");
-        setCorrectAnswers(0);
-        setQuestionsAsked(0);
-        setTutorialStep(0);
-      }
-    }
-
-    // for (let userSentenceSpecification of userSentenceSpecifications) {
-    //   const { id, ...rest } = userSentenceSpecification;
-    //   // await createUserSentenceSpecification(rest);
-    // }
-    goToNextSentence();
-  };
 
   return (
     <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
@@ -442,6 +438,17 @@ const NegationGameScreen = ({ }) => {
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {text && renderText(text)}
           </View>
+          {
+            tutorialStep > 3 && isTutorial && // Vérifier si l'utilisateur est dans l'étape des 10 questions
+            <View style={tw('p-4')}>
+              <Text style={tw('text-base mb-2')}>
+                Questions posées: {questionsAsked} / 10
+              </Text>
+              <Text style={tw('text-base')}>
+                Bonnes réponses: {correctAnswers}
+              </Text>
+            </View>
+          }
           <View style={tw("mx-4 pb-3")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
           </View>
@@ -474,7 +481,11 @@ const NegationGameScreen = ({ }) => {
 
           {!showMessage &&
             <TouchableOpacity
-              style={tw("py-2 px-4 rounded-lg bg-primary flex-row items-center justify-center  w-full")}
+              disabled={isTutorial && isFirstClickValidate}
+              style={[
+                tw("py-2 px-4 rounded-lg flex-row items-center justify-center w-full"),
+                (isTutorial && isFirstClickValidate) ? tw("bg-green-200") : tw("bg-primary") // Griser le bouton si désactivé
+              ]}
               onPress={onNextCard}
             >
               <Text style={tw("text-white font-primary text-lg")}>Texte suivant</Text>
@@ -482,6 +493,7 @@ const NegationGameScreen = ({ }) => {
                 <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
               </View>
             </TouchableOpacity>
+
           }
         </View>
         {userSentenceSpecifications.length > 0 && (

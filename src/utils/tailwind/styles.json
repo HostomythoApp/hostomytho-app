@@ -335,11 +335,6 @@
 			"marginTop": 24
 		}
 	},
-	"mt-7": {
-		"style": {
-			"marginTop": 28
-		}
-	},
 	"mt-8": {
 		"style": {
 			"marginTop": 32
@@ -353,11 +348,6 @@
 	"flex": {
 		"style": {
 			"display": "flex"
-		}
-	},
-	"table": {
-		"style": {
-			"display": "table"
 		}
 	},
 	"hidden": {
@@ -1323,11 +1313,6 @@
 	"pt-8": {
 		"style": {
 			"paddingTop": 32
-		}
-	},
-	"pt-7": {
-		"style": {
-			"paddingTop": 28
 		}
 	},
 	"text-center": {
