@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
@@ -44,10 +44,11 @@ const NegationGameScreen = ({ }) => {
   const [isFirstClickValidate, setIsFirstClickValidate] = useState(true);
   const [questionsAsked, setQuestionsAsked] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [tutorialFailed, setTutorialFailed] = useState(false);
+  const window = Dimensions.get('window');
 
   // Vérifier si le tuto a été fait ou pas par l'utilisateur
   useEffect(() => {
-    console.log("useEffect [user]");
     async function checkTutorialCompletion() {
       if (user) {
         const completed = await isTutorialCompleted(user.id, 1);
@@ -60,8 +61,6 @@ const NegationGameScreen = ({ }) => {
   useEffect(() => {
     if (isTutorial) {
       setTutorialStep(1);
-      console.log("Tutoriel démarré ou redémarré");
-      console.log("useEffect [isTutorial]");
       setIsFirstClickValidate(true);
       nextTutorialStep();
     } else {
@@ -73,16 +72,10 @@ const NegationGameScreen = ({ }) => {
 
   // *********** Gestion Tuto *******************
   const nextTutorialStep = async () => {
-    console.log("******************** nextTuto *********************");
-    console.log("tutorialStep", tutorialStep);
-    console.log("questionsAsked", questionsAsked);
-    console.log("correctAnswers", correctAnswers);
-
     if (!isTutorial) return;
 
     const nextStep = tutorialStep + 1;
     setTutorialStep(nextStep);
-    console.log("nextStep", nextStep);
 
     if (nextStep <= 5) {
       let response;
@@ -105,20 +98,15 @@ const NegationGameScreen = ({ }) => {
           break;
       }
       const tutorialContent = getTutorialContentForStep(nextStep, tw);
-      console.log("tutorialContent");
-      console.log(tutorialContent);
       if (tutorialContent) {
         showModal(tutorialContent);
       }
     } else {
-      console.log("questionsAsked ", questionsAsked);
       if (questionsAsked < 10) {
         fetchTestText();
-        console.log("texte suivant");
       } else {
         // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
         if (correctAnswers >= 6) {
-          console.log("Tutoriel réussi!");
           showModal(getTutorialContentForStep(98, tw));
           setIsTutorial(false);
 
@@ -126,12 +114,12 @@ const NegationGameScreen = ({ }) => {
             completeTutorialForUser(user.id, 1);
           }
         } else {
-          console.log("Tutoriel non réussi, on recommence le tuto");
           showModal(getTutorialContentForStep(99, tw));
           setIsFirstClickValidate(true);
           setCorrectAnswers(0);
           setQuestionsAsked(0);
           setTutorialStep(0);
+          setTutorialFailed(true);
         }
       }
     }
@@ -177,6 +165,7 @@ const NegationGameScreen = ({ }) => {
     setIsFirstClickValidate(true);
     setTutorialStep(0);
     setIsTutorial(true);
+    setTutorialFailed(false);
     setUserSentenceSpecifications([]);
     const response = await getTextWithTokensById(72);
     setText(response);
@@ -219,7 +208,7 @@ const NegationGameScreen = ({ }) => {
         return;
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-        if (tutorialStep > 3) {
+        if (tutorialStep > 4) {
           setQuestionsAsked(questionsAsked + 1);
           setCorrectAnswers(correctAnswers + 1);
         }
@@ -445,15 +434,36 @@ const NegationGameScreen = ({ }) => {
             {text && renderText(text)}
           </View>
           {
-            tutorialStep > 3 && isTutorial && // Vérifier si l'utilisateur est dans l'étape des 10 questions
-            <View style={tw('p-4')}>
-              <Text style={tw('text-base mb-2')}>
-                Questions posées: {questionsAsked} / 10
-              </Text>
-              <Text style={tw('text-base')}>
-                Bonnes réponses: {correctAnswers}
-              </Text>
+            tutorialStep > 4 && isTutorial && // Vérifier si l'utilisateur est dans l'étape des 10 questions
+            <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
+              <View style={tw('flex-row justify-between items-center mb-2')}>
+                <Text style={tw('font-primary text-base text-gray-600')}>
+                  Questions posées:
+                </Text>
+                <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
+                  {Math.min(questionsAsked, 10)} / 10
+                </Text>
+              </View>
+              <View style={tw('flex-row justify-between items-center')}>
+                <Text style={tw('font-primary text-base text-gray-600')}>
+                  Bonnes réponses:
+                </Text>
+                <Text style={tw('font-primary text-lg font-bold text-green-600')}>
+                  {correctAnswers}
+                </Text>
+              </View>
             </View>
+          }
+
+          {
+            tutorialFailed && (
+              <TouchableOpacity
+                onPress={launchTuto}
+                style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
+              >
+                <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
+              </TouchableOpacity>
+            )
           }
           <View style={tw("mx-4 pb-3")}>
             {userSentenceSpecifications.map(sentenceSpecification => renderUserSentenceSpecification(sentenceSpecification))}
@@ -475,7 +485,7 @@ const NegationGameScreen = ({ }) => {
 
         <View style={tw('absolute bottom-3 right-4 flex-col w-52')}>
 
-          {isSelectionStarted &&
+          {isSelectionStarted && !tutorialFailed && (
             <TouchableOpacity
               style={tw(`py-2 px-4 rounded-lg bg-blue-500 flex-row items-center justify-center mb-1 w-full`)}
               onPress={addSentenceSpecification}
@@ -483,14 +493,14 @@ const NegationGameScreen = ({ }) => {
               <MaterialIcons name="add" size={22} color="white" />
               <Text style={tw("text-white font-primary text-lg")}>Valider la sélection</Text>
             </TouchableOpacity>
-          }
+          )}
 
           {!showMessage &&
             <TouchableOpacity
-              disabled={isTutorial && isFirstClickValidate}
+              disabled={isTutorial && (isFirstClickValidate || tutorialFailed)}
               style={[
                 tw("py-2 px-4 rounded-lg flex-row items-center justify-center w-full"),
-                (isTutorial && isFirstClickValidate) ? tw("bg-green-200") : tw("bg-primary") // Griser le bouton si désactivé
+                (isTutorial && (isFirstClickValidate || tutorialFailed)) ? tw("bg-green-200") : tw("bg-primary")
               ]}
               onPress={onNextCard}
             >
@@ -499,7 +509,6 @@ const NegationGameScreen = ({ }) => {
                 <Text style={tw('text-white font-bold')}>{userSentenceSpecifications.length}</Text>
               </View>
             </TouchableOpacity>
-
           }
         </View>
         {userSentenceSpecifications.length > 0 && (
@@ -542,15 +551,18 @@ const NegationGameScreen = ({ }) => {
           isVisible={isHelpModalVisible}
           onClose={() => setIsHelpModalVisible(false)}
         >
-          <View >
-            {getModalHelpContent(tw)}
-            <TouchableOpacity onPress={() => {
-              launchTuto();
-              setIsHelpModalVisible(false);
-            }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
-              <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
-              {/* TODO  problème avec relance du tuto */}
-            </TouchableOpacity>
+          <View style={tw('flex-1')}>
+            <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
+              <View style={tw('p-4')}>
+                {getModalHelpContent(tw)}
+                <TouchableOpacity onPress={() => {
+                  launchTuto();
+                  setIsHelpModalVisible(false);
+                }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+                  <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           </View>
         </CustomModal>
       </SafeAreaView>

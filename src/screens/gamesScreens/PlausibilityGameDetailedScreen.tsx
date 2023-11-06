@@ -4,7 +4,6 @@ import { useTailwind } from "tailwind-rn";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useUser } from 'services/context/UserContext';
 import { Token } from "models/Token";
-import Modal from 'react-native-modal';
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
@@ -15,6 +14,8 @@ import InfoText from 'components/InfoText';
 import { ButtonConfig } from "interfaces/ButtonConfig";
 import { plausibilityConfigs } from "utils/plausibilityConfigs";
 import CustomModal from "components/modals/CustomModal";
+import HelpButton from "components/button/HelpButton";
+import { getModalHelpContent } from "tutorials/tutorialPlausibilityGame";
 
 const colors = [
   "bg-yellow-300",
@@ -42,6 +43,7 @@ const PlausibilityGameDetailedScreen = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [noMoreTexts, setNoMoreTexts] = useState(false);
   const [userRateSelected, setUserRateSelected] = useState(100);
+  const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
 
 
   useEffect(() => {
@@ -59,6 +61,14 @@ const PlausibilityGameDetailedScreen = () => {
       fetchText();
     }
   }, [text, user]);
+
+
+  // *********** Gestion Tuto *******************
+
+  const showHelpModal = () => {
+    setIsHelpModalVisible(true)
+  };
+  // *****************************************************
 
   const HighlightedWord = ({ token, index }: { token: Token; index: number }) => {
     const isSelected = selectedWords.includes(index);
@@ -348,6 +358,7 @@ const PlausibilityGameDetailedScreen = () => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
+          <HelpButton onHelpPress={showHelpModal} />
           {noMoreTexts ? (
             <View style={tw('items-center justify-center mt-4')}>
               <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>
@@ -518,6 +529,20 @@ const PlausibilityGameDetailedScreen = () => {
             </View>
           </View>
         }
+
+        <CustomModal
+          isVisible={isHelpModalVisible}
+          onClose={() => setIsHelpModalVisible(false)}
+        >
+          <View style={tw('flex-1')}>
+            <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
+              <View style={tw('p-4')}>
+                {getModalHelpContent(tw)}
+              </View>
+            </ScrollView>
+          </View>
+        </CustomModal>
+
       </SafeAreaView >
     </ImageBackground >
 

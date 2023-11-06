@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, ScrollView, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
@@ -9,6 +9,9 @@ import { getTypesError } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { MaterialIcons } from '@expo/vector-icons';
 import InfoText from "components/InfoText";
+import CustomModal from "components/modals/CustomModal";
+import { getModalHelpContent } from "tutorials/tutorialErrorTypeGame";
+import HelpButton from "components/button/HelpButton";
 
 const ErrorTypeGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -18,6 +21,8 @@ const ErrorTypeGameScreen = ({ }) => {
   const [selectedErrorTypes, setSelectedErrorTypes] = useState<number[]>([]);
   const isNextButtonDisabled = selectedErrorTypes.length === 0;
   const { incrementPoints } = useUser();
+  const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
+  const window = Dimensions.get('window');
 
   const fetchData = async () => {
     try {
@@ -37,6 +42,13 @@ const ErrorTypeGameScreen = ({ }) => {
   useEffect(() => {
     fetchData();
   }, [user]);
+
+  // *********** Gestion Tuto *******************
+  const showHelpModal = () => {
+    setIsHelpModalVisible(true)
+  };
+  // *****************************************************
+
 
   const handleNextError = () => {
     const isOtherSelected = selectedErrorTypes.some(errorTypeId => {
@@ -123,6 +135,8 @@ const ErrorTypeGameScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView >
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
+          <HelpButton onHelpPress={showHelpModal} />
+
           <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>
             {renderErrorTypeButtons()}
           </View>
@@ -151,7 +165,18 @@ const ErrorTypeGameScreen = ({ }) => {
             </TouchableOpacity>
           </View>
         )}
-
+        <CustomModal
+          isVisible={isHelpModalVisible}
+          onClose={() => setIsHelpModalVisible(false)}
+        >
+          <View style={tw('flex-1')}>
+            <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
+              <View style={tw('p-4')}>
+                {getModalHelpContent(tw)}
+              </View>
+            </ScrollView>
+          </View>
+        </CustomModal>
       </SafeAreaView >
     </ImageBackground >
   );
