@@ -16,6 +16,8 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             Vous pouvez ensuite ajouter de nouvelles négations si vous en trouvez dans le texte, en procédant de la même manière.
             {"\n"}Vos sélections sont affichées sous le texte, et vous pouvez les supprimer si vous souhaitez revenir sur votre choix.
             {"\n"}
+            Attention, certains textes peuvent aussi ne contenir aucune négation !
+            {"\n\n"}
             Quand vous pensez avoir fini, appuyez sur le bouton "Texte suivant". Celui-ci affiche le nombre de sélections. N'oubliez pas de valider la sélection courante, sinon elle ne sera pas prise en compte.
         </Text>;
 
@@ -30,14 +32,22 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 4: return <Text style={tw('font-primary')}>
+            Il faut réussir à bien identifier l'assertion négative
+            {"\n"}
+            Dans cet exemple : L'échographie était demandée par la patiente qui ne présentait pas d'autres métrorragies ou autres pathologies gynécologiques..
+            {"\n"}
+            Les deux négations à spécifier sont "pas d'métrorragies" et "pas d'pathologies gynécologiques".
+            {"\n\n"}
+            À vous d'essayer avec cet exemple :
+        </Text>;
+
+        case 5: return <Text style={tw('font-primary')}>
             Vous connaissez désormais les bases de l'annotation de négations.
             {"\n\n"}
             Essayer de traiter les 10 textes suivants, et si vous obtenez au moins 6 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
             {"\n\n"}
             Bon courage !
         </Text>;
-
-        // TODO dire qu'il peut y avoir rien à trouver dans le texte
 
         case 98: return <Text style={tw('font-primary')}>
             Vous connaissez désormais les bases de l'annotation de négations. À vous de jouer.

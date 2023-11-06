@@ -84,7 +84,7 @@ const NegationGameScreen = ({ }) => {
     setTutorialStep(nextStep);
     console.log("nextStep", nextStep);
 
-    if (nextStep <= 4) {
+    if (nextStep <= 5) {
       let response;
       switch (nextStep) {
         case 1:
@@ -96,17 +96,23 @@ const NegationGameScreen = ({ }) => {
           setText(response);
           break;
         case 4:
+          response = await getTextWithTokensById(76);
+          setText(response);
+          break;
+        case 5:
           response = await getTextTestNegation();
           setText(response);
           break;
       }
       const tutorialContent = getTutorialContentForStep(nextStep, tw);
+      console.log("tutorialContent");
+      console.log(tutorialContent);
       if (tutorialContent) {
         showModal(tutorialContent);
       }
     } else {
-      console.log("questionsAsked", questionsAsked);
-      if (questionsAsked < 3) {
+      console.log("questionsAsked ", questionsAsked);
+      if (questionsAsked < 10) {
         fetchTestText();
         console.log("texte suivant");
       } else {
@@ -171,7 +177,7 @@ const NegationGameScreen = ({ }) => {
     setIsFirstClickValidate(true);
     setTutorialStep(0);
     setIsTutorial(true);
-
+    setUserSentenceSpecifications([]);
     const response = await getTextWithTokensById(72);
     setText(response);
     const tutorialContent = getTutorialContentForStep(1, tw);
@@ -207,13 +213,13 @@ const NegationGameScreen = ({ }) => {
         setShowMessage(true);
         setLoading(false);
         setSelectionStarted(false);
-        if (tutorialStep > 3) {
+        if (tutorialStep > 4) {
           setQuestionsAsked(questionsAsked + 1);
         }
         return;
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-        if (tutorialStep > 2) {
+        if (tutorialStep > 3) {
           setQuestionsAsked(questionsAsked + 1);
           setCorrectAnswers(correctAnswers + 1);
         }
@@ -221,12 +227,12 @@ const NegationGameScreen = ({ }) => {
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      if (tutorialStep > 3) {
+      if (tutorialStep > 4) {
         setQuestionsAsked(questionsAsked + 1);
       }
       if (!isTutorial) setTimeout(() => incrementPoints(5), 100);
     }
-    if (questionsAsked === 2) {
+    if (questionsAsked === 10) {
       if (correctAnswers >= 7) {
         setIsTutorial(false);
         if (user) {
