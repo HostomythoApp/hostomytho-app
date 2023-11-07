@@ -1,5 +1,5 @@
 
-import { Text } from 'react-native';
+import { Text, TouchableWithoutFeedback } from 'react-native';
 
 export const getTutorialContentForStep = (step: number, tw: any) => {
 
@@ -25,37 +25,39 @@ export const getModalHelpContent = (tw: any) => {
         return <Text style={tw('text-[#5077BE] font-bold')}>{children}</Text>;
     };
 
-    return <Text style={tw('font-primary')}>
-        Le but du jeu est de spécifier le ou les types de l'erreur surlignée.
-        Vous devez selectionner au moins un type, et plusieurs sont possibles.
-        {"\n\n"}
-        Les différents types d'erreurs sont :
-        {"\n\n"}
-        <HighlightedText>"Français" </HighlightedText> pour les erreurs grammaticales ou de français en général.
-        {"\n"}
-        <ItalicPhrase>
-            - "Les symptôme du patient sont très variés et <HighlightedText>inclut </HighlightedText>des maux de tête."
-        </ItalicPhrase>
-        {"\n"}
-        Il y a un problème de conjugaison avec le verbe inclure qui devraient être au pluriel."
-        {"\n\n"}
+    return <TouchableWithoutFeedback>
+        <Text style={tw('font-primary')}>
+            Le but du jeu est de spécifier le ou les types de l'erreur surlignée.
+            Vous devez selectionner au moins un type, et plusieurs sont possibles.
+            {"\n\n"}
+            Les différents types d'erreurs sont :
+            {"\n\n"}
+            <HighlightedText>"Français" </HighlightedText> pour les erreurs grammaticales ou de français en général.
+            {"\n"}
+            <ItalicPhrase>
+                - "Les symptôme du patient sont très variés et <HighlightedText>inclut </HighlightedText>des maux de tête."
+            </ItalicPhrase>
+            {"\n"}
+            Il y a un problème de conjugaison avec le verbe inclure qui devraient être au pluriel."
+            {"\n\n"}
 
-        <HighlightedText>"Vocabulaire médicale" </HighlightedText> pour les erreurs de termes médicaux.
-        {"\n"}
-        <ItalicPhrase>
-            - "On note également une déviation de la tige pituitaire à gauche <HighlightedText>pituitère</HighlightedText>."
-        </ItalicPhrase>
-        {"\n"}
-        Le mot s'écrit "pituitaire"
-        {"\n\n"}
+            <HighlightedText>"Vocabulaire médicale" </HighlightedText> pour les erreurs de termes médicaux.
+            {"\n"}
+            <ItalicPhrase>
+                - "On note également une déviation de la tige pituitaire à gauche <HighlightedText>pituitère</HighlightedText>."
+            </ItalicPhrase>
+            {"\n"}
+            Le mot s'écrit "pituitaire"
+            {"\n\n"}
 
-        <HighlightedText>"Cohérence médicale" </HighlightedText> pour les erreurs grammaticales ou de français en général.
-        {"\n"}
-        <ItalicPhrase>
-            - "Lors de sa visite pour un vaccin contre la grippe, il a été annoncé au jeune garçon qu'il devait subir <HighlightedText> une radiographie du thorax pour examiner la santé de ses dents de sagesse</HighlightedText>."
-        </ItalicPhrase>
-        {"\n"}
-        L'erreur vient de l'incohérence de l'information.'
-        {"\n\n"}
-    </Text>;
+            <HighlightedText>"Cohérence médicale" </HighlightedText> pour les erreurs grammaticales ou de français en général.
+            {"\n"}
+            <ItalicPhrase>
+                - "Lors de sa visite pour un vaccin contre la grippe, il a été annoncé au jeune garçon qu'il devait subir <HighlightedText> une radiographie du thorax pour examiner la santé de ses dents de sagesse</HighlightedText>."
+            </ItalicPhrase>
+            {"\n"}
+            L'erreur vient de l'incohérence de l'information.'
+            {"\n\n"}
+        </Text>
+    </TouchableWithoutFeedback>;
 }

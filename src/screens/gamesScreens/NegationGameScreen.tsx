@@ -552,19 +552,23 @@ const NegationGameScreen = ({ }) => {
           onClose={() => setIsHelpModalVisible(false)}
         >
           <View style={tw('flex-1')}>
-            <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
-              <View style={tw('p-4')}>
-                {getModalHelpContent(tw)}
-                <TouchableOpacity onPress={() => {
-                  launchTuto();
-                  setIsHelpModalVisible(false);
-                }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
-                  <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
-                </TouchableOpacity>
-              </View>
+            <ScrollView
+              style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}
+              contentContainerStyle={tw('p-4')}
+              showsVerticalScrollIndicator={true}
+              scrollEventThrottle={16}
+            >
+              {getModalHelpContent(tw)}
+              <TouchableOpacity onPress={() => {
+                launchTuto();
+                setIsHelpModalVisible(false);
+              }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+                <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
+              </TouchableOpacity>
             </ScrollView>
           </View>
         </CustomModal>
+
       </SafeAreaView>
     </ImageBackground>
 
