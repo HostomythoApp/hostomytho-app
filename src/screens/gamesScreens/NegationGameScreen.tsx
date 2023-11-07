@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextTestNegation, getTextWithTokensNotPlayed, getTextWithTokensById } from "services/api/texts";
+import { getTextTestNegation, getTextWithTokensNotPlayed, getTextWithTokensById, getTextWithTokensByGameType } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
@@ -63,10 +63,9 @@ const NegationGameScreen = ({ }) => {
       setIsFirstClickValidate(true);
       nextTutorialStep();
     } else {
-      if (!user) return;
-      fetchNewText(user.id);
+      fetchNewText();
     }
-  }, [isTutorial]);
+  }, [isTutorial, user]);
 
 
   // *********** Gestion Tuto *******************
@@ -134,11 +133,15 @@ const NegationGameScreen = ({ }) => {
     }
   };
 
-  const fetchNewText = async (userId: any) => {
+  const fetchNewText = async () => {
     try {
-      const response = await getTextWithTokensNotPlayed(userId, 'negation');
+      let response;
+      if (user) {
+        response = await getTextWithTokensNotPlayed(user.id, 'negation');
+      } else {
+        response = await getTextWithTokensByGameType('negation');
+      }
       setText(response);
-
     } catch (error) {
       console.error("Erreur lors de la récupération du nouveau texte :", error);
     }
@@ -211,14 +214,18 @@ const NegationGameScreen = ({ }) => {
           setQuestionsAsked(questionsAsked + 1);
           setCorrectAnswers(correctAnswers + 1);
         }
-        if (!isTutorial) setTimeout(() => incrementPoints(5), 100);
+        if (!isTutorial) {
+          if (user) setTimeout(() => incrementPoints(5), 100);
+        }
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       if (tutorialStep > 4) {
         setQuestionsAsked(questionsAsked + 1);
       }
-      if (!isTutorial) setTimeout(() => incrementPoints(5), 100);
+      if (!isTutorial) {
+        if (user) setTimeout(() => incrementPoints(5), 100);
+      }
     }
     if (questionsAsked === 10) {
       if (correctAnswers >= 7) {
@@ -400,8 +407,7 @@ const NegationGameScreen = ({ }) => {
     if (isTutorial) {
       nextTutorialStep();
     } else {
-      if (!user) return;
-      fetchNewText(user.id);
+      fetchNewText();
     }
   };
 

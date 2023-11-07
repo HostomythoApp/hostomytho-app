@@ -27,6 +27,7 @@ const ProfileScreen = (props: any) => {
     const characterImage = characterImagesMapping[user?.gender || 'homme'][user?.color_skin || 'clear'];
 
     useEffect(() => {
+        // TODO en arrivant ici, les skins ne sont pas bien chargés quand on vient de se connecter
         if (user?.id) {
             updateStorageUserFromAPI(user.id);
         }

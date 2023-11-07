@@ -71,7 +71,7 @@ export const getTextWithErrorValidatedNotPlayed = async (userId: number): Promis
   }
 };
 
-export const getTextWithErrorValidated = async (userId: number): Promise<TextWithError> => {
+export const getTextWithErrorValidated = async (): Promise<TextWithError> => {
   try {
     const response = await api.get(`/texts/getTextWithErrorValidated`);
     return response.data;

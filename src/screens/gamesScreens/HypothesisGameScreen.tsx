@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextWithTokensNotPlayed } from "services/api/texts";
+import { getTextWithTokensByGameType, getTextWithTokensNotPlayed } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
@@ -36,18 +36,21 @@ const HypothesisGameScreen = ({ }) => {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const fetchText = async () => {
-      try {
-        if (user) {
-          const response = await getTextWithTokensNotPlayed(user?.id, 'hypothesis');
-          setText(response);
-        }
-      } catch (error) {
-        console.error(error);
+      fetchNewText();
+  }, [user]);
+  const fetchNewText = async () => {
+    try {
+      let response;
+      if (user) {
+        response = await getTextWithTokensNotPlayed(user.id, 'hypothesis');
+      } else {
+        response = await getTextWithTokensByGameType('hypothesis');
       }
-    };
-    fetchText();
-  }, []);
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du nouveau texte :", error);
+    }
+  };
 
   const onTokenPress = useCallback((wordIndex: number) => {
     setText(currentText => {
@@ -216,8 +219,9 @@ const HypothesisGameScreen = ({ }) => {
     setUserSentenceSpecifications([]);
     setShowMessage(false);
     setMessageContent("");
-    await fetchTextFromAPI();
     setLoading(false);
+    fetchNewText();
+
   };
 
   const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
@@ -273,13 +277,7 @@ const HypothesisGameScreen = ({ }) => {
       const { id, ...rest } = userSentenceSpecification;
       // await createUserSentenceSpecification(rest);
     }
-
-    setUserSentenceSpecifications([]);
-    setShowMessage(false);
-    setMessageContent("");
-
-    await fetchTextFromAPI();
-    setLoading(false);
+    goToNextSentence();
   };
 
   return (

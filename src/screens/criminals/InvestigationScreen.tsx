@@ -30,15 +30,17 @@ const InvestigationScreen = () => {
 
     useEffect(() => {
         const loadCriminals = async () => {
-            try {
-                const userCriminals = await getUserCriminals(user.id);
-                setCriminals(userCriminals);
-            } catch (error) {
-                console.error(error);
+            if (user) {
+                try {
+                    const userCriminals = await getUserCriminals(user.id);
+                    setCriminals(userCriminals);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         };
         loadCriminals();
-    }, [user.id]);
+    }, [user?.id]);
 
 
     const handleArrestAttempt = () => {
@@ -54,6 +56,16 @@ const InvestigationScreen = () => {
         setResultModalVisible(true);
     };
 
+    const NoConnectedView = () => (
+        <View style={tw('flex-1 justify-center items-center p-6 pt-0')}>
+            <Text style={tw('text-xl text-white text-center mb-4 font-primary')}>
+                Créez un compte pour commencer l'enquête
+            </Text>
+            <View style={tw('w-80')}>
+                <PrimaryButton title="Créer un compte" destination="SignUpScreen" />
+            </View>
+        </View>
+    );
 
     return (
         <View style={tw('flex-1')}>
@@ -65,27 +77,31 @@ const InvestigationScreen = () => {
                         <View style={tw('flex-1 p-2 pt-14 justify-center items-center')}>
                             <Image
                                 source={require('images/unknown3.jpeg')}
-                                style={tw('w-64 h-64')}
+                                style={tw('w-64 h-64 -mb-4')}
                                 resizeMode="contain"
-
                             />
+                            {user ? (
+                                <View>
+                                    <Text style={tw('text-center font-bold font-primary text-lg text-white')}>Taux de certitude par rapport au criminel: {investigationProgress}%</Text>
+                                    <View style={tw('bg-gray-300 h-4 rounded mt-2 w-96')}>
+                                        <View
+                                            style={[
+                                                tw('bg-primary h-full rounded-l'),
+                                                { width: `${investigationProgress}%` },
+                                            ]}
+                                        ></View>
+                                    </View>
 
-                            <Text style={tw('text-center font-bold font-primary text-lg text-white')}>Taux de certitude par rapport au criminel: {investigationProgress}%</Text>
-                            <View style={tw('bg-gray-300 h-4 rounded mt-2 w-96')}>
-                                <View
-                                    style={[
-                                        tw('bg-primary h-full rounded-l'),
-                                        { width: `${investigationProgress}%` },
-                                    ]}
-                                ></View>
-                            </View>
-
-                            <TouchableOpacity
-                                style={tw('bg-primary py-3 px-6 rounded mt-4')}
-                                onPress={() => setModalVisible(true)}
-                            >
-                                <Text style={tw('text-white font-bold')}>Tenter l'arrestation</Text>
-                            </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={tw('bg-primary py-3 px-6 rounded mt-4')}
+                                        onPress={() => setModalVisible(true)}
+                                    >
+                                        <Text style={tw('text-white font-bold text-center')}>Tenter l'arrestation</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ) : (
+                                <NoConnectedView />
+                            )}
 
                         </View>
 

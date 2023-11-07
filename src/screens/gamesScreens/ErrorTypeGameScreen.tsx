@@ -1,11 +1,9 @@
-//Ok nickel, la déconnexion a l'air de mieux se faire. Maintenant, j'ai un jeu qui affiche des textes et dans lequel l'utilisateur doit spécifier les types de l'erreurs dans le texte. 
-// Pour le moment j'avais gérer le cas où l'utilisateur est connecté
 import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, ScrollView, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
-import { getTextWithErrorValidatedNotPlayed } from "services/api/texts";
+import { getTextWithErrorValidated, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
 import { getTypesError } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
@@ -25,17 +23,20 @@ const ErrorTypeGameScreen = ({ }) => {
   const { incrementPoints } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const window = Dimensions.get('window');
-
+  
   const fetchData = async () => {
     try {
+      let response;
       if (user) {
-        const response = await getTextWithErrorValidatedNotPlayed(user?.id);
-        setText(response);
-
-        const responseTypeError = await getTypesError();
-        setErrorTypes(responseTypeError);
-        setSelectedErrorTypes([]);
+        response = await getTextWithErrorValidatedNotPlayed(user.id);
+      } else {
+        response = await getTextWithErrorValidated();
       }
+      setText(response);
+
+      const responseTypeError = await getTypesError();
+      setErrorTypes(responseTypeError);
+      setSelectedErrorTypes([]);
     } catch (error) {
       console.error(error);
     }
@@ -51,18 +52,15 @@ const ErrorTypeGameScreen = ({ }) => {
   };
   // *****************************************************
 
-
   const handleNextError = () => {
     const isOtherSelected = selectedErrorTypes.some(errorTypeId => {
       const errorType = errorTypes.find(et => et.id === errorTypeId);
       return errorType?.name === "Autre";
     });
 
-    if (isOtherSelected && selectedErrorTypes.length === 1) {
-    } else if (selectedErrorTypes.length > 0) {
+    if (!isOtherSelected && selectedErrorTypes.length > 0 && user) {
       incrementPoints(2);
     }
-
     fetchData();
   };
 

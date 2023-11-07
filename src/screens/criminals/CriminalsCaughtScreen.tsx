@@ -26,18 +26,19 @@ const CriminalsCaughtScreen = () => {
 
     useEffect(() => {
         const loadCriminals = async () => {
-            try {
-                const userCriminals = await getUserCriminals(user.id);
-                setCriminals(userCriminals);
-            } catch (error) {
-                console.error(error);
+            // Assurez-vous que l'utilisateur est connecté avant de charger les criminels
+            if (user) {
+                try {
+                    const userCriminals = await getUserCriminals(user.id);
+                    setCriminals(userCriminals);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         };
 
         loadCriminals();
-    }, [user.id]);
-
-
+    }, [user?.id]);
 
     const NoCriminalsView = () => (
         <View style={tw('flex-1 justify-center items-center p-6')}>
@@ -46,6 +47,17 @@ const CriminalsCaughtScreen = () => {
             </Text>
             <View style={tw(' w-80')}>
                 <PrimaryButton title="Enquête en cours" destination="Investigation" />
+            </View>
+        </View>
+    );
+
+    const NoConnectedView = () => (
+        <View style={tw('flex-1 justify-center items-center p-6')}>
+            <Text style={tw('text-3xl text-white text-center mb-4 font-primary')}>
+                Vous n'avez pas encore attrapé de criminel
+            </Text>
+            <View style={tw('w-80')}>
+                <PrimaryButton title="Créer un compte pour commencer l'enquête" destination="SignUpScreen" />
             </View>
         </View>
     );
@@ -65,36 +77,39 @@ const CriminalsCaughtScreen = () => {
                 <ScrollView>
                     <CustomHeaderEmpty title="Criminels arrêtés" backgroundColor="bg-whiteTransparent" />
                     <View style={styles.container}>
-                        {isEmptyCriminalsList ? (
-                            <NoCriminalsView />
-                        ) : (
-                            <SwiperFlatList
-                                index={0}
-                                showPagination
-                                paginationStyle={styles.pagination}
-                                paginationStyleItem={styles.paginationItem}
-                                data={criminals}
-                                showsHorizontalScrollIndicator
-                                automaticallyAdjustContentInsets
-                                renderItem={({ item }) => (
-                                    <View style={[styles.child]} >
-                                        <Image
-                                            source={suspectsImagesMapping[item.imageId]}
-                                            style={tw('w-64 h-64 rounded-md')}
-                                            resizeMode="contain"
-                                        />
-                                        <View style={tw('bg-black bg-opacity-50 p-2 rounded')}>
-                                            <Text style={[tw('font-bold mt-2 text-white text-center font-primary text-xl')]}>{item.name}</Text>
-                                        </View>
-                                        {item.description ? (
+                        {
+                            !user ? (
+                                <NoConnectedView />
+                            ) : isEmptyCriminalsList ? (
+                                <NoCriminalsView />
+                            ) : (
+                                <SwiperFlatList
+                                    index={0}
+                                    showPagination
+                                    paginationStyle={styles.pagination}
+                                    paginationStyleItem={styles.paginationItem}
+                                    data={criminals}
+                                    showsHorizontalScrollIndicator
+                                    automaticallyAdjustContentInsets
+                                    renderItem={({ item }) => (
+                                        <View style={[styles.child]} >
+                                            <Image
+                                                source={suspectsImagesMapping[item.imageId]}
+                                                style={tw('w-64 h-64 rounded-md')}
+                                                resizeMode="contain"
+                                            />
                                             <View style={tw('bg-black bg-opacity-50 p-2 rounded')}>
-                                                <Text style={[tw('text-white font-primary text-lg')]}>{item.description}</Text>
+                                                <Text style={[tw('font-bold mt-2 text-white text-center font-primary text-xl')]}>{item.name}</Text>
                                             </View>
-                                        ) : null}
-                                    </View>
-                                )}
-                            />
-                        )}
+                                            {item.description ? (
+                                                <View style={tw('bg-black bg-opacity-50 p-2 rounded')}>
+                                                    <Text style={[tw('text-white font-primary text-lg')]}>{item.description}</Text>
+                                                </View>
+                                            ) : null}
+                                        </View>
+                                    )}
+                                />
+                            )}
                     </View>
                 </ScrollView>
             </SafeAreaView>

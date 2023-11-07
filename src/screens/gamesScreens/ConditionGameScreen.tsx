@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextWithTokensNotPlayed } from "services/api/texts";
+import { getTextWithTokensByGameType, getTextWithTokensNotPlayed } from "services/api/texts";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelection } from 'utils/gameFunctions';
@@ -33,18 +33,21 @@ const ConditionGameScreen = ({ }) => {
   const [messageContent, setMessageContent] = useState("");
 
   useEffect(() => {
-    const fetchText = async () => {
-      try {
-        if (user) {
-          const response = await getTextWithTokensNotPlayed(user?.id, 'condition');
-          setText(response);
-        }
-      } catch (error) {
-        console.error(error);
+    fetchNewText();
+  }, [user]);
+  const fetchNewText = async () => {
+    try {
+      let response;
+      if (user) {
+        response = await getTextWithTokensNotPlayed(user.id, 'condition');
+      } else {
+        response = await getTextWithTokensByGameType('condition');
       }
-    };
-    fetchText();
-  }, []);
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du nouveau texte :", error);
+    }
+  };
 
   const onTokenPress = useCallback((wordIndex: number) => {
     setText(currentText => {
@@ -211,8 +214,8 @@ const ConditionGameScreen = ({ }) => {
     setUserSentenceSpecifications([]);
     setShowMessage(false);
     setMessageContent("");
-    await fetchTextFromAPI();
     setLoading(false);
+    fetchNewText();
   };
 
   const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
@@ -268,13 +271,7 @@ const ConditionGameScreen = ({ }) => {
       const { id, ...rest } = userSentenceSpecification;
       // await createUserSentenceSpecification(rest);
     }
-
-    setUserSentenceSpecifications([]);
-    setShowMessage(false);
-    setMessageContent("");
-
-    await fetchTextFromAPI();
-    setLoading(false);
+    goToNextSentence();
   };
 
   return (
