@@ -154,7 +154,7 @@ const TemporalEntityScreen = ({ }) => {
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setTemporalEntities([]); // Réinitialiser le récapitulatif des entités
-      incrementPoints(5);
+      // incrementPoints(5);
     }
   };
 

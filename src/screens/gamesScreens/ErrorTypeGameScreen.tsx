@@ -1,9 +1,11 @@
+//Ok nickel, la déconnexion a l'air de mieux se faire. Maintenant, j'ai un jeu qui affiche des textes et dans lequel l'utilisateur doit spécifier les types de l'erreurs dans le texte. 
+// Pour le moment j'avais gérer le cas où l'utilisateur est connecté
 import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, ScrollView, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
-import { getTextWithErrorValidated } from "services/api/texts";
+import { getTextWithErrorValidatedNotPlayed } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
 import { getTypesError } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
@@ -27,7 +29,7 @@ const ErrorTypeGameScreen = ({ }) => {
   const fetchData = async () => {
     try {
       if (user) {
-        const response = await getTextWithErrorValidated(user?.id);
+        const response = await getTextWithErrorValidatedNotPlayed(user?.id);
         setText(response);
 
         const responseTypeError = await getTypesError();
@@ -99,7 +101,6 @@ const ErrorTypeGameScreen = ({ }) => {
   };
 
   const renderText = () => {
-
     if (typeof text === "undefined") {
       return null;
     }

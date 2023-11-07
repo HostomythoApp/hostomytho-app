@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextWithTokens } from "services/api/texts";
+import { getTextWithTokensNotPlayed } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
@@ -39,7 +39,7 @@ const HypothesisGameScreen = ({ }) => {
     const fetchText = async () => {
       try {
         if (user) {
-          const response = await getTextWithTokens(user?.id, 'hypothesis');
+          const response = await getTextWithTokensNotPlayed(user?.id, 'hypothesis');
           setText(response);
         }
       } catch (error) {
@@ -204,7 +204,7 @@ const HypothesisGameScreen = ({ }) => {
   const fetchTextFromAPI = async () => {
     try {
       if (user) {
-        const response = await getTextWithTokens(user?.id, 'hypothesis');
+        const response = await getTextWithTokensNotPlayed(user?.id, 'hypothesis');
         setText(response);
       }
     } catch (error) {
@@ -259,13 +259,13 @@ const HypothesisGameScreen = ({ }) => {
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         setTimeout(() => {
-          incrementPoints(5);
+          // incrementPoints(5);
         }, 100);
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       setTimeout(() => {
-        incrementPoints(5);
+        // incrementPoints(5);
       }, 100);
     }
 

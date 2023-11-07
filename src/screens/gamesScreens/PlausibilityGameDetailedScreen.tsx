@@ -7,7 +7,7 @@ import { Token } from "models/Token";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
-import { getTextWithTokensById, getTextWithTokens } from "services/api/texts";
+import { getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
@@ -51,7 +51,7 @@ const PlausibilityGameDetailedScreen = () => {
       const fetchText = async () => {
         try {
           // TODO ne récupérer que les tokens pour ne pas donner la réponse dans les logs
-          const response = await getTextWithTokens(user.id, 'plausibility');
+          const response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
           // const response = await getTextWithTokensById(70);
           setText(response);
         } catch (error) {
@@ -164,7 +164,7 @@ const PlausibilityGameDetailedScreen = () => {
   const fetchTextFromAPI = async () => {
     try {
       if (user) {
-        const response = await getTextWithTokens(user?.id, 'plausibility');
+        const response = await getTextWithTokensNotPlayed(user?.id, 'plausibility');
         // const response = await getTextWithTokensById(85);
         if (response === null || response.tokens.length === 0) {
           setNoMoreTexts(true);

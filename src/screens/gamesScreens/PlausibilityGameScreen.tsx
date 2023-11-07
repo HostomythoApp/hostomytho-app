@@ -73,7 +73,7 @@ const PlausibilityGameScreen = ({ }) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
     setActiveModal(false);
-    incrementPoints(10);
+    // incrementPoints(10);
   }, [texts]);
 
   const swipeRight = useCallback(async (cardIndex: number) => {
@@ -98,12 +98,12 @@ const PlausibilityGameScreen = ({ }) => {
           onSwipedLeft={(cardIndex) => {
             handleSwipe('left');
             swipeLeft(cardIndex);
-            incrementPoints(10);
+            // incrementPoints(10);
           }}
           onSwipedRight={(cardIndex) => {
             handleSwipe('right');
             swipeRight(cardIndex);
-            incrementPoints(10);
+            // incrementPoints(10);
           }}
           onSwipedAll={() => {
             onSwipedAll();

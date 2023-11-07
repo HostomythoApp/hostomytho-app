@@ -82,6 +82,9 @@ const CustomHeaderInGame: React.FC<Props> = ({
     }
   }, [showExplosion, textColor]);
 
+  useEffect(() => {
+    setDisplayPoints(user?.points ?? 0);
+  }, [user]);
 
   const animatedTextStyle = useAnimatedStyle(() => {
     return {

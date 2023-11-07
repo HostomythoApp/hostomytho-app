@@ -42,7 +42,7 @@ const TemporalLinkGameScreen = () => {
 
 
   const nextSentence = () => {
-    incrementPoints(10);
+    // incrementPoints(10);
   };
 
   const colors = [

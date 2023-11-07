@@ -14,6 +14,7 @@ interface AuthContextProps {
   storeToken: (token: string) => Promise<void>;
   removeToken: () => Promise<void>;
   logout: () => Promise<void>;
+  resetAuthState: any;
 }
 
 interface AuthProviderProps {
@@ -30,6 +31,7 @@ const useAuth = () => useContext(AuthContext);
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
   const { removeUser } = useUser(); 
+  const { user, resetUserState } = useUser();
 
   const checkToken = async () => {
     try {
@@ -80,12 +82,23 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
   const logout = async () => {
+    console.log("logout dans AUthContext");
+    
     try {
       await removeToken();
       await removeUser();
+    resetUserState();     
+    resetAuthState();   
+    console.log("checkToken");
+    console.log(checkToken);
+    
     } catch (error) {
       console.error("Error during logout:", error);
     }
+  };
+
+  const resetAuthState = () => {
+    setAuthState(initialAuthState); // Réinitialise l'état d'authentification à son état initial
   };
 
   useEffect(() => {
@@ -100,6 +113,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         storeToken,
         removeToken,
         logout,
+        resetAuthState
       }}
     >
       {children}

@@ -178,7 +178,7 @@ const TypeSentenceGameScreen = ({ }) => {
       setCurrentIndex(currentIndex + 1);
       setSelectedButton(null);
       setTemporalEntities([]);
-      incrementPoints(5);
+      // incrementPoints(5);
     }
   };
 

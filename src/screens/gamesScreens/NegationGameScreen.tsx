@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextTestNegation, getTextWithTokens, getTextWithTokensById } from "services/api/texts";
+import { getTextTestNegation, getTextWithTokensNotPlayed, getTextWithTokensById } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
@@ -47,7 +47,6 @@ const NegationGameScreen = ({ }) => {
   const [tutorialFailed, setTutorialFailed] = useState(false);
   const window = Dimensions.get('window');
 
-  // Vérifier si le tuto a été fait ou pas par l'utilisateur
   useEffect(() => {
     async function checkTutorialCompletion() {
       if (user) {
@@ -137,7 +136,7 @@ const NegationGameScreen = ({ }) => {
 
   const fetchNewText = async (userId: any) => {
     try {
-      const response = await getTextWithTokens(userId, 'negation');
+      const response = await getTextWithTokensNotPlayed(userId, 'negation');
       setText(response);
 
     } catch (error) {

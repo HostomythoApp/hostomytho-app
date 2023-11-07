@@ -23,9 +23,41 @@ export const getAllTexts = async (): Promise<Text[]> => {
   }
 };
 
-export const getTextWithTokens = async (userId: number, gameType: string): Promise<TextWithTokens> => {
+export const getTextWithTokensNotPlayed = async (userId: number, gameType: string): Promise<TextWithTokens> => {
   try {
-    const response = await api.get(`/texts/getTextWithTokens/${userId}/${gameType}`);
+    const response = await api.get(`/texts/getTextWithTokensNotPlayed/${userId}/${gameType}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
+export const getTextWithTokensByGameType = async (gameType: string): Promise<TextWithTokens> => {
+  try {
+    const response = await api.get(`/texts/getTextWithTokensByGameType/${gameType}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
+export const getTextWithErrorValidatedNotPlayed = async (userId: number): Promise<TextWithError> => {
+  try {
+    const response = await api.get(`/texts/getTextWithErrorValidatedNotPlayed/${userId}/`);
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -41,7 +73,7 @@ export const getTextWithTokens = async (userId: number, gameType: string): Promi
 
 export const getTextWithErrorValidated = async (userId: number): Promise<TextWithError> => {
   try {
-    const response = await api.get(`/texts/getTextWithErrorValidated/${userId}/`);
+    const response = await api.get(`/texts/getTextWithErrorValidated`);
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -54,7 +86,6 @@ export const getTextWithErrorValidated = async (userId: number): Promise<TextWit
     throw error;
   }
 };
-
 
 export const getTextWithTokensById = async (textId: number): Promise<TextWithTokens> => {
   try {
