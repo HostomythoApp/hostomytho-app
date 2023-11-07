@@ -82,16 +82,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
   const logout = async () => {
-    console.log("logout dans AUthContext");
-    
     try {
       await removeToken();
       await removeUser();
     resetUserState();     
     resetAuthState();   
-    console.log("checkToken");
-    console.log(checkToken);
-    
     } catch (error) {
       console.error("Error during logout:", error);
     }

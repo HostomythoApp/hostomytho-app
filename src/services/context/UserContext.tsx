@@ -33,9 +33,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    console.log("useUser");
-    console.log(useUser);
-    
     // TODO Les skins de l'user ne sont pas bien chargés quand déco ou reco. Vérifier les autres infos comme les points
     const loadStoredUser = async () => {
       const storedUser = await loadUser();
@@ -50,8 +47,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const storeUser = async (user: User | null) => {
-    console.log("storeUser");
-    
     if (user) {
       await AsyncStorage.setItem("user", JSON.stringify(user));
     } else {
@@ -60,8 +55,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const loadUser = async (): Promise<User | null> => {
-    console.log("loadUser");
-
     const storedUser = await AsyncStorage.getItem("user");
     if (storedUser) {
       return JSON.parse(storedUser);
@@ -70,8 +63,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const removeUser = async () => {
-    console.log("removeUser dans UserContext");
-
     try {
       // TODO Problème là, le user n'est pas supprimé
       // await AsyncStorage.removeItem("user");
@@ -127,8 +118,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const resetUserState = () => {
-    console.log("resetUserState");
-    
     setUserState(null);
   };
 

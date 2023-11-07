@@ -221,7 +221,6 @@ const HypothesisGameScreen = ({ }) => {
     setMessageContent("");
     setLoading(false);
     fetchNewText();
-
   };
 
   const updateTokensColor = (text: TextWithTokens, positions: number[]) => {

@@ -15,7 +15,6 @@ export const checkUserSelection = async (
     try {
         const testSpecifications = await getTestSpecificationsByTextId(textId, gameType);
         if (userSentenceSpecifications.length !== testSpecifications.length) {
-            console.log("Le nombre de spécifications ne correspond pas.");
             return { isValid: false, testSpecifications };
         }
 
@@ -32,10 +31,8 @@ export const checkUserSelection = async (
             });
 
             if (!matchingTestSpec) {
-                console.log('Sélection est incorrecte.');
                 return { isValid: false, testSpecifications };
             } else {
-                console.log("Bonne sélection");
             }
         }
 
@@ -96,9 +93,9 @@ export const checkUserSelectionPlausibility = async (
             testPlausibilityError,
             correctPlausibility: textPlausibility,
             testPlausibilityPassed: isPlausibilityCorrect,
-            isErrorDetailsCorrect 
+            isErrorDetailsCorrect
         };
-        
+
 
     } catch (error) {
         console.error(error);

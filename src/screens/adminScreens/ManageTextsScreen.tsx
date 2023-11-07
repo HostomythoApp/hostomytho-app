@@ -16,16 +16,21 @@ export default function ManageTextsScreen() {
     const { data: themes } = useQuery('themes', getAllThemes);
     const [selectedText, setSelectedText] = useState<TextModel | null>(null);
     const [content, setContent] = useState('');
-    const [plausibility, setPlausibility] = useState<number | undefined>(undefined);
-    const [origin, setOrigin] = useState<string | undefined>('Généré');
+    const [plausibility, setPlausibility] = useState<number | undefined>(0);
+    const [origin, setOrigin] = useState<string | undefined>('synthétique');
     const [id_theme, setId_theme] = useState<number | undefined>(undefined);
     const [isCreating, setIsCreating] = useState(false);
     const [includeSentences, setIncludeSentences] = useState(true);
+    const [num, setNum] = useState<string | undefined>(undefined);
+    const [isHypothesisSpecificationTest, setIsHypothesisSpecificationTest] = useState(false);
+    const [isConditionSpecificationTest, setIsConditionSpecificationTest] = useState(false);
+    const [isNegationSpecificationTest, setIsNegationSpecificationTest] = useState(false);
+    const [isPlausibilityTest, setIsPlausibilityTest] = useState(false);
 
     const origins = [
-        { id: 1, name: 'Généré' },
-        { id: 2, name: 'Réel - Vrai' },
-        { id: 3, name: 'Réel - Faux' }
+        { id: 1, name: 'synthétique' },
+        { id: 2, name: 'réel - vrai' },
+        { id: 3, name: 'réel - faux' }
     ];
 
     // // // Création texte
@@ -34,17 +39,22 @@ export default function ManageTextsScreen() {
             queryClient.invalidateQueries('texts');
             setIsCreating(false);
             setContent('');
-            setPlausibility(undefined);
-            setOrigin('Généré');
+            setPlausibility(0);
+            setOrigin('synthétique');
             setId_theme(undefined);
+            setNum(undefined);
+            setIsHypothesisSpecificationTest(false);
+            setIsConditionSpecificationTest(false);
+            setIsNegationSpecificationTest(false);
+            setIsPlausibilityTest(false);
         },
     });
 
     const handleCreate = () => {
         setIsCreating(true);
         setContent('');
-        setPlausibility(undefined);
-        setOrigin('Généré');
+        setPlausibility(0);
+        setOrigin('synthétique');
         setId_theme(undefined);
     };
 
@@ -54,13 +64,20 @@ export default function ManageTextsScreen() {
             createMutation.mutate({
                 content,
                 id_theme,
-                plausibility,
+                num,
                 origin,
+                test_plausibility: plausibility,
+                is_hypothesis_specification_test: isHypothesisSpecificationTest,
+                is_condition_specification_test: isConditionSpecificationTest,
+                is_negation_specification_test: isNegationSpecificationTest,
+                is_plausibility_test: isPlausibilityTest
             });
         }
     };
 
+
     // // // Suppression
+    // TODO A revoir 
     const deleteMutation = useMutation(deleteText, {
         onSuccess: () => {
             queryClient.invalidateQueries('texts');
@@ -72,6 +89,7 @@ export default function ManageTextsScreen() {
     };
 
     // // // Modification
+    // TODO A revoir 
     const updateMutation = useMutation(updateText, {
         onSuccess: () => {
             queryClient.invalidateQueries('texts');
@@ -87,7 +105,7 @@ export default function ManageTextsScreen() {
         if (text) {
             setSelectedText(text);
             setContent(text.content);
-            setPlausibility(text.plausibility);
+            setPlausibility(text.test_plausibility);
             setOrigin(text.origin);
             setId_theme(text.id_theme);
         } else {
@@ -105,7 +123,7 @@ export default function ManageTextsScreen() {
                 text: {
                     id: selectedText.id,
                     content,
-                    plausibility,
+                    // test_plausibility,
                     origin,
                     id_theme,
                 }
@@ -138,10 +156,9 @@ export default function ManageTextsScreen() {
                     />
                     <TextInput
                         style={tw('border p-2 mb-4')}
-                        onChangeText={value => setPlausibility(Number(value))}
-                        value={plausibility !== undefined ? String(plausibility) : ''}
-                        placeholder="Plausibilité (0 par défaut)"
-                        keyboardType="numeric"
+                        onChangeText={setNum}
+                        value={num}
+                        placeholder="Numéro"
                     />
                     <Picker
                         selectedValue={origin}
@@ -152,16 +169,52 @@ export default function ManageTextsScreen() {
                             <Picker.Item key={origin.id} label={origin.name} value={origin.name} />
                         ))}
                     </Picker>
-                    {/* TODO A delete */}
-                    <Picker
-                        selectedValue={id_theme}
-                        onValueChange={(id_theme: number) => setId_theme(id_theme)}
+                    <TextInput
                         style={tw('border p-2 mb-4')}
-                    >
-                        {themes && themes.map((theme: ThemeModel) => (
-                            <Picker.Item key={theme.id} label={theme.name} value={theme.id} />
-                        ))}
-                    </Picker>
+                        onChangeText={value => setPlausibility(Number(value))}
+                        value={plausibility !== undefined ? String(plausibility) : ''}
+                        placeholder="Plausibilité (0 par défaut)"
+                        keyboardType="numeric"
+                    />
+                    <View style={tw('flex-row justify-around items-center')}>
+                        <View style={tw('flex-1 items-center')}>
+                            <Text>Test d'hypothèse</Text>
+                            <Switch
+                                trackColor={{ false: "#767577", true: "#8FEE89" }}
+                                thumbColor={isHypothesisSpecificationTest ? "#f5dd4b" : "#f4f3f4"}
+                                onValueChange={setIsHypothesisSpecificationTest}
+                                value={isHypothesisSpecificationTest}
+                            />
+                        </View>
+                        <View style={tw('flex-1 items-center')}>
+                            <Text>Test de condition</Text>
+                            <Switch
+                                trackColor={{ false: "#767577", true: "#8FEE89" }}
+                                thumbColor={isConditionSpecificationTest ? "#f5dd4b" : "#f4f3f4"}
+                                onValueChange={setIsConditionSpecificationTest}
+                                value={isConditionSpecificationTest}
+                            />
+                        </View>
+                        <View style={tw('flex-1 items-center')}>
+                            <Text>Test de négation</Text>
+                            <Switch
+                                trackColor={{ false: "#767577", true: "#8FEE89" }}
+                                thumbColor={isNegationSpecificationTest ? "#f5dd4b" : "#f4f3f4"}
+                                onValueChange={setIsNegationSpecificationTest}
+                                value={isNegationSpecificationTest}
+                            />
+                        </View>
+                        <View style={tw('flex-1 items-center')}>
+                            <Text>Test de plausibilité</Text>
+                            <Switch
+                                trackColor={{ false: "#767577", true: "#8FEE89" }}
+                                thumbColor={isPlausibilityTest ? "#f5dd4b" : "#f4f3f4"}
+                                onValueChange={setIsPlausibilityTest}
+                                value={isPlausibilityTest}
+                            />
+                        </View>
+                    </View>
+
                     <Text>Importer également toutes les phrases du texte séparément dans les différents mini-jeux</Text>
 
                     <Switch
@@ -230,7 +283,7 @@ export default function ManageTextsScreen() {
                         <>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Texte id:</Text> {text.id}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Contenu:</Text> {text.content}</Text>
-                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Plausibilité: </Text>{text.plausibility}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Plausibilité: </Text>{text.test_plausibility}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Origine:</Text> {text.origin}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Theme:</Text> {themes && themes.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
                             <View style={tw('flex-row justify-between')}>
