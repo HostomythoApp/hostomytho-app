@@ -45,10 +45,9 @@ const PlausibilityGameDetailedScreen = () => {
   const [userRateSelected, setUserRateSelected] = useState(100);
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
 
-
   useEffect(() => {
-      fetchNewText();
-  }, [user]);
+    fetchNewText();
+  }, []);
 
   const fetchNewText = async () => {
     try {

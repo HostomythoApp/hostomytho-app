@@ -65,7 +65,7 @@ const NegationGameScreen = ({ }) => {
     } else {
       fetchNewText();
     }
-  }, [isTutorial, user]);
+  }, [isTutorial]);
 
 
   // *********** Gestion Tuto *******************
@@ -79,15 +79,15 @@ const NegationGameScreen = ({ }) => {
       let response;
       switch (nextStep) {
         case 1:
-          response = await getTextWithTokensById(72);
+          response = await getTextWithTokensById(113);
           setText(response);
           break;
         case 3:
-          response = await getTextWithTokensById(76);
+          response = await getTextWithTokensById(112);
           setText(response);
           break;
         case 4:
-          response = await getTextWithTokensById(76);
+          response = await getTextWithTokensById(117);
           setText(response);
           break;
         case 5:
@@ -169,7 +169,7 @@ const NegationGameScreen = ({ }) => {
     setIsTutorial(true);
     setTutorialFailed(false);
     setUserSentenceSpecifications([]);
-    const response = await getTextWithTokensById(72);
+    const response = await getTextWithTokensById(113);
     setText(response);
     const tutorialContent = getTutorialContentForStep(1, tw);
     if (tutorialContent) {
