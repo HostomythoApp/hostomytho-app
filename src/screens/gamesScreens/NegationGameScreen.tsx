@@ -334,7 +334,7 @@ const NegationGameScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1 ")}>
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4"),
+            tw("bg-[#DAEBDC] rounded-xl justify-center mx-2 mt-4"),
             {
               minHeight: 150,
               shadowColor: "#000",
@@ -424,7 +424,7 @@ const NegationGameScreen = ({ }) => {
 
 
   return (
-    <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_1.webp')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />

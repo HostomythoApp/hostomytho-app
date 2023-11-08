@@ -45,7 +45,7 @@ const CriminalsCaughtScreen = () => {
             <Text style={tw('text-3xl text-white text-center mb-4 font-primary')}>
                 Vous n'avez pas encore attrapé de criminel
             </Text>
-            <View style={tw(' w-80')}>
+            <View style={tw('w-80')}>
                 <PrimaryButton title="Enquête en cours" destination="Investigation" />
             </View>
         </View>
@@ -65,8 +65,8 @@ const CriminalsCaughtScreen = () => {
     const styles = StyleSheet.create({
         container: { flex: 1, paddingTop: 96 },
         child: { width, justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center', padding: 48 },
-        pagination: { position: 'absolute', top: 100 },
-        paginationItem: { height: 40, width: 40 }
+        pagination: { position: 'absolute', top: 90 },
+        paginationItem: { height: 36, width: 36 }
     });
 
     return (

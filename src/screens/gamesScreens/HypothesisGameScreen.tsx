@@ -33,11 +33,11 @@ const HypothesisGameScreen = ({ }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
-  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
       fetchNewText();
   }, [user]);
+
   const fetchNewText = async () => {
     try {
       let response;
@@ -280,7 +280,7 @@ const HypothesisGameScreen = ({ }) => {
   };
 
   return (
-    <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_2.webp')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
           <CustomHeaderInGame title="Mytho-Hypo" backgroundColor="bg-whiteTransparent" />

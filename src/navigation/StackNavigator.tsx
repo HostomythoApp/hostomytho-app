@@ -148,15 +148,6 @@ const StackNavigator = ({ }) => {
 
               <Stack.Screen name="Stats" component={StatisticsScreen} />
 
-              {/* Partie admin */}
-              <Stack.Screen name="Admin"
-                options={{
-                  headerShown: false
-                }}
-              >
-                {/* @ts-ignore */}
-                {(props) => <AdminNavigator {...props} />}
-              </Stack.Screen>
 
 
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
@@ -165,7 +156,6 @@ const StackNavigator = ({ }) => {
 
               <Stack.Screen name="ExportData" component={ExportDataSreen} />
 
-              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
 
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
 

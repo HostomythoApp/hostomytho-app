@@ -281,11 +281,12 @@ export default function ManageTextsScreen() {
                         </View>
                     ) : (
                         <>
-                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Texte id:</Text> {text.id}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Num:</Text> {text.num}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Contenu:</Text> {text.content}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Plausibilité: </Text>{text.test_plausibility}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Origine:</Text> {text.origin}</Text>
                             <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Theme:</Text> {themes && themes.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
+                            <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Texte id:</Text> {text.id}</Text>
                             <View style={tw('flex-row justify-between')}>
                                 <Button
                                     onPress={() => handleUpdate(text)}

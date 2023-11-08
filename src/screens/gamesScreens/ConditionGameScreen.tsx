@@ -35,6 +35,7 @@ const ConditionGameScreen = ({ }) => {
   useEffect(() => {
     fetchNewText();
   }, [user]);
+
   const fetchNewText = async () => {
     try {
       let response;
@@ -275,7 +276,7 @@ const ConditionGameScreen = ({ }) => {
   };
 
   return (
-    <ImageBackground source={require('images/bg_room_2.jpeg')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_2.webp')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Condi-Mytho" backgroundColor="bg-whiteTransparent" />

@@ -130,7 +130,7 @@ const ErrorTypeGameScreen = ({ }) => {
   };
 
   return (
-    <ImageBackground source={require('images/bg_corridor_dark.png')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView >
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />

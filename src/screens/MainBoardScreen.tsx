@@ -33,7 +33,7 @@ const MainBoardScreen = ({ }) => {
     }
 
     return (
-        <ImageBackground source={require('images/bg_desk_smaller.jpeg')} style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}>
+        <ImageBackground source={require('images/bg_desk_smaller.webp')} style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}>
             <View style={tw("flex-1 items-center")}>
                 {menuMessage && menuMessage.active &&
                     <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 bg-blue-500 bg-opacity-70 rounded-xl"), { zIndex: 1 }]}>

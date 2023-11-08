@@ -52,7 +52,7 @@ const RankingScreen = ({ }) => {
         <ScrollView style={tw('')}>
             <CustomHeaderEmpty title="Classement" backgroundColor="bg-white"/>
             <View style={tw("flex-1 p-4 mx-auto min-w-[540px] pt-20")}>
-                <Text style={tw('text-xl mb-4')}>Classement général</Text>
+                <Text style={tw('text-xl mb-4 font-primary')}>Classement général</Text>
                 {users.map((item, index) => renderItem({ item, index }))}
                 {page > 1 && (
                     <TouchableOpacity onPress={() => setPage(page - 1)}>

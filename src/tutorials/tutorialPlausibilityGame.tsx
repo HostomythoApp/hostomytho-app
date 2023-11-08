@@ -1,7 +1,7 @@
 
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ButtonConfig } from 'interfaces/ButtonConfig';
-import { Text, TouchableWithoutFeedback } from 'react-native';
+import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import { plausibilityConfigs } from 'utils/plausibilityConfigs';
 
 const getPlausibilityConfig = (plausibility?: number) => {
@@ -40,16 +40,26 @@ export const getModalHelpContent = (tw: any) => {
             <Text style={tw('font-primary')}>
                 Le but du jeu est d'évaluer la crédibilité d'un texte en lui attribuant un taux de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
                 {"\n\n"}
-                <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible (0% de plausibilité)
+                <View style={tw('flex-row items-center justify-center m-1')}>
+                    <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible (0% de plausibilité)
+                </View>
                 {"\n"}
-                <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible (25% de plausibilité)
+                <View style={tw('flex-row items-center justify-center m-1')}>
+                    <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible (25% de plausibilité)
+                </View>
                 {"\n"}
-                <PlausibilityButton config={getPlausibilityConfig(50).buttonConfig as ButtonConfig} /> Moyennement plausible (50% de plausibilité)
+                <View style={tw('flex-row items-center justify-center m-1')}>
+                    <PlausibilityButton config={getPlausibilityConfig(50).buttonConfig as ButtonConfig} /> Moyennement plausible (50% de plausibilité)
+                </View>
                 {"\n"}
-                <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible (75% de plausibilité)
+                <View style={tw('flex-row items-center justify-center m-1')}>
+                    <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible (75% de plausibilité)
+                </View>
                 {"\n"}
-                <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complétement plausible (100% de plausibilité)
-                {"\n\n"}
+                <View style={tw('flex-row items-center justify-center m-1')}>
+                    <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complétement plausible (100% de plausibilité)
+                </View>
+                {"\n"}
                 Sélectionnez le bouton qui correspond au niveau de plausibilité que vous associez au texte. Vous aurez ensuite le choix de passer au texte suivant, ou de préciser où est l'erreur ou le doute que vous avez.
                 Les erreurs et doutent peuvent être de type grammaticale, de cohérence médicale, de vocabulaire médicale, ou tout autres types. {"\n"}
                 Si vous choisissez de préciser l'erreur, cliquez sur les mots ou phrases qui constituent l'erreur ou la zone de doute, et validez la sélection. Vous pouvez ainsi ajouter plusieurs erreurs. Vérifiez bien d'avoir validé votre dernière selection, et vous pouvez ensuite passer au texte suivant.

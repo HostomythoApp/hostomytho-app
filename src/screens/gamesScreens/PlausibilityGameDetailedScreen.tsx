@@ -7,7 +7,7 @@ import { Token } from "models/Token";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
-import { getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
+import { getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
@@ -47,21 +47,22 @@ const PlausibilityGameDetailedScreen = () => {
 
 
   useEffect(() => {
-    if (!text && user) {
-      const fetchText = async () => {
-        try {
-          // TODO ne récupérer que les tokens pour ne pas donner la réponse dans les logs
-          const response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
-          // const response = await getTextWithTokensById(70);
-          setText(response);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchText();
-    }
-  }, [text, user]);
+      fetchNewText();
+  }, [user]);
 
+  const fetchNewText = async () => {
+    try {
+      let response;
+      if (user) {
+        response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+      } else {
+        response = await getTextWithTokensByGameType('plausibility');
+      }
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du nouveau texte :", error);
+    }
+  };
 
   // *********** Gestion Tuto *******************
 
@@ -161,23 +162,6 @@ const PlausibilityGameDetailedScreen = () => {
     </View>
   );
 
-  const fetchTextFromAPI = async () => {
-    try {
-      if (user) {
-        const response = await getTextWithTokensNotPlayed(user?.id, 'plausibility');
-        // const response = await getTextWithTokensById(85);
-        if (response === null || response.tokens.length === 0) {
-          setNoMoreTexts(true);
-          return;
-        }
-
-        setText(response);
-        setNoMoreTexts(false);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
@@ -234,7 +218,7 @@ const PlausibilityGameDetailedScreen = () => {
     setErrorSpecifying(false);
     setHighlightEnabled(false);
     setUserRateSelected(100);
-    await fetchTextFromAPI();
+    fetchNewText();
   };
 
   const plausibilityDescription = (value: any) => {
@@ -354,7 +338,7 @@ const PlausibilityGameDetailedScreen = () => {
   }
 
   return (
-    <ImageBackground source={require('images/bg_corridor_dark.png')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
