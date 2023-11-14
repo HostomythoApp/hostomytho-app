@@ -5,7 +5,7 @@ import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
-import { getUserSkins, getEquippedUserSkins, unequipSkin } from 'services/api/skins';
+import { getUserSkins, unequipSkin } from 'services/api/skins';
 import { equipSkin } from 'services/api/skins';
 import { useSkins } from 'services/context/SkinsContext';
 
@@ -15,34 +15,24 @@ const SkinsManagementScreen = (props: any) => {
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
     const skinTypes = ["visage", "lunettes", "chapeau", "veste", "cheveux", "stetho"];
-    const [skins, setSkins] = useState<Record<string, Skin[]>>({});
-    const [apiSkins, setApiSkins] = useState<Skin[]>([]);
+    const [skins, setSkins] = useState<Skin[]>([]);
     const { equippedSkins, setEquippedSkins } = useSkins();
 
     useEffect(() => {
         const fetchData = async () => {
             if (user?.id) {
                 const allSkins = await getUserSkins(user.id);
-                const equippedSkinsFromApi = await getEquippedUserSkins(user.id);
-                // @ts-ignore
                 setSkins(allSkins);
-                setApiSkins(equippedSkinsFromApi);
             }
         };
         fetchData();
     }, [user]);
 
-    useEffect(() => {
-        if (JSON.stringify(apiSkins.sort()) !== JSON.stringify([...equippedSkins].sort())) {
-            setEquippedSkins(Array.from(new Set(apiSkins)));
-        }
-    }, [apiSkins]);
-
     const clickOnSkin = async (skin: Skin) => {
         if (user?.id) {
             if (isEquipped(skin)) {
                 const sameTypeEquippedSkins = equippedSkins.filter(s => s.type === skin.type);
-    
+
                 // Vérification qu'un visage est équippé
                 if (sameTypeEquippedSkins.length > 1 || skin.type !== 'visage') {
                     const updatedSkin = await unequipSkin(user.id, skin.id);
@@ -53,13 +43,13 @@ const SkinsManagementScreen = (props: any) => {
                 const updatedSkin = await equipSkin(user.id, skin.id);
                 setEquippedSkins([...equippedSkins, updatedSkin]);
             }
-    
+
             if (user?.id) {
                 updateStorageUserFromAPI(user.id);
             }
         }
     };
-    
+
     const isEquipped = (skin: Skin) => {
         return equippedSkins.some(equippedSkin => equippedSkin.id === skin.id);
     };
@@ -80,12 +70,11 @@ const SkinsManagementScreen = (props: any) => {
     };
 
     return (
-        // <View style={[tw('w-full mt-4 px-2 max-w-5xl'), isMobile ? tw('pt-2') : tw('pt-6')]}>
         <View style={[tw('w-full mt-4 px-2'), isMobile ? tw('pt-2') : tw('pt-6')]}>
 
             <View style={[tw('flex-row justify-center'), isMobile ? tw('w-full') : tw('w-4/5')]}>
                 <View style={tw('mt-4')}>
-                    <Text style={[tw('font-bold mb-6 text-center text-[whitesmoke] font-MochiyPopOne'), isMobile ? tw('text-1xl') : tw(' text-3xl leading-10')]}>Changement d'apparence</Text>
+                    <Text style={[tw('font-bold mb-6 text-center text-[whitesmoke] font-MochiyPopOne'), isMobile ? tw('text-xl') : tw(' text-3xl leading-10')]}>Changement d'apparence</Text>
                 </View>
             </View>
 

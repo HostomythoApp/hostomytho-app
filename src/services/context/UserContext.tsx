@@ -7,6 +7,8 @@ import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
 import { View, Text } from "react-native";
 import AchievementIcon from "components/AchievementIcon";
+import { useSkins } from "./SkinsContext";
+import { getEquippedUserSkins } from "services/api/skins";
 
 interface UserContextProps {
   user: User | null;
@@ -14,7 +16,7 @@ interface UserContextProps {
   removeUser: () => Promise<void>;
   incrementPoints: (points: number) => void;
   updateStorageUserFromAPI: (userId: number) => Promise<void>;
-  resetUserState:  () => void;
+  resetUserState: () => void;
 }
 
 interface UserProviderProps {
@@ -28,6 +30,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const tw = useTailwind();
   const [user, setUserState] = useState<User | null>(null);
   const modalContext = useContext(ModalContext);
+  const { setEquippedSkins } = useSkins();
 
   useEffect(() => {
   }, [user]);
@@ -44,6 +47,13 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const setUser = async (newUser: User | null) => {
     setUserState(newUser);
     await storeUser(newUser);
+    if (newUser) {
+      // Chargement des skins équipés pour l'utilisateur connecté
+      const skins = await getEquippedUserSkins(newUser.id);
+      setEquippedSkins(skins);
+    } else {
+      setEquippedSkins([]); // Réinitialise les skins équipés si aucun utilisateur n'est connecté
+    }
   };
 
   const storeUser = async (user: User | null) => {
@@ -66,7 +76,8 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     try {
       // TODO Problème là, le user n'est pas supprimé
       // await AsyncStorage.removeItem("user");
-      await AsyncStorage.clear(); 
+      await AsyncStorage.clear();
+      setEquippedSkins([]);
     } catch (error) {
       console.error("Error removing user:", error);
     }
