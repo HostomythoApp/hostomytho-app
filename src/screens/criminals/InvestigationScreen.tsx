@@ -20,7 +20,7 @@ const InvestigationScreen = () => {
     const tw = useTailwind();
     const { user } = useUser();
     const [criminals, setCriminals] = useState<Criminal[]>([]);
-    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     // const investigationProgress = user?.percentageInvestigation || 0;
     // const investigationProgress = 65;
     const [investigationProgress, setInvestigationProgress] = useState(65);
@@ -62,7 +62,7 @@ const InvestigationScreen = () => {
                 Créez un compte pour commencer l'enquête
             </Text>
             <View style={tw('w-80')}>
-                <PrimaryButton title="Créer un compte" destination="SignUpScreen" />
+                <PrimaryButton title="Créer un compte" destination="Login" />
             </View>
         </View>
     );
@@ -131,7 +131,7 @@ const InvestigationScreen = () => {
                             {"\n\n"}
                             Félicitations, vous avez eu du flair et votre enquête a mené à la bonne piste !
                         </Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('CriminalsCaught')} style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Criminels')} style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}>
                             <Text style={tw('text-white font-bold text-center')}>Voir le criminel</Text>
                         </TouchableOpacity>
                     </>

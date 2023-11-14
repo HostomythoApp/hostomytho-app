@@ -26,7 +26,7 @@ const ContentProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user, updateStorageUserFromAPI } = useUser();
     const [ranking, setRanking] = useState<Rank[]>([]);
-    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     const { equippedSkins } = useSkins();
 
     // @ts-ignore
@@ -134,7 +134,7 @@ const ContentProfileScreen = (props: any) => {
                             {ranking[ranking.length - 1]?.id !== user?.id && (
                                 <Text style={tw('pl-2')}>. . .</Text>
                             )}
-                            <TouchableOpacity onPress={() => navigation.navigate('Ranking')}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Classement')}>
                                 <Text style={tw('text-blue-500 mt-2 text-center font-primary')}>Voir le classement complet</Text>
                             </TouchableOpacity>
                         </View>
@@ -159,7 +159,7 @@ const ContentProfileScreen = (props: any) => {
                                 ))}
                             </>
                         ) : null}
-                        <TouchableOpacity onPress={() => navigation.navigate('Achievements')} style={tw('p-2 pb-2 pt-1 mt-1 bg-white rounded-lg')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('HautsFaits')} style={tw('p-2 pb-2 pt-1 mt-1 bg-white rounded-lg')}>
                             {userAchievements.length === 0 ? (
                                 <Text style={tw('font-primary')}>Aucun haut fait pour le moment</Text>
 
@@ -184,7 +184,7 @@ const ContentProfileScreen = (props: any) => {
                             ))}
                             <Text style={tw('ml-1 mt-1')}
                             >. . .</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('Stats')}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Statistiques')}>
                                 <Text style={tw('text-blue-500 mt-1 text-center font-primary')}>Tout afficher</Text>
                             </TouchableOpacity>
                         </View>
@@ -211,7 +211,7 @@ const ContentProfileScreen = (props: any) => {
 
                     <TouchableOpacity
                         style={tw(`flex-row items-center justify-center ${isMobile ? 'w-full ml-0' : 'w-[32%] ml-2'} bg-primary py-2 rounded`)}
-                        onPress={() => navigation.navigate('ProfileSettings')}
+                        onPress={() => navigation.navigate('ParametreProfil')}
                     >
                         <FontAwesome5 name='cog' size={24} color='white' />
                         <Text style={tw('text-white ml-2 font-primary')}>Paramètres du compte</Text>

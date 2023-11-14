@@ -38,7 +38,7 @@ const LoginScreen = () => {
                     const token = response.data.token;
                     await storeToken(token);
                     setUser(response.data.user);
-                    navigation.navigate("MainBoard");
+                    navigation.navigate("TableauDeBord");
                 }
             } catch (error: any) {
                 if (error.response.status === 401) {

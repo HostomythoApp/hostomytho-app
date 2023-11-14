@@ -12,7 +12,7 @@ const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
     const { user } = useUser();
-    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     const windowWidth = Dimensions.get('window').width;
     const [menuMessage, setMenuMessage] = useState<MessageMenu | null>(null);
     const [messageExpanded, setMessageExpanded] = useState(false);
@@ -52,7 +52,7 @@ const MainBoardScreen = ({ }) => {
 
                 <View style={StyleSheet.absoluteFill}>
                     <View style={StyleSheet.absoluteFill}>
-                        <TouchableOpacity onPress={() => navigation.navigate("Main")}
+                        <TouchableOpacity onPress={() => navigation.navigate("Menu")}
                             style={{
                                 position: 'absolute',
                                 // top: windowWidth > 768 ? '20%' : '20%',
@@ -82,7 +82,7 @@ const MainBoardScreen = ({ }) => {
                             />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("HypothesisGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("HypoMytho")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '27%' : '27%',
@@ -98,7 +98,7 @@ const MainBoardScreen = ({ }) => {
                                 }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("ErrorTypeGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("MythoTypo")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '56%' : '56%',
@@ -110,7 +110,7 @@ const MainBoardScreen = ({ }) => {
                                 source={require('images/paper_2.png')} style={{ width: windowWidth * 0.12, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("PlausibilityGameDetailed")}
+                        <TouchableOpacity onPress={() => navigation.navigate("MythoOuPas")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '40%' : '40%',
@@ -129,7 +129,7 @@ const MainBoardScreen = ({ }) => {
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity onPress={() => navigation.navigate("TemporalLinkGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("MythoTempo")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '56%' : '56%',
@@ -145,7 +145,7 @@ const MainBoardScreen = ({ }) => {
                             }} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("NegationGame")}
+                        <TouchableOpacity onPress={() => navigation.navigate("MythoNo")}
                             style={{
                                 position: 'absolute',
                                 top: windowWidth > 768 ? '20%' : '20%',
@@ -176,7 +176,7 @@ const MainBoardScreen = ({ }) => {
                             }} />
                             <View
                                 style={tw("flex-row")}>
-                                <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mt-2')}
+                                <TouchableOpacity style={tw('mt-2')}
                                 >
                                     <Image source={require('images/polaroid_character_3.png')} style={{
                                         width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 60, minHeight: 60,
@@ -186,7 +186,7 @@ const MainBoardScreen = ({ }) => {
                                         shadowRadius: 1,
                                     }} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mr-[-18px] ml-[-18px] z-10')}
+                                <TouchableOpacity style={tw('mr-[-18px] ml-[-18px] z-10')}
                                 >
                                     <Image source={require('images/polaroid_character_2.png')} style={{
                                         width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 60, minHeight: 60,
@@ -196,7 +196,7 @@ const MainBoardScreen = ({ }) => {
                                         shadowRadius: 1,
                                     }} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={tw('mt-4')}>
+                                <TouchableOpacity style={tw('mt-4')}>
                                     <Image source={require('images/polaroid_character_1.png')} style={{
                                         width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 60, minHeight: 60,
                                         shadowColor: 'black',
@@ -208,7 +208,7 @@ const MainBoardScreen = ({ }) => {
                             </View>
                         </View>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("CriminalsCaught")}
+                        <TouchableOpacity onPress={() => navigation.navigate("Criminels")}
                             style={{
                                 position: 'absolute',
                                 top: '17%',
@@ -256,11 +256,11 @@ const MainBoardScreen = ({ }) => {
 
                 {!authState.isAuthenticated &&
                     <View style={[tw("absolute bottom-2 right-2")]}>
-                        <TouchableOpacity onPress={() => navigation.navigate("Login")}
+                        <TouchableOpacity onPress={() => navigation.navigate("Connexion")}
                             style={tw("mb-2 py-2 px-4 bg-blue-500 bg-opacity-70 rounded-xl")}>
                             <Text style={tw("text-center text-white text-lg")}>Se connecter</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate("SignUpScreen")}
+                        <TouchableOpacity onPress={() => navigation.navigate("Login")}
                             style={tw("py-2 px-4 bg-green-500 bg-opacity-70 rounded-xl")}>
                             <Text style={tw("text-center text-white text-lg")}>Créer un compte</Text>
                         </TouchableOpacity>
@@ -268,7 +268,7 @@ const MainBoardScreen = ({ }) => {
                 }
 
                 {authState.isAuthenticated &&
-                    <TouchableOpacity onPress={() => navigation.navigate("Profile")}
+                    <TouchableOpacity onPress={() => navigation.navigate("Profil")}
                         style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
                         <View style={{
                             backgroundColor: "rgba(0,0,0,0.5)",

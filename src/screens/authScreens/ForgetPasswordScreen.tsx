@@ -15,7 +15,7 @@ const ForgetPasswordScreen = () => {
     const [mailError, setMailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const inputWidth = Math.max(Dimensions.get('window').width * 0.4, 50);
-    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     const validateEmail = (email: string) => {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -36,7 +36,7 @@ const ForgetPasswordScreen = () => {
             const response = await sendMail(mail);
             if (response.status === 200) {
                 alert("Un email a été envoyé à votre adresse pour récupérer votre mot de passe.");
-                navigation.navigate("Login");
+                navigation.navigate("Connexion");
             }
         } catch (error: any) {
             if (error.response.status === 404) {

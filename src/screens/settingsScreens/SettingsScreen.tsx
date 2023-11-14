@@ -18,13 +18,13 @@ const SettingsScreen = ({ }) => {
                     <View>
                         {!authState.isAuthenticated &&
                             <View>
-                                <PrimaryButton title="Aide et contact" destination="Help" />
+                                <PrimaryButton title="Aide et contact" destination="Aide" />
                             </View>
                         }
-                        <PrimaryButton title="Objectifs de l'application" destination="PrivacyPolicy" />
-                        <PrimaryButton title="Règles et explications" destination="PrivacyPolicy" />
-                        <PrimaryButton title="Aide et contact" destination="Help" />
-                        <PrimaryButton title="Politique de confidentialité" destination="PrivacyPolicy" />
+                        <PrimaryButton title="Objectifs de l'application" destination="PolitiqueDeConfidentialite" />
+                        <PrimaryButton title="Règles et explications" destination="PolitiqueDeConfidentialite" />
+                        <PrimaryButton title="Aide et contact" destination="Aide" />
+                        <PrimaryButton title="Politique de confidentialité" destination="PolitiqueDeConfidentialite" />
                         {authState.isAuthenticated &&
                             <View>
                                 <PrimaryButton title="Thème" destination="Theme" />

@@ -22,7 +22,7 @@ const CriminalsCaughtScreen = () => {
     const [criminals, setCriminals] = useState<Criminal[]>([]);
     const isEmptyCriminalsList = criminals.length === 0;
     const { width } = Dimensions.get('window');
-    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     useEffect(() => {
         const loadCriminals = async () => {
@@ -57,7 +57,7 @@ const CriminalsCaughtScreen = () => {
                 Vous n'avez pas encore attrapé de criminel
             </Text>
             <View style={tw('w-80')}>
-                <PrimaryButton title="Créer un compte pour commencer l'enquête" destination="SignUpScreen" />
+                <PrimaryButton title="Créer un compte pour commencer l'enquête" destination="Login" />
             </View>
         </View>
     );

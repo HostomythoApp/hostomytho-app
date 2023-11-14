@@ -57,7 +57,6 @@ const StackNavigator = ({ }) => {
   useEffect(() => {
   }, [isModalVisible]);
 
-
   return (
     <ModalContext.Provider
       value={{
@@ -84,52 +83,52 @@ const StackNavigator = ({ }) => {
                 headerShown: false
               })}
             >
-              <Stack.Screen name="MainBoard"
+              <Stack.Screen name="TableauDeBord"
                 component={MainBoardScreen}
                 options={({ }) => ({
                   headerShown: false
                 })} />
 
-              <Stack.Screen name="Main"
+              <Stack.Screen name="Menu"
                 component={MainScreen}
                 options={({ navigation }) => ({
                   header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
                 })} />
-              <Stack.Screen name="PlausibilityGameDetailed" component={PlausibilityGameDetailedScreen} />
+              <Stack.Screen name="MythoOuPas" component={PlausibilityGameDetailedScreen} />
 
-              <Stack.Screen name="NegationGame" component={NegationGameScreen} />
+              <Stack.Screen name="MythoNo" component={NegationGameScreen} />
 
               <Stack.Screen name="Investigation" component={InvestigationScreen} />
 
-              <Stack.Screen name="CriminalsCaught" component={CriminalsCaughtScreen} />
+              <Stack.Screen name="Criminels" component={CriminalsCaughtScreen} />
 
-              <Stack.Screen name="HypothesisGame" component={HypothesisGameScreen} />
+              <Stack.Screen name="HypoMytho" component={HypothesisGameScreen} />
 
-              <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen name="Profil" component={ProfileScreen} />
 
-              <Stack.Screen name="ContentProfile" component={ContentProfileScreen} />
+              <Stack.Screen name="ProfilC" component={ContentProfileScreen} />
 
-              <Stack.Screen name="SkinsManagement" component={SkinsManagementScreen} />
+              <Stack.Screen name="GestionApparence" component={SkinsManagementScreen} />
 
-              <Stack.Screen name="ConditionGame" component={ConditionGameScreen} />
+              <Stack.Screen name="CondiMytho" component={ConditionGameScreen} />
 
-              <Stack.Screen name="PlausibilityGame" component={PlausibilityGameScreen} />
+              <Stack.Screen name="Plausibilites" component={PlausibilityGameScreen} />
 
-              <Stack.Screen name="ErrorTypeGame" component={ErrorTypeGameScreen} />
+              <Stack.Screen name="MythoTypo" component={ErrorTypeGameScreen} />
 
-              <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="ParametreProfil" component={ProfileSettingsScreen} options={{ headerShown: false }} />
 
-              <Stack.Screen name="Achievements" component={AchievementsScreen} />
+              <Stack.Screen name="HautsFaits" component={AchievementsScreen} />
 
-              <Stack.Screen name="TemporalLinkGame" component={TemporalLinkGameScreen} />
+              <Stack.Screen name="MythoTempo" component={TemporalLinkGameScreen} />
 
               <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
 
               <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
 
-              <Stack.Screen name="Login" component={SignInScreen} />
+              <Stack.Screen name="Connexion" component={SignInScreen} />
 
-              <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+              <Stack.Screen name="Login" component={SignUpScreen} />
 
               <Stack.Screen name="ForgetPassword" component={ForgetPasswordScreen} />
 
@@ -137,15 +136,15 @@ const StackNavigator = ({ }) => {
 
               <Stack.Screen name="Notif" component={NotifScreen} />
 
-              <Stack.Screen name="Help" component={HelpScreen} />
+              <Stack.Screen name="Aide" component={HelpScreen} />
 
-              <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+              <Stack.Screen name="PolitiqueDeConfidentialite" component={PrivacyPolicyScreen} />
 
               <Stack.Screen name="Theme" component={ThemeScreen} />
 
-              <Stack.Screen name="Ranking" component={RankingScreen} />
+              <Stack.Screen name="Classement" component={RankingScreen} />
 
-              <Stack.Screen name="Stats" component={StatisticsScreen} />
+              <Stack.Screen name="Statistiques" component={StatisticsScreen} />
 
               {/* Partie admin */}
               <Stack.Screen name="Admin"
@@ -153,6 +152,7 @@ const StackNavigator = ({ }) => {
                   headerShown: false
                 }}
               >
+                {/* @ts-ignore */}
                 {(props) => <AdminNavigator {...props} />}
               </Stack.Screen>
 
@@ -163,7 +163,6 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="EditRewards" component={EditRewardsSreen} />
 
               <Stack.Screen name="ExportData" component={ExportDataSreen} />
-
 
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
 

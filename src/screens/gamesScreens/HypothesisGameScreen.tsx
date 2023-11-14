@@ -283,7 +283,7 @@ const HypothesisGameScreen = ({ }) => {
     <ImageBackground source={require('images/bg_room_2.webp')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
-          <CustomHeaderInGame title="Mytho-Hypo" backgroundColor="bg-whiteTransparent" />
+          <CustomHeaderInGame title="Hypo-Mytho" backgroundColor="bg-whiteTransparent" />
           {errorMessage && (
             <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
               <Text style={tw("text-white")}>{errorMessage}</Text>

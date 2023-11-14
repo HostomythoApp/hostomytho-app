@@ -8,11 +8,11 @@ const withAuth = <P extends object>(
 ): React.FC<P> => {
   const WithAuthComponent: React.FC<P> = (props) => {
     const { authState } = useAuth();
-    const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     React.useEffect(() => {
       if (!authState.isAuthenticated && !authState.isLoading) {
-        navigation.navigate("Main");
+        navigation.navigate("Menu");
       }
     }, [authState.isAuthenticated, authState.isLoading, navigation]);
 

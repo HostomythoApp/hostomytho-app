@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Si vous
 const LogoutButton = () => {
   const { setAuthState } = useAuth();    
   const { setUser } = useUser(); // Obtenez la fonction setUser de UserContext
-  const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+  const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
   const handleLogout = async () => {
     // Mettre en place la logique de déconnexion
@@ -17,7 +17,7 @@ const LogoutButton = () => {
       await AsyncStorage.clear(); // Efface toutes les données d'AsyncStorage, à utiliser avec prudence
       setUser(null); // Réinitialise l'état de l'utilisateur dans UserContext
       setAuthState({ isAuthenticated: false, token: null, isLoading: false }); // Réinitialise l'état d'authentification dans AuthContext
-      navigation.navigate("MainBoard"); // Navigue vers l'écran principal après la déconnexion
+      navigation.navigate("TableauDeBord"); // Navigue vers l'écran principal après la déconnexion
     } catch (error) {
       console.error('Erreur lors de la déconnexion :', error);
     }

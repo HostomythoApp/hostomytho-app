@@ -8,7 +8,7 @@ const AdminLoginScreen = () => {
   const tw = useTailwind();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');    
-  const navigation = useNavigation<RootStackNavigationProp<"Main">>();
+  const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
 
   const handleLogin = () => {

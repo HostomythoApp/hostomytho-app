@@ -18,8 +18,8 @@ SplashScreen.preventAutoHideAsync();
 const linking = {
   config: {
     screens: {
-      Admin: "admin",
-      // Admin: "HMe1sj",
+      // Admin: "admin",
+      Admin: "HMe1sj",
     },
   },
 };

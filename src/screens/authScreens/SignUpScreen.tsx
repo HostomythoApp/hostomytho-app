@@ -26,8 +26,8 @@ const SignUpSchema = Yup.object().shape({
 const SignUpScreen = () => {
 
     const options = [
-        { key: 'option1', label: 'Je suis médecin ou étudiant', value: 'medecin' },
-        { key: 'option2', label: 'Je ne suis ni médecin ni étudiant', value: 'autre' },
+        { key: 'option1', label: 'Je suis médecin ou étudiant en médecine', value: 'medecin' },
+        { key: 'option2', label: 'Je ne suis ni médecin ni étudiant en médecine', value: 'autre' },
         { key: 'option3', label: 'Je ne souhaite pas répondre', value: 'inconnu' },
     ];
 
@@ -36,7 +36,7 @@ const SignUpScreen = () => {
     const tw = useTailwind();
     const [username, setUsername] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const navigation = useNavigation<RootStackNavigationProp<"MainBoard">>();
+    const navigation = useNavigation<RootStackNavigationProp<"TableauDeBord">>();
     const { storeToken } = useAuth();
     const { setUser } = useUser();
 
@@ -72,7 +72,7 @@ const SignUpScreen = () => {
                 if (response.status === 200 || response.status === 201) {
                     const handleSuccess = async (token: string) => {
                         await storeToken(token);
-                        navigation.navigate("MainBoard");
+                        navigation.navigate("TableauDeBord");
                     };
                     const token = response.data.token;
                     setUser(response.data.user);
