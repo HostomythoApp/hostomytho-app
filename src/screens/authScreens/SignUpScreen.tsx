@@ -27,7 +27,7 @@ const SignUpScreen = () => {
 
     const options = [
         { key: 'option1', label: 'Je suis médecin ou étudiant en médecine', value: 'medecin' },
-        { key: 'option2', label: 'Je ne suis ni médecin ni étudiant en médecine', value: 'autre' },
+        { key: 'option2', label: 'Je ne suis ni l\'un ni l\'autre', value: 'autre' },
         { key: 'option3', label: 'Je ne souhaite pas répondre', value: 'inconnu' },
     ];
 

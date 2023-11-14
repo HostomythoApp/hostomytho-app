@@ -101,13 +101,13 @@ const MainBoardScreen = ({ }) => {
                         <TouchableOpacity onPress={() => navigation.navigate("MythoTypo")}
                             style={{
                                 position: 'absolute',
-                                top: windowWidth > 768 ? '56%' : '56%',
+                                top: windowWidth > 768 ? '53%' : '53%',
                                 left: windowWidth > 768 ? '68%' : '68%',
                             }}>
                             <Image
                                 resizeMode="contain"
 
-                                source={require('images/paper_2.png')} style={{ width: windowWidth * 0.12, height: windowWidth * 0.1, minWidth: 70, minHeight: 70 }} />
+                                source={require('images/paper_2.png')} style={{ width: windowWidth * 0.12, height: windowWidth * 0.1, minWidth: 80, minHeight: 80 }} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate("MythoOuPas")}
@@ -135,7 +135,7 @@ const MainBoardScreen = ({ }) => {
                                 top: windowWidth > 768 ? '56%' : '56%',
                                 left: windowWidth > 768 ? '37%' : '37%',
                             }}>
-                            <Image source={require('images/postit_condition.png')} style={{
+                            <Image source={require('images/postit_mytho_tempo.png')} style={{
                                 width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60,
                                 shadowColor: 'black',
                                 shadowOffset: { width: -1, height: 2 },
