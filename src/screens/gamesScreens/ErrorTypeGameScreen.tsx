@@ -20,7 +20,7 @@ const ErrorTypeGameScreen = ({ }) => {
   const { user } = useUser();
   const [selectedErrorTypes, setSelectedErrorTypes] = useState<number[]>([]);
   const isNextButtonDisabled = selectedErrorTypes.length === 0;
-  const { incrementPoints } = useUser();
+  const { updateUserStats } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const window = Dimensions.get('window');
   
@@ -42,6 +42,7 @@ const ErrorTypeGameScreen = ({ }) => {
     }
   };
 
+  // TODO Revoir mise à jour texte
   useEffect(() => {
     fetchData();
   }, [user]);
@@ -59,7 +60,9 @@ const ErrorTypeGameScreen = ({ }) => {
     });
 
     if (!isOtherSelected && selectedErrorTypes.length > 0 && user) {
-      incrementPoints(2);
+      // incrementPoints(2);
+      // incrementCatchProbability(1);
+      updateUserStats(2, 1);
     }
     fetchData();
   };

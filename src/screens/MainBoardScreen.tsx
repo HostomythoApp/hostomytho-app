@@ -11,16 +11,38 @@ import { MessageMenu } from 'models/MessageMenu';
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
-    const { user } = useUser();
+    const { user, updateStorageUserFromAPI } = useUser();
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     const windowWidth = Dimensions.get('window').width;
     const [menuMessage, setMenuMessage] = useState<MessageMenu | null>(null);
     const [messageExpanded, setMessageExpanded] = useState(false);
+    const [isUserDataLoaded, setIsUserDataLoaded] = useState(false);
+
+    useEffect(() => {
+        const loadUser = async () => {
+            try {
+                setIsUserDataLoaded(true);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (!isUserDataLoaded) {
+            loadUser();
+        }
+    }, [user]);
+
+    useEffect(() => {
+        console.log("useEffect isUserLoaded");
+        console.log(user);
+        
+        if (isUserDataLoaded && user) {
+            updateStorageUserFromAPI(user.id);
+        }
+    }, [isUserDataLoaded]);
 
     useEffect(() => {
         getMessageMenu()
             .then((message) => {
-
                 setMenuMessage(message);
             })
             .catch((error) => {

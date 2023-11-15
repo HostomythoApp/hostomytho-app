@@ -18,15 +18,20 @@ export interface Criminal {
 
 const InvestigationScreen = () => {
     const tw = useTailwind();
-    const { user } = useUser();
+    const { user, incrementCatchProbability, resetCatchProbability } = useUser();
     const [criminals, setCriminals] = useState<Criminal[]>([]);
-    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
-    // const investigationProgress = user?.percentageInvestigation || 0;
-    // const investigationProgress = 65;
-    const [investigationProgress, setInvestigationProgress] = useState(65);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [investigationProgress, setInvestigationProgress] = useState<number>(0);
     const [resultModalVisible, setResultModalVisible] = useState(false);
     const [arrestSuccess, setArrestSuccess] = useState<boolean | null>(null);
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
+    const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            console.log(user);
+            setInvestigationProgress(user.catch_probability);
+        }
+    }, [user?.catch_probability]); 
 
     useEffect(() => {
         const loadCriminals = async () => {
@@ -47,10 +52,10 @@ const InvestigationScreen = () => {
         const randomNumber = Math.floor(Math.random() * 101);
         if (randomNumber <= investigationProgress) {
             setArrestSuccess(true);
-            setInvestigationProgress(0);
+            resetCatchProbability(user.id);
         } else {
             setArrestSuccess(false);
-            setInvestigationProgress(prevProgress => prevProgress - 15);
+            incrementCatchProbability(-15);
         }
         setModalVisible(false);
         setResultModalVisible(true);

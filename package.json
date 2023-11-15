@@ -31,7 +31,7 @@
     "formik": "^2.4.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.13",
+    "react-native": "0.71.14",
     "react-native-asset": "^2.1.1",
     "react-native-deck-swiper": "^2.0.13",
     "react-native-dotenv": "^3.4.8",

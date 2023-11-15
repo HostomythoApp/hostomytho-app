@@ -45,20 +45,9 @@ export const signInUser = async (username: string, password: string) => {
       password,
     });
   } catch (error: any) {
-    if (error.response && error.response.status !== 404 && error.response.status !== 401  ) {
+    if (error.response && error.response.status !== 404 && error.response.status !== 401) {
       console.error(error);
     }
-    throw error;
-  }
-};
-
-export const updateUserPoints = async (id: number, points: number) => {
-  try {
-    return await api.put(`/users/${id}/points`, {
-      points,
-    });
-  } catch (error) {
-    console.error(error);
     throw error;
   }
 };
@@ -75,6 +64,37 @@ export const getUserRankingRange = async (id: number): Promise<any> => {
 export const getUsersOrderedByPoints = async (page: number): Promise<any> => {
   try {
     return await api.get(`/users/getUsersOrderedByPoints?page=${page}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateUserPoints = async (id: number, points: number) => {
+  try {
+    return await api.put(`/users/${id}/points`, {
+      points,
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateUserCatchProbability = async (id: number, catch_probability: number) => {
+  try {
+    return await api.put(`/users/${id}/catchProbability`, {
+      catch_probability,
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const restartCatchProbability = async (id: number) => {
+  try {
+    return await api.put(`/users/${id}/resetCatchProbability`);
   } catch (error) {
     console.error(error);
     throw error;

@@ -200,17 +200,6 @@ const ConditionGameScreen = ({ }) => {
     </View>
   );
 
-  const fetchTextFromAPI = async () => {
-    try {
-      if (user) {
-        const response = await getTextWithTokensNotPlayed(user?.id, 'condition');
-        setText(response);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const goToNextSentence = async () => {
     setUserSentenceSpecifications([]);
     setShowMessage(false);

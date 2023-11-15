@@ -46,9 +46,6 @@ const ContentProfileScreen = (props: any) => {
     const isMobile = window.width < 768;
 
     useEffect(() => {
-        if (user?.id) {
-            updateStorageUserFromAPI(user.id);
-        }
         const fetchRanking = async () => {
             if (user?.id) {
                 const result = await getUserRankingRange(user.id);

@@ -12,5 +12,6 @@ export interface User {
     color_skin: string;
     moderator: boolean;
     ranking?: number;
+    catch_probability: number;
   }
   
