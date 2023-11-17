@@ -32,9 +32,6 @@ const MainBoardScreen = ({ }) => {
     }, [user]);
 
     useEffect(() => {
-        console.log("useEffect isUserLoaded");
-        console.log(user);
-        
         if (isUserDataLoaded && user) {
             updateStorageUserFromAPI(user.id);
         }

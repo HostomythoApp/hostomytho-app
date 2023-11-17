@@ -21,7 +21,7 @@ const PlausibilityGameScreen = ({ }) => {
   // @ts-ignore
   const [displayedTexts, setDisplayedTexts] = useState<string[]>(data.texts.map(text => text.content.slice(0, 750) + (text.content.length > 750 ? "..." : "")));
   const [swiperKey, setSwiperKey] = useState(0);
-  const { incrementPoints } = useUser();
+  const { updateUserStats } = useUser();
   const [isVisible, setIsVisible] = useState(false);
   const insets = useSafeAreaInsets();
 
@@ -73,7 +73,7 @@ const PlausibilityGameScreen = ({ }) => {
     if (!texts[cardIndex]) return;
     const textPlayed = texts[cardIndex];
     setActiveModal(false);
-    // incrementPoints(10);
+    // updateUserStats(10, 1);
   }, [texts]);
 
   const swipeRight = useCallback(async (cardIndex: number) => {
@@ -98,12 +98,12 @@ const PlausibilityGameScreen = ({ }) => {
           onSwipedLeft={(cardIndex) => {
             handleSwipe('left');
             swipeLeft(cardIndex);
-            // incrementPoints(10);
+            // updateUserStats(10, 1);
           }}
           onSwipedRight={(cardIndex) => {
             handleSwipe('right');
             swipeRight(cardIndex);
-            // incrementPoints(10);
+            // updateUserStats(10, 1);
           }}
           onSwipedAll={() => {
             onSwipedAll();

@@ -36,3 +36,30 @@ export const getUserCriminals = async (userId: number): Promise<Criminal[]> => {
     return [];
   }
 };
+
+export const catchCriminal = async (userId: number): Promise<{ success: boolean; catchEntry?: any; error?: string }> => {
+  try {
+    const response = await api.post(`/criminals/catchCriminal`, {
+      userId
+    });
+
+    if (response.status === 200) {
+      return {
+        success: true,
+        catchEntry: response.data
+      };
+    } else {
+      console.error(`Failed to catch next criminal for user ID: ${userId}, status code: ${response.status}`);
+      return {
+        success: false,
+        error: `Failed to catch next criminal, status code: ${response.status}`
+      };
+    }
+  } catch (error: any) {
+    console.error('An error occurred while attempting to catch the next criminal:', error.toString());
+    return {
+      success: false,
+      error: error.toString()
+    };
+  }
+};

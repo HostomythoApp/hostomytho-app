@@ -3,7 +3,7 @@ import { View, Text, Image, Dimensions, StyleSheet, ImageBackground, SafeAreaVie
 import { useTailwind } from "tailwind-rn";
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
-import { getUserCriminals } from 'services/api/criminals';
+import { catchCriminal } from 'services/api/criminals';
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 import PrimaryButton from "components/PrimaryButton";
@@ -19,40 +19,34 @@ export interface Criminal {
 const InvestigationScreen = () => {
     const tw = useTailwind();
     const { user, incrementCatchProbability, resetCatchProbability } = useUser();
-    const [criminals, setCriminals] = useState<Criminal[]>([]);
     const [investigationProgress, setInvestigationProgress] = useState<number>(0);
     const [resultModalVisible, setResultModalVisible] = useState(false);
     const [arrestSuccess, setArrestSuccess] = useState<boolean | null>(null);
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     const [modalVisible, setModalVisible] = useState(false);
+    const [arrestDescription, setArrestDescription] = useState<string>('');
 
     useEffect(() => {
         if (user) {
-            console.log(user);
             setInvestigationProgress(user.catch_probability);
+            // setInvestigationProgress(100);
         }
-    }, [user?.catch_probability]); 
-
-    useEffect(() => {
-        const loadCriminals = async () => {
-            if (user) {
-                try {
-                    const userCriminals = await getUserCriminals(user.id);
-                    setCriminals(userCriminals);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        };
-        loadCriminals();
-    }, [user?.id]);
+    }, [user?.catch_probability]);
 
 
-    const handleArrestAttempt = () => {
+    const handleArrestAttempt = async () => {
         const randomNumber = Math.floor(Math.random() * 101);
         if (randomNumber <= investigationProgress) {
             setArrestSuccess(true);
-            resetCatchProbability(user.id);
+            if (user) {
+                resetCatchProbability(user.id);
+                const catchResult = await catchCriminal(user.id);
+                if (catchResult.success) {
+                    setArrestDescription(catchResult.catchEntry.descriptionArrest);
+                } else {
+                    console.error('Failed to catch the criminal:', catchResult.error);
+                }
+            }
         } else {
             setArrestSuccess(false);
             incrementCatchProbability(-15);
@@ -130,13 +124,17 @@ const InvestigationScreen = () => {
                 {arrestSuccess === true ? (
                     <>
                         <Text style={tw('font-primary text-lg')}>
-                            Dans un ultime espoir, le suspect s'enfuit dans une bouche d'aération. Vous le poursuivez en rampant dans les conduits pendant de longues minutes.
-                            Vous finissez par attraper l'un de ses lacets qui était défait et qui traînait derrière.
-                            Après l'avoir livré à la police, il est interrogé et enfermé. Il s'agit bien de la personne recherchée.
-                            {"\n\n"}
-                            Félicitations, vous avez eu du flair et votre enquête a mené à la bonne piste !
+                            {arrestDescription || "Félicitations, vous avez eu du flair et votre enquête a mené à la bonne piste !"}
                         </Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('Criminels')} style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setResultModalVisible(false);
+                                setTimeout(() => {
+                                    navigation.navigate('Criminels');
+                                }, 300);
+                            }}
+                            style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}
+                        >
                             <Text style={tw('text-white font-bold text-center')}>Voir le criminel</Text>
                         </TouchableOpacity>
                     </>

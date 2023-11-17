@@ -22,7 +22,7 @@ const ConditionGameScreen = ({ }) => {
   const [text, setText] = useState<TextWithTokens>();
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
-  const { incrementPoints } = useUser();
+  const { updateUserStats } = useUser();
   const [isSelectionStarted, setSelectionStarted] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
@@ -247,13 +247,13 @@ const ConditionGameScreen = ({ }) => {
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         setTimeout(() => {
-          // incrementPoints(5);
+          // updateUserStats(5, 1);
         }, 100);
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       setTimeout(() => {
-        // incrementPoints(5);
+        // updateUserStats(5, 1);
       }, 100);
     }
 

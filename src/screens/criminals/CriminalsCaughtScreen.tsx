@@ -22,11 +22,9 @@ const CriminalsCaughtScreen = () => {
     const [criminals, setCriminals] = useState<Criminal[]>([]);
     const isEmptyCriminalsList = criminals.length === 0;
     const { width } = Dimensions.get('window');
-    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     useEffect(() => {
         const loadCriminals = async () => {
-            // Assurez-vous que l'utilisateur est connecté avant de charger les criminels
             if (user) {
                 try {
                     const userCriminals = await getUserCriminals(user.id);

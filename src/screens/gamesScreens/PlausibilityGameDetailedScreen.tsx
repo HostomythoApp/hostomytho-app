@@ -26,7 +26,6 @@ const colors = [
 
 const PlausibilityGameDetailedScreen = () => {
   const tw = useTailwind();
-  const { incrementPoints } = useUser();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
   const [errorSpecifying, setErrorSpecifying] = useState(false);
@@ -36,7 +35,7 @@ const PlausibilityGameDetailedScreen = () => {
   const [nextId, setNextId] = useState(0);
   const [colorIndex, setColorIndex] = useState(0);
   const window = Dimensions.get('window');
-  const { user } = useUser();
+  const { user, updateUserStats } = useUser();
   const [text, setText] = useState<TextWithTokens>();
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
   const [messageContent, setMessageContent] = useState<JSX.Element>(<></>);
@@ -332,7 +331,7 @@ const PlausibilityGameDetailedScreen = () => {
   const animationGainPoints = (pointsEarned: number) => {
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     setTimeout(() => {
-      incrementPoints(pointsEarned);
+      updateUserStats(pointsEarned, 1);
     }, 100);
   }
 

@@ -18,7 +18,7 @@ const TemporalLinkGameScreen = () => {
   const [entitiesWithColors, setEntitiesWithColors] = useState<(TemporalEntity & { color: string })[]>([]);
   const upperEntities = entitiesWithColors.slice(0, Math.ceil(entitiesWithColors.length / 2));
   const lowerEntities = entitiesWithColors.slice(Math.ceil(entitiesWithColors.length / 2));
-  const { incrementPoints } = useUser();
+  const { updateUserStats } = useUser();
 
   useEffect(() => {
     const entitiesWithAssignedColors = data.sentences[3].temporalEntities.map((entity, index) => ({
@@ -42,7 +42,7 @@ const TemporalLinkGameScreen = () => {
 
 
   const nextSentence = () => {
-    // incrementPoints(10);
+    // updateUserStats(10, 1);
   };
 
   const colors = [

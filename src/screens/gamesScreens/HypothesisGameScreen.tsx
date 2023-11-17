@@ -24,7 +24,7 @@ const HypothesisGameScreen = ({ }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
-  const { incrementPoints } = useUser();
+  const { updateUserStats } = useUser();
   const [isSelectionStarted, setSelectionStarted] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
@@ -251,13 +251,13 @@ const HypothesisGameScreen = ({ }) => {
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         setTimeout(() => {
-          // incrementPoints(5);
+          // updateUserStats(5, 1);
         }, 100);
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       setTimeout(() => {
-        // incrementPoints(5);
+        // updateUserStats(5, 1);
       }, 100);
     }
 

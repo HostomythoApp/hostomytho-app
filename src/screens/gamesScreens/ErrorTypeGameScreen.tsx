@@ -23,8 +23,8 @@ const ErrorTypeGameScreen = ({ }) => {
   const { updateUserStats } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const window = Dimensions.get('window');
-  
-  const fetchData = async () => {
+
+  const fetchNewText = async () => {
     try {
       let response;
       if (user) {
@@ -33,19 +33,17 @@ const ErrorTypeGameScreen = ({ }) => {
         response = await getTextWithErrorValidated();
       }
       setText(response);
-
       const responseTypeError = await getTypesError();
       setErrorTypes(responseTypeError);
       setSelectedErrorTypes([]);
     } catch (error) {
-      console.error(error);
+      console.error("Erreur lors de la récupération de nouvelles erreurs :", error);
     }
   };
 
-  // TODO Revoir mise à jour texte
   useEffect(() => {
-    fetchData();
-  }, [user]);
+    fetchNewText();
+  }, []);
 
   // *********** Gestion Tuto *******************
   const showHelpModal = () => {
@@ -60,11 +58,9 @@ const ErrorTypeGameScreen = ({ }) => {
     });
 
     if (!isOtherSelected && selectedErrorTypes.length > 0 && user) {
-      // incrementPoints(2);
-      // incrementCatchProbability(1);
       updateUserStats(2, 1);
     }
-    fetchData();
+    fetchNewText();
   };
 
   const renderErrorTypeButtons = () => {

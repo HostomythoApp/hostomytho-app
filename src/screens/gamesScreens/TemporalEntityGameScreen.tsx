@@ -38,7 +38,7 @@ const TemporalEntityScreen = ({ }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
-  const { incrementPoints } = useUser();
+  const { updateUserStats } = useUser();
 
   function shuffleArray(array: any) {
     const newArr = [...array];
@@ -154,7 +154,7 @@ const TemporalEntityScreen = ({ }) => {
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setTemporalEntities([]); // Réinitialiser le récapitulatif des entités
-      // incrementPoints(5);
+      // updateUserStats(5, 1);
     }
   };
 

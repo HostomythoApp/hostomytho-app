@@ -27,7 +27,7 @@ const NegationGameScreen = ({ }) => {
   const [text, setText] = useState<TextWithTokens>();
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
-  const { incrementPoints } = useUser();
+  const { updateUserStats } = useUser();
   const [isSelectionStarted, setSelectionStarted] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
@@ -215,7 +215,7 @@ const NegationGameScreen = ({ }) => {
           setCorrectAnswers(correctAnswers + 1);
         }
         if (!isTutorial) {
-          if (user) setTimeout(() => incrementPoints(5), 100);
+          if (user) setTimeout(() => updateUserStats(5, 1), 100);
         }
       }
     } else {
@@ -224,7 +224,7 @@ const NegationGameScreen = ({ }) => {
         setQuestionsAsked(questionsAsked + 1);
       }
       if (!isTutorial) {
-        if (user) setTimeout(() => incrementPoints(5), 100);
+        if (user) setTimeout(() => updateUserStats(5, 1), 100);
       }
     }
     if (questionsAsked === 10) {

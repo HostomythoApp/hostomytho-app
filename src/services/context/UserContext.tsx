@@ -68,8 +68,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const loadUser = async (): Promise<User | null> => {
     const storedUser = await AsyncStorage.getItem("user");
-    console.log("Stored user:", storedUser); 
-  
     if (storedUser) {
       return JSON.parse(storedUser);
     }
