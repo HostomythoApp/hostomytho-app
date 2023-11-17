@@ -43,6 +43,9 @@ const InvestigationScreen = () => {
                 const catchResult = await catchCriminal(user.id);
                 if (catchResult.success) {
                     setArrestDescription(catchResult.catchEntry.descriptionArrest);
+                    if (catchResult.catchEntry.allCriminalsCaught) {
+                        console.log("Tous les criminels ont été arrêtés");
+                    }
                 } else {
                     console.error('Failed to catch the criminal:', catchResult.error);
                 }
@@ -124,7 +127,9 @@ const InvestigationScreen = () => {
                 {arrestSuccess === true ? (
                     <>
                         <Text style={tw('font-primary text-lg')}>
-                            {arrestDescription || "Félicitations, vous avez eu du flair et votre enquête a mené à la bonne piste !"}
+                            {arrestDescription}
+                            {"\n\n"}
+                            Félicitations, vous avez eu du flair et votre enquête a mené à la bonne piste !
                         </Text>
                         <TouchableOpacity
                             onPress={() => {
@@ -141,10 +146,14 @@ const InvestigationScreen = () => {
                 ) : (
                     <>
                         <Text style={tw('font-primary text-lg')}>
+                            Il semblerait que la personne que vous avez arrêtée n'était pas la bonne. C'était une fausse piste, mais votre enquête continue !
+                        </Text>
+                        {/* TODO Mettre des histoires différentes dans la bdd */}
+                        {/* <Text style={tw('font-primary text-lg')}>
                             La personne que vous arrêtez s'appelle Kévin Bontrain. Il est menuisier, construit de belles armoires, et ne ferait pas de mal à une mouche. Ce n'est donc malheureusement pas le criminel.
                             {"\n\n"}
                             Votre enquête continue !
-                        </Text>
+                        </Text> */}
                     </>
                 )}
             </CustomModal>
