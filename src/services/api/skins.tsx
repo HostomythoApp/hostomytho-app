@@ -50,3 +50,13 @@ export const unequipSkin = async (userId: number, skinId: number): Promise<Skin>
         throw error;
     }
 };
+
+export const getRandomSkin = async (userId: number): Promise<any> => {
+    try {
+        const response = await api.post(`/skins/randomSkin/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};

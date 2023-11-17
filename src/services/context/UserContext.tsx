@@ -8,7 +8,8 @@ import ModalContext from "services/context/ModalContext";
 import { View, Text } from "react-native";
 import AchievementIcon from "components/AchievementIcon";
 import { useSkins } from "./SkinsContext";
-import { getEquippedUserSkins } from "services/api/skins";
+import { getEquippedUserSkins, getRandomSkin } from "services/api/skins";
+import { Skin } from "models/Skin";
 
 interface UserContextProps {
   user: User | null;
@@ -84,49 +85,19 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const incrementPoints = async (pointsToAdd: number) => {
-    if (user) {
-      const response = await updateUserPoints(user.id, pointsToAdd);
-      setUser({ ...user, points: response.data.newPoints });
-
-      // Si il y a de nouvelles réalisations, on déclenche l'affichage du modal pour chacune d'entre elles
-      if (response.data.newAchievements && response.data.newAchievements.length > 0) {
-        response.data.newAchievements.forEach((achievement: Achievement) => {
-          unlockAchievementModal(achievement);
-        });
-      }
-    }
-  };
-
-  const incrementCatchProbability = async (percentageToAdd: number) => {
-    if (user) {
-      const response = await updateUserCatchProbability(user.id, percentageToAdd);
-      setUser({ ...user, catch_probability: response.data.newCatchProbability });
-    }
-  };
-
-  const updateUserStats = async (pointsToAdd: number, percentageToAdd: number) => {
-    if (user) {
-      const pointsResponse = await updateUserPoints(user.id, pointsToAdd);
-      const catchResponse = await updateUserCatchProbability(user.id, percentageToAdd);
-      // @ts-ignore
-      setUser(currentUser => ({
-        ...currentUser,
-        points: pointsResponse.data.newPoints,
-        catch_probability: catchResponse.data.newCatchProbability
-      }));
-    }
-  };
-
-  const resetCatchProbability = async () => {
-    if (user) {
-      try {
-        await restartCatchProbability(user.id);
-        setUser({ ...user, catch_probability: 0 });
-      } catch (error) {
-        console.error('Erreur dans le reset de la probabilité:', error);
-      }
-    }
+  const unlockSkinModal = (skin: Skin) => {
+    modalContext.setContent(
+      <View style={tw('bg-white rounded-xl p-2')}>
+        <Text style={tw('text-center text-green-600 font-bold text-lg')}>Nouvelle apparence débloquée</Text>
+        <View style={tw('border-b border-gray-400 my-4')} />
+        <View style={tw('flex-row items-center justify-center mb-1')}>
+          <Text style={tw('ml-3 text-lg font-bold')}>{skin.name}</Text>
+          <Text style={tw('ml-3 text-lg font-bold')}>{skin.image_url}</Text>
+        </View>
+        {/* <Image source={{ uri: skinData.image_url }} style={{ width: 100, height: 100 }} /> */}
+      </View>
+    );
+    modalContext.showModal();
   };
 
   const unlockAchievementModal = async (achievement: Achievement) => {
@@ -146,6 +117,78 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     modalContext.showModal();
   };
 
+  const unlockPointsModal = () => {
+    modalContext.setContent(
+      <View style={tw('bg-white rounded-xl p-2')}>
+        <Text style={tw('text-center text-green-600 font-bold text-lg')}>Points supplémentaires gagnés</Text>
+        <View style={tw('border-b border-gray-400 my-4')} />
+        <Text style={tw('text-center')}>Vous avez déjà débloqué tous les skins disponibles. En récompense, vous gagnez 10 points supplémentaires !</Text>
+      </View>
+    );
+    modalContext.showModal();
+  };
+
+  const incrementPoints = async (pointsToAdd: number) => {
+    if (user) {
+      const oldPoints = user.points;
+      const response = await updateUserPoints(user.id, pointsToAdd);
+      const newPoints = response.data.newPoints;
+      setUser({ ...user, points: newPoints });
+
+      // Gain de skin tous les 100 points
+      const oldRewardTier = Math.floor(oldPoints / 100);
+      const newRewardTier = Math.floor(newPoints / 100);
+
+      if (newRewardTier > oldRewardTier) {
+        try {
+          const response = await getRandomSkin(user.id);
+          
+          if (response.allSkinsUnlocked) {
+            // Si tous les skins ont été débloqués, on affiche une popup pour les points supplémentaires
+            unlockPointsModal();
+          } else {
+          unlockSkinModal(response);
+          }
+        } catch (error) {
+          console.error("Error getting random skin:", error);
+        }
+      }
+      // Si il y a de nouvelles réalisations, on déclenche l'affichage du modal pour chacune d'entre elles
+      if (response.data.newAchievements && response.data.newAchievements.length > 0) {
+        response.data.newAchievements.forEach((achievement: Achievement) => {
+          unlockAchievementModal(achievement);
+        });
+      }
+    }
+  };
+
+  const incrementCatchProbability = async (percentageToAdd: number) => {
+    if (user) {
+      const response = await updateUserCatchProbability(user.id, percentageToAdd);
+      setUser({ ...user, catch_probability: response.data.newCatchProbability });
+    }
+  };
+
+  const updateUserStats = async (pointsToAdd: number, percentageToAdd: number) => {
+    if (user) {
+      await Promise.all([
+        incrementCatchProbability(percentageToAdd),
+        incrementPoints(pointsToAdd)
+      ]);
+    }
+  };
+
+
+  const resetCatchProbability = async () => {
+    if (user) {
+      try {
+        await restartCatchProbability(user.id);
+        setUser({ ...user, catch_probability: 0 });
+      } catch (error) {
+        console.error('Erreur dans le reset de la probabilité:', error);
+      }
+    }
+  };
 
   const updateStorageUserFromAPI = async (userId: number) => {
     if (userId) {
