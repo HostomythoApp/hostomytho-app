@@ -116,7 +116,7 @@ const InvestigationScreen = () => {
             >
                 <View >
                     <Text style={tw('text-lg font-primary')}>Etes-vous sûr de vouloir tenter l'arrestation?</Text>
-                    <Text style={tw('text-lg font-primary')}>Si celle-ci échoue, votre taux de certitude baissera.</Text>
+                    <Text style={tw('text-lg font-primary')}>Si celle-ci échoue, votre taux de certitude baissera de 15%.</Text>
                     <TouchableOpacity onPress={handleArrestAttempt} style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}>
                         <Text style={tw('text-white font-bold text-center')}>Je suis sûr de moi, je me lance</Text>
                     </TouchableOpacity>

@@ -5,8 +5,6 @@ import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 
 const SkinImage = ({ skin }: { skin: Skin | null }) => {
-    console.log(skin);
-    
     const tw = useTailwind();
 
     if (!skin) {

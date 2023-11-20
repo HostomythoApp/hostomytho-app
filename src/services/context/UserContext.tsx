@@ -47,17 +47,23 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     loadStoredUser();
   }, []);
 
-  const setUser = async (newUser: User | null) => {
-    setUserState(newUser);
+  const setUser = async (updateFunction: any) => {
 
-    await storeUser(newUser);
-    if (newUser) {
-      // Chargement des skins équipés pour l'utilisateur connecté
-      const skins = await getEquippedUserSkins(newUser.id);
-      setEquippedSkins(skins);
-    } else {
-      setEquippedSkins([]); // Réinitialise les skins équipés si aucun utilisateur n'est connecté
-    }
+    setUserState(prevUser => {
+      // Calculer le nouvel utilisateur en fonction de l'état précédent
+      const newUser = typeof updateFunction === 'function' ? updateFunction(prevUser) : updateFunction;
+
+      storeUser(newUser).catch(console.error);
+
+      if (newUser) {
+        getEquippedUserSkins(newUser.id)
+          .then(skins => setEquippedSkins(skins))
+          .catch(console.error);
+      } else {
+        setEquippedSkins([]);
+      }
+      return newUser;
+    });
   };
 
   const storeUser = async (user: User | null) => {
@@ -128,12 +134,13 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const incrementPoints = async (pointsToAdd: number, isBonus: boolean = false) => {
+
     if (user) {
       const oldPoints = user.points;
       const response = await updateUserPoints(user.id, pointsToAdd);
       const newPoints = response.data.newPoints;
-      setUser({ ...user, points: newPoints });
 
+      setUser((prevUser: any) => ({ ...prevUser, points: response.data.newPoints }));
       // Gain de skin tous les 100 points
       const oldRewardTier = Math.floor(oldPoints / 100);
       const newRewardTier = Math.floor(newPoints / 100);
@@ -145,7 +152,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           if (response.allSkinsUnlocked) {
             unlockPointsModal();
             if (!isBonus) {
-              incrementPoints(5, true); 
+              incrementPoints(5, true);
             }
           } else {
             // Si c'est un nouveau skin, on affiche la modal pour le skin
@@ -167,16 +174,16 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const incrementCatchProbability = async (percentageToAdd: number) => {
     if (user) {
       const response = await updateUserCatchProbability(user.id, percentageToAdd);
-      setUser({ ...user, catch_probability: response.data.newCatchProbability });
+      setUser((prevUser: any) => ({ ...prevUser, catch_probability: response.data.newCatchProbability }));
+
+      // setUser({ ...user, catch_probability: response.data.newCatchProbability });
     }
   };
 
   const updateUserStats = async (pointsToAdd: number, percentageToAdd: number) => {
     if (user) {
-      await Promise.all([
-        incrementCatchProbability(percentageToAdd),
-        incrementPoints(pointsToAdd)
-      ]);
+      await incrementCatchProbability(percentageToAdd);
+      await incrementPoints(pointsToAdd);
     }
   };
 

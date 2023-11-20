@@ -250,7 +250,7 @@ const PlausibilityGameDetailedScreen = () => {
           if (!noErrorSpecified && noErrorInDatabase) {
             animationGainPoints(10);
           } else {
-            animationGainPoints(5);
+            animationGainPoints(10);
           }
           goToNextSentence();
           return;
@@ -284,7 +284,7 @@ const PlausibilityGameDetailedScreen = () => {
               <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
             </View>
           );
-          animationGainPoints(5);
+          animationGainPoints(10);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -304,9 +304,9 @@ const PlausibilityGameDetailedScreen = () => {
               <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
             </View>
           );
-          animationGainPoints(5);
-        } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
           animationGainPoints(10);
+        } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
+          animationGainPoints(15);
           goToNextSentence();
           return;
         }
