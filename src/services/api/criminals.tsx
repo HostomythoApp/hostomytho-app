@@ -19,7 +19,7 @@ export const getCriminalById = async (id: number): Promise<Criminal | null> => {
   }
 };
 
-export const getUserCriminals = async (userId: number): Promise<Criminal[]> => {
+export const getUserCriminals = async (userId: number): Promise<Criminal[] | undefined> => {
   try {
     const response = await api.get(`/criminals/caughtByUserId/${userId}`);
 

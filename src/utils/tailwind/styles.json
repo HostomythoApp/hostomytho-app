@@ -345,6 +345,36 @@
 			"marginTop": "auto"
 		}
 	},
+	"-mt-[70px]": {
+		"style": {
+			"marginTop": -70
+		}
+	},
+	"-mt-[40px]": {
+		"style": {
+			"marginTop": -40
+		}
+	},
+	"-mt-[55px]": {
+		"style": {
+			"marginTop": -55
+		}
+	},
+	"-mt-[58px]": {
+		"style": {
+			"marginTop": -58
+		}
+	},
+	"-mt-1": {
+		"style": {
+			"marginTop": -4
+		}
+	},
+	"-mt-2": {
+		"style": {
+			"marginTop": -8
+		}
+	},
 	"flex": {
 		"style": {
 			"display": "flex"

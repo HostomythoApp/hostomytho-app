@@ -22,12 +22,12 @@ const CriminalsCaughtScreen = () => {
     const [criminals, setCriminals] = useState<Criminal[]>([]);
     const isEmptyCriminalsList = criminals.length === 0;
     const { width } = Dimensions.get('window');
-
     useEffect(() => {
         const loadCriminals = async () => {
             if (user) {
                 try {
                     const userCriminals = await getUserCriminals(user.id);
+                    // @ts-ignore
                     setCriminals(userCriminals);
                 } catch (error) {
                     console.error(error);
@@ -92,6 +92,7 @@ const CriminalsCaughtScreen = () => {
                                     renderItem={({ item }) => (
                                         <View style={[styles.child]} >
                                             <Image
+                                            // @ts-ignore
                                                 source={suspectsImagesMapping[item.imageId]}
                                                 style={tw('w-64 h-64 rounded-md')}
                                                 resizeMode="contain"

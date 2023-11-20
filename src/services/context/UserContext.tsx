@@ -5,11 +5,12 @@ import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatch
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import AchievementIcon from "components/AchievementIcon";
 import { useSkins } from "./SkinsContext";
 import { getEquippedUserSkins, getRandomSkin } from "services/api/skins";
 import { Skin } from "models/Skin";
+import SkinImage from "components/SkinImage";
 
 interface UserContextProps {
   user: User | null;
@@ -87,14 +88,12 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const unlockSkinModal = (skin: Skin) => {
     modalContext.setContent(
-      <View style={tw('bg-white rounded-xl p-2')}>
-        <Text style={tw('text-center text-green-600 font-bold text-lg')}>Nouvelle apparence débloquée</Text>
-        <View style={tw('border-b border-gray-400 my-4')} />
-        <View style={tw('flex-row items-center justify-center mb-1')}>
-          <Text style={tw('ml-3 text-lg font-bold')}>{skin.name}</Text>
-          <Text style={tw('ml-3 text-lg font-bold')}>{skin.image_url}</Text>
+      <View style={tw('bg-white rounded-xl p-2 items-center')}>
+        <Text style={tw('text-center text-green-700 font-bold text-lg')}>Nouvelle apparence débloquée</Text>
+        <View style={tw('border-b border-gray-400 mt-4 w-full')} />
+        <View style={tw('rounded-lg overflow-hidden h-16 mt-2')}>
+          <SkinImage skin={skin} />
         </View>
-        {/* <Image source={{ uri: skinData.image_url }} style={{ width: 100, height: 100 }} /> */}
       </View>
     );
     modalContext.showModal();
@@ -120,15 +119,15 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const unlockPointsModal = () => {
     modalContext.setContent(
       <View style={tw('bg-white rounded-xl p-2')}>
-        <Text style={tw('text-center text-green-600 font-bold text-lg')}>Points supplémentaires gagnés</Text>
+        <Text style={tw('text-center text-green-600 font-bold text-lg font-primary')}>Points supplémentaires gagnés</Text>
         <View style={tw('border-b border-gray-400 my-4')} />
-        <Text style={tw('text-center')}>Vous avez déjà débloqué tous les skins disponibles. En récompense, vous gagnez 10 points supplémentaires !</Text>
+        <Text style={tw('text-center font-primary')}>Vous avez déjà débloqué tous les skins disponibles. En récompense, vous gagnez 5 points supplémentaires !</Text>
       </View>
     );
     modalContext.showModal();
   };
 
-  const incrementPoints = async (pointsToAdd: number) => {
+  const incrementPoints = async (pointsToAdd: number, isBonus: boolean = false) => {
     if (user) {
       const oldPoints = user.points;
       const response = await updateUserPoints(user.id, pointsToAdd);
@@ -142,12 +141,15 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       if (newRewardTier > oldRewardTier) {
         try {
           const response = await getRandomSkin(user.id);
-          
+
           if (response.allSkinsUnlocked) {
-            // Si tous les skins ont été débloqués, on affiche une popup pour les points supplémentaires
             unlockPointsModal();
+            if (!isBonus) {
+              incrementPoints(5, true); 
+            }
           } else {
-          unlockSkinModal(response);
+            // Si c'est un nouveau skin, on affiche la modal pour le skin
+            unlockSkinModal(response);
           }
         } catch (error) {
           console.error("Error getting random skin:", error);

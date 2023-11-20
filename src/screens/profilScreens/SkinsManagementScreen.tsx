@@ -8,6 +8,7 @@ import skinImages from 'utils/skinImages';
 import { getUserSkins, unequipSkin } from 'services/api/skins';
 import { equipSkin } from 'services/api/skins';
 import { useSkins } from 'services/context/SkinsContext';
+import SkinImage from 'components/SkinImage';
 
 const SkinsManagementScreen = (props: any) => {
     const tw = useTailwind();
@@ -54,21 +55,6 @@ const SkinsManagementScreen = (props: any) => {
         return equippedSkins.some(equippedSkin => equippedSkin.id === skin.id);
     };
 
-    const getImageStyle = (type: string) => {
-        switch (type) {
-            case 'veste':
-                return tw('w-20 h-28 -mt-8');
-            case 'visage':
-                return tw('w-20 h-52 -mt-4');
-            case 'stetho':
-                return tw('w-20 h-52 -mt-[66px]');
-            case 'cheveux':
-                return tw('w-20 h-52 -mt-3');
-            default:
-                return tw('w-20 h-52');
-        }
-    };
-
     return (
         <View style={[tw('w-full mt-4 px-2'), isMobile ? tw('pt-2') : tw('pt-6')]}>
 
@@ -91,29 +77,25 @@ const SkinsManagementScreen = (props: any) => {
 
                                         <View style={tw('flex-row flex-wrap')}>
 
-                                            {skins[type]?.map(skin => {
+                                            {/* @ts-ignore */}
+                                            {skins[type]?.map((skin: Skin) => {
                                                 return (
                                                     <TouchableOpacity
                                                         key={`skin-${skin.id}`}
                                                         style={[
-                                                            tw('p-2 rounded-lg mb-2 overflow-hidden h-16'),
+                                                            tw(' rounded-lg mb-2 overflow-hidden h-16'),
                                                             isEquipped(skin) ? tw('border-2 border-blue-500') : tw('border-2 border-transparent')
                                                         ]}
                                                         onPress={() => clickOnSkin(skin)}
                                                     >
-                                                        <Image
-                                                            // @ts-ignore
-                                                            source={skinImages[skin.image_url]}
-                                                            style={getImageStyle(type)}
-                                                            resizeMode="contain"
-                                                        />
+                                                        <SkinImage skin={skin} />
                                                     </TouchableOpacity>
                                                 );
                                             })}
                                         </View>
                                     </View>
-                                </View>
-                            );
+                                </View>)
+                                ;
                         })}
                     </View>
 
