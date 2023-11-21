@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTailwind } from "tailwind-rn";
-import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatchProbability } from "services/api/user";
+import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi } from "services/api/user";
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
@@ -185,17 +185,58 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     if (user) {
       const response = await updateUserCatchProbability(user.id, percentageToAdd);
       setUser((prevUser: any) => ({ ...prevUser, catch_probability: response.data.newCatchProbability }));
-
-      // setUser({ ...user, catch_probability: response.data.newCatchProbability });
     }
   };
 
-  const updateUserStats = async (pointsToAdd: number, percentageToAdd: number) => {
+  const updateUserStats = async (pointsToAdd: number, percentageToAdd: number, isBonus: boolean = false) => {
     if (user) {
-      await incrementCatchProbability(percentageToAdd);
-      await incrementPoints(pointsToAdd);
+      const oldPoints = user.points;
+
+      try {
+        const response = await updateUserStatsApi(user.id, percentageToAdd, pointsToAdd);
+        const newPoints = response.data.newPoints;
+        const newCatchProbability = response.data.newCatchProbability;
+
+        setUser((prevUser: any) => ({
+          ...prevUser,
+          points: newPoints,
+          catch_probability: newCatchProbability
+        }));
+
+        // Vérifiez si l'utilisateur a atteint un nouveau palier pour les skins
+        const oldRewardTier = Math.floor(oldPoints / 100);
+        const newRewardTier = Math.floor(newPoints / 100);
+
+        if (newRewardTier > oldRewardTier) {
+          try {
+            const skinResponse = await getRandomSkin(user.id);
+
+            if (skinResponse.allSkinsUnlocked) {
+              unlockPointsModal();
+              if (!isBonus) {
+                updateUserStats(5, 0, true);
+              }
+            } else {
+              unlockSkinModal(skinResponse);
+            }
+          } catch (error) {
+            console.error("Error getting random skin:", error);
+          }
+        }
+
+        // Afficher les nouvelles réalisations si elles existent
+        if (response.data.newAchievements && response.data.newAchievements.length > 0) {
+          response.data.newAchievements.forEach((achievement: Achievement) => {
+            unlockAchievementModal(achievement);
+          });
+        }
+
+      } catch (error) {
+        console.error("Error updating user stats:", error);
+      }
     }
   };
+
 
 
   const resetCatchProbability = async () => {
@@ -225,7 +266,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, incrementPoints, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, updateUserStats, equippedSkins, setEquippedSkins  }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, incrementPoints, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, updateUserStats, equippedSkins, setEquippedSkins }}>
       {children}
     </UserContext.Provider>
   );

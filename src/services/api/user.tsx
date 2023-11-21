@@ -92,6 +92,18 @@ export const updateUserCatchProbability = async (id: number, catch_probability: 
   }
 };
 
+export const updateUserStatsApi = async (id: number, catch_probability: number, points: number) => {
+  try {
+    return await api.put(`/users/${id}/updateUserStats`, {
+      catch_probability,
+      points
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const restartCatchProbability = async (id: number) => {
   try {
     return await api.put(`/users/${id}/resetCatchProbability`);

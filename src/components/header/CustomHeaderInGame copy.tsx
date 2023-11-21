@@ -43,35 +43,39 @@ const CustomHeaderInGame: React.FC<Props> = ({
   });
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    console.log("useEffect");
     
-    if (user?.points !== undefined && user.points !== displayPoints) {
-      setShowExplosion(true);
-      setAnimatedColor('green');
-      fontSize.value = withSpring(17.5, { stiffness: 150, damping: 5 });
+    let intervalId: NodeJS.Timeout;
+    let initialInterval = 60;
+    let intervalIncrement = 30;
+    const targetPoints = user?.points ?? 0; // points cibles à atteindre avec l'animation
   
+    if (targetPoints !== displayPoints) {
       let currentPoints = displayPoints;
-      const pointsDiff = user.points - currentPoints;
-      const duration = pointsDiff * 10;
-
-      intervalId = setInterval(() => {
-        if (currentPoints < user.points) {
+      setShowExplosion(true);
+      fontSize.value = withSpring(18);
+  
+      const incrementPoints = () => {
+        if (currentPoints < targetPoints) {
           currentPoints++;
           setDisplayPoints(currentPoints);
+          clearInterval(intervalId);
+          initialInterval += intervalIncrement;
+          intervalId = setInterval(incrementPoints, initialInterval);
         } else {
           clearInterval(intervalId);
           setShowExplosion(false);
-          fontSize.value = withSpring(16, { stiffness: 150, damping: 5 });
-          setAnimatedColor(textColor);
+          fontSize.value = withSpring(16);
         }
-      }, duration);
-    
-      return () => {
-        clearInterval(intervalId);
-        fontSize.value = withSpring(16, { stiffness: 150, damping: 5 });
       };
+  
+      intervalId = setInterval(incrementPoints, initialInterval);
     }
-  }, [user?.points, textColor]);
+  
+    return () => clearInterval(intervalId);
+  
+  }, [user?.points, displayPoints, textColor]);
+  
 
 
   useEffect(() => {
@@ -82,18 +86,15 @@ const CustomHeaderInGame: React.FC<Props> = ({
     }
   }, [showExplosion, textColor]);
 
+  useEffect(() => {
+    setDisplayPoints(user?.points ?? 0);
+  }, [user]);
+
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
       fontSize: fontSize.value,
       color: animatedColor,
-      alignSelf: 'center',
-    };
-  });
-
-  const animatedTextContainerStyle = useAnimatedStyle(() => {
-    return {
-      height: isMobile ? 24 : 28, 
-      justifyContent: 'center',
+      alignSelf: 'center'
     };
   });
 

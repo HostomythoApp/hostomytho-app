@@ -6,7 +6,7 @@ const NextButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)', isDisabled = fal
 
     const buttonStyle = StyleSheet.create({
         button: {
-            padding: 8,
+            height: 36,
             marginRight: 8,
             width: 44,
             borderBottomLeftRadius: 6,
@@ -17,7 +17,7 @@ const NextButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)', isDisabled = fal
         },
         icon: {
             color: isDisabled ? 'rgba(37, 53, 41, 0.5)' : '#253529',
-            size: 18,
+            size: 22,
         },
     });
 

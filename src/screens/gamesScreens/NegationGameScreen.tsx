@@ -47,28 +47,30 @@ const NegationGameScreen = ({ }) => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [tutorialFailed, setTutorialFailed] = useState(false);
   const window = Dimensions.get('window');
+  const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
 
   useEffect(() => {
     async function checkTutorialCompletion() {
       if (user) {
         const completed = await isTutorialCompleted(user.id, 1);
         setIsTutorial(!completed);
+        setIsTutorialCheckComplete(true);
       }
     }
     checkTutorialCompletion();
-    // TODO un texte se charge avant le tuto et c'est pas beau
   }, [user]);
 
   useEffect(() => {
-    if (isTutorial) {
-      setTutorialStep(1);
-      setIsFirstClickValidate(true);
-      nextTutorialStep();
-    } else {
-      fetchNewText();
+    if (isTutorialCheckComplete) {
+      if (isTutorial) {
+        setTutorialStep(1);
+        setIsFirstClickValidate(true);
+        nextTutorialStep();
+      } else {
+        fetchNewText();
+      }
     }
-  }, [isTutorial]);
-
+  }, [isTutorial, isTutorialCheckComplete]);
 
   // *********** Gestion Tuto *******************
   const nextTutorialStep = async () => {
