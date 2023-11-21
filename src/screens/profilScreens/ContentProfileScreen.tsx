@@ -10,7 +10,6 @@ import { Achievement } from 'models/Achievement';
 import AchievementIcon from 'components/AchievementIcon';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProp } from 'navigation/Types';
-import { useSkins } from 'services/context/SkinsContext';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { characterImagesMapping } from 'utils/characterImagesMapping';
@@ -24,10 +23,9 @@ interface Rank {
 
 const ContentProfileScreen = (props: any) => {
     const tw = useTailwind();
-    const { user, updateStorageUserFromAPI } = useUser();
+    const { user, equippedSkins } = useUser();
     const [ranking, setRanking] = useState<Rank[]>([]);
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
-    const { equippedSkins } = useSkins();
 
     // @ts-ignore
     const characterImage = characterImagesMapping[user?.gender || 'homme'][user?.color_skin || 'clear'];

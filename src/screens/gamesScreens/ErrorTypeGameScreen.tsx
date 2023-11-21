@@ -12,6 +12,7 @@ import InfoText from "components/InfoText";
 import CustomModal from "components/modals/CustomModal";
 import { getModalHelpContent } from "tutorials/tutorialErrorTypeGame";
 import HelpButton from "components/button/HelpButton";
+import NextButton from "components/button/NextButton";
 
 const ErrorTypeGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -52,14 +53,7 @@ const ErrorTypeGameScreen = ({ }) => {
   // *****************************************************
 
   const handleNextError = () => {
-    const isOtherSelected = selectedErrorTypes.some(errorTypeId => {
-      const errorType = errorTypes.find(et => et.id === errorTypeId);
-      return errorType?.name === "Autre";
-    });
-
-    if (!isOtherSelected && selectedErrorTypes.length > 0 && user) {
-      updateUserStats(2, 1);
-    }
+    updateUserStats(2, 1);
     fetchNewText();
   };
 
@@ -104,7 +98,7 @@ const ErrorTypeGameScreen = ({ }) => {
     const errorPositions = text.positionErrorTokens.split(", ").map(Number);
     return (
       <View style={[
-        tw("bg-gray-100 p-6 m-4 rounded-xl flex-row flex-wrap "),
+        tw("p-6 m-4 rounded-xl flex-row flex-wrap "),
         {
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
           shadowColor: 'black',
@@ -133,8 +127,10 @@ const ErrorTypeGameScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView >
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
-          <HelpButton onHelpPress={showHelpModal} />
-
+          <View style={tw('flex-row justify-end')}>
+            <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={fetchNewText} />
+            <HelpButton onHelpPress={showHelpModal} />
+          </View>
           <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>
             {renderErrorTypeButtons()}
           </View>

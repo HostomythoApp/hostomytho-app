@@ -15,6 +15,7 @@ import { getModalHelpContent, getTutorialContentForStep } from "tutorials/tutori
 import HelpButton from "components/button/HelpButton";
 import CustomModal from "components/modals/CustomModal";
 import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
+import NextButton from "components/button/NextButton";
 
 const colors = [
   "bg-yellow-300",
@@ -55,6 +56,7 @@ const NegationGameScreen = ({ }) => {
       }
     }
     checkTutorialCompletion();
+    // TODO un texte se charge avant le tuto et c'est pas beau
   }, [user]);
 
   useEffect(() => {
@@ -428,8 +430,10 @@ const NegationGameScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
-          <HelpButton onHelpPress={showHelpModal} />
-
+          <View style={tw('flex-row justify-end')}>
+            <NextButton bgColor="#DAEBDC" func={goToNextSentence} isDisabled={isTutorial} />
+            <HelpButton onHelpPress={showHelpModal} />
+          </View>
           {errorMessage && (
             <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
               <Text style={tw("text-white")}>{errorMessage}</Text>

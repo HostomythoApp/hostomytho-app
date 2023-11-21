@@ -98,7 +98,7 @@ const InvestigationScreen = () => {
                                         style={tw('bg-primary py-3 px-6 rounded mt-4')}
                                         onPress={() => setModalVisible(true)}
                                     >
-                                        <Text style={tw('text-white font-bold text-center')}>Tenter l'arrestation</Text>
+                                        <Text style={tw('text-white font-bold text-center font-primary')}>Tenter l'arrestation</Text>
                                     </TouchableOpacity>
                                 </View>
                             ) : (
@@ -118,7 +118,7 @@ const InvestigationScreen = () => {
                     <Text style={tw('text-lg font-primary')}>Etes-vous sûr de vouloir tenter l'arrestation?</Text>
                     <Text style={tw('text-lg font-primary')}>Si celle-ci échoue, votre taux de certitude baissera de 15%.</Text>
                     <TouchableOpacity onPress={handleArrestAttempt} style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}>
-                        <Text style={tw('text-white font-bold text-center')}>Je suis sûr de moi, je me lance</Text>
+                        <Text style={tw('text-white font-bold text-center font-primary')}>Je suis sûr de moi, je me lance</Text>
                     </TouchableOpacity>
                 </View>
             </CustomModal>

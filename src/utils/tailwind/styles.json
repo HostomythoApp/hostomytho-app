@@ -270,11 +270,6 @@
 			"marginLeft": -18
 		}
 	},
-	"ml-auto": {
-		"style": {
-			"marginLeft": "auto"
-		}
-	},
 	"mr-0": {
 		"style": {
 			"marginRight": 0
@@ -734,12 +729,6 @@
 			"borderBottomLeftRadius": 4
 		}
 	},
-	"rounded-t-none": {
-		"style": {
-			"borderTopLeftRadius": 0,
-			"borderTopRightRadius": 0
-		}
-	},
 	"rounded-tr-lg": {
 		"style": {
 			"borderTopRightRadius": 8
@@ -1080,6 +1069,24 @@
 		"style": {
 			"--tw-bg-opacity": 1,
 			"backgroundColor": "rgb(253 224 71 / var(--tw-bg-opacity))"
+		}
+	},
+	"bg-[#8FBC8F]": {
+		"style": {
+			"--tw-bg-opacity": 1,
+			"backgroundColor": "rgb(143 188 143 / var(--tw-bg-opacity))"
+		}
+	},
+	"bg-[#79CF68]": {
+		"style": {
+			"--tw-bg-opacity": 1,
+			"backgroundColor": "rgb(121 207 104 / var(--tw-bg-opacity))"
+		}
+	},
+	"bg-[#BBF7D0]": {
+		"style": {
+			"--tw-bg-opacity": 1,
+			"backgroundColor": "rgb(187 247 208 / var(--tw-bg-opacity))"
 		}
 	},
 	"bg-opacity-50": {

@@ -7,7 +7,6 @@ import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
 import { View, Text, Image } from "react-native";
 import AchievementIcon from "components/AchievementIcon";
-import { useSkins } from "./SkinsContext";
 import { getEquippedUserSkins, getRandomSkin } from "services/api/skins";
 import { Skin } from "models/Skin";
 import SkinImage from "components/SkinImage";
@@ -22,6 +21,8 @@ interface UserContextProps {
   resetCatchProbability: (userId: number) => Promise<void>;
   resetUserState: () => void;
   updateUserStats: (pointsToAdd: number, percentageToAdd: number) => void;
+  equippedSkins: Skin[];
+  setEquippedSkins: React.Dispatch<React.SetStateAction<Skin[]>>;
 }
 interface UserProviderProps {
   children: React.ReactNode;
@@ -34,9 +35,21 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const tw = useTailwind();
   const [user, setUserState] = useState<User | null>(null);
   const modalContext = useContext(ModalContext);
-  const { setEquippedSkins } = useSkins();
+  const [equippedSkins, setEquippedSkins] = useState<Skin[]>([]);
 
   useEffect(() => {
+    const fetchEquippedSkins = async () => {
+      if (user?.id) {
+        try {
+          const skins = await getEquippedUserSkins(user.id);
+          setEquippedSkins(skins);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    fetchEquippedSkins();
   }, [user]);
 
   useEffect(() => {
@@ -48,13 +61,10 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, []);
 
   const setUser = async (updateFunction: any) => {
-
     setUserState(prevUser => {
       // Calculer le nouvel utilisateur en fonction de l'état précédent
       const newUser = typeof updateFunction === 'function' ? updateFunction(prevUser) : updateFunction;
-
       storeUser(newUser).catch(console.error);
-
       if (newUser) {
         getEquippedUserSkins(newUser.id)
           .then(skins => setEquippedSkins(skins))
@@ -215,7 +225,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, incrementPoints, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, updateUserStats }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, incrementPoints, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, updateUserStats, equippedSkins, setEquippedSkins  }}>
       {children}
     </UserContext.Provider>
   );

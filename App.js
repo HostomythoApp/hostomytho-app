@@ -7,7 +7,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useLoadFonts } from "fonts/useLoadFonts";
 import { AuthProvider } from "services/context/AuthContext";
 import { UserProvider } from "services/context/UserContext";
-import { SkinsProvider } from "services/context/SkinsContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import utilities from "./src/utils/tailwind/styles.json";
 import { StatusBar } from "react-native";
@@ -36,18 +35,16 @@ export default function App() {
   return (
     <UserProvider>
       <AuthProvider>
-        <SkinsProvider>
-          <QueryClientProvider client={queryClient}>
-            <View style={styles.container} onLayout={onLayoutRootView}>
-              <StatusBar hidden />
-              <NavigationContainer linking={linking}>
-                <TailwindProvider utilities={utilities}>
-                  <StackNavigator />
-                </TailwindProvider>
-              </NavigationContainer>
-            </View>
-          </QueryClientProvider>
-        </SkinsProvider>
+        <QueryClientProvider client={queryClient}>
+          <View style={styles.container} onLayout={onLayoutRootView}>
+            <StatusBar hidden />
+            <NavigationContainer linking={linking}>
+              <TailwindProvider utilities={utilities}>
+                <StackNavigator />
+              </TailwindProvider>
+            </NavigationContainer>
+          </View>
+        </QueryClientProvider>
       </AuthProvider>
     </UserProvider>
   );

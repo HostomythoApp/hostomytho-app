@@ -16,6 +16,7 @@ import { plausibilityConfigs } from "utils/plausibilityConfigs";
 import CustomModal from "components/modals/CustomModal";
 import HelpButton from "components/button/HelpButton";
 import { getModalHelpContent } from "tutorials/tutorialPlausibilityGame";
+import NextButton from "components/button/NextButton";
 
 const colors = [
   "bg-yellow-300",
@@ -340,7 +341,11 @@ const PlausibilityGameDetailedScreen = () => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
-          <HelpButton onHelpPress={showHelpModal} />
+          <View style={tw('flex-row justify-end')}>
+            <NextButton bgColor="#FFFEE0" func={goToNextSentence} />
+            <HelpButton onHelpPress={showHelpModal} />
+          </View>
+          
           {noMoreTexts ? (
             <View style={tw('items-center justify-center mt-4')}>
               <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>

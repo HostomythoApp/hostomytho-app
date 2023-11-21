@@ -7,17 +7,15 @@ import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { getUserSkins, unequipSkin } from 'services/api/skins';
 import { equipSkin } from 'services/api/skins';
-import { useSkins } from 'services/context/SkinsContext';
 import SkinImage from 'components/SkinImage';
 
 const SkinsManagementScreen = (props: any) => {
     const tw = useTailwind();
-    const { user, updateStorageUserFromAPI } = useUser();
+    const { user, updateStorageUserFromAPI,  equippedSkins, setEquippedSkins } = useUser();
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
     const skinTypes = ["visage", "lunettes", "chapeau", "veste", "cheveux", "stetho"];
     const [skins, setSkins] = useState<Skin[]>([]);
-    const { equippedSkins, setEquippedSkins } = useSkins();
 
     useEffect(() => {
         const fetchData = async () => {
