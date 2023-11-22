@@ -7,14 +7,34 @@ import FunctionButton from "components/FunctionButton";
 import LogoutButton from "components/LogoutButton";
 import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
 import CustomModal from "components/modals/CustomModal";
+import { deleteUser } from 'services/api/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from 'services/context/AuthContext';
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "navigation/Types";
 
 const ProfileSettingsScreen = (props: any) => {
     const tw = useTailwind();
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const [modalVisible, setModalVisible] = useState(false);
-    const deleteAccount = () => {
-        // TODO A faire
-        setModalVisible(false);
+    const { setAuthState } = useAuth();
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
+
+    const deleteAccount = async () => {
+        if (user?.id) {
+            try {
+                deleteUser(user.id);
+                setModalVisible(false);
+
+                await AsyncStorage.clear();
+                setUser(null);
+                setAuthState({ isAuthenticated: false, token: null, isLoading: false });
+                navigation.navigate("TableauDeBord");
+            } catch (error) {
+                console.error('Erreur lors de la déconnexion :', error);
+            }
+
+        }
     }
 
     return (

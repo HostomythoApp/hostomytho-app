@@ -94,7 +94,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const removeUser = async () => {
     try {
-      // TODO Problème là, le user n'est pas supprimé
       await AsyncStorage.clear();
       setEquippedSkins([]);
     } catch (error) {

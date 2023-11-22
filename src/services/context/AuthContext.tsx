@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useUser } from "./UserContext";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -30,8 +29,6 @@ const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
-  const { removeUser } = useUser(); 
-  const { user, resetUserState } = useUser();
 
   const checkToken = async () => {
     try {
@@ -81,19 +78,21 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setAuthState((prevState) => ({ ...prevState, isLoading: false }));
     }
   };
+
   const logout = async () => {
-    try {
-      await removeToken();
-      await removeUser();
-    resetUserState();     
-    resetAuthState();   
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
+    // // Marche pas, je sais pas pourquoi
+    // try {
+    //   AsyncStorage.clear();
+    //   setUser(null);
+    //   resetUserState();
+    //   resetAuthState();
+    // } catch (error) {
+    //   console.error('Erreur lors de la déconnexion :', error);
+    // }
   };
 
   const resetAuthState = () => {
-    setAuthState(initialAuthState); // Réinitialise l'état d'authentification à son état initial
+    setAuthState(initialAuthState);
   };
 
   useEffect(() => {

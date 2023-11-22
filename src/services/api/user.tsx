@@ -52,6 +52,15 @@ export const signInUser = async (username: string, password: string) => {
   }
 };
 
+export const deleteUser = async (id: number): Promise<void> => {
+  try {
+    await api.delete(`/users/${id}`);
+  } catch (error: any) {
+    console.error("Erreur dans la suppression du compte: ", error);
+    throw error;
+  }
+};
+
 export const getUserRankingRange = async (id: number): Promise<any> => {
   try {
     return await api.get(`/users/getUserRankingRange/${id}`);
