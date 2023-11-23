@@ -34,7 +34,7 @@ const NegationGameScreen = ({ }) => {
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -127,7 +127,6 @@ const NegationGameScreen = ({ }) => {
     }
   };
 
-
   const fetchTestText = async () => {
     try {
       const response = await getTextTestNegation();
@@ -186,6 +185,7 @@ const NegationGameScreen = ({ }) => {
 
   const onNextCard = async () => {
     setLoading(true);
+    // TODO Il faudrait mettre le is_negation_spec_test dans le checkUserSelection, pour que ce ne soit pas visible dans le console.log
     if (text?.is_negation_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
       if (!checkResult.isValid) {
@@ -436,11 +436,11 @@ const NegationGameScreen = ({ }) => {
             <NextButton bgColor="#DAEBDC" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
-          {errorMessage && (
+          {/* {errorMessage && (
             <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
               <Text style={tw("text-white")}>{errorMessage}</Text>
             </View>
-          )}
+          )} */}
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {text && renderText(text)}
           </View>

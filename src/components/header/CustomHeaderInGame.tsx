@@ -35,24 +35,24 @@ const CustomHeaderInGame: React.FC<Props> = ({
   const multiplier = 1 + achievements * 0.1;
 
   // @ts-ignore
-  const animatedCommonStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: fontSize.value / 16 }],
-      alignSelf: 'center'
-    };
-  });
+  // const animatedCommonStyle = useAnimatedStyle(() => {
+  //   return {
+  //     transform: [{ scale: fontSize.value / 16 }],
+  //     alignSelf: 'center'
+  //   };
+  // });
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
-    
+
     if (user?.points !== undefined && user.points !== displayPoints) {
       setShowExplosion(true);
       setAnimatedColor('green');
-      fontSize.value = withSpring(17.5, { stiffness: 150, damping: 5 });
-  
+      // fontSize.value = withSpring(17.5, { stiffness: 20});
+
       let currentPoints = displayPoints;
       const pointsDiff = user.points - currentPoints;
-      const duration = pointsDiff * 10;
+      const duration = pointsDiff * 15;
 
       intervalId = setInterval(() => {
         if (currentPoints < user.points) {
@@ -61,14 +61,14 @@ const CustomHeaderInGame: React.FC<Props> = ({
         } else {
           clearInterval(intervalId);
           setShowExplosion(false);
-          fontSize.value = withSpring(16, { stiffness: 150, damping: 5 });
+          // fontSize.value = withSpring(16, { stiffness: 2 });
           setAnimatedColor(textColor);
         }
       }, duration);
-    
+
       return () => {
         clearInterval(intervalId);
-        fontSize.value = withSpring(16, { stiffness: 150, damping: 5 });
+        // fontSize.value = withSpring(16, { stiffness: 2 });
       };
     }
   }, [user?.points, textColor]);
@@ -84,7 +84,7 @@ const CustomHeaderInGame: React.FC<Props> = ({
 
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
-      fontSize: fontSize.value,
+      // fontSize: fontSize.value,
       color: animatedColor,
       alignSelf: 'center',
     };
@@ -92,7 +92,7 @@ const CustomHeaderInGame: React.FC<Props> = ({
 
   const animatedTextContainerStyle = useAnimatedStyle(() => {
     return {
-      height: isMobile ? 24 : 28, 
+      height: isMobile ? 24 : 28,
       justifyContent: 'center',
     };
   });
@@ -107,7 +107,8 @@ const CustomHeaderInGame: React.FC<Props> = ({
       <Text style={[tw(`font-primary text-center flex-grow font-bold text-${textColor}`), isMobile ? tw('text-xl') : tw('text-2xl')]}>{title}</Text>
       {user?.points !== undefined &&
         <Animated.View style={tw('flex-row items-center justify-center w-32')}>
-          <Animated.View style={animatedCommonStyle}>
+          <Animated.View style={tw('text-lg')}>
+            {/* <Animated.View style={animatedCommonStyle}> */}
             <MaterialIcons style={tw(`mr-2`)} name="person-search" size={18} color={animatedColor} />
 
           </Animated.View>

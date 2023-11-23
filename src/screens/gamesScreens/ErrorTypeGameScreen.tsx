@@ -5,7 +5,7 @@ import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
 import { getTextWithErrorValidated, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
-import { getTypesError } from "services/api/errors";
+import { getTypeByErrorId, getTypesError, isErrorTest } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { MaterialIcons } from '@expo/vector-icons';
 import InfoText from "components/InfoText";
@@ -19,11 +19,16 @@ const ErrorTypeGameScreen = ({ }) => {
   const [text, setText] = useState<TextWithError>();
   const [errorTypes, setErrorTypes] = useState<ErrorType[]>([]);
   const { user } = useUser();
-  const [selectedErrorTypes, setSelectedErrorTypes] = useState<number[]>([]);
-  const isNextButtonDisabled = selectedErrorTypes.length === 0;
+  // const [selectedErrorTypes, setSelectedErrorTypes] = useState<number[]>([]);
+  // const isNextButtonDisabled = selectedErrorTypes.length === 0;
+  const [selectedErrorType, setSelectedErrorType] = useState<number | null>(null);
+  const isNextButtonDisabled = selectedErrorType === null;
   const { updateUserStats } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const window = Dimensions.get('window');
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageContent, setMessageContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchNewText = async () => {
     try {
@@ -36,7 +41,6 @@ const ErrorTypeGameScreen = ({ }) => {
       setText(response);
       const responseTypeError = await getTypesError();
       setErrorTypes(responseTypeError);
-      setSelectedErrorTypes([]);
     } catch (error) {
       console.error("Erreur lors de la récupération de nouvelles erreurs :", error);
     }
@@ -52,14 +56,63 @@ const ErrorTypeGameScreen = ({ }) => {
   };
   // *****************************************************
 
-  const handleNextError = () => {
-    updateUserStats(2, 1);
+  const onNextCard = async () => {
+    if (!text) {
+      console.error("Aucune erreur à traiter.");
+      return;
+    }
+
+    try {
+      const isTestResult = await isErrorTest(text.idErrorAggregation);
+      if (isTestResult.isTest) {
+        const errorTypeData = await getTypeByErrorId(text.idErrorAggregation);
+        const isUserCorrect = selectedErrorType === errorTypeData.id;
+        if (isUserCorrect) {
+          updateUserStats(2, 1);
+          goToNextSentence();
+        } else {
+          const messageCorrection = getCorrectionMessage(errorTypeData.id);
+          setMessageContent(messageCorrection);
+          setShowMessage(true);
+        }
+      } else {
+        goToNextSentence();
+      }
+    } catch (error) {
+      console.error("Erreur lors de la vérification de l'erreur suivante :", error);
+    }
+
+  };
+
+  const goToNextSentence = async () => {
+    // setSelectedErrorTypes([]);
+    setSelectedErrorType(0);
+    setShowMessage(false);
+    setMessageContent("");
+    setLoading(false);
     fetchNewText();
   };
 
+
+  const getCorrectionMessage = (errorTypeId: number) => {
+    switch (errorTypeId) {
+      case 1:
+        return "L'erreur était plutôt une faute de français.";
+      case 2:
+        return "En réalité, c'était une erreur de vocabulaire médical.";
+      case 3:
+        return "Il semblerait que l'erreur concerne la cohérence médicale du texte.";
+      case 4:
+        return "L'erreur appartient à une autre catégorie.";
+      default:
+        return "L'erreur a été classée dans une catégorie inconnue.";
+    }
+  };
   const renderErrorTypeButtons = () => {
     return errorTypes.map((errorType) => {
-      const isSelected = selectedErrorTypes.includes(errorType.id);
+      // const isSelected = selectedErrorTypes.includes(errorType.id);
+      const isSelected = selectedErrorType === errorType.id;
+
       return (
         <TouchableOpacity
           key={errorType.id}
@@ -83,12 +136,12 @@ const ErrorTypeGameScreen = ({ }) => {
     });
   };
 
+  // const onTypeErrorPress = (errorType: ErrorType) => {
+  //   setSelectedErrorType(prevState => prevState === errorType.id ? null : errorType.id);
+  // };
+
   const onTypeErrorPress = (errorType: ErrorType) => {
-    if (selectedErrorTypes.includes(errorType.id)) {
-      setSelectedErrorTypes(prevState => prevState.filter(id => id !== errorType.id));
-    } else {
-      setSelectedErrorTypes(prevState => [...prevState, errorType.id]);
-    }
+    setSelectedErrorType(errorType.id);
   };
 
   const renderText = () => {
@@ -128,7 +181,7 @@ const ErrorTypeGameScreen = ({ }) => {
         <ScrollView >
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={fetchNewText} />
+            <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={goToNextSentence} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
           <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>
@@ -152,13 +205,31 @@ const ErrorTypeGameScreen = ({ }) => {
           <View style={tw('absolute bottom-3 right-4 flex-col w-auto')}>
             <TouchableOpacity
               style={tw("bg-primary p-3 flex-row items-center justify-center rounded-full")}
-              onPress={handleNextError}
+              onPress={onNextCard}
             >
               <Text style={tw("text-white text-lg font-primary")}>Erreur suivante</Text>
               <MaterialIcons name="navigate-next" size={24} color={'white'} />
             </TouchableOpacity>
           </View>
         )}
+
+        <View style={tw('flex-col w-full bottom-0')}>
+          {showMessage &&
+            <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+              <View>
+                <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+              </View>
+              <TouchableOpacity
+                style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+                onPress={goToNextSentence}
+              >
+                <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
+              </TouchableOpacity>
+            </View>
+
+          }
+        </View>
+
         <CustomModal
           isVisible={isHelpModalVisible}
           onClose={() => setIsHelpModalVisible(false)}

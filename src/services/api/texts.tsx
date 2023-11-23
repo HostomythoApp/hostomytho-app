@@ -24,6 +24,7 @@ export const getAllTexts = async (): Promise<Text[]> => {
 };
 
 export const getTextWithTokensNotPlayed = async (userId: number, gameType: string): Promise<TextWithTokens> => {
+  // TODO cacher les infos sensibles comme is_test, ...
   try {
     const response = await api.get(`/texts/getTextWithTokensNotPlayed/${userId}/${gameType}`);
     return response.data;
@@ -40,6 +41,7 @@ export const getTextWithTokensNotPlayed = async (userId: number, gameType: strin
 };
 
 export const getTextWithTokensByGameType = async (gameType: string): Promise<TextWithTokens> => {
+  // TODO cacher les infos sensibles comme is_test, ...
   try {
     const response = await api.get(`/texts/getTextWithTokensByGameType/${gameType}`);
     return response.data;
