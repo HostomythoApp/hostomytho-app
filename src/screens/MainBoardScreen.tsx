@@ -7,6 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 import { getMessageMenu } from "services/api/utils";
 import { MessageMenu } from 'models/MessageMenu';
+import { FontAwesome } from '@expo/vector-icons';
+import { getCompletedTutorials } from "services/api/games";
+import IconNotification from "components/IconNotification";
+
+interface TutorialsCompleted {
+    [key: string]: boolean;
+}
 
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
@@ -17,6 +24,8 @@ const MainBoardScreen = ({ }) => {
     const [menuMessage, setMenuMessage] = useState<MessageMenu | null>(null);
     const [messageExpanded, setMessageExpanded] = useState(false);
     const [isUserDataLoaded, setIsUserDataLoaded] = useState(false);
+    const [tutorialsCompleted, setTutorialsCompleted] = useState<TutorialsCompleted | null>(null);
+    const iconSize = windowWidth * 0.015;
 
     useEffect(() => {
         const loadUser = async () => {
@@ -34,6 +43,7 @@ const MainBoardScreen = ({ }) => {
     useEffect(() => {
         if (isUserDataLoaded && user) {
             updateStorageUserFromAPI(user.id);
+            fetchCompletedTutorials();
         }
     }, [isUserDataLoaded]);
 
@@ -46,6 +56,23 @@ const MainBoardScreen = ({ }) => {
                 console.error(error);
             });
     }, []);
+
+    const fetchCompletedTutorials = async () => {
+        try {
+            if (user) {
+                const completedTutorials = await getCompletedTutorials(user.id);
+                const tutorialsState = completedTutorials.reduce((acc, game) => {
+                    // @ts-ignore
+                    acc[game.name] = true;
+                    return acc;
+                }, {});
+                setTutorialsCompleted(tutorialsState);
+            }
+
+        } catch (error) {
+            console.error('Erreur lors de la récupération des tutoriels complétés', error);
+        }
+    }
 
     const toggleMessage = () => {
         setMessageExpanded(!messageExpanded);
@@ -74,9 +101,6 @@ const MainBoardScreen = ({ }) => {
                         <TouchableOpacity onPress={() => navigation.navigate("Menu")}
                             style={{
                                 position: 'absolute',
-                                // top: windowWidth > 768 ? '20%' : '20%',
-                                // left: windowWidth > 768 ? '20%' : '20%',
-
                                 top: windowWidth > 768 ? '43%' : '43%',
                                 left: windowWidth > 768 ? '48%' : '48%',
                             }}>
@@ -123,11 +147,22 @@ const MainBoardScreen = ({ }) => {
                                 top: windowWidth > 768 ? '53%' : '53%',
                                 left: windowWidth > 768 ? '68%' : '68%',
                             }}>
-                            <Image
-                                resizeMode="contain"
-
-                                source={require('images/paper_2.png')} style={{ width: windowWidth * 0.12, height: windowWidth * 0.1, minWidth: 80, minHeight: 80 }} />
+                            <View style={{ position: 'relative' }}>
+                                <Image
+                                    resizeMode="contain"
+                                    source={require('images/paper_2.png')}
+                                    style={{ width: windowWidth * 0.12, height: windowWidth * 0.1, minWidth: 80, minHeight: 80 }}
+                                />
+                                {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] &&
+                                    <IconNotification
+                                        size={iconSize}
+                                        top="10%"
+                                        right="15%"
+                                    />
+                                }
+                            </View>
                         </TouchableOpacity>
+
 
                         <TouchableOpacity onPress={() => navigation.navigate("MythoOuPas")}
                             style={{
@@ -145,6 +180,13 @@ const MainBoardScreen = ({ }) => {
                                 }}
                                 resizeMode="contain"
                             />
+                            {tutorialsCompleted && !tutorialsCompleted["MythoOuPas"] &&
+                                <IconNotification
+                                    size={iconSize}
+                                    top="1%"
+                                    right="1%"
+                                />
+                            }
                         </TouchableOpacity>
 
 
@@ -178,6 +220,14 @@ const MainBoardScreen = ({ }) => {
                                 shadowRadius: 1,
                                 transform: [{ rotate: '-8deg' }]
                             }} />
+
+                            {tutorialsCompleted && !tutorialsCompleted["MythoNo"] &&
+                                <IconNotification
+                                    size={iconSize}
+                                    top="-5%"
+                                    right="6%"
+                                />
+                            }
                         </TouchableOpacity>
 
                         <View style={{
