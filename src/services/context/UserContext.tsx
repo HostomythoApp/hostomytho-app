@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTailwind } from "tailwind-rn";
-import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi } from "services/api/user";
+import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi, updateTrustIndex } from "services/api/user";
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
@@ -20,7 +20,7 @@ interface UserContextProps {
   updateStorageUserFromAPI: (userId: number) => Promise<void>;
   resetCatchProbability: (userId: number) => Promise<void>;
   resetUserState: () => void;
-  updateUserStats: (pointsToAdd: number, percentageToAdd: number) => void;
+  updateUserStats: (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number) => void;
   equippedSkins: Skin[];
   setEquippedSkins: React.Dispatch<React.SetStateAction<Skin[]>>;
 }
@@ -187,19 +187,29 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUserStats = async (pointsToAdd: number, percentageToAdd: number, isBonus: boolean = false) => {
+  const incrementTrustIndex = async (trustIndexIncrement: number) => {
+    if (user) {
+      const response = await updateTrustIndex(user.id, trustIndexIncrement);
+      setUser((prevUser: any) => ({ ...prevUser, trust_index: response.data.newTrustIndex }));
+    }
+  };
+
+  const updateUserStats = async (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number, isBonus: boolean = false) => {
     if (user) {
       const oldPoints = user.points;
 
       try {
-        const response = await updateUserStatsApi(user.id, percentageToAdd, pointsToAdd);
+        const response = await updateUserStatsApi(user.id, percentageToAdd, pointsToAdd, trustIndexIncrement);
         const newPoints = response.data.newPoints;
         const newCatchProbability = response.data.newCatchProbability;
+        const newTrustIndex = response.data.newTrustIndex;
 
+        // Mettre à jour l'état de l'utilisateur
         setUser((prevUser: any) => ({
           ...prevUser,
           points: newPoints,
-          catch_probability: newCatchProbability
+          catch_probability: newCatchProbability,
+          trust_index: newTrustIndex
         }));
 
         // Vérifiez si l'utilisateur a atteint un nouveau palier pour les skins
@@ -213,7 +223,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if (skinResponse.allSkinsUnlocked) {
               unlockPointsModal();
               if (!isBonus) {
-                updateUserStats(5, 0, true);
+                updateUserStats(5, 0, 0, true);
               }
             } else {
               unlockSkinModal(skinResponse);
@@ -235,7 +245,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       }
     }
   };
-
 
 
   const resetCatchProbability = async () => {

@@ -317,8 +317,8 @@ const MainBoardScreen = ({ }) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                        <Image source={require('images/settings1.png')}
-                            style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, resizeMode: 'contain', minWidth: 50, minHeight: 100 }} />
+                        <Image source={require('images/settings1.png')} resizeMode="contain"
+                            style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
                     </View>
                 </TouchableOpacity>
 
@@ -347,8 +347,8 @@ const MainBoardScreen = ({ }) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <Image source={require('images/icon_profil.png')}
-                                style={{ width: windowWidth * 0.06, height: windowWidth * 0.06, resizeMode: 'contain', minWidth: 60, minHeight: 60 }} />
+                            <Image source={require('images/icon_profil.png')}resizeMode="contain"
+                                style={{ width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60 }} />
                         </View>
                     </TouchableOpacity>
                 }

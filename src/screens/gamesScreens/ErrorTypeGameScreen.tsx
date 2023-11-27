@@ -68,9 +68,10 @@ const ErrorTypeGameScreen = ({ }) => {
         const errorTypeData = await getTypeByErrorId(text.idErrorAggregation);
         const isUserCorrect = selectedErrorType === errorTypeData.id;
         if (isUserCorrect) {
-          updateUserStats(2, 1);
+          updateUserStats(2, 1, 1);
           goToNextSentence();
         } else {
+          updateUserStats(0, 0, -1);
           const messageCorrection = getCorrectionMessage(errorTypeData.id);
           setMessageContent(messageCorrection);
           setShowMessage(true);

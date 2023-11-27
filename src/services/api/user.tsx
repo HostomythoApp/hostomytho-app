@@ -101,11 +101,23 @@ export const updateUserCatchProbability = async (id: number, catch_probability: 
   }
 };
 
-export const updateUserStatsApi = async (id: number, catch_probability: number, points: number) => {
+export const updateTrustIndex = async (id: number, trust_index: number) => {
+  try {
+    return await api.put(`/users/${id}/trustIndex`, {
+      trust_index,
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateUserStatsApi = async (id: number, catch_probability: number, points: number, trust_index: number) => {
   try {
     return await api.put(`/users/${id}/updateUserStats`, {
       catch_probability,
-      points
+      points,
+      trust_index
     });
   } catch (error) {
     console.error(error);

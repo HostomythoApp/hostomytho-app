@@ -45,7 +45,7 @@ const InvestigationScreen = () => {
                     setArrestDescription(catchResult.catchEntry.descriptionArrest);
                     if (catchResult.catchEntry.allCriminalsCaught) {
                         setArrestDescription("Tous les criminels ont été arrêtés. Vous gagnez 5 points supplémentaires.");
-                        updateUserStats(5, 0);
+                        updateUserStats(5, 0, 0);
                     }
                 } else {
                     console.error('Failed to catch the criminal:', catchResult.error);

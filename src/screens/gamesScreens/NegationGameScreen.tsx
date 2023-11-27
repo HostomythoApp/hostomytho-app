@@ -204,6 +204,7 @@ const NegationGameScreen = ({ }) => {
           messageHeader = "Oh non, il n'y avait rien à trouver ici";
         }
 
+        if (user) setTimeout(() => updateUserStats(0, 0, -1), 100);
         setMessageContent(`${messageHeader}\n${correctSpecification}`);
         setShowMessage(true);
         setLoading(false);
@@ -219,7 +220,7 @@ const NegationGameScreen = ({ }) => {
           setCorrectAnswers(correctAnswers + 1);
         }
         if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5, 1), 100);
+          if (user) setTimeout(() => updateUserStats(5, 1, 1), 100);
         }
       }
     } else {
@@ -228,7 +229,7 @@ const NegationGameScreen = ({ }) => {
         setQuestionsAsked(questionsAsked + 1);
       }
       if (!isTutorial) {
-        if (user) setTimeout(() => updateUserStats(5, 1), 100);
+        if (user) setTimeout(() => updateUserStats(5, 1, 0), 100);
       }
     }
     if (questionsAsked === 10) {

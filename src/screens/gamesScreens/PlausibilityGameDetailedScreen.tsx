@@ -249,13 +249,14 @@ const PlausibilityGameDetailedScreen = () => {
         if (checkResult.testPlausibilityPassed) {
           // Si l'utilisateur a spécifié des erreurs mais que la base de données n'en contient pas, accorder 10 points pour la bonne plausibilité.
           if (!noErrorSpecified && noErrorInDatabase) {
-            animationGainPoints(10);
+            animationGainPoints(10, 1);
           } else {
-            animationGainPoints(10);
+            animationGainPoints(10, 1);
           }
           goToNextSentence();
           return;
         } else {
+            animationGainPoints(0, -1);
           messageHeader = (
             <View style={tw('flex-row items-center')}>
               <Text style={tw('text-[#B22222] font-primary text-lg')}
@@ -285,7 +286,7 @@ const PlausibilityGameDetailedScreen = () => {
               <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
             </View>
           );
-          animationGainPoints(10);
+          animationGainPoints(10, 0);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -297,6 +298,7 @@ const PlausibilityGameDetailedScreen = () => {
               </View>
             </View>
           );
+          animationGainPoints(0, -1);
         } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -305,9 +307,9 @@ const PlausibilityGameDetailedScreen = () => {
               <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
             </View>
           );
-          animationGainPoints(10);
+          animationGainPoints(10, 0);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          animationGainPoints(15);
+          animationGainPoints(15, 2);
           goToNextSentence();
           return;
         }
@@ -319,7 +321,7 @@ const PlausibilityGameDetailedScreen = () => {
       return;
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      animationGainPoints(10);
+      animationGainPoints(10, 0);
     }
 
     for (let errorDetail of errorDetails) {
@@ -329,10 +331,10 @@ const PlausibilityGameDetailedScreen = () => {
     goToNextSentence();
   };
 
-  const animationGainPoints = (pointsEarned: number) => {
+  const animationGainPoints = (pointsEarned: number, trustEarned: number) => {
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     setTimeout(() => {
-      updateUserStats(pointsEarned, 1);
+      updateUserStats(pointsEarned, 1, trustEarned);
     }, 100);
   }
 
