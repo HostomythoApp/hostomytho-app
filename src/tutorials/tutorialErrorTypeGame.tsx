@@ -1,16 +1,52 @@
 
+import { MaterialIcons } from '@expo/vector-icons';
+
 import { Text, TouchableWithoutFeedback } from 'react-native';
 
 export const getTutorialContentForStep = (step: number, tw: any) => {
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Voici des dossiers patients que vous pouvez inspecter. Peut-être qu'en spécifiant des éléments du texte, vous trouverez des indices. Ici, vous pouvez essayer de trouver les négations dans le texte, ou les absences de.
+        case 1: return <Text style={tw('font-primary')}> Certains passages de textes ont spécialement attiré votre attention. Il faudrait les ordonner un peu pour éclaircir les pistes. Spécifier donc quel est le type des erreurs de ces textes.
             {"\n"}
-            Par exemple, si le texte contient "Le bilan d'extension du patient malade est sans particularité.", il faudra sélectionner les mots "sans particularité".
-            Pour ce faire, cliquez sur les mots qui, selon vous, composent la négation. Une fois tous les mots sélectionnés, validez la sélection.
+            Il peut y avoir plusieurs types d'erreurs : les erreurs de français pour les erreurs grammaticales, ou de français en général. Les erreurs de vocabulaire médicale pour les erreurs de termes médicaux,
+            et les erreurs de cohérence médicale pour les incohérences et erreurs médicales. Si vous pensez que l'erreur est d'un autre type, choisissez le bouton "Autre".
+            Enfin, si vous trouvez que ce n'est pas une erreur, cliquez sur "Pas d'erreur".
+
             {"\n\n"}
-            A vous d'essayer sur ce texte :
+            Essayez sur ce texte en cliquant sur le type d'erreur du passage surligné, et passez à l'erreur suivante :
         </Text>;
+
+
+        case 2: return <Text style={tw('font-primary')}>
+            Si l'erreur est de plusieurs types, selectionnez le type qui vous semble le plus important.
+            {"\n\n"}
+            Et si vous avez un doute et que vous souhaitez ne pas répondre, cliquez sur le bouton
+            <MaterialIcons name="next-plan" size={24} color="black" />
+            en haut à droite pour passer au prochain exemple. Vous pourrez l'utiliser dès la fin du tutoriel.
+        </Text>;
+
+        case 3: return <Text style={tw('font-primary')}>
+            Nous avons fait le tour des explications.
+            {"\n\n"}
+            Essayer de traiter les 10 textes suivants, et si vous obtenez au moins 6 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
+            {"\n\n"}
+            Bon courage !
+        </Text>;
+
+        case 98: return <Text style={tw('font-primary')}>
+            Vous savez désormais spécifier les types d'erreur. À vous de jouer.
+            {"\n\n"}
+            Le bouton avec le point d'interrogation en haut à droite vous permet d'accéder au rappel des consignes, et vous pourrez y relancer ce tutoriel si vous le souhaitez.
+            {"\n\n"}
+            Bon courage dans vos recherches !
+        </Text>;
+
+        case 99: return <Text style={tw('font-primary')}>
+            Vous avez fait un peu trop d'erreurs. Il est plus prudent de refaire l'exercice, sinon vous risquez de partir sur de mauvaises pistes.
+            {"\n\n"}
+            Du coup, recommençons depuis le début..
+        </Text>;
+
         default: return null;
     }
 };
@@ -50,7 +86,7 @@ export const getModalHelpContent = (tw: any) => {
             Le mot s'écrit "pituitaire"
             {"\n\n"}
 
-            <HighlightedText>"Cohérence médicale" </HighlightedText> pour les erreurs grammaticales ou de français en général.
+            <HighlightedText>"Cohérence médicale" </HighlightedText> pour les incohérences et erreurs médicales.
             {"\n"}
             <ItalicPhrase>
                 - "Lors de sa visite pour un vaccin contre la grippe, il a été annoncé au jeune garçon qu'il devait subir <HighlightedText> une radiographie du thorax pour examiner la santé de ses dents de sagesse</HighlightedText>."

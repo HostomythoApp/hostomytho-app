@@ -28,7 +28,7 @@ const MainBoardScreen = ({ }) => {
     const iconSize = windowWidth * 0.015;
 
     useEffect(() => {
-        const loadUser = async () => {
+            const loadUser = async () => {
             try {
                 setIsUserDataLoaded(true);
             } catch (error) {

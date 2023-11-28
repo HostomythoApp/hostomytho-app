@@ -10,9 +10,11 @@ import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { MaterialIcons } from '@expo/vector-icons';
 import InfoText from "components/InfoText";
 import CustomModal from "components/modals/CustomModal";
-import { getModalHelpContent } from "tutorials/tutorialErrorTypeGame";
+import { getModalHelpContent, getTutorialContentForStep } from "tutorials/tutorialErrorTypeGame";
 import HelpButton from "components/button/HelpButton";
 import NextButton from "components/button/NextButton";
+import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
+import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 
 const ErrorTypeGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -21,14 +23,70 @@ const ErrorTypeGameScreen = ({ }) => {
   const { user } = useUser();
   // const [selectedErrorTypes, setSelectedErrorTypes] = useState<number[]>([]);
   // const isNextButtonDisabled = selectedErrorTypes.length === 0;
-  const [selectedErrorType, setSelectedErrorType] = useState<number | null>(null);
-  const isNextButtonDisabled = selectedErrorType === null;
+  const [selectedErrorType, setSelectedErrorType] = useState<number>(0);
+  // const isNextButtonDisabled = selectedErrorType === null;
   const { updateUserStats } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const window = Dimensions.get('window');
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const [loading, setLoading] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [isTutorial, setIsTutorial] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const [questionsAsked, setQuestionsAsked] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [tutorialFailed, setTutorialFailed] = useState(false);
+  const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
+  const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
+
+  useEffect(() => {
+    console.log("useEffect user");
+
+    async function checkTutorialCompletion() {
+      if (user) {
+        const completed = await isTutorialCompleted(user.id, 3);
+        setIsTutorial(!completed);
+        setIsTutorialCheckComplete(true);
+      }
+    }
+    checkTutorialCompletion();
+  }, [user]);
+
+  useEffect(() => {
+    console.log("isTutorial, isTutorialCheckComplete");
+    if (isTutorialCheckComplete) {
+      if (isTutorial) {
+        setTutorialStep(1);
+        nextTutorialStep();
+      } else {
+        fetchNewText();
+      }
+    }
+  }, [isTutorial, isTutorialCheckComplete, resetTutorialFlag]);
+
+  useEffect(() => {
+    console.log("resetTutorialFlag");
+    console.log(resetTutorialFlag);
+    
+    if (resetTutorialFlag) {
+      console.log("onreset le tuto");
+      
+      console.log(tutorialStep);
+      fetchNewText();
+      const tutorialContent = getTutorialContentForStep(1, tw);
+      if (tutorialContent) {
+        showModal(tutorialContent);
+      }
+        setTutorialStep(0); 
+        setIsTutorial(true); 
+
+      setResetTutorialFlag(false);
+    }
+  }, [resetTutorialFlag]);
+
 
   const fetchNewText = async () => {
     try {
@@ -39,18 +97,107 @@ const ErrorTypeGameScreen = ({ }) => {
         response = await getTextWithErrorValidated();
       }
       setText(response);
-      const responseTypeError = await getTypesError();
-      setErrorTypes(responseTypeError);
     } catch (error) {
       console.error("Erreur lors de la récupération de nouvelles erreurs :", error);
     }
   };
 
+  const fetchNewTypesError = async () => {
+    const responseTypeError = await getTypesError();
+    setErrorTypes(responseTypeError);
+  };
+
   useEffect(() => {
-    fetchNewText();
+    fetchNewTypesError();
   }, []);
 
   // *********** Gestion Tuto *******************
+  const nextTutorialStep = async () => {
+    console.log("nextTutorialStep");
+    console.log("tutorialStep");
+    console.log(tutorialStep);
+
+    if (!isTutorial) return;
+    const nextStep = tutorialStep + 1;
+    console.log("nestStep");
+    console.log(nextStep);
+
+    setTutorialStep(nextStep);
+
+    if (nextStep <= 5) {
+      let response;
+      switch (nextStep) {
+        case 1:
+          response = await getTextWithErrorValidated();
+          setText(response);
+          break;
+        case 2:
+          response = await getTextWithErrorValidated();
+          setText(response);
+          break;
+        case 3:
+          response = await getTextWithErrorValidated();
+          setText(response);
+          break;
+      }
+      const tutorialContent = getTutorialContentForStep(nextStep, tw);
+      if (tutorialContent) {
+        showModal(tutorialContent);
+      }
+    } else {
+      if (questionsAsked < 10) {
+        fetchTestText();
+      } else {
+        // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
+        if (correctAnswers >= 6) {
+          showModal(getTutorialContentForStep(98, tw));
+          setIsTutorial(false);
+
+          if (user) {
+            completeTutorialForUser(user.id, 3);
+          }
+        } else {
+          showModal(getTutorialContentForStep(99, tw));
+          setCorrectAnswers(0);
+          setQuestionsAsked(0);
+          setTutorialStep(0);
+          setTutorialFailed(true);
+        }
+      }
+    }
+  };
+
+  const fetchTestText = async () => {
+    console.log("fetchTestText");
+    try {
+      const response = await getTextWithErrorValidated();
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du texte de test.", error);
+    }
+  };
+
+  const showModal = (content: any) => {
+    setModalContent(content);
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const launchTuto = () => {
+    console.log("launchTuto");
+    setResetTutorialFlag(true);
+    setSelectedErrorType(0);
+    setShowMessage(false);
+    setMessageContent("");
+    setCorrectAnswers(0);
+    setQuestionsAsked(0);
+    setTutorialFailed(false);
+  };
+  
+
   const showHelpModal = () => {
     setIsHelpModalVisible(true)
   };
@@ -65,20 +212,55 @@ const ErrorTypeGameScreen = ({ }) => {
     try {
       const isTestResult = await isErrorTest(text.idErrorAggregation);
       if (isTestResult.isTest) {
+
         const errorTypeData = await getTypeByErrorId(text.idErrorAggregation);
         const isUserCorrect = selectedErrorType === errorTypeData.id;
+
         if (isUserCorrect) {
-          updateUserStats(2, 1, 1);
+          // Si juste
+          if (!isTutorial) {
+            updateUserStats(2, 1, 1);
+          } else {
+            // Si juste dans tuto 
+            if (tutorialStep > 2) {
+              setQuestionsAsked(questionsAsked + 1);
+              setCorrectAnswers(correctAnswers + 1);
+            }
+
+          }
           goToNextSentence();
+
         } else {
-          updateUserStats(0, 0, -1);
+          if (tutorialStep > 2) {
+            setQuestionsAsked(questionsAsked + 1);
+          }
           const messageCorrection = getCorrectionMessage(errorTypeData.id);
-          setMessageContent(messageCorrection);
           setShowMessage(true);
+
+          // updateUserStats(0, 0, -1);
+          console.log("messageCorrection");
+          console.log(messageCorrection);
+          setMessageContent(messageCorrection);
+
+          // TODO Le message ne s'affiche pas 
+
         }
-      } else {
-        goToNextSentence();
+
+        if (questionsAsked === 10) {
+
+          if (correctAnswers >= 6) {
+            setIsTutorial(false);
+            if (user) {
+              completeTutorialForUser(user.id, 1);
+            }
+          } else {
+            setCorrectAnswers(0);
+            setQuestionsAsked(0);
+            setTutorialStep(0);
+          }
+        }
       }
+
     } catch (error) {
       console.error("Erreur lors de la vérification de l'erreur suivante :", error);
     }
@@ -86,12 +268,15 @@ const ErrorTypeGameScreen = ({ }) => {
   };
 
   const goToNextSentence = async () => {
-    // setSelectedErrorTypes([]);
     setSelectedErrorType(0);
     setShowMessage(false);
     setMessageContent("");
     setLoading(false);
-    fetchNewText();
+    if (isTutorial) {
+      nextTutorialStep();
+    } else {
+      fetchNewText();
+    }
   };
 
 
@@ -182,7 +367,7 @@ const ErrorTypeGameScreen = ({ }) => {
         <ScrollView >
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={goToNextSentence} />
+            <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
           <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>
@@ -191,6 +376,38 @@ const ErrorTypeGameScreen = ({ }) => {
           <View style={tw("flex-1 p-4 pt-0 justify-center items-center")}>
             {text && renderText()}
           </View>
+          {
+            tutorialStep > 2 && isTutorial && // Vérifier si l'utilisateur est dans l'étape des 10 questions
+            <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
+              <View style={tw('flex-row justify-between items-center mb-2')}>
+                <Text style={tw('font-primary text-base text-gray-600')}>
+                  Questions posées:
+                </Text>
+                <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
+                  {Math.min(questionsAsked, 10)} / 10
+                </Text>
+              </View>
+              <View style={tw('flex-row justify-between items-center')}>
+                <Text style={tw('font-primary text-base text-gray-600')}>
+                  Bonnes réponses:
+                </Text>
+                <Text style={tw('font-primary text-lg font-bold text-green-600')}>
+                  {correctAnswers}
+                </Text>
+              </View>
+            </View>
+          }
+
+          {
+            tutorialFailed && (
+              <TouchableOpacity
+                onPress={launchTuto}
+                style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
+              >
+                <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
+              </TouchableOpacity>
+            )
+          }
           {user?.moderator && (
             <View style={tw("mb-4 mx-2")}>
               <InfoText
@@ -202,7 +419,8 @@ const ErrorTypeGameScreen = ({ }) => {
           )}
         </ScrollView>
 
-        {!isNextButtonDisabled && (
+        {/* {!isNextButtonDisabled && ( */}
+          {selectedErrorType > 0 && (
           <View style={tw('absolute bottom-3 right-4 flex-col w-auto')}>
             <TouchableOpacity
               style={tw("bg-primary p-3 flex-row items-center justify-center rounded-full")}
@@ -230,7 +448,12 @@ const ErrorTypeGameScreen = ({ }) => {
 
           }
         </View>
-
+        <ModalDoctorsExplanation
+          isVisible={isModalVisible}
+          onClose={handleCloseModal}
+        >
+          {modalContent}
+        </ModalDoctorsExplanation>
         <CustomModal
           isVisible={isHelpModalVisible}
           onClose={() => setIsHelpModalVisible(false)}
@@ -239,6 +462,12 @@ const ErrorTypeGameScreen = ({ }) => {
             <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
               <View style={tw('p-4')}>
                 {getModalHelpContent(tw)}
+                <TouchableOpacity onPress={() => {
+                  launchTuto();
+                  setIsHelpModalVisible(false);
+                }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+                  <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
+                </TouchableOpacity>
               </View>
             </ScrollView>
           </View>

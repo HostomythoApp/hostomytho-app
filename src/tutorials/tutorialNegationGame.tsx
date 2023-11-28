@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 
@@ -53,6 +54,9 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             Vous connaissez désormais les bases de l'annotation de négations. À vous de jouer.
             {"\n\n"}
             Le bouton avec le point d'interrogation en haut à droite vous permet d'accéder au rappel des consignes, et vous pourrez y relancer ce tutoriel si vous le souhaitez.
+            Si vous avez un doute et que vous souhaitez ne pas traiter un texte, cliquez sur le bouton
+            <MaterialIcons name="next-plan" size={24} color="black" />
+            en haut à droite pour passer au prochain.
             {"\n\n"}
             Bon courage dans vos recherches !
         </Text>;
