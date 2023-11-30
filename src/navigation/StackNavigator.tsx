@@ -6,7 +6,6 @@ import ContentProfileScreen from "screens/profilScreens/ContentProfileScreen";
 import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
-import PlausibilityGameScreen from "screens/gamesScreens/PlausibilityGameScreen";
 import PlausibilityGameDetailedScreen from "screens/gamesScreens/PlausibilityGameDetailedScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
@@ -111,8 +110,6 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="GestionApparence" component={SkinsManagementScreen} />
 
               <Stack.Screen name="CondiMytho" component={ConditionGameScreen} />
-
-              <Stack.Screen name="Plausibilites" component={PlausibilityGameScreen} />
 
               <Stack.Screen name="MythoTypo" component={ErrorTypeGameScreen} />
 

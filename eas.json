@@ -4,6 +4,7 @@
   },
   "build": {
     "development": {
+      "node": "18.18.0",
       "developmentClient": true,
       "distribution": "internal"
     },
@@ -11,6 +12,7 @@
       "distribution": "internal"
     },
     "production": {
+      "node": "18.18.0",
       "android": {
         "buildType": "apk"
       }
