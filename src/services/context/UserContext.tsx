@@ -195,9 +195,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const updateUserStats = async (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number, isBonus: boolean = false) => {
-   console.log("updateUserStats");
-   console.log(trustIndexIncrement);
-   
     if (user) {
       const oldPoints = user.points;
 

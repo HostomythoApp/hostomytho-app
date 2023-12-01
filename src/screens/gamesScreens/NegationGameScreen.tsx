@@ -75,14 +75,8 @@ const NegationGameScreen = ({ }) => {
   // *********** Gestion Tuto *******************
   const nextTutorialStep = async () => {
     if (!isTutorial) return;
-    console.log("nextTutorialStep");
-    console.log("tutorialStep");
-    console.log(tutorialStep);
-
     const nextStep = tutorialStep + 1;
     setTutorialStep(nextStep);
-    console.log("nestStep");
-    console.log(nextStep);
 
     if (nextStep <= 5) {
       let response;
@@ -183,8 +177,6 @@ const NegationGameScreen = ({ }) => {
     if (tutorialContent) {
       showModal(tutorialContent);
     }
-    console.log("tutorialStep dans lauchtuto");
-    console.log(tutorialStep);
 
   };
 

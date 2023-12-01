@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, ScrollView
 import { useTailwind } from "tailwind-rn";
 import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
-import { getTextWithErrorValidated, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
+import { getTextTestWithErrorValidated, getTextWithErrorValidated, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
 import { getTypeByErrorId, getTypesError, isErrorTest } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
@@ -28,20 +28,21 @@ const ErrorTypeGameScreen = ({ }) => {
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [isTutorial, setIsTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
-  const [questionsAsked, setQuestionsAsked] = useState(0);
+  const [questionsAsked, setQuestionsAsked] = useState(1);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [tutorialFailed, setTutorialFailed] = useState(false);
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect user");
+    fetchNewTypesError();
+  }, []);
 
+  useEffect(() => {
     async function checkTutorialCompletion() {
       if (user) {
         const completed = await isTutorialCompleted(user.id, 3);
@@ -53,7 +54,6 @@ const ErrorTypeGameScreen = ({ }) => {
   }, [user]);
 
   useEffect(() => {
-    console.log("isTutorial, isTutorialCheckComplete");
     if (isTutorialCheckComplete) {
       if (isTutorial) {
         setTutorialStep(1);
@@ -65,13 +65,7 @@ const ErrorTypeGameScreen = ({ }) => {
   }, [isTutorial, isTutorialCheckComplete, resetTutorialFlag]);
 
   useEffect(() => {
-    console.log("resetTutorialFlag");
-    console.log(resetTutorialFlag);
-
     if (resetTutorialFlag) {
-      console.log("onreset le tuto");
-
-      console.log(tutorialStep);
       fetchNewText();
       const tutorialContent = getTutorialContentForStep(1, tw);
       if (tutorialContent) {
@@ -83,7 +77,6 @@ const ErrorTypeGameScreen = ({ }) => {
       setResetTutorialFlag(false);
     }
   }, [resetTutorialFlag]);
-
 
   const fetchNewText = async () => {
     try {
@@ -104,21 +97,10 @@ const ErrorTypeGameScreen = ({ }) => {
     setErrorTypes(responseTypeError);
   };
 
-  useEffect(() => {
-    fetchNewTypesError();
-  }, []);
-
   // *********** Gestion Tuto *******************
   const nextTutorialStep = async () => {
-    console.log("nextTutorialStep");
-    console.log("tutorialStep");
-    console.log(tutorialStep);
-
     if (!isTutorial) return;
     const nextStep = tutorialStep + 1;
-    console.log("nestStep");
-    console.log(nextStep);
-
     setTutorialStep(nextStep);
 
     if (nextStep <= 5) {
@@ -156,7 +138,7 @@ const ErrorTypeGameScreen = ({ }) => {
         } else {
           showModal(getTutorialContentForStep(99, tw));
           setCorrectAnswers(0);
-          setQuestionsAsked(0);
+          setQuestionsAsked(1);
           setTutorialStep(0);
           setTutorialFailed(true);
         }
@@ -165,9 +147,8 @@ const ErrorTypeGameScreen = ({ }) => {
   };
 
   const fetchTestText = async () => {
-    console.log("fetchTestText");
     try {
-      const response = await getTextWithErrorValidated();
+      const response = await getTextTestWithErrorValidated();
       setText(response);
     } catch (error) {
       console.error("Erreur lors de la récupération du texte de test.", error);
@@ -184,16 +165,14 @@ const ErrorTypeGameScreen = ({ }) => {
   };
 
   const launchTuto = () => {
-    console.log("launchTuto");
     setResetTutorialFlag(true);
     setSelectedErrorType(0);
     setShowMessage(false);
     setMessageContent("");
     setCorrectAnswers(0);
-    setQuestionsAsked(0);
+    setQuestionsAsked(1);
     setTutorialFailed(false);
   };
-
 
   const showHelpModal = () => {
     setIsHelpModalVisible(true)
@@ -209,67 +188,49 @@ const ErrorTypeGameScreen = ({ }) => {
     try {
       const isTestResult = await isErrorTest(text.idErrorAggregation);
       if (isTestResult.isTest) {
-
         const errorTypeData = await getTypeByErrorId(text.idErrorAggregation);
         const isUserCorrect = selectedErrorType === errorTypeData.id;
 
         if (isUserCorrect) {
-          // Si juste
           if (!isTutorial) {
             updateUserStats(2, 1, 1);
-          } else {
-            // Si juste dans tuto 
-            if (tutorialStep > 2) {
-              setQuestionsAsked(questionsAsked + 1);
-              setCorrectAnswers(correctAnswers + 1);
-            }
-
           }
-          goToNextSentence();
-
+          goToNextSentence(isUserCorrect);
         } else {
           if (!isTutorial) {
             updateUserStats(0, 0, -1);
-          }
-          if (tutorialStep > 2) {
-            setQuestionsAsked(questionsAsked + 1);
           }
           const messageCorrection = getCorrectionMessage(errorTypeData.id);
           setShowMessage(true);
           setMessageContent(messageCorrection);
         }
-
-        if (questionsAsked === 10) {
-          if (correctAnswers >= 6) {
-            setIsTutorial(false);
-            if (user) {
-              completeTutorialForUser(user.id, 1);
-            }
-          } else {
-            setCorrectAnswers(0);
-            setQuestionsAsked(0);
-            setTutorialStep(0);
-          }
-        }
       }
-
     } catch (error) {
       console.error("Erreur lors de la vérification de l'erreur suivante :", error);
     }
-
   };
 
-  const goToNextSentence = async () => {
+
+  const goToNextSentence = async (isCorrect = false) => {
+    if (isTutorial && tutorialStep > 2) {
+      setQuestionsAsked(questionsAsked + 1);
+      if (isCorrect) {
+        setCorrectAnswers(correctAnswers + 1);
+      }
+    }
+
     setSelectedErrorType(0);
     setShowMessage(false);
     setMessageContent("");
     setLoading(false);
+
     if (isTutorial) {
       nextTutorialStep();
     } else {
       fetchNewText();
     }
   };
+
 
   const getCorrectionMessage = (errorTypeId: number) => {
     switch (errorTypeId) {
@@ -287,7 +248,6 @@ const ErrorTypeGameScreen = ({ }) => {
   };
   const renderErrorTypeButtons = () => {
     return errorTypes.map((errorType) => {
-      // const isSelected = selectedErrorTypes.includes(errorType.id);
       const isSelected = selectedErrorType === errorType.id;
 
       return (
@@ -406,7 +366,6 @@ const ErrorTypeGameScreen = ({ }) => {
           )}
         </ScrollView>
 
-        {/* {!isNextButtonDisabled && ( */}
         {selectedErrorType > 0 && (
           <View style={tw('absolute bottom-3 right-4 flex-col w-auto')}>
             <TouchableOpacity
@@ -427,13 +386,13 @@ const ErrorTypeGameScreen = ({ }) => {
               </View>
               <TouchableOpacity
                 style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
-                onPress={goToNextSentence}
+                onPress={() => goToNextSentence(false)}
               >
                 <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
               </TouchableOpacity>
             </View>
-
           }
+
         </View>
         <ModalDoctorsExplanation
           isVisible={isModalVisible}

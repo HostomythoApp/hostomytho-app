@@ -89,6 +89,22 @@ export const getTextWithErrorValidated = async (): Promise<TextWithError> => {
   }
 };
 
+export const getTextTestWithErrorValidated = async (): Promise<TextWithError> => {
+  try {
+    const response = await api.get(`/texts/getTextTestWithErrorValidated`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
 export const getTextWithTokensById = async (textId: number): Promise<TextWithTokens> => {
   try {
     const response = await api.get(`/texts/getTextWithTokensById/${textId}`);
