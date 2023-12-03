@@ -48,6 +48,9 @@ const ErrorTypeGameScreen = ({ }) => {
         const completed = await isTutorialCompleted(user.id, 3);
         setIsTutorial(!completed);
         setIsTutorialCheckComplete(true);
+      } else {
+        setIsTutorial(false);
+        setIsTutorialCheckComplete(true);
       }
     }
     checkTutorialCompletion();
@@ -351,7 +354,7 @@ const ErrorTypeGameScreen = ({ }) => {
                 onPress={launchTuto}
                 style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
               >
-                <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
+                <Text style={tw('text-white text-center font-primary text-lg')}>Lancer le tutoriel</Text>
               </TouchableOpacity>
             )
           }
@@ -412,7 +415,7 @@ const ErrorTypeGameScreen = ({ }) => {
                   launchTuto();
                   setIsHelpModalVisible(false);
                 }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
-                  <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
+                  <Text style={tw('text-white font-bold text-center font-primary')}>Lancer le tutoriel</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>

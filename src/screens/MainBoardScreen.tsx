@@ -41,6 +41,8 @@ const MainBoardScreen = ({ }) => {
     }, [user]);
 
     useEffect(() => {
+        console.log("useEffect");
+        
         if (isUserDataLoaded && user) {
             updateStorageUserFromAPI(user.id);
             fetchCompletedTutorials();
@@ -58,6 +60,9 @@ const MainBoardScreen = ({ }) => {
     }, []);
 
     const fetchCompletedTutorials = async () => {
+        console.log("fetchCompletedTuto");
+        
+        // TODO au 1er chargement, il faut que ce soit bien appelé avant, parce que là il faut actualiser
         try {
             if (user) {
                 const completedTutorials = await getCompletedTutorials(user.id);

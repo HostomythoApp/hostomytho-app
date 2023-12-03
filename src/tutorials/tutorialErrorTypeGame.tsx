@@ -11,11 +11,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             Il peut y avoir plusieurs types d'erreurs : les erreurs de français pour les erreurs grammaticales, ou de français en général. Les erreurs de vocabulaire médicale pour les erreurs de termes médicaux,
             et les erreurs de cohérence médicale pour les incohérences et erreurs médicales. Si vous pensez que l'erreur est d'un autre type, choisissez le bouton "Autre".
             Enfin, si vous trouvez que ce n'est pas une erreur, cliquez sur "Pas d'erreur".
-
-            {"\n\n"}
-            Essayez sur ce texte en cliquant sur le type d'erreur du passage surligné, et passez à l'erreur suivante :
         </Text>;
-
 
         case 2: return <Text style={tw('font-primary')}>
             Si l'erreur est de plusieurs types, selectionnez le type qui vous semble le plus important.

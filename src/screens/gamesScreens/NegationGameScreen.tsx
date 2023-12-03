@@ -55,6 +55,10 @@ const NegationGameScreen = ({ }) => {
         const completed = await isTutorialCompleted(user.id, 1);
         setIsTutorial(!completed);
         setIsTutorialCheckComplete(true);
+      } else {
+        // Si user pas connecté
+        setIsTutorial(false);
+        setIsTutorialCheckComplete(true);
       }
     }
     checkTutorialCompletion();
