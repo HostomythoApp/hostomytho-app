@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState, FC } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Dimensions, ImageBackground } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Dimensions, ImageBackground, LogBox } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useUser } from 'services/context/UserContext';
@@ -7,16 +7,18 @@ import { Token } from "models/Token";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
-import { getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
+import { getTextTestPlausibility, getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
 import { ButtonConfig } from "interfaces/ButtonConfig";
 import { plausibilityConfigs } from "utils/plausibilityConfigs";
 import CustomModal from "components/modals/CustomModal";
+import { getModalHelpContent, getTutorialContentForStep } from "tutorials/tutorialPlausibilityGame";
 import HelpButton from "components/button/HelpButton";
-import { getModalHelpContent } from "tutorials/tutorialPlausibilityGame";
 import NextButton from "components/button/NextButton";
+import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
+import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 
 const colors = [
   "bg-yellow-300",
@@ -27,7 +29,7 @@ const colors = [
 
 const PlausibilityGameDetailedScreen = () => {
   const tw = useTailwind();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalPlausibilityVisible, setIsModalPlausibilityVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
   const [errorSpecifying, setErrorSpecifying] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -44,10 +46,58 @@ const PlausibilityGameDetailedScreen = () => {
   const [noMoreTexts, setNoMoreTexts] = useState(false);
   const [userRateSelected, setUserRateSelected] = useState(100);
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [isTutorial, setIsTutorial] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const [questionsAsked, setQuestionsAsked] = useState(1);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [tutorialFailed, setTutorialFailed] = useState(false);
+  const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
+  const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    fetchNewText();
-  }, []);
+    async function checkTutorialCompletion() {
+      if (user) {
+        const completed = await isTutorialCompleted(user.id, 2);
+        setIsTutorial(!completed);
+        setIsTutorialCheckComplete(true);
+      } else {
+        setIsTutorial(false);
+        setIsTutorialCheckComplete(true);
+      }
+    }
+    if (!isTutorial) {
+      checkTutorialCompletion();
+    }
+
+  }, [user]);
+
+  useEffect(() => {
+    if (isTutorialCheckComplete) {
+      if (isTutorial) {
+        setTutorialStep(1);
+        nextTutorialStep();
+      } else {
+        fetchNewText();
+      }
+    }
+  }, [isTutorial, isTutorialCheckComplete, resetTutorialFlag]);
+
+
+  useEffect(() => {
+    if (resetTutorialFlag) {
+      fetchNewText();
+      const tutorialContent = getTutorialContentForStep(1, tw);
+      if (tutorialContent) {
+        showModal(tutorialContent);
+      }
+      setTutorialStep(0);
+      setIsTutorial(true);
+
+      setResetTutorialFlag(false);
+    }
+  }, [resetTutorialFlag]);
 
   const fetchNewText = async () => {
     try {
@@ -64,11 +114,185 @@ const PlausibilityGameDetailedScreen = () => {
   };
 
   // *********** Gestion Tuto *******************
+  const nextTutorialStep = async () => {
+    if (!isTutorial) return;
+    const nextStep = tutorialStep + 1;
+    setTutorialStep(nextStep);
+
+    if (nextStep <= 5) {
+      let response;
+      switch (nextStep) {
+        case 1:
+          response = await getTextWithTokensById(113);
+          setText(response);
+          break;
+        case 2:
+          response = await getTextWithTokensById(112);
+          setText(response);
+          break;
+        case 3:
+          response = await getTextWithTokensById(117);
+          setText(response);
+          break;
+      }
+      const tutorialContent = getTutorialContentForStep(nextStep, tw);
+      if (tutorialContent) {
+        showModal(tutorialContent);
+      }
+    } else {
+      if (questionsAsked < 10) {
+        fetchTestText();
+      } else {
+        // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
+        if (correctAnswers >= 6) {
+          showModal(getTutorialContentForStep(98, tw));
+          setIsTutorial(false);
+
+          if (user) {
+            completeTutorialForUser(user.id, 2);
+          }
+        } else {
+          showModal(getTutorialContentForStep(99, tw));
+          setCorrectAnswers(0);
+          setQuestionsAsked(1);
+          setTutorialStep(0);
+          setTutorialFailed(true);
+        }
+      }
+    }
+  };
+
+  const fetchTestText = async () => {
+    try {
+      const response = await getTextTestPlausibility();
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du texte de test.", error);
+    }
+  };
+
+  const showModal = (content: any) => {
+    setModalContent(content);
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const launchTuto = () => {
+    setResetTutorialFlag(true);
+    setShowMessage(false);
+    setMessageContent(<></>);
+    setCorrectAnswers(0);
+    setQuestionsAsked(1);
+    setTutorialFailed(false);
+  };
 
   const showHelpModal = () => {
     setIsHelpModalVisible(true)
   };
   // *****************************************************
+
+  const onNextCard = async () => {
+    if (!text) {
+      console.error("Aucun texte à traiter.");
+      return;
+    }
+
+    if (text?.is_plausibility_test) {
+      const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails, userRateSelected);
+      const noErrorSpecified = errorDetails.length === 0;
+      const noErrorInDatabase = !checkResult.testPlausibilityError || checkResult.testPlausibilityError.length === 0;
+
+      let messageHeader: JSX.Element = <></>;
+
+      if (noErrorSpecified || noErrorInDatabase) {
+        if (checkResult.testPlausibilityPassed) {
+          // Si l'utilisateur a spécifié des erreurs mais que la base de données n'en contient pas, accorder 10 points pour la bonne plausibilité.
+          // if (!noErrorSpecified && noErrorInDatabase) {
+          //   animationGainPoints(10, 1, 1);
+          // } else {
+          animationGainPoints(10, 1, 1);
+          // }
+          goToNextSentence(true);
+          return;
+        } else {
+          animationGainPoints(0, -1, -1);
+          messageHeader = (
+            <View style={tw('flex-row items-center')}>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}
+              >Hmm ce texte était plutôt </Text>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}>{getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+            </View>
+          );
+        }
+      } else {
+        const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
+
+        const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+        setText(currentText => {
+          if (!currentText) return currentText;
+          return updateTokensColor(currentText, allPositions);
+        });
+
+        if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
+          <Text>
+            {plausibilityDescription(checkResult.correctPlausibility)}
+          </Text>;
+          messageHeader = (
+            <View style={tw('flex-row items-center')}>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}
+              >Vous avez bien identifié les zones de doute, mais le texte était plutôt {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+            </View>
+          );
+          animationGainPoints(10, 0, 1);
+        } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
+          messageHeader = (
+            <View>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}
+              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
+              <View style={tw('flex-row items-center')}>
+                <Text style={tw('text-[#B22222] font-primary text-lg')}>Et le texte était {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+                <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+              </View>
+            </View>
+          );
+          animationGainPoints(0, -1, -1);
+        } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
+          messageHeader = (
+            <View>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}
+              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
+              <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
+            </View>
+          );
+          animationGainPoints(10, 0, 1);
+        } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
+          animationGainPoints(15, 2, 2);
+          goToNextSentence(true);
+          return;
+        }
+      }
+
+      setMessageContent(messageHeader);
+      setShowMessage(true);
+      setSelectionStarted(false);
+      return;
+    } else {
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      animationGainPoints(10, 0, 0);
+    }
+
+    for (let errorDetail of errorDetails) {
+      const { id, ...rest } = errorDetail;
+      // await createUsererrorDetails(rest);
+    }
+    goToNextSentence();
+  };
+
 
   const HighlightedWord = ({ token, index }: { token: Token; index: number }) => {
     const isSelected = selectedWords.includes(index);
@@ -161,11 +385,6 @@ const PlausibilityGameDetailedScreen = () => {
     </View>
   );
 
-
-  const handleCloseModal = () => {
-    setIsModalVisible(false);
-  };
-
   const removeErrorDetail = (errorDetailId: number) => {
     setErrorDetails(errorDetails.filter(errorDetail => errorDetail.id !== errorDetailId));
   };
@@ -209,15 +428,24 @@ const PlausibilityGameDetailedScreen = () => {
     return { ...text, tokens: newTokens };
   };
 
-
-  const goToNextSentence = async () => {
+  const goToNextSentence = async (isCorrect = false) => {
+    if (isTutorial && tutorialStep > 2) {
+      setQuestionsAsked(questionsAsked + 1);
+      if (isCorrect) {
+        setCorrectAnswers(correctAnswers + 1);
+      }
+    }
     setErrorDetails([]);
     setShowMessage(false);
     setMessageContent(<></>);
     setErrorSpecifying(false);
     setHighlightEnabled(false);
     setUserRateSelected(100);
-    fetchNewText();
+    if (isTutorial) {
+      nextTutorialStep();
+    } else {
+      fetchNewText();
+    }
   };
 
   const plausibilityDescription = (value: any) => {
@@ -228,8 +456,6 @@ const PlausibilityGameDetailedScreen = () => {
     return "complètement plausible";
   };
 
-
-
   const getPlausibilityConfig = (plausibility?: number) => {
     if (plausibility === undefined) {
       return plausibilityConfigs[plausibilityConfigs.length - 1];
@@ -237,105 +463,14 @@ const PlausibilityGameDetailedScreen = () => {
     return plausibilityConfigs.find(config => plausibility <= config.maxThreshold) || plausibilityConfigs[plausibilityConfigs.length - 1];
   };
 
-  const onNextCard = async () => {
-    if (text?.is_plausibility_test) {
-      const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails, userRateSelected);
-      const noErrorSpecified = errorDetails.length === 0;
-      const noErrorInDatabase = !checkResult.testPlausibilityError || checkResult.testPlausibilityError.length === 0;
 
-      let messageHeader: JSX.Element = <></>;
-
-      if (noErrorSpecified || noErrorInDatabase) {
-        if (checkResult.testPlausibilityPassed) {
-          // Si l'utilisateur a spécifié des erreurs mais que la base de données n'en contient pas, accorder 10 points pour la bonne plausibilité.
-          if (!noErrorSpecified && noErrorInDatabase) {
-            animationGainPoints(10, 1);
-          } else {
-            animationGainPoints(10, 1);
-          }
-          goToNextSentence();
-          return;
-        } else {
-            animationGainPoints(0, -1);
-          messageHeader = (
-            <View style={tw('flex-row items-center')}>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Hmm ce texte était plutôt </Text>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}>{getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
-            </View>
-          );
-        }
-      } else {
-        const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
-
-        const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
-        setText(currentText => {
-          if (!currentText) return currentText;
-          return updateTokensColor(currentText, allPositions);
-        });
-
-        if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
-          <Text>
-            {plausibilityDescription(checkResult.correctPlausibility)}
-          </Text>;
-          messageHeader = (
-            <View style={tw('flex-row items-center')}>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Vous avez bien identifié les zones de doute, mais le texte était plutôt {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
-            </View>
-          );
-          animationGainPoints(10, 0);
-        } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
-          messageHeader = (
-            <View>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
-              <View style={tw('flex-row items-center')}>
-                <Text style={tw('text-[#B22222] font-primary text-lg')}>Et le texte était {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-                <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
-              </View>
-            </View>
-          );
-          animationGainPoints(0, -1);
-        } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          messageHeader = (
-            <View>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
-            </View>
-          );
-          animationGainPoints(10, 0);
-        } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          animationGainPoints(15, 2);
-          goToNextSentence();
-          return;
-        }
-      }
-
-      setMessageContent(messageHeader);
-      setShowMessage(true);
-      setSelectionStarted(false);
-      return;
-    } else {
-      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      animationGainPoints(10, 0);
-    }
-
-    for (let errorDetail of errorDetails) {
-      const { id, ...rest } = errorDetail;
-      // await createUsererrorDetails(rest);
-    }
-    goToNextSentence();
-  };
-
-  const animationGainPoints = (pointsEarned: number, trustEarned: number) => {
+  const animationGainPoints = (pointsEarned: number, catchProbability: number, trustEarned: number) => {
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
+
     setTimeout(() => {
       // TODO augmenter trustEarned seulement quand la question était un test
-      updateUserStats(pointsEarned, 1, trustEarned);
+      updateUserStats(pointsEarned, catchProbability, trustEarned);
     }, 100);
   }
 
@@ -345,10 +480,10 @@ const PlausibilityGameDetailedScreen = () => {
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="#FFFEE0" func={goToNextSentence} />
+            <NextButton bgColor="#DAEBDC" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
-          
+
           {noMoreTexts ? (
             <View style={tw('items-center justify-center mt-4')}>
               <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>
@@ -358,6 +493,41 @@ const PlausibilityGameDetailedScreen = () => {
               <View style={tw("flex-1 mb-2")}>
                 {text && renderText(text)}
               </View>
+
+
+              {
+                tutorialStep > 2 && isTutorial && // Vérifier si l'utilisateur est dans l'étape des 10 questions
+                <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
+                  <View style={tw('flex-row justify-between items-center mb-2')}>
+                    <Text style={tw('font-primary text-base text-gray-600')}>
+                      Texte :
+                    </Text>
+                    <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
+                      {Math.min(questionsAsked, 10)} / 10
+                    </Text>
+                  </View>
+                  <View style={tw('flex-row justify-between items-center')}>
+                    <Text style={tw('font-primary text-base text-gray-600')}>
+                      Bonnes réponses :
+                    </Text>
+                    <Text style={tw('font-primary text-lg font-bold text-green-600')}>
+                      {correctAnswers}
+                    </Text>
+                  </View>
+                </View>
+              }
+
+              {
+                tutorialFailed && (
+                  <TouchableOpacity
+                    onPress={launchTuto}
+                    style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
+                  >
+                    <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
+                  </TouchableOpacity>
+                )
+              }
+
               <View style={tw("mx-4 mt-2 mb-2")}>
                 {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
                 )}
@@ -380,14 +550,14 @@ const PlausibilityGameDetailedScreen = () => {
         </ScrollView>
 
         <CustomModal
-          isVisible={isModalVisible}
+          isVisible={isModalPlausibilityVisible}
           onClose={handleCloseModal}
         >
           <View style={tw('flex-row ')}>
             <TouchableOpacity
               style={tw("bg-orange-100 p-3 mr-3 rounded-lg")}
               onPress={() => {
-                setIsModalVisible(false);
+                setIsModalPlausibilityVisible(false);
                 setHighlightEnabled(true);
                 setErrorSpecifying(true);
               }}
@@ -398,7 +568,7 @@ const PlausibilityGameDetailedScreen = () => {
             <TouchableOpacity
               style={tw("bg-green-200 p-3 rounded-lg")}
               onPress={() => {
-                setIsModalVisible(false);
+                setIsModalPlausibilityVisible(false);
                 onNextCard();
               }}
             >
@@ -462,7 +632,7 @@ const PlausibilityGameDetailedScreen = () => {
               < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
                 <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
                   onPress={async () => {
-                    setIsModalVisible(true);
+                    setIsModalPlausibilityVisible(true);
                     setUserRateSelected(0);
                   }} >
                   <Entypo name="cross" size={32} color="red" />
@@ -470,7 +640,7 @@ const PlausibilityGameDetailedScreen = () => {
 
                 <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
                   onPress={async () => {
-                    setIsModalVisible(true);
+                    setIsModalPlausibilityVisible(true);
                     setUserRateSelected(25);
                   }} >
                   <Entypo name="flag" size={28} color="orange" />
@@ -478,7 +648,7 @@ const PlausibilityGameDetailedScreen = () => {
 
                 <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
                   onPress={() => {
-                    setIsModalVisible(true);
+                    setIsModalPlausibilityVisible(true);
                     setUserRateSelected(50);
                   }}  >
                   <AntDesign name="question" size={30} color="orange" />
@@ -487,7 +657,7 @@ const PlausibilityGameDetailedScreen = () => {
                 <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
                   onPress={async () => {
                     setUserRateSelected(75);
-                    setIsModalVisible(true);
+                    setIsModalPlausibilityVisible(true);
                   }} >
                   <Ionicons name="checkmark" size={24} color="#48d1cc" />
                 </TouchableOpacity>
@@ -512,14 +682,19 @@ const PlausibilityGameDetailedScreen = () => {
               </View>
               <TouchableOpacity
                 style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
-                onPress={goToNextSentence}
+                onPress={() => goToNextSentence(false)}
               >
                 <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
               </TouchableOpacity>
             </View>
           </View>
         }
-
+        <ModalDoctorsExplanation
+          isVisible={isModalVisible}
+          onClose={handleCloseModal}
+        >
+          {modalContent}
+        </ModalDoctorsExplanation>
         <CustomModal
           isVisible={isHelpModalVisible}
           onClose={() => setIsHelpModalVisible(false)}
@@ -528,6 +703,12 @@ const PlausibilityGameDetailedScreen = () => {
             <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
               <View style={tw('p-4')}>
                 {getModalHelpContent(tw)}
+                <TouchableOpacity onPress={() => {
+                  launchTuto();
+                  setIsHelpModalVisible(false);
+                }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+                  <Text style={tw('text-white font-bold text-center font-primary')}>Lancer le tutoriel</Text>
+                </TouchableOpacity>
               </View>
             </ScrollView>
           </View>

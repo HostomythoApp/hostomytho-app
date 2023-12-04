@@ -221,7 +221,6 @@ const ErrorTypeGameScreen = ({ }) => {
         setCorrectAnswers(correctAnswers + 1);
       }
     }
-
     setSelectedErrorType(0);
     setShowMessage(false);
     setMessageContent("");
@@ -314,7 +313,7 @@ const ErrorTypeGameScreen = ({ }) => {
   return (
     <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
-        <ScrollView >
+        <ScrollView>
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-end')}>
             <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={goToNextSentence} isDisabled={isTutorial} />
@@ -331,7 +330,7 @@ const ErrorTypeGameScreen = ({ }) => {
             <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
               <View style={tw('flex-row justify-between items-center mb-2')}>
                 <Text style={tw('font-primary text-base text-gray-600')}>
-                  Questions posées:
+                  Texte :
                 </Text>
                 <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
                   {Math.min(questionsAsked, 10)} / 10
@@ -339,7 +338,7 @@ const ErrorTypeGameScreen = ({ }) => {
               </View>
               <View style={tw('flex-row justify-between items-center')}>
                 <Text style={tw('font-primary text-base text-gray-600')}>
-                  Bonnes réponses:
+                  Bonnes réponses :
                 </Text>
                 <Text style={tw('font-primary text-lg font-bold text-green-600')}>
                   {correctAnswers}
@@ -354,7 +353,7 @@ const ErrorTypeGameScreen = ({ }) => {
                 onPress={launchTuto}
                 style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
               >
-                <Text style={tw('text-white text-center font-primary text-lg')}>Lancer le tutoriel</Text>
+                <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
               </TouchableOpacity>
             )
           }

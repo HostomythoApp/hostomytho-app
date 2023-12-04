@@ -34,7 +34,6 @@ const NegationGameScreen = ({ }) => {
   const { user } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
   const [loading, setLoading] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -61,7 +60,9 @@ const NegationGameScreen = ({ }) => {
         setIsTutorialCheckComplete(true);
       }
     }
-    checkTutorialCompletion();
+    if (!isTutorial) {
+      checkTutorialCompletion();
+    }
   }, [user]);
 
   useEffect(() => {
@@ -454,7 +455,7 @@ const NegationGameScreen = ({ }) => {
             <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
               <View style={tw('flex-row justify-between items-center mb-2')}>
                 <Text style={tw('font-primary text-base text-gray-600')}>
-                  Questions posées:
+                  Texte :
                 </Text>
                 <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
                   {Math.min(questionsAsked, 10)} / 10
@@ -462,7 +463,7 @@ const NegationGameScreen = ({ }) => {
               </View>
               <View style={tw('flex-row justify-between items-center')}>
                 <Text style={tw('font-primary text-base text-gray-600')}>
-                  Bonnes réponses:
+                  Bonnes réponses :
                 </Text>
                 <Text style={tw('font-primary text-lg font-bold text-green-600')}>
                   {correctAnswers}

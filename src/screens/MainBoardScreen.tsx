@@ -28,7 +28,7 @@ const MainBoardScreen = ({ }) => {
     const iconSize = windowWidth * 0.015;
 
     useEffect(() => {
-            const loadUser = async () => {
+        const loadUser = async () => {
             try {
                 setIsUserDataLoaded(true);
             } catch (error) {
@@ -41,8 +41,6 @@ const MainBoardScreen = ({ }) => {
     }, [user]);
 
     useEffect(() => {
-        console.log("useEffect");
-        
         if (isUserDataLoaded && user) {
             updateStorageUserFromAPI(user.id);
             fetchCompletedTutorials();
@@ -60,8 +58,6 @@ const MainBoardScreen = ({ }) => {
     }, []);
 
     const fetchCompletedTutorials = async () => {
-        console.log("fetchCompletedTuto");
-        
         // TODO au 1er chargement, il faut que ce soit bien appelé avant, parce que là il faut actualiser
         try {
             if (user) {
@@ -352,7 +348,7 @@ const MainBoardScreen = ({ }) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <Image source={require('images/icon_profil.png')}resizeMode="contain"
+                            <Image source={require('images/icon_profil.png')} resizeMode="contain"
                                 style={{ width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60 }} />
                         </View>
                     </TouchableOpacity>
