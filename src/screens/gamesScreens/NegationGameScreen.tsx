@@ -46,6 +46,7 @@ const NegationGameScreen = ({ }) => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [tutorialFailed, setTutorialFailed] = useState(false);
   const window = Dimensions.get('window');
+  const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
 
   useEffect(() => {
@@ -75,7 +76,35 @@ const NegationGameScreen = ({ }) => {
         fetchNewText();
       }
     }
-  }, [isTutorial, isTutorialCheckComplete]);
+  }, [isTutorial, isTutorialCheckComplete, resetTutorialFlag]);
+
+  useEffect(() => {
+    if (resetTutorialFlag) {
+      fetchNewText();
+      const tutorialContent = getTutorialContentForStep(1, tw);
+      if (tutorialContent) {
+        showModal(tutorialContent);
+      }
+      setTutorialStep(0);
+      setIsTutorial(true);
+
+      setResetTutorialFlag(false);
+    }
+  }, [resetTutorialFlag]);
+
+  const fetchNewText = async () => {
+    try {
+      let response;
+      if (user) {
+        response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+      } else {
+        response = await getTextWithTokensByGameType('plausibility');
+      }
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du nouveau texte :", error);
+    }
+  };
 
   // *********** Gestion Tuto *******************
   const nextTutorialStep = async () => {
@@ -86,6 +115,7 @@ const NegationGameScreen = ({ }) => {
     if (nextStep <= 5) {
       let response;
       switch (nextStep) {
+        // TODO Mettre meilleurs exemples, dont un avec la plausibilité donnée, et des erreurs à selectionner 
         case 1:
           response = await getTextWithTokensById(113);
           setText(response);
@@ -108,11 +138,11 @@ const NegationGameScreen = ({ }) => {
         showModal(tutorialContent);
       }
     } else {
-      if (questionsAsked < 10) {
+      if (questionsAsked < 7) {
         fetchTestText();
       } else {
-        // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
-        if (correctAnswers >= 6) {
+        // Si nous avons posé les 3 questions, on vérifie si l'utilisateur a réussi le tutoriel.
+        if (correctAnswers >= 4) {
           showModal(getTutorialContentForStep(98, tw));
           setIsTutorial(false);
 
@@ -137,20 +167,6 @@ const NegationGameScreen = ({ }) => {
       setText(response);
     } catch (error) {
       console.error("Erreur lors de la récupération du texte de test.", error);
-    }
-  };
-
-  const fetchNewText = async () => {
-    try {
-      let response;
-      if (user) {
-        response = await getTextWithTokensNotPlayed(user.id, 'negation');
-      } else {
-        response = await getTextWithTokensByGameType('negation');
-      }
-      setText(response);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du nouveau texte :", error);
     }
   };
 
@@ -237,8 +253,8 @@ const NegationGameScreen = ({ }) => {
         if (user) setTimeout(() => updateUserStats(5, 1, 0), 100);
       }
     }
-    if (questionsAsked === 10) {
-      if (correctAnswers >= 6) {
+    if (questionsAsked === 4) {
+      if (correctAnswers >= 4) {
         setIsTutorial(false);
         if (user) {
           completeTutorialForUser(user.id, 1);
@@ -458,7 +474,7 @@ const NegationGameScreen = ({ }) => {
                   Texte :
                 </Text>
                 <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
-                  {Math.min(questionsAsked, 10)} / 10
+                  {Math.min(questionsAsked, 7)} / 7
                 </Text>
               </View>
               <View style={tw('flex-row justify-between items-center')}>

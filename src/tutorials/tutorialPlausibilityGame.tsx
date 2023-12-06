@@ -17,11 +17,11 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 1: return <Text style={tw('font-primary')}> Vous avez recueilli des dossiers patients. Analysez-les, trouvez ceux qui contiennent des erreurs et vous paraissent suspects. Cela vous permettra peut-être de trouver des pistes vers le criminel.
             Le but est donc d'évaluer la crédibilité d'un texte en lui attribuant un taux de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
             {"\n"}
-            <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> 0% de plausibilité
-            <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> 25% de plausibilité
-            <PlausibilityButton config={getPlausibilityConfig(50).buttonConfig as ButtonConfig} /> 50% de plausibilité
-            <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> 75% de plausibilité
-            <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> 100% de plausibilité
+            <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible
+            <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible
+            <PlausibilityButton config={getPlausibilityConfig(50).buttonConfig as ButtonConfig} /> Moyennement plausible
+            <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible
+            <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complétement plausible
             {"\n"}
             Lisez le texte, et attribuez-lui une note de plausibilité.
         </Text>;
@@ -33,7 +33,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 3: return <Text style={tw('font-primary')}>
-            Essayer de traiter les 10 textes suivants, et si vous obtenez au moins 6 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
+            Essayez de traiter ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
             {"\n\n"}
             Bon courage !
         </Text>;

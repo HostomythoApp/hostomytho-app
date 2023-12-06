@@ -119,9 +119,10 @@ const PlausibilityGameDetailedScreen = () => {
     const nextStep = tutorialStep + 1;
     setTutorialStep(nextStep);
 
-    if (nextStep <= 5) {
+    if (nextStep <= 3) {
       let response;
       switch (nextStep) {
+        // TODO Ici, mettre de meilleurs exemples de tests
         case 1:
           response = await getTextWithTokensById(113);
           setText(response);
@@ -140,11 +141,11 @@ const PlausibilityGameDetailedScreen = () => {
         showModal(tutorialContent);
       }
     } else {
-      if (questionsAsked < 10) {
+      if (questionsAsked < 7) {
         fetchTestText();
       } else {
-        // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
-        if (correctAnswers >= 6) {
+        // Si nous avons posé toutes les questions, on vérifie si l'utilisateur a réussi le tutoriel.
+        if (correctAnswers >= 4) {
           showModal(getTutorialContentForStep(98, tw));
           setIsTutorial(false);
 
@@ -429,7 +430,7 @@ const PlausibilityGameDetailedScreen = () => {
   };
 
   const goToNextSentence = async (isCorrect = false) => {
-    if (isTutorial && tutorialStep > 2) {
+    if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
       if (isCorrect) {
         setCorrectAnswers(correctAnswers + 1);
@@ -494,16 +495,15 @@ const PlausibilityGameDetailedScreen = () => {
                 {text && renderText(text)}
               </View>
 
-
               {
-                tutorialStep > 2 && isTutorial && // Vérifier si l'utilisateur est dans l'étape des 10 questions
+                isTutorial &&
                 <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
                   <View style={tw('flex-row justify-between items-center mb-2')}>
                     <Text style={tw('font-primary text-base text-gray-600')}>
                       Texte :
                     </Text>
                     <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
-                      {Math.min(questionsAsked, 10)} / 10
+                      {Math.min(questionsAsked, 7)} / 7
                     </Text>
                   </View>
                   <View style={tw('flex-row justify-between items-center')}>

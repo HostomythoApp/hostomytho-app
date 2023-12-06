@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Animated, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useTailwind } from "tailwind-rn";
 
-const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: boolean, onClose: any, children: any }) => {
+const ModalBossExplanation = ({ isVisible, onClose, children }: { isVisible: boolean, onClose: any, children: any }) => {
     const translateX = useRef(new Animated.Value(-1000)).current;
     const bubbleOpacity = useRef(new Animated.Value(0)).current;
     const [bubbleVisible, setBubbleVisible] = useState(false);
@@ -48,8 +48,8 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
                 }}
             >
                 <Image
-                    source={require('images/doctor.png')}
-                    style={{ width: 150, height: 270, alignSelf: 'flex-end' }}
+                    source={require('images/boss.png')}
+                    style={{ width: 180, height: 300, alignSelf: 'flex-end' }}
                     resizeMode="contain"
                 />
                 {bubbleVisible && (
@@ -80,4 +80,4 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
     );
 };
 
-export default ModalDoctorsExplanation;
+export default ModalBossExplanation;

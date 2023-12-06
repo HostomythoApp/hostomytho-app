@@ -45,7 +45,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 5: return <Text style={tw('font-primary')}>
             Vous connaissez désormais les bases de l'annotation de négations.
             {"\n\n"}
-            Essayer de traiter les 10 textes suivants, et si vous obtenez au moins 6 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
+            Essayez de traiter ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
             {"\n\n"}
             Bon courage !
         </Text>;

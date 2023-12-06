@@ -11,7 +11,7 @@ const IconNotification = ({ size, top, right }: { size: number; top: string; rig
       width: size,
       height: size,
       borderRadius: 100,
-      backgroundColor: "rgb(223, 75, 28)",
+      backgroundColor: "rgb(223, 94, 28)",
       alignItems: 'center',
       justifyContent: 'center',
     }}>

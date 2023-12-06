@@ -10,6 +10,7 @@ import { MessageMenu } from 'models/MessageMenu';
 import { FontAwesome } from '@expo/vector-icons';
 import { getCompletedTutorials } from "services/api/games";
 import IconNotification from "components/IconNotification";
+import ModalBossExplanation from "components/modals/ModalBossExplanation ";
 
 interface TutorialsCompleted {
     [key: string]: boolean;
@@ -26,9 +27,12 @@ const MainBoardScreen = ({ }) => {
     const [isUserDataLoaded, setIsUserDataLoaded] = useState(false);
     const [tutorialsCompleted, setTutorialsCompleted] = useState<TutorialsCompleted | null>(null);
     const iconSize = windowWidth * 0.015;
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
 
     useEffect(() => {
         const loadUser = async () => {
+
             try {
                 setIsUserDataLoaded(true);
             } catch (error) {
@@ -41,9 +45,17 @@ const MainBoardScreen = ({ }) => {
     }, [user]);
 
     useEffect(() => {
+        // TODO le récupération des infos user ne se font pas bien avant le chargement de la page
         if (isUserDataLoaded && user) {
             updateStorageUserFromAPI(user.id);
             fetchCompletedTutorials();
+
+            console.log("dans loadUser");
+
+            if (user?.points == 0) {
+                console.log("pas de point, on charge le boss");
+                showModal("Bonjour enquêteur ! Blablabla, explication de l'univers, orientation vers un jeu en particulier")
+            }
         }
     }, [isUserDataLoaded]);
 
@@ -78,6 +90,17 @@ const MainBoardScreen = ({ }) => {
     const toggleMessage = () => {
         setMessageExpanded(!messageExpanded);
     }
+
+    // *********** Gestion Tuto *******************
+    const showModal = (content: any) => {
+        setModalContent(content);
+        setIsModalVisible(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
+    };
+    // *****************************************************
 
     return (
         <ImageBackground source={require('images/bg_desk_smaller.webp')} style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}>
@@ -355,6 +378,12 @@ const MainBoardScreen = ({ }) => {
                 }
             </View>
 
+            <ModalBossExplanation
+                isVisible={isModalVisible}
+                onClose={handleCloseModal}
+            >
+                {modalContent}
+            </ModalBossExplanation>
         </ImageBackground>
     );
 };
