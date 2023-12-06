@@ -194,11 +194,19 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+
+
   const updateUserStats = async (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number, isBonus: boolean = false) => {
     if (user) {
       const oldPoints = user.points;
 
       try {
+        let coeffTrustIndex = user.trust_index / 100;
+        coeffTrustIndex = Math.max(coeffTrustIndex, 0.4); 
+      
+        const additionalPoints = pointsToAdd * coeffTrustIndex;
+        user.points += additionalPoints;
+
         const response = await updateUserStatsApi(user.id, percentageToAdd, pointsToAdd, trustIndexIncrement);
         const newPoints = response.data.newPoints;
         const newCatchProbability = response.data.newCatchProbability;
