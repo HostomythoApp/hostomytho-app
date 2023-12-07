@@ -11,4 +11,5 @@ export interface TextWithTokens {
   is_plausibility_test: boolean;
   test_plausibility?: number;
   tokens: Token[];
+  length: number,
 }

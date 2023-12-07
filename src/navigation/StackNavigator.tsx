@@ -24,7 +24,9 @@ import AchievementsScreen from "screens/profilScreens/AchievementsScreen";
 import RankingScreen from "screens/profilScreens/RankingScreen";
 import SkinsManagementScreen from "screens/profilScreens/SkinsManagementScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
+import ObjectivesScreen from "screens/settingsScreens/ObjectivesScreen";
 import HelpScreen from "screens/settingsScreens/HelpScreen";
+import GameRulesScreen from "screens/settingsScreens/GameRulesScreen";
 import PrivacyPolicyScreen from "screens/settingsScreens/PrivacyPolicyScreen";
 import SettingsScreen from "screens/settingsScreens/SettingsScreen";
 import ThemeScreen from "screens/settingsScreens/ThemeScreen";
@@ -127,18 +129,17 @@ const StackNavigator = ({ }) => {
 
               <Stack.Screen name="Login" component={SignUpScreen} />
 
-              <Stack.Screen name="ForgetPassword" component={ForgetPasswordScreen} />
+              <Stack.Screen name="MotDePasseOublie" component={ForgetPasswordScreen} />
 
-              <Stack.Screen name="Settings" component={SettingsScreen} />
-
+              {/* Paramètres */}
+              <Stack.Screen name="Parametres" component={SettingsScreen} />
               <Stack.Screen name="Notif" component={NotifScreen} />
-
+              <Stack.Screen name="Objectifs" component={ObjectivesScreen} />
               <Stack.Screen name="Aide" component={HelpScreen} />
-
               <Stack.Screen name="PolitiqueDeConfidentialite" component={PrivacyPolicyScreen} />
-
               <Stack.Screen name="Theme" component={ThemeScreen} />
-
+              <Stack.Screen name="ReglesDuJeu" component={GameRulesScreen} />
+              
               <Stack.Screen name="Classement" component={RankingScreen} />
 
               <Stack.Screen name="Statistiques" component={StatisticsScreen} />

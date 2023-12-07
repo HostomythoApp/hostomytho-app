@@ -26,7 +26,7 @@ const AchievementsScreen = () => {
 
     return (
         <View style={tw('flex-1 bg-gray-100')}>
-            <CustomHeaderEmpty title="Haut faits" backgroundColor="bg-white" />
+            <CustomHeaderEmpty title="Hauts faits" backgroundColor="bg-white" />
             <FlatList style={tw('pt-20')}
             
                 data={achievements}

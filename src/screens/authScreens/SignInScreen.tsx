@@ -19,7 +19,7 @@ const LoginScreen = () => {
     const [passwordError, setPasswordError] = useState(false);
     const { storeToken } = useAuth();
     const { setUser } = useUser();
-    const navigation = useNavigation<RootStackNavigationProp<"ForgetPassword">>();
+    const navigation = useNavigation<RootStackNavigationProp<"MotDePasseOublie">>();
     const [errorMessage, setErrorMessage] = useState('');
     const inputWidth = Math.max(Dimensions.get('window').width * 0.4, 50);
 
@@ -85,7 +85,7 @@ const LoginScreen = () => {
                         {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
                     </Text>
                     <FunctionButton text={"Connexion"} func={submit} width={inputWidth} />
-                    <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("MotDePasseOublie")}>
                         <Text style={tw("text-blue-500 mt-2")}>Mot de passe oublié ?</Text>
                     </TouchableOpacity>
                 </View>

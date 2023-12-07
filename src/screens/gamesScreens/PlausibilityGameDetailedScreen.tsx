@@ -468,12 +468,15 @@ const PlausibilityGameDetailedScreen = () => {
   const animationGainPoints = (pointsEarned: number, catchProbability: number, trustEarned: number) => {
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
-
+  
     setTimeout(() => {
       // TODO augmenter trustEarned seulement quand la question était un test
-      updateUserStats(pointsEarned, catchProbability, trustEarned);
+      const addLengthPoints: number = text && typeof text.length === 'number' ? text.length / 60 : 0;
+      
+      updateUserStats(pointsEarned + addLengthPoints, catchProbability, trustEarned);
     }, 100);
   }
+  
 
   return (
     <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>

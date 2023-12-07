@@ -331,7 +331,7 @@ const MainBoardScreen = ({ }) => {
                     </View>
 
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate("Settings")}
+                <TouchableOpacity onPress={() => navigation.navigate("Parametres")}
                     style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
                     <View style={{
                         backgroundColor: "rgba(0,0,0,0.5)",

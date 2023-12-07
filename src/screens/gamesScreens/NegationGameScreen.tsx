@@ -23,6 +23,7 @@ const colors = [
   "bg-indigo-300",
   "bg-pink-300",
 ];
+
 const NegationGameScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithTokens>();
@@ -48,6 +49,7 @@ const NegationGameScreen = ({ }) => {
   const window = Dimensions.get('window');
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
+  
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -205,7 +207,15 @@ const NegationGameScreen = ({ }) => {
 
 
   const onNextCard = async () => {
+    if (!text) {
+      console.error("Aucune erreur à traiter.");
+      return;
+    }
+
     setLoading(true);
+
+    const addLengthPoints: number = text.length / 60;
+  
     // TODO Il faudrait mettre le is_negation_spec_test dans le checkUserSelection, pour que ce ne soit pas visible dans le console.log
     if (text?.is_negation_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
@@ -241,7 +251,7 @@ const NegationGameScreen = ({ }) => {
           setCorrectAnswers(correctAnswers + 1);
         }
         if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5, 1, 1), 100);
+          if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 1), 100);
         }
       }
     } else {
@@ -250,7 +260,7 @@ const NegationGameScreen = ({ }) => {
         setQuestionsAsked(questionsAsked + 1);
       }
       if (!isTutorial) {
-        if (user) setTimeout(() => updateUserStats(5, 1, 0), 100);
+        if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 0), 100);
       }
     }
     if (questionsAsked === 4) {

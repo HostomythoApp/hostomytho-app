@@ -10,14 +10,14 @@ export type RootStackParamList = {
     Connected: undefined;
     Connexion: undefined;
     Login: undefined;
-    Settings: undefined;
+    Parametres: undefined;
     Notif: undefined;
     Aide: undefined;
     PolitiqueDeConfidentialite: undefined;
     Theme: undefined;
     Classement: undefined;
     AdminHome: undefined;
-    ForgetPassword: undefined;
+    MotDePasseOublie: undefined;
     TableauDeBord: undefined;
     HypoMytho: undefined;
     MythoTypo: undefined;
@@ -33,6 +33,7 @@ export type RootStackParamList = {
     ParametreProfil: undefined;
     Investigation: undefined;
     Modal: undefined;
+    Objectifs: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

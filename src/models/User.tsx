@@ -13,5 +13,7 @@ export interface User {
     moderator: boolean;
     ranking?: number;
     catch_probability: number;
+    consecutiveDaysPlayed: number;
+    coeffMulti: number;
   }
   
