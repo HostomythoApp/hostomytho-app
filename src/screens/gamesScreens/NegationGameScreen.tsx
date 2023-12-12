@@ -49,7 +49,7 @@ const NegationGameScreen = ({ }) => {
   const window = Dimensions.get('window');
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
-  
+
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -213,9 +213,8 @@ const NegationGameScreen = ({ }) => {
     }
 
     setLoading(true);
-
     const addLengthPoints: number = text.length / 60;
-  
+
     // TODO Il faudrait mettre le is_negation_spec_test dans le checkUserSelection, pour que ce ne soit pas visible dans le console.log
     if (text?.is_negation_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
@@ -261,6 +260,11 @@ const NegationGameScreen = ({ }) => {
       }
       if (!isTutorial) {
         if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 0), 100);
+        // Création des specifications dans la bdd
+        for (let userSentenceSpecification of userSentenceSpecifications) {
+          const { id, ...rest } = userSentenceSpecification;
+          await createUserSentenceSpecification(rest);
+        }
       }
     }
     if (questionsAsked === 4) {
@@ -275,10 +279,6 @@ const NegationGameScreen = ({ }) => {
         setTutorialStep(0);
       }
     }
-    // for (let userSentenceSpecification of userSentenceSpecifications) {
-    //   const { id, ...rest } = userSentenceSpecification;
-    //   // await createUserSentenceSpecification(rest);
-    // }
     goToNextSentence();
   };
 
@@ -326,9 +326,9 @@ const NegationGameScreen = ({ }) => {
       user_id: user?.id,
       text_id: text.id,
       type: "negation",
-      content: selectedTokens.map(token => token.content).join(' '),
+      content: selectedTokens.map(token => token.content).join(''),
       word_positions: wordPositions,
-      specification_weight: 1,
+      specification_weight: user?.status === 'medecin' ? user?.trust_index * 2 : user?.trust_index,
       color: colors[colorIndex]
     }]);
 

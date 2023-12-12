@@ -73,7 +73,7 @@ const CriminalsCaughtScreen = () => {
             </ImageBackground>
             <SafeAreaView style={[tw('flex-1'), StyleSheet.absoluteFillObject]}>
                 <ScrollView>
-                    <CustomHeaderEmpty title="Criminels arrêtés" backgroundColor="bg-whiteTransparent" />
+                    <CustomHeaderEmpty title="Criminels arrêtés" backgroundColor="bg-whiteTransparent" backToMain={true} />
                     <View style={styles.container}>
                         {
                             !user ? (
@@ -92,7 +92,7 @@ const CriminalsCaughtScreen = () => {
                                     renderItem={({ item }) => (
                                         <View style={[styles.child]} >
                                             <Image
-                                            // @ts-ignore
+                                                // @ts-ignore
                                                 source={suspectsImagesMapping[item.imageId]}
                                                 style={tw('w-64 h-64 rounded-md')}
                                                 resizeMode="contain"

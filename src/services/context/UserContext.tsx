@@ -23,6 +23,7 @@ interface UserContextProps {
   updateUserStats: (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number) => void;
   equippedSkins: Skin[];
   setEquippedSkins: React.Dispatch<React.SetStateAction<Skin[]>>;
+  unlockAchievementModal: (achievement: Achievement) => Promise<void>;
 }
 interface UserProviderProps {
   children: React.ReactNode;
@@ -242,6 +243,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
 
         // Afficher les nouvelles réalisations si elles existent
+        // TODO Gérer le cas où 2 haut-faits sont débloqués en même temps
         if (response.data.newAchievements && response.data.newAchievements.length > 0) {
           response.data.newAchievements.forEach((achievement: Achievement) => {
             unlockAchievementModal(achievement);
@@ -282,7 +284,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, updateUserStats, equippedSkins, setEquippedSkins }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, updateUserStats, equippedSkins, setEquippedSkins,unlockAchievementModal }}>
       {children}
     </UserContext.Provider>
   );
