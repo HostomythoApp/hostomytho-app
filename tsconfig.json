@@ -6,6 +6,7 @@
     "jsx": "react-native",
     "baseUrl": "./src",
     "paths": {
+      "lotties/*": ["assets/lotties/*"],
       "images/*": ["assets/images/*"],
       "themes/*": ["assets/themes/*"],
       "components/*": ["components/*"],

@@ -13,8 +13,10 @@
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
+    "@dotlottie/react-player": "^1.6.6",
     "@expo/config-plugins": "~7.2.2",
     "@expo/webpack-config": "^19.0.0",
+    "@lottiefiles/react-lottie-player": "^3.5.3",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/hooks": "^3.0.0",
     "@react-native-masked-view/masked-view": "0.2.9",
@@ -30,6 +32,7 @@
     "expo-status-bar": "~1.6.0",
     "expo-system-ui": "~2.4.0",
     "formik": "^2.4.5",
+    "lottie-react-native": "^6.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.72.6",

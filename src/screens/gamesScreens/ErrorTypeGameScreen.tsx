@@ -206,6 +206,10 @@ const ErrorTypeGameScreen = ({ }) => {
           setShowMessage(true);
           setMessageContent(messageCorrection);
         }
+        if (!isTutorial) {
+          // await createErrorSpecificationUser(rest);
+        
+        }
       }
     } catch (error) {
       console.error("Erreur lors de la vérification de l'erreur suivante :", error);
