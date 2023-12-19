@@ -4,6 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const IconNotification = ({ size, top, right }: { size: number; top: string; right: string }) => {
   return (
+    // @ts-ignore
     <View style={{
       position: 'absolute',
       top: top,

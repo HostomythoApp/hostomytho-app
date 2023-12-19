@@ -30,3 +30,14 @@ export const isErrorTest = async (id: number): Promise<{ isTest: boolean }> => {
     throw error;
   }
 };
+
+// TODO A faire
+export const createUserTypeErrorSpecification = async (userSentenceSpecification: Partial<UserSentenceSpecification>) => {
+  try {
+    const response = await api.post("/userSentenceSpecifications", userSentenceSpecification);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

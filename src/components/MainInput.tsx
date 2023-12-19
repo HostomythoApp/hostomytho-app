@@ -29,6 +29,7 @@ const MainInput = ({
 
   return (
     <TextInput
+      // @ts-ignore
       style={{ ...tw(" my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md"), ...errorStyle, ...widthStyle }}
       placeholder={text}
       secureTextEntry={hide}

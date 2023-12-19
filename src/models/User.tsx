@@ -5,6 +5,7 @@ export interface User {
     email?: string;
     status: string;
     points: number;
+    monthly_points: number;
     trust_index: number;
     theme: string;
     notifications_enabled: boolean;

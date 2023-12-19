@@ -21,6 +21,7 @@ module.exports = function (api) {
           ],
           alias: {
             images: "./src/assets/images",
+            lotties: "./src/assets/lotties",
             themes: "./src/assets/themes",
             components: "./src/components",
             const: "./src/const",

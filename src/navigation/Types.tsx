@@ -16,6 +16,7 @@ export type RootStackParamList = {
     PolitiqueDeConfidentialite: undefined;
     Theme: undefined;
     Classement: undefined;
+    ClassementMensuel: undefined;
     AdminHome: undefined;
     MotDePasseOublie: undefined;
     TableauDeBord: undefined;

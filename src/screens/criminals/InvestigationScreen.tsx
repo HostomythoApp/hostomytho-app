@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 import PrimaryButton from "components/PrimaryButton";
 import CustomModal from "components/modals/CustomModal";
-
+import { Achievement } from "models/Achievement";
 
 export interface Criminal {
     name: string;
@@ -18,7 +18,7 @@ export interface Criminal {
 
 const InvestigationScreen = () => {
     const tw = useTailwind();
-    const { user, incrementCatchProbability, resetCatchProbability,updateUserStats } = useUser();
+    const { user, incrementCatchProbability, resetCatchProbability, updateUserStats, unlockAchievementModal } = useUser();
     const [investigationProgress, setInvestigationProgress] = useState<number>(0);
     const [resultModalVisible, setResultModalVisible] = useState(false);
     const [arrestSuccess, setArrestSuccess] = useState<boolean | null>(null);
@@ -28,8 +28,8 @@ const InvestigationScreen = () => {
 
     useEffect(() => {
         if (user) {
-            setInvestigationProgress(user.catch_probability);
-            // setInvestigationProgress(100);
+            // setInvestigationProgress(user.catch_probability);
+            setInvestigationProgress(100);
         }
     }, [user?.catch_probability]);
 
@@ -42,6 +42,15 @@ const InvestigationScreen = () => {
                 resetCatchProbability(user.id);
                 const catchResult = await catchCriminal(user.id);
                 if (catchResult.success) {
+                    // Affiche popup haut-faits s'il y en a de nouveaux
+                    if (catchResult.catchEntry.newAchievements && catchResult.catchEntry.newAchievements.length > 0) {
+                        catchResult.catchEntry.newAchievements.forEach((achievement: Achievement) => {
+                          setTimeout(() => {
+                            unlockAchievementModal(achievement);
+                          }, 1000);
+                        });
+                      }
+
                     setArrestDescription(catchResult.catchEntry.descriptionArrest);
                     if (catchResult.catchEntry.allCriminalsCaught) {
                         setArrestDescription("Tous les criminels ont été arrêtés. Vous gagnez 5 points supplémentaires.");
@@ -161,5 +170,4 @@ const InvestigationScreen = () => {
         </View>
     );
 };
-
 export default InvestigationScreen;

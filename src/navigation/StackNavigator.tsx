@@ -22,6 +22,7 @@ import ConditionGameScreen from "screens/gamesScreens/ConditionGameScreen";
 import NegationGameScreen from "screens/gamesScreens/NegationGameScreen";
 import AchievementsScreen from "screens/profilScreens/AchievementsScreen";
 import RankingScreen from "screens/profilScreens/RankingScreen";
+import RankingMonthScreen from "screens/profilScreens/RankingMonthScreen";
 import SkinsManagementScreen from "screens/profilScreens/SkinsManagementScreen";
 import NotifScreen from "screens/settingsScreens/NotifScreen";
 import ObjectivesScreen from "screens/settingsScreens/ObjectivesScreen";
@@ -141,6 +142,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ReglesDuJeu" component={GameRulesScreen} />
               
               <Stack.Screen name="Classement" component={RankingScreen} />
+              <Stack.Screen name="ClassementMensuel" component={RankingMonthScreen} />
 
               <Stack.Screen name="Statistiques" component={StatisticsScreen} />
 

@@ -1,6 +1,5 @@
 import { useTailwind } from "tailwind-rn";
 import { Text, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 const FunctionButton = ({
   text,

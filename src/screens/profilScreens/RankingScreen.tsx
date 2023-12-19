@@ -50,22 +50,26 @@ const RankingScreen = ({ }) => {
 
     return (
         <ScrollView style={tw('')}>
-            <CustomHeaderEmpty title="Classement" backgroundColor="bg-white"/>
+            <CustomHeaderEmpty title="Classement général" backgroundColor="bg-white" />
             <View style={tw("flex-1 p-4 mx-auto min-w-[540px] pt-20")}>
-                <Text style={tw('text-xl mb-4 font-primary')}>Classement général</Text>
                 {users.map((item, index) => renderItem({ item, index }))}
-                {page > 1 && (
-                    <TouchableOpacity onPress={() => setPage(page - 1)}>
-                        <Text style={tw('text-blue-500 mt-2')}>Page précédente</Text>
-                    </TouchableOpacity>
-                )}
-                {hasMoreUsers && (
-                    <View style={tw('flex-row justify-end')}>
-                        <TouchableOpacity onPress={() => setPage(page + 1)}>
-                            <Text style={tw('text-blue-500 mt-2')}>Page suivante</Text>
+                <View style={tw('flex-row mt-2 justify-between')}>
+                    {page > 1 ? (
+                        <TouchableOpacity onPress={() => setPage(page - 1)}>
+                            <Text style={tw('text-blue-500')}>Page précédente</Text>
                         </TouchableOpacity>
-                    </View>
-                )}
+                    ) : (
+                        <View style={tw('flex-1')} />
+                    )}
+
+                    {hasMoreUsers ? (
+                        <TouchableOpacity onPress={() => setPage(page + 1)}>
+                            <Text style={tw('text-blue-500')}>Page suivante</Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <View style={tw('flex-1')} />
+                    )}
+                </View>
             </View>
         </ScrollView>
     );

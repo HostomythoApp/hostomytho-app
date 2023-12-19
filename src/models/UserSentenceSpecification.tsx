@@ -5,7 +5,7 @@ export interface UserSentenceSpecification {
   type: 'hypothesis' | 'condition' | 'negation';
   content: string;
   word_positions: string;
-  specification_weight: number; 
+  specification_weight?: number; 
   createdAt?: string;
   color?: string;
 }
