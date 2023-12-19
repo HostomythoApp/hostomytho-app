@@ -171,12 +171,12 @@ const ContentProfileScreen = (props: any) => {
 
                         <Text style={tw('text-xl font-bold mb-2 text-white font-primary')}>Statistiques</Text>
                         <View style={tw("p-4 bg-white rounded-lg")}>
-                            {stats.map((stat) => (
-                                <Text style={tw('my-2 font-primary')}
-                                    key={stat.id}>
-                                    {stat.title}: {stat.count}
-                                </Text>
-                            ))}
+                            <Text style={tw('font-primary')}
+                            >Jours consécutifs joués :&nbsp;
+                                {user?.consecutiveDaysPlayed}
+                                {"\n\n"}
+                                Annotations crées : 5
+                            </Text>
                             <Text style={tw('ml-1 mt-1')}
                             >. . .</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('Statistiques')}>
