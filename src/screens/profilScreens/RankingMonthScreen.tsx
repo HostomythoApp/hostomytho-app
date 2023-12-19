@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import { getUsersOrderedByPoints } from 'services/api/user';
+import { getUsersOrderedByPointsInMonthly } from 'services/api/user';
 import { User } from "models/User";
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 
-const RankingScreen = ({ }) => {
+const RankingMonthScreen = ({ }) => {
     const tw = useTailwind();
     const [users, setUsers] = useState<User[]>([]);
     const [page, setPage] = useState(1);
@@ -20,7 +20,7 @@ const RankingScreen = ({ }) => {
     }, [page]);
 
     const fetchUsers = async () => {
-        getUsersOrderedByPoints(page)
+        getUsersOrderedByPointsInMonthly(page)
             .then((result: any) => {
                 setUsers(result.data);
 
@@ -44,13 +44,13 @@ const RankingScreen = ({ }) => {
             <Text>
                 {item.ranking}. {item.username}
             </Text>
-            <Text>{item.points} points</Text>
+            <Text>{item.monthly_points} points</Text>
         </View>
     );
 
     return (
         <ScrollView style={tw('')}>
-            <CustomHeaderEmpty title="Classement général" backgroundColor="bg-white" />
+            <CustomHeaderEmpty title="Classement du mois en cours" backgroundColor="bg-white" />
             <View style={tw("flex-1 p-4 mx-auto min-w-[540px] pt-20")}>
                 {users.map((item, index) => renderItem({ item, index }))}
                 <View style={tw('flex-row mt-2 justify-between')}>
@@ -76,4 +76,4 @@ const RankingScreen = ({ }) => {
 
 };
 
-export default RankingScreen;
+export default RankingMonthScreen;

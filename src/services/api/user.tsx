@@ -80,6 +80,25 @@ export const getUsersOrderedByPoints = async (page: number): Promise<any> => {
   }
 };
 
+// Classement mensuel
+export const getUserRankingRangeInMonthly = async (id: number): Promise<any> => {
+  try {
+    return await api.get(`/users/getUserRankingRangeInMonthly/${id}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getUsersOrderedByPointsInMonthly = async (page: number): Promise<any> => {
+  try {
+    return await api.get(`/users/getUsersOrderedByPointsInMonthly?page=${page}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const updateUserPoints = async (id: number, points: number) => {
   try {
     return await api.put(`/users/${id}/points`, {

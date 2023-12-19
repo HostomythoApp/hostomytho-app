@@ -4,7 +4,7 @@ import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { getUserRankingRange } from 'services/api/user';
+import { getUserRankingRange, getUserRankingRangeInMonthly } from 'services/api/user';
 import { getUserAchievements } from 'services/api/achievements';
 import { Achievement } from 'models/Achievement';
 import AchievementIcon from 'components/AchievementIcon';
@@ -25,6 +25,7 @@ const ContentProfileScreen = (props: any) => {
     const tw = useTailwind();
     const { user, equippedSkins } = useUser();
     const [ranking, setRanking] = useState<Rank[]>([]);
+    const [rankingMonthly, setRankingMonthly] = useState<Rank[]>([]);
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     // @ts-ignore
@@ -47,10 +48,13 @@ const ContentProfileScreen = (props: any) => {
         const fetchRanking = async () => {
             if (user?.id) {
                 const result = await getUserRankingRange(user.id);
+                const resultMonthly = await getUserRankingRangeInMonthly(user.id);
                 const achievementsData = await getUserAchievements(user.id);
                 setUserAchievements(achievementsData);
-                const allUsers = result.data;
-                setRanking(allUsers);
+                const rankingUsers = result.data;
+                const rankingRangeInMonthly = resultMonthly.data;
+                setRanking(rankingUsers);
+                setRankingMonthly(rankingRangeInMonthly);
             }
         };
         fetchRanking();
@@ -102,12 +106,12 @@ const ContentProfileScreen = (props: any) => {
             }
 
             <View style={tw('flex-col')}>
-                <View style={[tw('justify-between my-6 flex-wrap  '), isMobile ? tw('flex-col mt-2') : tw('flex-row mt-8')]}>
+                <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col mt-2') : tw('flex-row mt-8')]}>
                     <View style={[tw('mt-0'), isMobile ? tw('w-full mr-0 mb-4') : tw('w-2/4 mr-2')]}>
                         <Text style={tw('text-xl font-bold mb-2 pl-2 text-white font-primary')}>Classement</Text>
 
                         <View style={tw('bg-white mb-2 py-4 rounded-lg')}>
-                            {ranking[0]?.id !== user?.id && (
+                            {ranking[0]?.ranking > 1 && (
                                 <Text style={tw('pl-2')}>. . .</Text>
                             )}
                             {ranking.map((rank: any) => (
@@ -134,6 +138,62 @@ const ContentProfileScreen = (props: any) => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <View style={[tw('flex-1'), isMobile ? tw('') : tw('mr-2')]}>
+                        <Text style={tw('text-xl font-bold mb-2 pl-2 text-white font-primary')}>Classement mensuel</Text>
+                        <View style={tw('bg-white mb-2 py-4 rounded-lg')}>
+                            {rankingMonthly[0]?.ranking > 1 && (
+                                <Text style={tw('pl-2')}>. . .</Text>
+                            )}
+
+                            {rankingMonthly.map((rank: any) => (
+                                <View
+                                    key={rank.id}
+                                    style={[
+                                        tw('p-2 flex-row items-center justify-between'),
+                                        rank.id === user?.id && tw('bg-blue-100'),
+                                    ]}
+                                >
+                                    <Text style={tw('font-primary')}>
+                                        {rank.ranking}. {rank.username}
+                                    </Text>
+                                    <Text style={tw('font-primary')}>
+                                        {rank.monthly_points} points
+                                    </Text>
+                                </View>
+                            ))}
+
+                            {ranking[ranking.length - 1]?.id !== user?.id && (
+                                <Text style={tw('pl-2')}>. . .</Text>
+                            )}
+                            <TouchableOpacity onPress={() => navigation.navigate('ClassementMensuel')}>
+                                <Text style={tw('text-blue-500 mt-2 text-center font-primary')}>Voir le classement complet</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+
+
+                </View>
+
+                <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col mt-2') : tw('flex-row mt-3')]}>
+                    <View style={[tw('mt-0'), isMobile ? tw('w-full mr-0 mb-4') : tw('w-2/4 mr-2')]}>
+
+                        <Text style={tw('text-xl font-bold mb-2 text-white font-primary')}>Statistiques</Text>
+                        <View style={tw("p-4 bg-white rounded-lg")}>
+                            {stats.map((stat) => (
+                                <Text style={tw('my-2 font-primary')}
+                                    key={stat.id}>
+                                    {stat.title}: {stat.count}
+                                </Text>
+                            ))}
+                            <Text style={tw('ml-1 mt-1')}
+                            >. . .</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('Statistiques')}>
+                                <Text style={tw('text-blue-500 mt-1 text-center font-primary')}>Tout afficher</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
 
                     <View style={[tw('flex-1'), isMobile ? tw('') : tw('mr-2')]}>
                         <Text style={tw('text-xl font-bold mb-1 text-white font-primary')}>Hauts faits</Text>
@@ -164,27 +224,7 @@ const ContentProfileScreen = (props: any) => {
                             <Text style={tw('text-blue-500 text-center font-primary')}>Afficher tous les hauts faits</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
 
-                <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col') : tw('flex-row')]}>
-                    <View style={[tw('mt-0'), isMobile ? tw('w-full mr-0 mb-4') : tw('w-2/4 mr-2')]}>
-
-                        <Text style={tw('text-xl font-bold mb-2 text-white font-primary')}>Statistiques</Text>
-                        <View style={tw("p-4 bg-white rounded-lg")}>
-                            {stats.map((stat) => (
-                                <Text style={tw('my-2 font-primary')}
-                                    key={stat.id}>
-                                    {stat.title}: {stat.count}
-                                </Text>
-                            ))}
-                            <Text style={tw('ml-1 mt-1')}
-                            >. . .</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('Statistiques')}>
-                                <Text style={tw('text-blue-500 mt-1 text-center font-primary')}>Tout afficher</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
                 </View>
 
                 <View style={tw(`${isMobile ? 'flex-col' : 'flex-row'} justify-between items-center bg-white rounded-lg py-2 px-4 my-4`)}>
@@ -214,7 +254,7 @@ const ContentProfileScreen = (props: any) => {
                 </View>
 
             </View>
-        </View>
+        </View >
     );
 };
 
