@@ -468,17 +468,12 @@ const NegationGameScreen = ({ }) => {
             <NextButton bgColor="#DAEBDC" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
-          {/* {errorMessage && (
-            <View style={tw("mx-4 mt-2 bg-red-300 p-2 rounded")}>
-              <Text style={tw("text-white")}>{errorMessage}</Text>
-            </View>
-          )} */}
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {text && renderText(text)}
           </View>
           {
-            tutorialStep > 4 && isTutorial && // Vérifier si l'utilisateur est dans l'étape des 10 questions
-            <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
+            tutorialStep > 4 && isTutorial &&
+            <View style={tw('mx-4 p-4 bg-white rounded-lg w-72')}>
               <View style={tw('flex-row justify-between items-center mb-2')}>
                 <Text style={tw('font-primary text-base text-gray-600')}>
                   Texte :

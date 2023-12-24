@@ -29,18 +29,7 @@ const CustomHeaderInGame: React.FC<Props> = ({
   const window = Dimensions.get('window');
   const isMobile = window.width < 960;
   const [showExplosion, setShowExplosion] = useState(false);
-  const fontSize = useSharedValue(16);
   const [animatedColor, setAnimatedColor] = useState(textColor);
-  const achievements = 5;
-  const multiplier = 1 + achievements * 0.1;
-
-  // @ts-ignore
-  // const animatedCommonStyle = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [{ scale: fontSize.value / 16 }],
-  //     alignSelf: 'center'
-  //   };
-  // });
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -48,12 +37,10 @@ const CustomHeaderInGame: React.FC<Props> = ({
     if (user?.points !== undefined && user.points !== displayPoints) {
       setShowExplosion(true);
       setAnimatedColor('green');
-      // fontSize.value = withSpring(17.5, { stiffness: 20});
 
       let currentPoints = displayPoints;
       const pointsDiff = user.points - currentPoints;
       const duration = pointsDiff * 15;
-
       intervalId = setInterval(() => {
         if (currentPoints < user.points) {
           currentPoints++;
@@ -61,14 +48,12 @@ const CustomHeaderInGame: React.FC<Props> = ({
         } else {
           clearInterval(intervalId);
           setShowExplosion(false);
-          // fontSize.value = withSpring(16, { stiffness: 2 });
           setAnimatedColor(textColor);
         }
       }, duration);
 
       return () => {
         clearInterval(intervalId);
-        // fontSize.value = withSpring(16, { stiffness: 2 });
       };
     }
   }, [user?.points, textColor]);
@@ -84,7 +69,6 @@ const CustomHeaderInGame: React.FC<Props> = ({
 
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
-      // fontSize: fontSize.value,
       color: animatedColor,
       alignSelf: 'center',
     };
@@ -108,7 +92,6 @@ const CustomHeaderInGame: React.FC<Props> = ({
       {user?.points !== undefined &&
         <Animated.View style={tw('flex-row items-center justify-center w-32')}>
           <Animated.View style={tw('text-lg')}>
-            {/* <Animated.View style={animatedCommonStyle}> */}
             <MaterialIcons style={tw(`mr-2`)} name="person-search" size={18} color={animatedColor} />
 
           </Animated.View>
@@ -120,7 +103,7 @@ const CustomHeaderInGame: React.FC<Props> = ({
             }]}
           >
             <Text style={tw('text-white text-xs font-primary font-bold')}>
-              x{multiplier.toFixed(1)}
+              x{user.coeffMulti}
             </Text>
           </View>
           {showExplosion && <Explosion x={0} y={0} />}

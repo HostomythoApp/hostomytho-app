@@ -31,11 +31,6 @@ const ContentProfileScreen = (props: any) => {
     // @ts-ignore
     const characterImage = characterImagesMapping[user?.gender || 'homme'][user?.color_skin || 'clear'];
 
-    const stats = [
-        { id: 1, title: 'Textes validés', count: 5 },
-        { id: 2, title: 'Annotations créées', count: 15 },
-    ];
-
     const currentPoints = user?.points || 0;
     const nextRewardPoints = 100;
     const pointsForProgress = currentPoints % nextRewardPoints;
@@ -184,7 +179,11 @@ const ContentProfileScreen = (props: any) => {
                             >Jours consécutifs joués :&nbsp;
                                 {user?.consecutiveDaysPlayed}
                                 {"\n\n"}
-                                Annotations crées : 5
+                                Fiabilité : &nbsp;
+                                {user?.trust_index} %
+                                {"\n\n"}
+                                Coefficient multiplicateur : &nbsp;
+                                {user?.coeffMulti}
                             </Text>
                             <Text style={tw('ml-1 mt-1')}
                             >. . .</Text>

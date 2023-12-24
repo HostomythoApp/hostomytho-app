@@ -99,6 +99,15 @@ export const getUsersOrderedByPointsInMonthly = async (page: number): Promise<an
   }
 };
 
+export const getCoeffMultiByUserId = async (id: number): Promise<number> => {
+  try {
+    return await api.get(`/users/getCoeffMultiByUserId/${id}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const updateUserPoints = async (id: number, points: number) => {
   try {
     return await api.put(`/users/${id}/points`, {
