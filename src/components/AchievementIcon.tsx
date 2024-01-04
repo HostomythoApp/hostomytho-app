@@ -1,7 +1,8 @@
 import React from 'react';
 import getIconComponent from "utils/iconHelpers";
 import { Achievement } from "models/Achievement";
-import { Image } from "react-native";
+import { Image , Text} from "react-native";
+import { achievementsImagesMapping } from 'utils/achievementsImagesMapping';
 
 const AchievementIcon = ({ achievement }: { achievement: Achievement | null}) => {
     if (!achievement) {
@@ -14,13 +15,14 @@ const AchievementIcon = ({ achievement }: { achievement: Achievement | null}) =>
     const iconName = achievement.picto || "checkcircleo";
     const iconColor = achievement.color || "mediumseagreen";
 
-    if (LibToLoad === "image") {
+    // Utilisez le mappage pour obtenir le chemin de l'image
+    if (LibToLoad === "image" && achievementsImagesMapping[iconName]) {
         return (
             <Image
-                source={{ uri: `images/achievements/${iconName}` }}
+                source={achievementsImagesMapping[iconName]}
                 style={{
-                    width: 24,
-                    height: 24,
+                    width: 38,
+                    height: 38,
                 }}
             />
         );

@@ -13,7 +13,7 @@ const MainInput = ({
   minWidth = 300,
   maxWidth = 600
 }: {
-  setter: any;
+  setter?: any;
   text: string,
   hide: boolean,
   value: string,

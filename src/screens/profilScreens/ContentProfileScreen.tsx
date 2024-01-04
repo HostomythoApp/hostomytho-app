@@ -178,10 +178,10 @@ const ContentProfileScreen = (props: any) => {
 
                         </View>
                         <View style={tw('bg-white mb-2 py-1 rounded-lg w-[164px]')}>
-                            <Text style={tw('ml-1 mt-1 text-center')}
+                            <Text style={tw('ml-1 mt-1 text-center leading-7')}
                             >. . .</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('Statistiques')}>
-                                <Text style={tw('text-blue-500 mt-1 text-center font-primary')}>Tout afficher</Text>
+                                <Text style={tw('text-blue-500 my-1 text-center font-primary')}>Tout afficher</Text>
                             </TouchableOpacity>
                         </View>
 

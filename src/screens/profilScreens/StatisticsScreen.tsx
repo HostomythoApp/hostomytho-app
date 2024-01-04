@@ -42,7 +42,7 @@ const StatisticsScreen = ({ }) => {
               <SectionHeader title="Statistiques de l'application" />
               <View style={tw('justify-center flex-row rounded-xl shadow-lg p-4 pt-0 flex-wrap')}>
                 <StatBox title="Nombre de joueurs :" value="83" color="border-l-4 border-teal-500" />
-                <StatBox title="Nombre de textes total:" value="45" color="border-l-4 border-orange-500" />
+                <StatBox title="Nombre de textes total :" value="45" color="border-l-4 border-orange-500" />
                 <StatBox title="Annotations totales créées :" value="615" color="border-l-4 border-pink-500" />
               </View>
             </View>
