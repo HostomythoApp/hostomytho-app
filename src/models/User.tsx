@@ -1,7 +1,6 @@
 export interface User {
     id: number;
     username: string;
-    password: string;
     email?: string;
     status: string;
     points: number;
@@ -15,6 +14,7 @@ export interface User {
     ranking?: number;
     catch_probability: number;
     consecutiveDaysPlayed: number;
+    created_at: string;
     coeffMulti: number;
   }
   

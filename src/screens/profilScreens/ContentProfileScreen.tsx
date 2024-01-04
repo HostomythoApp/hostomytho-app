@@ -13,6 +13,7 @@ import { RootStackNavigationProp } from 'navigation/Types';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { characterImagesMapping } from 'utils/characterImagesMapping';
+import SmallStatBox from 'components/SmallStatBox';
 
 interface Rank {
     id: number;
@@ -165,27 +166,19 @@ const ContentProfileScreen = (props: any) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-
-
-
                 </View>
 
                 <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col mt-2') : tw('flex-row mt-3')]}>
                     <View style={[tw('mt-0'), isMobile ? tw('w-full mr-0 mb-4') : tw('w-2/4 mr-2')]}>
 
                         <Text style={tw('text-xl font-bold mb-2 text-white font-primary')}>Statistiques</Text>
-                        <View style={tw("p-4 bg-white rounded-lg")}>
-                            <Text style={tw('font-primary')}
-                            >Jours consécutifs joués :&nbsp;
-                                {user?.consecutiveDaysPlayed}
-                                {"\n\n"}
-                                Fiabilité : &nbsp;
-                                {user?.trust_index} %
-                                {"\n\n"}
-                                Coefficient multiplicateur : &nbsp;
-                                {user?.coeffMulti}
-                            </Text>
-                            <Text style={tw('ml-1 mt-1')}
+                        <View style={tw("flex-row flex-wrap")}>
+                            <SmallStatBox title="Jours consécutifs joués :" value={user?.consecutiveDaysPlayed} color="border-l-4 border-blue-500" />
+                            <SmallStatBox title="Fiabilité :" value={`${user?.trust_index} %`} color="border-l-4 border-green-500" />
+
+                        </View>
+                        <View style={tw('bg-white mb-2 py-1 rounded-lg w-[164px]')}>
+                            <Text style={tw('ml-1 mt-1 text-center')}
                             >. . .</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('Statistiques')}>
                                 <Text style={tw('text-blue-500 mt-1 text-center font-primary')}>Tout afficher</Text>
