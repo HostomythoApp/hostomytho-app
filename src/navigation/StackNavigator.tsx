@@ -30,7 +30,6 @@ import HelpScreen from "screens/settingsScreens/HelpScreen";
 import GameRulesScreen from "screens/settingsScreens/GameRulesScreen";
 import PrivacyPolicyScreen from "screens/settingsScreens/PrivacyPolicyScreen";
 import SettingsScreen from "screens/settingsScreens/SettingsScreen";
-import ThemeScreen from "screens/settingsScreens/ThemeScreen";
 import ProfileSettingsScreen from "screens/profilScreens/ProfileSettingsScreen";
 import TemporalLinkGameScreen from "screens/gamesScreens/TemporalLinkGameScreen";
 import StatisticsScreen from "screens/profilScreens/StatisticsScreen";
@@ -138,7 +137,6 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="Objectifs" component={ObjectivesScreen} />
               <Stack.Screen name="Aide" component={HelpScreen} />
               <Stack.Screen name="PolitiqueDeConfidentialite" component={PrivacyPolicyScreen} />
-              <Stack.Screen name="Theme" component={ThemeScreen} />
               <Stack.Screen name="ReglesDuJeu" component={GameRulesScreen} />
               
               <Stack.Screen name="Classement" component={RankingScreen} />
