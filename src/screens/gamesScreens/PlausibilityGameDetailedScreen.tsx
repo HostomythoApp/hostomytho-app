@@ -7,7 +7,7 @@ import { Token } from "models/Token";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
-import { getTextTestPlausibility, getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
+import { createUserTextRating, getTextTestPlausibility, getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
@@ -285,6 +285,15 @@ const PlausibilityGameDetailedScreen = () => {
       setSelectionStarted(false);
       return;
     } else {
+      const userTextRating = {
+        // @ts-ignore
+        user_id: user.id, 
+        text_id: text.id,
+        plausibility: userRateSelected,
+        vote_weight: user?.trust_index
+      };
+      await createUserTextRating(userTextRating);
+
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       animationGainPoints(10, 0, 0);
     }

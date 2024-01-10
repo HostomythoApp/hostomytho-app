@@ -1,4 +1,4 @@
-export interface UserSentenceSpecification {
+export interface UserTextRating {
     id: number;
     user_id?: number;
     text_id?: number;

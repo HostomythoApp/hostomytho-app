@@ -2,6 +2,7 @@ import { Text } from "models/Text";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import api from "./index";
 import { TextWithError } from "interfaces/TextWithError";
+import { UserTextRating } from "models/UserTextRating";
 
 
 export const getAllTexts = async (): Promise<Text[]> => {
@@ -176,6 +177,17 @@ export const getTextsByTheme = async (theme: string): Promise<Text[]> => {
 export const createText = async (text: Partial<Text>) => {
   try {
     const response = await api.post("/texts", text);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+
+export const createUserTextRating = async (text: Partial<UserTextRating>) => {
+  try {
+    const response = await api.post("/texts/createUserTextRating", text);
     return response.data;
   } catch (error) {
     console.error(error);
