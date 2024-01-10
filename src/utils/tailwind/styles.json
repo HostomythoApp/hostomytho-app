@@ -1628,12 +1628,6 @@
 			"color": "rgb(31 41 55 / var(--tw-text-opacity))"
 		}
 	},
-	"text-green-500": {
-		"style": {
-			"--tw-text-opacity": 1,
-			"color": "rgb(34 197 94 / var(--tw-text-opacity))"
-		}
-	},
 	"text-green-600": {
 		"style": {
 			"--tw-text-opacity": 1,

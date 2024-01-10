@@ -188,9 +188,9 @@ const ErrorTypeGameScreen = ({ }) => {
     }
 
     try {
-      const isTestResult = await isErrorTest(text.idErrorAggregation);
+      const isTestResult = await isErrorTest(text.idUserErrorDetail);
       if (isTestResult.isTest) {
-        const errorTypeData = await getTypeByErrorId(text.idErrorAggregation);
+        const errorTypeData = await getTypeByErrorId(text.idUserErrorDetail);
         const isUserCorrect = selectedErrorType === errorTypeData.id;
 
         if (isUserCorrect) {
@@ -208,8 +208,10 @@ const ErrorTypeGameScreen = ({ }) => {
         }
         if (!isTutorial) {
           // await createErrorSpecificationUser(rest);
-        
+
         }
+      } else {
+        // TODO A faire, car il ne se passe rien quand c'est pas un test
       }
     } catch (error) {
       console.error("Erreur lors de la vérification de l'erreur suivante :", error);
@@ -242,15 +244,14 @@ const ErrorTypeGameScreen = ({ }) => {
       case 1:
         return "L'erreur était plutôt une faute de français.";
       case 2:
-        return "En réalité, c'était une erreur de vocabulaire médical.";
+        return "L'erreur concerne la cohérence médicale du texte.";
       case 3:
-        return "Il semblerait que l'erreur concerne la cohérence médicale du texte.";
-      case 4:
         return "L'erreur appartient à une autre catégorie.";
       default:
-        return "L'erreur a été classée dans une catégorie inconnue.";
+        return "Ce n'était finalement pas une erreur";
     }
   };
+
   const renderErrorTypeButtons = () => {
     return errorTypes.map((errorType) => {
       const isSelected = selectedErrorType === errorType.id;
@@ -329,7 +330,7 @@ const ErrorTypeGameScreen = ({ }) => {
             {text && renderText()}
           </View>
           {
-             isTutorial &&
+            isTutorial &&
             <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
               <View style={tw('flex-row justify-between items-center mb-2')}>
                 <Text style={tw('font-primary text-base text-gray-600')}>
@@ -365,7 +366,8 @@ const ErrorTypeGameScreen = ({ }) => {
               <InfoText
                 textId={text?.id ?? 0}
                 num={text?.num ?? ''}
-                origin={text?.origin ?? ''}
+                idUserErrorDetail={text?.idUserErrorDetail ?? 0}
+                vote_weight={text?.vote_weight ?? 0}
               />
             </View>
           )}

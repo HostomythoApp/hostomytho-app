@@ -8,17 +8,19 @@ import { useTailwind } from "tailwind-rn";
 interface InfoTextProps {
     textId: number;
     num: string;
-    origin: string;
+    origin?: string;
     test_plausibility?: number;
     is_plausibility_test?: boolean;
     is_negation_test?: boolean;
+    idUserErrorDetail?: number;
+    vote_weight?: number;
 }
 
 interface TestSpecification {
     content: string;
 }
 
-const InfoText: React.FC<InfoTextProps> = ({ num, origin, test_plausibility, is_plausibility_test, is_negation_test, textId }) => {
+const InfoText: React.FC<InfoTextProps> = ({ num, origin, test_plausibility, is_plausibility_test, is_negation_test, textId, idUserErrorDetail, vote_weight }) => {
     const [isInfoVisible, setInfoVisible] = useState(false);
     const [testSpecifications, setTestSpecifications] = useState<TestSpecification[]>([]);
     const [testPlausibilityError, setTestPlausibilityError] = useState<TestPlausibilityError[]>([]);
@@ -58,9 +60,11 @@ const InfoText: React.FC<InfoTextProps> = ({ num, origin, test_plausibility, is_
 
             {isInfoVisible && (
                 <View style={tw('p-2 mt-1 bg-gray-100 rounded items-start')}>
-                    <Text style={tw('mb-1 text-sm')}>Num: {num}</Text>
-                    <Text style={tw('mb-1 text-sm')}>Origine: {origin}</Text>
+                    <Text style={tw('mb-1 text-sm')}>Num : {num}</Text>
+                    {origin && <Text style={tw('mb-1 text-sm')}>Origine : {origin}</Text>}
                     {is_plausibility_test && <Text style={tw('mb-1 text-sm')}>C'est un test de plausibilité</Text>}
+                    {idUserErrorDetail && <Text style={tw('mb-1 text-sm')}>C'est une erreur de test</Text>}
+                    {vote_weight && <Text style={tw('mb-1 text-sm')}>Poids de l'erreur : {vote_weight}</Text>}
                     {!!test_plausibility && (
                         <Text style={tw('mb-1 text-sm')}>Taux de plausibilité: {test_plausibility}</Text>
                     )}

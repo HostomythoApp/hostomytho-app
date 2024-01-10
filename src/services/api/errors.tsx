@@ -1,5 +1,6 @@
 import { ErrorType } from "models/ErrorType";
 import api from "./index";
+import { UserErrorDetail } from "models/UserErrorDetail";
 
 export const getTypesError = async (): Promise<ErrorType[] | any> => {
   try {
@@ -31,10 +32,10 @@ export const isErrorTest = async (id: number): Promise<{ isTest: boolean }> => {
   }
 };
 
-// TODO A faire
-export const createUserTypeErrorSpecification = async (userSentenceSpecification: Partial<UserSentenceSpecification>) => {
+export const createUserErrorDetail = async (userErrorDetail: Partial<UserErrorDetail>) => {
+
   try {
-    const response = await api.post("/userSentenceSpecifications", userSentenceSpecification);
+    const response = await api.post("/texts/createUserErrorDetail", userErrorDetail);
     return response.data;
   } catch (error) {
     console.error(error);

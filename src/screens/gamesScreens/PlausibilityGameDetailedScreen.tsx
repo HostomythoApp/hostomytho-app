@@ -19,6 +19,8 @@ import HelpButton from "components/button/HelpButton";
 import NextButton from "components/button/NextButton";
 import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
+import { createUserErrorDetail } from "services/api/errors";
+import { UserErrorDetail } from "models/UserErrorDetail";
 
 const colors = [
   "bg-yellow-300",
@@ -34,7 +36,7 @@ const PlausibilityGameDetailedScreen = () => {
   const [errorSpecifying, setErrorSpecifying] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const [isSelectionStarted, setSelectionStarted] = useState(false);
-  const [errorDetails, setErrorDetails] = useState<ErrorDetail[]>([]);
+  const [errorDetails, setErrorDetails] = useState<UserErrorDetail[]>([]);
   const [nextId, setNextId] = useState(0);
   const [colorIndex, setColorIndex] = useState(0);
   const window = Dimensions.get('window');
@@ -289,7 +291,7 @@ const PlausibilityGameDetailedScreen = () => {
 
     for (let errorDetail of errorDetails) {
       const { id, ...rest } = errorDetail;
-      // await createUsererrorDetails(rest);
+      await createUserErrorDetail(rest);
     }
     goToNextSentence();
   };
@@ -331,7 +333,10 @@ const PlausibilityGameDetailedScreen = () => {
     const wordPositions = selectedTokens.map(token => token.position).join(', ');
     setErrorDetails([...errorDetails, {
       id: nextId,
-      content: selectedTokens.map(token => token.content).join(' '),
+      user_id: user?.id,
+      text_id: text.id,
+      vote_weight: user?.trust_index,
+      content: selectedTokens.map(token => token.content).join(''),
       word_positions: wordPositions,
       color: colors[colorIndex]
     }]);
@@ -468,15 +473,15 @@ const PlausibilityGameDetailedScreen = () => {
   const animationGainPoints = (pointsEarned: number, catchProbability: number, trustEarned: number) => {
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
-  
+
     setTimeout(() => {
       // TODO augmenter trustEarned seulement quand la question était un test
       const addLengthPoints: number = text && typeof text.length === 'number' ? text.length / 60 : 0;
-      
+
       updateUserStats(pointsEarned + addLengthPoints, catchProbability, trustEarned);
     }, 100);
   }
-  
+
 
   return (
     <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>

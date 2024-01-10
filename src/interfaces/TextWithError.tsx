@@ -7,5 +7,7 @@ export interface TextWithError {
   tokens: Token[];
   positionErrorTokens: string;
   origin: string;
-  idErrorAggregation: number
+  idUserErrorDetail: number;
+  vote_weight: number;
+  user_id: number;
 }

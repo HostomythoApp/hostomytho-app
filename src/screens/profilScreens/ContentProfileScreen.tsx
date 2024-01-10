@@ -173,6 +173,7 @@ const ContentProfileScreen = (props: any) => {
 
                         <Text style={tw('text-xl font-bold mb-2 text-white font-primary')}>Statistiques</Text>
                         <View style={tw("flex-row flex-wrap")}>
+                            {/* Ne se met à jour que quand on joue à 1 jeu. A voir si j'améliore ça */}
                             <SmallStatBox title="Jours consécutifs joués :" value={user?.consecutiveDaysPlayed} color="border-l-4 border-blue-500" />
                             <SmallStatBox title="Fiabilité :" value={`${user?.trust_index} %`} color="border-l-4 border-green-500" />
 
