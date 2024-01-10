@@ -1,6 +1,7 @@
 import { ErrorType } from "models/ErrorType";
 import api from "./index";
 import { UserErrorDetail } from "models/UserErrorDetail";
+import { UserTypingErrors } from "models/UserTypingErrors";
 
 export const getTypesError = async (): Promise<ErrorType[] | any> => {
   try {
@@ -33,9 +34,18 @@ export const isErrorTest = async (id: number): Promise<{ isTest: boolean }> => {
 };
 
 export const createUserErrorDetail = async (userErrorDetail: Partial<UserErrorDetail>) => {
-
   try {
     const response = await api.post("/texts/createUserErrorDetail", userErrorDetail);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const createUserTypingError = async (userTypingErrors: Partial<UserTypingErrors>) => {
+  try {
+    const response = await api.post("/errors/createUserTypingError", userTypingErrors);
     return response.data;
   } catch (error) {
     console.error(error);

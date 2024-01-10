@@ -5,7 +5,7 @@ import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
 import { getTextTestWithErrorValidated, getTextWithErrorValidated, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
-import { getTypeByErrorId, getTypesError, isErrorTest } from "services/api/errors";
+import { createUserTypingError, getTypeByErrorId, getTypesError, isErrorTest } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { MaterialIcons } from '@expo/vector-icons';
 import InfoText from "components/InfoText";
@@ -207,11 +207,17 @@ const ErrorTypeGameScreen = ({ }) => {
           setMessageContent(messageCorrection);
         }
         if (!isTutorial) {
-          // await createErrorSpecificationUser(rest);
 
         }
       } else {
-        // TODO A faire, car il ne se passe rien quand c'est pas un test
+        const userTypingErrorData = {
+          // @ts-ignore
+          user_id: user.id, 
+          user_error_details_id: text.idUserErrorDetail,
+          error_type_id: selectedErrorType,
+        };
+        await createUserTypingError(userTypingErrorData);
+        goToNextSentence(true);
       }
     } catch (error) {
       console.error("Erreur lors de la vérification de l'erreur suivante :", error);

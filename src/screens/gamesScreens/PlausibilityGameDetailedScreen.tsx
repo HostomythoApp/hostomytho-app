@@ -296,7 +296,6 @@ const PlausibilityGameDetailedScreen = () => {
     goToNextSentence();
   };
 
-
   const HighlightedWord = ({ token, index }: { token: Token; index: number }) => {
     const isSelected = selectedWords.includes(index);
     return (
