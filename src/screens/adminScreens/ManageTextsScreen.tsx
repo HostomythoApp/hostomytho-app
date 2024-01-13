@@ -70,7 +70,8 @@ export default function ManageTextsScreen() {
                 is_hypothesis_specification_test: isHypothesisSpecificationTest,
                 is_condition_specification_test: isConditionSpecificationTest,
                 is_negation_specification_test: isNegationSpecificationTest,
-                is_plausibility_test: isPlausibilityTest
+                is_plausibility_test: isPlausibilityTest,
+                includeSentences: includeSentences
             });
         }
     };

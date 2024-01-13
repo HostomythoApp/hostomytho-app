@@ -1,7 +1,6 @@
-import { TemporalEntity } from "./TemporalEntity";
-
 export interface Sentence {
   id: number,
+  text_id: number,
   content: string,
-  temporalEntities: TemporalEntity[];
+  position: number,
 }
