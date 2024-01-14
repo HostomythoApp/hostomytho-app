@@ -5,21 +5,21 @@ import { Text, TouchableWithoutFeedback, View } from 'react-native';
 export const getTutorialContentForStep = (step: number, tw: any) => {
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Voici des dossiers patients que vous pouvez inspecter. Peut-être qu'en spécifiant des éléments du texte, vous trouverez des indices. Ici, vous pouvez essayer de trouver les négations dans le texte, ou les absences de.
+        case 1: return <Text style={tw('font-primary')}> Voici des dossiers patients. Sélectionnez les absences de quelque chose dans le texte ; cela vous permettra de trouver des indices. 
             {"\n"}
-            Par exemple, si le texte contient "Le bilan d'extension du patient malade est sans particularité.", il faudra sélectionner les mots "sans particularité".
-            Pour ce faire, cliquez sur les mots qui, selon vous, composent la négation. Une fois tous les mots sélectionnés, validez la sélection.
+            Par exemple, si le texte contient "Le bilan d'extension du patient malade est sans particularité.", il faut identifier les mots "sans particularité".
+            Pour ce faire, cliquez sur les mots et validez la sélection.
             {"\n\n"}
             A vous d'essayer sur ce texte :
         </Text>;
 
         case 2: return <Text style={tw('font-primary')}>
             Vous pouvez ensuite ajouter de nouvelles négations si vous en trouvez dans le texte, en procédant de la même manière.
-            {"\n"}Vos sélections sont affichées sous le texte, et vous pouvez les supprimer si vous souhaitez revenir sur votre choix.
+            {"\n"}Vos sélections sont affichées sous le texte. Vous pouvez les supprimer en cliquant sur la croix rouge.
             {"\n"}
             Attention, certains textes peuvent aussi ne contenir aucune négation !
             {"\n\n"}
-            Quand vous pensez avoir fini, appuyez sur le bouton "Texte suivant". Celui-ci affiche le nombre de sélections. N'oubliez pas de valider la sélection courante, sinon elle ne sera pas prise en compte.
+            Quand vous pensez avoir fini, appuyez sur le bouton "Texte suivant". Celui-ci affiche le nombre de sélections actuelles. N'oubliez pas de valider la sélection courante, sinon elle ne sera pas prise en compte.
         </Text>;
 
         case 3: return <Text style={tw('font-primary')}>
@@ -33,7 +33,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 4: return <Text style={tw('font-primary')}>
-            Il faut réussir à bien identifier l'assertion négative
+            Il faut réussir à bien identifier l'assertion négative.
             {"\n"}
             Dans cet exemple : L'échographie était demandée par la patiente qui ne présentait pas d'autres métrorragies ou autres pathologies gynécologiques..
             {"\n"}
@@ -45,7 +45,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 5: return <Text style={tw('font-primary')}>
             Vous connaissez désormais les bases de l'annotation de négations.
             {"\n\n"}
-            Essayez de traiter ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
+            Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indices.
             {"\n\n"}
             Bon courage !
         </Text>;
