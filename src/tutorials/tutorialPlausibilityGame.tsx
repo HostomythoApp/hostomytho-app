@@ -33,7 +33,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 3: return <Text style={tw('font-primary')}>
-            Essayez de traiter ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indice.
+            Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indices.
             {"\n\n"}
             Bon courage !
         </Text>;
