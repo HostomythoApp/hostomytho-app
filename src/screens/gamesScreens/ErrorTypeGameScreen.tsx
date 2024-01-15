@@ -294,6 +294,7 @@ const ErrorTypeGameScreen = ({ }) => {
       return null;
     }
     const errorPositions = text.positionErrorTokens.split(", ").map(Number);
+  
     return (
       <View style={[
         tw("p-6 m-4 rounded-xl flex-row flex-wrap "),
@@ -305,20 +306,32 @@ const ErrorTypeGameScreen = ({ }) => {
           shadowRadius: 5,
         }
       ]}>
-        {text && text.tokens.map((token, idx) => (
-          <Text
-            key={idx}
-            style={[
-              tw("text-xl font-primary p-[1px]"),
-              errorPositions.includes(token.position) && tw("bg-red-200")
-            ]}
-          >
-            {token.content}
-          </Text>
-        ))}
+        {text && text.tokens.flatMap((token, idx) => {
+          const isNewLine = token.content.includes('\n');
+          if (isNewLine) {
+            // Créer un élément pour chaque saut de ligne dans le token
+            return token.content.split('\n').map((_, lineIdx) => (
+              <View key={`${idx}-${lineIdx}`} style={{ width: '100%', height: lineIdx === 0 ? 0 : 20 }} />
+            ));
+          } else {
+            // Pour les autres tokens, retourner simplement le texte
+            return (
+              <Text
+                key={idx}
+                style={[
+                  tw("text-xl font-primary p-[1px]"),
+                  errorPositions.includes(token.position) && tw("bg-red-200")
+                ]}
+              >
+                {token.content}
+              </Text>
+            );
+          }
+        })}
       </View>
     );
   };
+  
 
   return (
     <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>

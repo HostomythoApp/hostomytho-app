@@ -99,6 +99,10 @@ const NegationGameScreen = ({ }) => {
       let response;
       if (user) {
         response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+        // response = await getTextWithTokensById(192);
+        console.log(response);
+
+
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }
@@ -367,7 +371,7 @@ const NegationGameScreen = ({ }) => {
       return null;
     }
     return (
-      <SafeAreaView style={tw("flex-1 ")}>
+      <SafeAreaView style={tw("flex-1")}>
         <View
           style={[
             tw("bg-[#DAEBDC] rounded-xl justify-center mx-2 mt-4"),
@@ -384,8 +388,15 @@ const NegationGameScreen = ({ }) => {
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
             {text.tokens.map((token: any, idx: number) => {
               const isPunctuation = token.is_punctuation;
+              const isNewLine = token.content.includes('\n');
 
-              if (isPunctuation) {
+              if (isNewLine) {
+                // Créer un élément pour chaque saut de ligne dans le token
+                return token.content.split('\n').map((_: any, lineIdx: any) => (
+                  <View key={`${idx}-${lineIdx}`} style={{ width: '100%', height: lineIdx === 0 ? 0 : 20 }} />
+                ));
+              } else if (isPunctuation) {
+                // Pour la ponctuation, retourner simplement le texte
                 return (
                   <Text
                     key={idx}
@@ -397,26 +408,27 @@ const NegationGameScreen = ({ }) => {
                     {token.content}
                   </Text>
                 );
-              }
-
-              return (
-                <TouchableOpacity
-                  key={idx}
-                  onPress={showMessage ? undefined : () => onTokenPress(idx)}
-                  style={tw(
-                    `m-0 p-[1px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
-                  )}
-                >
-                  <Text
-                    style={[
-                      tw("text-2xl font-secondary text-gray-800"),
-                      token.color ? tw(token.color) : null,
-                    ]}
+              } else {
+                // Pour les autres tokens, retourner un TouchableOpacity
+                return (
+                  <TouchableOpacity
+                    key={idx}
+                    onPress={showMessage ? undefined : () => onTokenPress(idx)}
+                    style={tw(
+                      `m-0 p-[1px] ${token.isCurrentSelection ? token.color : token.isSelected ? getSentenceColor(token.sentenceId) : "bg-transparent"}`
+                    )}
                   >
-                    {token.content}
-                  </Text>
-                </TouchableOpacity>
-              );
+                    <Text
+                      style={[
+                        tw("text-2xl font-secondary text-gray-800"),
+                        token.color ? tw(token.color) : null,
+                      ]}
+                    >
+                      {token.content}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }
             })}
           </View>
         </View>

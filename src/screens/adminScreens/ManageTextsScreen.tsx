@@ -230,7 +230,6 @@ export default function ManageTextsScreen() {
                         onPress={handleCreateSubmit}
                         style={tw('px-4 py-2 bg-blue-500 text-white rounded-md mt-2')}
                     >
-                        {/* TODO remplacer les sauts de lignes par \\n */}
                         <Text style={tw('text-white')}>Créer</Text>
                     </TouchableOpacity>
                 </View>
@@ -240,14 +239,9 @@ export default function ManageTextsScreen() {
                 <View key={text.id} style={tw('border p-4 mb-4 rounded')}>
                     {selectedText && selectedText.id === text.id ? (
                         <View>
-                            <TextInput
-                                multiline
-                                numberOfLines={6}
-                                style={tw('border p-2 mb-4')}
-                                onChangeText={setContent}
-                                value={content}
-                                placeholder="Contenu"
-                            />
+                            <Text style={tw('border p-2 mb-4')}>
+                                {content}
+                            </Text>
                             <TextInput
                                 style={tw('border p-2 mb-4')}
                                 onChangeText={value => setPlausibility(Number(value))}
@@ -263,7 +257,7 @@ export default function ManageTextsScreen() {
                             />
                             {/* TODO mettre un select picker avec les différentes origines possibles */}
 
-                            <Picker
+                            {/* <Picker
                                 selectedValue={id_theme}
                                 onValueChange={(id_theme: number) => setId_theme(id_theme)}
                                 style={tw('border p-2 mb-4')}
@@ -271,7 +265,7 @@ export default function ManageTextsScreen() {
                                 {themes && themes.map((theme: ThemeModel) => (
                                     <Picker.Item key={theme.id} label={theme.name} value={theme.id} />
                                 ))}
-                            </Picker>
+                            </Picker> */}
                             <TouchableOpacity
                                 // @ts-ignore
                                 onPress={handleSubmit}

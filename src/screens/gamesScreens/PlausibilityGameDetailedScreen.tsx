@@ -287,7 +287,7 @@ const PlausibilityGameDetailedScreen = () => {
     } else {
       const userTextRating = {
         // @ts-ignore
-        user_id: user.id, 
+        user_id: user.id,
         text_id: text.id,
         plausibility: userRateSelected,
         vote_weight: user?.trust_index
@@ -422,13 +422,23 @@ const PlausibilityGameDetailedScreen = () => {
           ]}
         >
           <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-            {text.tokens.map((token: Token, idx: number) => (
-              <HighlightedWord token={token} index={idx} key={idx} />
-            ))}
+            {text.tokens.flatMap((token: Token, idx: number) => {
+              const isNewLine = token.content.includes('\n');
+              if (isNewLine) {
+                return token.content.split('\n').map((content, lineIdx) => {
+                  if (lineIdx > 0) {
+                    // Pour chaque saut de ligne après le premier, ajouter un espace vertical
+                    return <View key={`${idx}-${lineIdx}`} style={{ width: '100%', height: 20 }} />;
+                  }
+                  return <HighlightedWord token={{ ...token, content }} index={idx} key={`${idx}-${lineIdx}`} />;
+                });
+              } else {
+                return <HighlightedWord token={token} index={idx} key={idx} />;
+              }
+            })}
           </View>
         </View>
       </SafeAreaView>
-
     );
   };
 

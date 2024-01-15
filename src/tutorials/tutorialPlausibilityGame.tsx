@@ -14,8 +14,8 @@ const getPlausibilityConfig = (plausibility?: number) => {
 export const getTutorialContentForStep = (step: number, tw: any) => {
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Vous avez recueilli des dossiers patients. Analysez-les, trouvez ceux qui contiennent des erreurs et vous paraissent suspects. Cela vous permettra peut-être de trouver des pistes vers le criminel.
-            Le but est donc d'évaluer la crédibilité d'un texte en lui attribuant un taux de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
+        case 1: return <Text style={tw('font-primary')}> Vous avez recueilli des dossiers patients. Analysez-les, trouvez ceux qui contiennent des erreurs et vous paraissent suspects. Cela vous permettra de trouver des pistes vers le criminel.
+            Le but est donc d'évaluer la crédibilité d'un texte en lui attribuant un niveau de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
             {"\n"}
             <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible
             <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible
@@ -68,26 +68,26 @@ export const getModalHelpContent = (tw: any) => {
     return (
         <TouchableWithoutFeedback>
             <Text style={tw('font-primary')}>
-                Le but du jeu est d'évaluer la crédibilité d'un texte en lui attribuant un taux de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
+                Le but du jeu est d'évaluer la crédibilité d'un texte en lui attribuant un niveau de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
                 {"\n\n"}
                 <Text style={tw('flex-row items-center justify-center m-1')}>
-                    <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible (0% de plausibilité)
+                    <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible
                 </Text>
                 {"\n"}
                 <Text style={tw('flex-row items-center justify-center m-1')}>
-                    <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible (25% de plausibilité)
+                    <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible
                 </Text>
                 {"\n"}
                 <Text style={tw('flex-row items-center justify-center m-1')}>
-                    <PlausibilityButton config={getPlausibilityConfig(50).buttonConfig as ButtonConfig} /> Moyennement plausible (50% de plausibilité)
+                    <PlausibilityButton config={getPlausibilityConfig(50).buttonConfig as ButtonConfig} /> Moyennement plausible
                 </Text>
                 {"\n"}
                 <Text style={tw('flex-row items-center justify-center m-1')}>
-                    <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible (75% de plausibilité)
+                    <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible
                 </Text>
                 {"\n"}
                 <Text style={tw('flex-row items-center justify-center m-1')}>
-                    <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complétement plausible (100% de plausibilité)
+                    <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complétement plausible
                 </Text>
                 {"\n"}
                 Sélectionnez le bouton qui correspond au niveau de plausibilité que vous associez au texte. Vous aurez ensuite le choix de passer au texte suivant, ou de préciser où est l'erreur ou le doute que vous avez.
@@ -109,13 +109,6 @@ export const getModalHelpContent = (tw: any) => {
                 </ItalicPhrase>
                 {"\n"}
                 - L'erreur à trouver est : <HighlightedText>"ascension" </HighlightedText> car le mot n'a aucune raison d'être là.
-                {"\n\n"}
-
-                <ItalicPhrase>
-                    "On note également une déviation de la tige pituitaire à gauche <HighlightedText>pituitère</HighlightedText>."
-                </ItalicPhrase>
-                {"\n"}
-                - Le mot s'écrit "pituitaire"
                 {"\n\n"}
             </Text>
         </TouchableWithoutFeedback>
