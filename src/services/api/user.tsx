@@ -29,6 +29,7 @@ export const signUpUser = async (user: Partial<User>) => {
       theme: "default",
       notifications_enabled: true,
       consecutiveDaysPlayed: 1,
+      coeffMulti: 1,
     };
     return await api.post("/users/signup", { ...defaultValues, ...user });
   } catch (error: any) {
