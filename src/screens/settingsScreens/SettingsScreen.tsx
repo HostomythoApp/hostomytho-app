@@ -17,15 +17,16 @@ const SettingsScreen = ({ }) => {
                     <View style={tw('mx-auto pt-20 items-center')}>
                         <View style={{ ...tw('mb-2 p-6 rounded-lg'), backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
                             <View>
+                                <PrimaryButton title="À Propos" destination="APropos" />
                                 <PrimaryButton title="Règles et explications" destination="ReglesDuJeu" />
                                 <PrimaryButton title="Aide et contact" destination="Aide" />
                                 <PrimaryButton title="Politique de confidentialité" destination="PolitiqueDeConfidentialite" />
 
-                                {authState.isAuthenticated &&
+                                {/* {authState.isAuthenticated &&
                                     <View>
                                         <PrimaryButton title="Notifications" destination="Notif" />
                                     </View>
-                                }
+                                } */}
                             </View>
                         </View>
                     </View>

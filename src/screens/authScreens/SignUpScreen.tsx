@@ -190,7 +190,7 @@ const SignUpScreen = () => {
 
                             <View style={tw('p-4 w-auto')}>
 
-                                <Text style={tw('text-2xl mb-4')}>Choisissez votre personnage</Text>
+                                <Text style={tw('text-2xl mb-4 font-primary')}>Choisissez votre personnage</Text>
 
                                 <View style={tw('flex-row items-center self-center')}>
                                     <TouchableOpacity onPress={() => changeCharacter('prev')}>
@@ -239,7 +239,10 @@ const SignUpScreen = () => {
                                 maxWidth={600}
                                 hide={false}
                             />
-                            <View style={tw('p-4 w-auto')}>
+                            <Text style={tw('font-primary max-w-[600px] text-gray-700')}>
+                                Si votre adresse e-mail n'est pas valide ou si vous n'en mettez pas, nous ne serons pas en mesure de prendre contact avec vous, ni de réinitialiser votre mot de passe. Nous ne la transmettrons pas (à des fins commerciales ou autre) et ne l'utiliserons que pour le jeu.
+                            </Text>
+                            <View style={tw('p-4 mt-2 w-auto')}>
                                 {options.map((option) => (
                                     <RadioButton
                                         key={option.key}

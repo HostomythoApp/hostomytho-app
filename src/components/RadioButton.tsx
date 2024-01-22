@@ -23,7 +23,7 @@ const RadioButton = ({ label, selected, onPress }: {
                         style={tw('w-3 h-3 bg-blue-500 rounded-full m-0.5')}></View>
                 )}
             </View>
-            <Text style={tw('text-lg ml-2 mt-1')}>{label}</Text>
+            <Text style={tw('text-lg ml-2 mt-1 font-primary')}>{label}</Text>
         </TouchableOpacity>
     );
 };

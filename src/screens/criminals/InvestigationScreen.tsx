@@ -28,8 +28,8 @@ const InvestigationScreen = () => {
 
     useEffect(() => {
         if (user) {
-            // setInvestigationProgress(user.catch_probability);
-            setInvestigationProgress(100);
+            setInvestigationProgress(user.catch_probability);
+            // setInvestigationProgress(100);
         }
     }, [user?.catch_probability]);
 

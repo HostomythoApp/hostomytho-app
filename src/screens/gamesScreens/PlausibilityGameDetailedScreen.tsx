@@ -183,6 +183,10 @@ const PlausibilityGameDetailedScreen = () => {
     setIsModalVisible(false);
   };
 
+  const handleCloseModalPlausibility = () => {
+    setIsModalPlausibilityVisible(false);
+  };
+ 
   const launchTuto = () => {
     setResetTutorialFlag(true);
     setShowMessage(false);
@@ -410,7 +414,7 @@ const PlausibilityGameDetailedScreen = () => {
       <SafeAreaView style={tw("flex-1")}>
         <View
           style={[
-            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-4 lg:mt-8 xl:mt-12"),
+            tw("bg-[#FFFEE0] rounded-xl justify-center mx-2 mt-2 lg:mt-4 xl:mt-4"),
             {
               minHeight: 150,
               shadowColor: "#000",
@@ -502,12 +506,12 @@ const PlausibilityGameDetailedScreen = () => {
 
 
   return (
-    <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_2.webp')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="#DAEBDC" func={goToNextSentence} isDisabled={isTutorial} />
+            <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
 
@@ -523,7 +527,7 @@ const PlausibilityGameDetailedScreen = () => {
 
               {
                 isTutorial &&
-                <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
+                <View style={tw('mx-4 p-4 bg-white rounded-lg w-72')}>
                   <View style={tw('flex-row justify-between items-center mb-2')}>
                     <Text style={tw('font-primary text-base text-gray-600')}>
                       Texte :
@@ -577,7 +581,7 @@ const PlausibilityGameDetailedScreen = () => {
 
         <CustomModal
           isVisible={isModalPlausibilityVisible}
-          onClose={handleCloseModal}
+          onClose={handleCloseModalPlausibility}
         >
           <View style={tw('flex-row ')}>
             <TouchableOpacity
@@ -655,8 +659,23 @@ const PlausibilityGameDetailedScreen = () => {
           <>
             {!showMessage &&
               // Boutons de plausibilité  
-              < View style={tw('flex flex-row justify-evenly my-1 md:my-3')}>
-                <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-red-200')}
+              <View 
+              
+              
+              style={[
+                tw("flex flex-row justify-evenly py-1 md:py-1"),
+                {
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: -2 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                  backgroundColor: 'rgba(255, 255, 255, 0.3)'
+                },
+              ]}
+              >
+
+                <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-red-200')}
                   onPress={async () => {
                     setIsModalPlausibilityVisible(true);
                     setUserRateSelected(0);
@@ -664,7 +683,7 @@ const PlausibilityGameDetailedScreen = () => {
                   <Entypo name="cross" size={32} color="red" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-orange-100')}
+                <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-orange-100')}
                   onPress={async () => {
                     setIsModalPlausibilityVisible(true);
                     setUserRateSelected(25);
@@ -672,7 +691,7 @@ const PlausibilityGameDetailedScreen = () => {
                   <Entypo name="flag" size={28} color="orange" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-yellow-100')}
+                <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-yellow-100')}
                   onPress={() => {
                     setIsModalPlausibilityVisible(true);
                     setUserRateSelected(50);
@@ -680,7 +699,7 @@ const PlausibilityGameDetailedScreen = () => {
                   <AntDesign name="question" size={30} color="orange" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-50')}
+                <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-green-50')}
                   onPress={async () => {
                     setUserRateSelected(75);
                     setIsModalPlausibilityVisible(true);
@@ -688,7 +707,7 @@ const PlausibilityGameDetailedScreen = () => {
                   <Ionicons name="checkmark" size={24} color="#48d1cc" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={tw('items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 my-auto bg-green-200')}
+                  style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-green-200')}
                   onPress={async () => {
                     setUserRateSelected(100);
                     onNextCard();

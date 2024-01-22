@@ -6,10 +6,10 @@ import { Text, TouchableWithoutFeedback } from 'react-native';
 export const getTutorialContentForStep = (step: number, tw: any) => {
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Certains passages de textes ont spécialement attiré votre attention. Triez-les en spécifiant le type de l'erreur surlignée, afin d'éclaircir les pistes.
+        case 1: return <Text style={tw('font-primary')}> 
             {"\n"}
-            Il peut y avoir plusieurs types d'erreurs : les erreurs de français pour les erreurs grammaticales, ou de français en général. Les erreurs médicales pour les incohérences et erreurs médicales. Si vous pensez que l'erreur est d'un autre type, choisissez le bouton "Autre".
-            Enfin, si vous penser que ce n'est pas une erreur, cliquez sur "Pas d'erreur".
+            Bonjour enquêteur ! Blablabla, explication de l'univers, orientation vers un jeu en particulier
+            Faire une popup a la création du compte pour expliquer le jeu. Dire qu'ils n'auront pas toujours la correction. 
         </Text>;
 
         case 2: return <Text style={tw('font-primary')}>
@@ -33,51 +33,3 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
 };
 
 
-export const getModalHelpContent = (tw: any) => {
-    const ItalicPhrase = ({ children }: { children: any }) => {
-        return <Text style={tw('italic')}>{children}</Text>;
-    };
-
-    const HighlightedText = ({ children }: { children: any }) => {
-        return <Text style={tw('text-[#5077BE] font-bold')}>{children}</Text>;
-    };
-
-    return <TouchableWithoutFeedback>
-        <Text style={tw('font-primary')}>
-            Le but du jeu est de spécifier le type de l'erreur surlignée.
-            {"\n\n"}
-            Les différents types d'erreurs sont :
-            {"\n\n"}
-            <HighlightedText>"Français" </HighlightedText> pour les erreurs grammaticales ou de français en général.
-            {"\n"}
-            <ItalicPhrase>
-                - "Les symptôme du patient sont très variés et <HighlightedText>inclut </HighlightedText>des maux de tête."
-            </ItalicPhrase>
-            {"\n"}
-            Il y a un problème de conjugaison avec le verbe inclure qui devraient être au pluriel.
-            {"\n\n"}
-
-            <HighlightedText>"Médicale" </HighlightedText> pour les incohérences et erreurs médicales.
-            {"\n"}
-            <ItalicPhrase>
-                - "Lors de sa visite pour un vaccin contre la grippe, il a été annoncé au jeune garçon qu'il devait subir <HighlightedText> une radiographie du thorax pour examiner la santé de ses dents de sagesse</HighlightedText>."
-            </ItalicPhrase>
-            {"\n"}
-            L'erreur vient de l'incohérence de l'information.
-            {"\n\n"}
-
-            <HighlightedText>"Autre" </HighlightedText> si le type est différent.
-            {"\n"}
-            <ItalicPhrase>
-                - "Le patient, interné au grand hôpital de <HighlightedText>Dublin en France</HighlightedText>."
-            </ItalicPhrase>
-            {"\n"}
-            L'erreur vient de l'incohérence de l'information.
-            {"\n\n"}
-
-            Cliquez <HighlightedText>"Pas d'erreur" </HighlightedText> si le texte surligné est bon.
-            {"\n\n"}
-
-        </Text>
-    </TouchableWithoutFeedback>;
-}

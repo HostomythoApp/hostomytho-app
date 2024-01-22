@@ -21,7 +21,7 @@ const AdminHomeScreen = ({ navigation }: { navigation: any }) => {
   return (
     <View style={tw("flex-1")}>
       <CustomHeaderEmpty title="Paramètres" />
-      <View style={tw('p-20 pt-26')}>
+      <View style={tw('p-20 pt-24')}>
         <AdminLink title="Gérer les textes" destination="ManageTexts" icon="text-format" />
         <AdminLink title="Gérer les utilisateurs" destination="ManageUsers" icon="people" />
         <AdminLink title="Messagerie et échanges avec les utilisateurs" destination="UserMessaging" icon="message" />

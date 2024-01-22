@@ -35,6 +35,7 @@ export type RootStackParamList = {
     Investigation: undefined;
     Modal: undefined;
     Objectifs: undefined;
+    ReglesDuJeu: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<
