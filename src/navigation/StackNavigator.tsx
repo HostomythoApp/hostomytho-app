@@ -6,6 +6,7 @@ import ContentProfileScreen from "screens/profilScreens/ContentProfileScreen";
 import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
+import ResetPasswordScreen from "screens/authScreens/ResetPasswordScreen";
 import PlausibilityGameDetailedScreen from "screens/gamesScreens/PlausibilityGameDetailedScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
@@ -127,10 +128,9 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
 
               <Stack.Screen name="Connexion" component={SignInScreen} />
-
               <Stack.Screen name="Login" component={SignUpScreen} />
-
               <Stack.Screen name="MotDePasseOublie" component={ForgetPasswordScreen} />
+              <Stack.Screen name="NouveauMotDePasse" component={ResetPasswordScreen} />
 
               {/* Paramètres */}
               <Stack.Screen name="Parametres" component={SettingsScreen} />

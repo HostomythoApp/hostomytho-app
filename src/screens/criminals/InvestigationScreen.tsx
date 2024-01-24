@@ -69,19 +69,23 @@ const InvestigationScreen = () => {
     };
 
     const NoConnectedView = () => (
+        <View>
+
         <View style={tw('flex-1 justify-center items-center p-6 pt-0')}>
             <Text style={tw('text-xl text-white text-center mb-4 font-primary')}>
                 Créez un compte pour commencer l'enquête
             </Text>
             <View style={tw('w-80')}>
                 <PrimaryButton title="Créer un compte" destination="Login" />
+                <PrimaryButton title="Se connecter" backgroundColor="bg-secondary" destination="Connexion" />
             </View>
+        </View>
         </View>
     );
 
     return (
         <View style={tw('flex-1')}>
-            <ImageBackground source={require('images/dark-background.webp')} style={tw('flex-1')} resizeMode="cover">
+            <ImageBackground source={require('images/bgdark.jpg')} style={tw('flex-1')} resizeMode="cover">
                 <SafeAreaView style={tw('flex-1')}>
                     <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')} >
                         <CustomHeaderEmpty title="Enquête en cours" backgroundColor="bg-whiteTransparent" />

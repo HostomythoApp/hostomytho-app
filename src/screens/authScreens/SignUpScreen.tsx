@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Dimensions } from "react-native";
+import { View, Text, ScrollView, Dimensions, ImageBackground } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -43,7 +43,7 @@ const SignUpScreen = () => {
     const screenWidth = Dimensions.get('window').width;
     const isMobile = screenWidth < 768;
 
-    const inputWidth = isMobile ? '100%' : '70%';
+    const inputWidth = isMobile ? '100%' : '80%';
     const man_1 = require('images/character/man_1.png');
     const man_2 = require('images/character/man_2.png');
     const man_3 = require('images/character/man_3.png');
@@ -155,110 +155,117 @@ const SignUpScreen = () => {
 
 
     return (
-        <View style={tw("flex-1")}>
-            <Formik
-                initialValues={{ username: '', password: '', password2: '', email: '', status: 'medecin', gender: 'homme' }}
-                validationSchema={SignUpSchema}
-                onSubmit={(values) => {
-                    submit(values)
-                }}
-            >
-                {({ handleChange, handleSubmit, values, errors, touched, setFieldValue }) => (
-                    <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
-                        <CustomHeaderEmpty title="Inscription" />
-                        <View style={tw('w-full pt-20 px-2 max-w-5xl justify-center items-center')}>
+        <ImageBackground source={require('images/bg_bureau.webp')} style={tw('absolute bottom-0 left-0 w-full h-full')}>
+            <View style={tw("flex-1 items-center")}>
+                <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
+                    <CustomHeaderEmpty title="Inscription" backgroundColor="bg-whiteTransparent" />
+                    <View style={tw('mx-auto w-full max-w-[740px] px-4 pt-20 items-center')}>
+                        <View style={{ ...tw('mb-2 p-8 m-4 items-center rounded-lg w-full'), backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
+                            <Formik
+                                initialValues={{ username: '', password: '', password2: '', email: '', status: 'medecin', gender: 'homme' }}
+                                validationSchema={SignUpSchema}
+                                onSubmit={(values) => {
+                                    submit(values)
+                                }}
+                            >
+                                {({ handleChange, handleSubmit, values, errors, touched, setFieldValue }) => (
 
-                            <Text> {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}</Text>
+                                    <View style={tw('w-full pt-5 px-2 max-w-5xl justify-center items-center')}>
 
-                            <MainInput
-                                text={'Pseudo'}
-                                value={values.username}
-                                setter={handleChange('username')}
-                                hide={false}
-                                onSubmitEditing={handleSubmit}
-                                isError={touched.username && !!errors.username}
-                                width={inputWidth}
-                                minWidth={300}
-                                maxWidth={600}
-                            />
-                            {touched.username && errors.username && <Text style={tw("text-red-500")}>{errors.username}</Text>}
+                                        <Text> {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}</Text>
 
-                            <FunctionButton
-                                text={"Générer un pseudo"}
-                                func={() => generatePseudo(setFieldValue)}
-                            />
+                                        <MainInput
+                                            text={'Pseudo'}
+                                            value={values.username}
+                                            setter={handleChange('username')}
+                                            hide={false}
+                                            onSubmitEditing={handleSubmit}
+                                            isError={touched.username && !!errors.username}
+                                            width={inputWidth}
+                                            minWidth={300}
+                                            maxWidth={600}
+                                        />
+                                        {touched.username && errors.username && <Text style={tw("text-red-500")}>{errors.username}</Text>}
 
-                            <View style={tw('p-4 w-auto')}>
+                                        <FunctionButton
+                                            text={"Générer un pseudo"}
+                                            func={() => generatePseudo(setFieldValue)}
+                                        />
 
-                                <Text style={tw('text-2xl mb-4 font-primary')}>Choisissez votre personnage</Text>
+                                        <View style={tw('p-4 w-auto')}>
 
-                                <View style={tw('flex-row items-center self-center')}>
-                                    <TouchableOpacity onPress={() => changeCharacter('prev')}>
-                                        <Text style={tw('text-2xl')}>←</Text>
-                                    </TouchableOpacity>
+                                            <Text style={tw('text-2xl mb-4 font-primary')}>Choisissez votre personnage</Text>
 
-                                    <Image source={charactersArray[currentIndex]} resizeMode="contain" style={tw('w-36 h-52')} />
+                                            <View style={tw('flex-row items-center self-center')}>
+                                                <TouchableOpacity onPress={() => changeCharacter('prev')}>
+                                                    <Text style={tw('text-2xl')}>←</Text>
+                                                </TouchableOpacity>
 
-                                    <TouchableOpacity onPress={() => changeCharacter('next')}>
-                                        <Text style={tw('text-2xl')}>→</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                                <Image source={charactersArray[currentIndex]} resizeMode="contain" style={tw('w-36 h-52')} />
 
-                            </View>
+                                                <TouchableOpacity onPress={() => changeCharacter('next')}>
+                                                    <Text style={tw('text-2xl')}>→</Text>
+                                                </TouchableOpacity>
+                                            </View>
 
-                            <MainInput
-                                text={"Mot de passe"}
-                                value={values.password}
-                                setter={handleChange('password')}
-                                onSubmitEditing={handleSubmit}
-                                isError={touched.password && !!errors.password}
-                                width={inputWidth}
-                                maxWidth={600}
-                                hide={true}
-                            />
-                            {touched.password && errors.password && <Text style={tw("text-red-500")}>{errors.password}</Text>}
+                                        </View>
 
-                            <MainInput
-                                text={"Retaper votre mot de passe"}
-                                value={values.password2}
-                                setter={handleChange('password2')}
-                                onSubmitEditing={handleSubmit}
-                                isError={touched.password2 && !!errors.password2}
-                                width={inputWidth}
-                                maxWidth={600}
-                                hide={true}
-                            />
-                            {touched.password2 && errors.password2 && <Text style={tw("text-red-500")}>{errors.password2}</Text>}
+                                        <MainInput
+                                            text={"Mot de passe"}
+                                            value={values.password}
+                                            setter={handleChange('password')}
+                                            onSubmitEditing={handleSubmit}
+                                            isError={touched.password && !!errors.password}
+                                            width={inputWidth}
+                                            maxWidth={600}
+                                            hide={true}
+                                        />
+                                        {touched.password && errors.password && <Text style={tw("text-red-500")}>{errors.password}</Text>}
 
-                            <MainInput
-                                text={"email (facultatif)"}
-                                value={values.email}
-                                setter={handleChange('email')}
-                                onSubmitEditing={handleSubmit}
-                                width={inputWidth}
-                                maxWidth={600}
-                                hide={false}
-                            />
-                            <Text style={tw('font-primary max-w-[600px] text-gray-700')}>
-                                Si votre adresse e-mail n'est pas valide ou si vous n'en mettez pas, nous ne serons pas en mesure de prendre contact avec vous, ni de réinitialiser votre mot de passe. Nous ne la transmettrons pas (à des fins commerciales ou autre) et ne l'utiliserons que pour le jeu.
-                            </Text>
-                            <View style={tw('p-4 mt-2 w-auto')}>
-                                {options.map((option) => (
-                                    <RadioButton
-                                        key={option.key}
-                                        label={option.label}
-                                        selected={values.status === option.value}
-                                        onPress={() => handleChange('status')(option.value)}
-                                    />
-                                ))}
-                            </View>
-                            <FunctionButton text={"Inscription"} func={handleSubmit} />
+                                        <MainInput
+                                            text={"Retaper votre mot de passe"}
+                                            value={values.password2}
+                                            setter={handleChange('password2')}
+                                            onSubmitEditing={handleSubmit}
+                                            isError={touched.password2 && !!errors.password2}
+                                            width={inputWidth}
+                                            maxWidth={600}
+                                            hide={true}
+                                        />
+                                        {touched.password2 && errors.password2 && <Text style={tw("text-red-500")}>{errors.password2}</Text>}
+                                        <MainInput
+                                            text={"email (facultatif)"}
+                                            value={values.email}
+                                            setter={handleChange('email')}
+                                            onSubmitEditing={handleSubmit}
+                                            width={inputWidth}
+                                            maxWidth={600}
+                                            hide={false}
+                                        />
+                                        <Text style={tw('font-primary max-w-[540px] text-gray-700 mt-2 text-center')}>
+                                            Si votre adresse e-mail n'est pas valide ou si vous n'en mettez pas, nous ne serons pas en mesure de prendre contact avec vous, ni de réinitialiser votre mot de passe. Nous ne la transmettrons pas (à des fins commerciales ou autre) et ne l'utiliserons que pour le jeu.
+                                        </Text>
+                                        <View style={tw('p-4 mt-2 w-auto')}>
+                                            {options.map((option) => (
+                                                <RadioButton
+                                                    key={option.key}
+                                                    label={option.label}
+                                                    selected={values.status === option.value}
+                                                    onPress={() => handleChange('status')(option.value)}
+                                                />
+                                            ))}
+                                        </View>
+                                        <FunctionButton text={"Inscription"} func={handleSubmit} />
+                                    </View>
+                                )}
+
+                            </Formik>
                         </View>
-                    </ScrollView>
-                )}
+                    </View>
 
-            </Formik>
-        </View>
+                </ScrollView>
+            </View>
+        </ImageBackground>
     );
 };
 

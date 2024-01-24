@@ -56,6 +56,8 @@ const CriminalsCaughtScreen = () => {
             </Text>
             <View style={tw('w-80')}>
                 <PrimaryButton title="Créer un compte pour commencer l'enquête" destination="Login" />
+                <PrimaryButton title="Se connecter" backgroundColor="bg-secondary" destination="Connexion" />
+
             </View>
         </View>
     );

@@ -12,7 +12,7 @@ const GameRulesScreen = ({ }) => {
             <View style={tw("flex-1 items-center text-black")}>
                 <ScrollView style={tw('w-full')}>
                     <CustomHeaderEmpty title="Règles du jeu et explications" backgroundColor="bg-whiteTransparent" />
-                    <View style={tw('mx-auto pt-20 items-center')}>
+                    <View style={tw('mx-auto pt-20 items-center pb-4')}>
 
                         <View style={{ ...tw('mb-2 p-6 mx-4 max-w-6xl rounded-lg'), backgroundColor: 'rgba(255, 255, 255, 0.83)' }}>
                             <Text style={tw('font-primary text-lg')}>

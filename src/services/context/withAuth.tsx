@@ -12,7 +12,7 @@ const withAuth = <P extends object>(
 
     React.useEffect(() => {
       if (!authState.isAuthenticated && !authState.isLoading) {
-        navigation.navigate("Menu");
+        navigation.navigate("TableauDeBord");
       }
     }, [authState.isAuthenticated, authState.isLoading, navigation]);
 
