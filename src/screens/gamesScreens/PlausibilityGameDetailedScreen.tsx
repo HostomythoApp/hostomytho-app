@@ -186,7 +186,7 @@ const PlausibilityGameDetailedScreen = () => {
   const handleCloseModalPlausibility = () => {
     setIsModalPlausibilityVisible(false);
   };
- 
+
   const launchTuto = () => {
     setResetTutorialFlag(true);
     setShowMessage(false);
@@ -220,6 +220,7 @@ const PlausibilityGameDetailedScreen = () => {
           // if (!noErrorSpecified && noErrorInDatabase) {
           //   animationGainPoints(10, 1, 1);
           // } else {
+          // TODO Baisser les points donnés
           animationGainPoints(10, 1, 1);
           // }
           goToNextSentence(true);
@@ -456,6 +457,12 @@ const PlausibilityGameDetailedScreen = () => {
     return { ...text, tokens: newTokens };
   };
 
+  const returnToChoicePlausibility = async () => {
+    console.log("returnPlausibility");
+    setErrorSpecifying(false);
+
+  };
+
   const goToNextSentence = async (isCorrect = false) => {
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
@@ -609,17 +616,33 @@ const PlausibilityGameDetailedScreen = () => {
 
         {errorSpecifying ? (
           <SafeAreaView>
-            <View style={tw('absolute bottom-3 left-4 flex-col')}>
+            <View style={tw('absolute bottom-3 left-4 flex-row')}>
+              <TouchableOpacity
+                style={[
+                  tw('bg-blue-500 rounded-full justify-center items-center flex-row p-1 mr-1'),
+                ]}
+                onPress={() => {
+                  returnToChoicePlausibility();
+                }}
+              >
+                <Ionicons name="chevron-back" size={24} color="white" />
+                <Text style={tw('font-primary text-white mr-1')}
+                >Changer la plausibilité</Text>
+              </TouchableOpacity>
+
               {errorDetails.length > 0 && (
                 <TouchableOpacity
                   style={[
-                    tw('w-8  bg-blue-500 rounded-full justify-center items-center'),
+                    tw('bg-blue-500 rounded-full justify-center items-center flex-row p-1'),
                   ]}
                   onPress={() => {
                     scrollViewRef.current?.scrollToEnd({ animated: true });
                   }}
                 >
-                  <MaterialIcons name="arrow-downward" size={25} color="white" />
+                  <MaterialIcons name="arrow-downward" size={25} color="white"/>
+                  <Text style={tw('font-primary text-white mr-1')}>
+                    Annotations
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -659,20 +682,19 @@ const PlausibilityGameDetailedScreen = () => {
           <>
             {!showMessage &&
               // Boutons de plausibilité  
-              <View 
-              
-              
-              style={[
-                tw("flex flex-row justify-evenly py-1 md:py-1"),
-                {
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: -2 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 2,
-                  backgroundColor: 'rgba(255, 255, 255, 0.3)'
-                },
-              ]}
+              <View
+
+                style={[
+                  tw("flex flex-row justify-evenly py-1 md:py-1"),
+                  {
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: -2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 2,
+                    backgroundColor: 'rgba(255, 255, 255, 0.3)'
+                  },
+                ]}
               >
 
                 <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-red-200')}

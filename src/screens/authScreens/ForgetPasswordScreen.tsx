@@ -56,7 +56,7 @@ const ForgetPasswordScreen = () => {
                                 width={inputWidth}
                                 maxWidth={600}
                             />
-                            <Text>
+                            <Text style={tw('text-center max-w-[500px]')}>
                                 {mailError && <Text style={tw("text-red-500 font-primary")}>Veuillez entrer un email valide.</Text>}
                                 {confirmationMessage && <Text style={tw("text-green-700 font-primary text-lg")}>{confirmationMessage}</Text>}
                             </Text>

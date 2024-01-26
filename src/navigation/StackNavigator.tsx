@@ -50,16 +50,12 @@ import { UserProvider } from "services/context/UserContext";
 
 const Stack = createNativeStackNavigator();
 
-
 const StackNavigator = ({ }) => {
   const translateY = useRef(new Animated.Value(300)).current;
   const tw = useTailwind();
   const [isModalVisible, setModalVisible] = useState(false);
   const [content, setContent] = useState(null);
-
-  useEffect(() => {
-  }, [isModalVisible]);
-
+  
   return (
     <ModalContext.Provider
       value={{
@@ -140,7 +136,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="PolitiqueDeConfidentialite" component={PrivacyPolicyScreen} />
               <Stack.Screen name="ReglesDuJeu" component={GameRulesScreen} />
               <Stack.Screen name="APropos" component={AboutScreen} />
-              
+
               <Stack.Screen name="Classement" component={RankingScreen} />
               <Stack.Screen name="ClassementMensuel" component={RankingMonthScreen} />
 
@@ -157,18 +153,17 @@ const StackNavigator = ({ }) => {
               </Stack.Screen>
 
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
+              <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
+              <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
 
+              <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
 
               <Stack.Screen name="EditRewards" component={EditRewardsSreen} />
 
               <Stack.Screen name="ExportData" component={ExportDataSreen} />
 
-              <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
 
-              <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
-
-              <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
             </Stack.Group>
 
           </Stack.Navigator>

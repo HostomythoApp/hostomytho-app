@@ -20,7 +20,6 @@ const linking = {
       // Admin: "admin",
       Admin: "HMe1sj",
       NouveauMotDePasse: 'NouveauMotDePasse', 
-  
     },
   },
 };

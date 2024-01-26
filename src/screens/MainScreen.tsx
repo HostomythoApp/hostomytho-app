@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import React from "react";
+import { View, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import PrimaryButton from "components/PrimaryButton";
-import MainTitle from "components/MainTitle";
 import { useAuth } from "services/context/AuthContext";
-import { useUser } from "services/context/UserContext";
 import LogoutButton from "components/LogoutButton";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 
 const MainScreen = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
-    const { user } = useUser();
 
     return (
         <View style={tw("flex-1")}>
