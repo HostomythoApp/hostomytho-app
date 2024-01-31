@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TouchableOpacity, Text, View, ScrollView, Dimensions, ImageBackground, Image } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/context/withAuth';
@@ -11,6 +11,9 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import ContentProfileScreen from 'screens/profilScreens/ContentProfileScreen';
 import SkinsManagementScreen from 'screens/profilScreens/SkinsManagementScreen';
 import { characterImagesMapping } from 'utils/characterImagesMapping';
+import { getTutorialContentForStep } from 'tutorials/tutorialGeneral';
+import ModalBossExplanation from 'components/modals/ModalBossExplanation ';
+import Loader from 'components/Loader';
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
@@ -19,7 +22,11 @@ const ProfileScreen = (props: any) => {
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
     const [viewMode, setViewMode] = useState<'profile' | 'skinsManagement'>('profile');
-
+    const [userNeedsUpdate, setUserNeedsUpdate] = useState(true);
+    const [isBossVisible, setIsBossVisible] = useState(false);
+    const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const contentProfileScreenRef = useRef(null);
     // @ts-ignore
     const characterImage = characterImagesMapping[user?.gender || 'homme'][user?.color_skin || 'clear'];
 
@@ -29,8 +36,50 @@ const ProfileScreen = (props: any) => {
         }
     }, []);
 
+
+    useEffect(() => {
+        const updateUserData = async () => {
+            if (userNeedsUpdate && user) {
+                setIsLoading(true);
+                try {
+                    await updateStorageUserFromAPI(user.id);
+                } catch (error) {
+                    console.error('Error updating user data', error);
+                } finally {
+                    setIsLoading(false);
+                    setUserNeedsUpdate(false);
+
+                }
+            }
+        };
+
+        updateUserData();
+    }, [user, userNeedsUpdate]);
+
+    // Gestion tuto général
+    useEffect(() => {
+        if (user && !userNeedsUpdate) {
+            const tutorialProgress = user.tutorial_progress;
+            console.log(tutorialProgress);
+            if (tutorialProgress > 5 && tutorialProgress < 10) {
+                console.log("on affiche le boss");
+
+                setIsBossVisible(true);
+                const tutorialContent = getTutorialContentForStep(tutorialProgress, tw);
+                setModalContent(tutorialContent);
+            } else {
+                setIsBossVisible(false);
+            }
+        }
+    }, [user, userNeedsUpdate]);
+
     const toggleViewMode = () => {
         setViewMode(viewMode === 'profile' ? 'skinsManagement' : 'profile');
+    };
+
+    const handleCloseModal = () => {
+        console.log("prout");
+
     };
 
     return (
@@ -39,6 +88,8 @@ const ProfileScreen = (props: any) => {
             style={tw("absolute bottom-0 left-0 w-full h-full")}
             resizeMode="cover"
         >
+            {isLoading && <Loader />}
+
             <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' />
             <View style={tw('flex-1 flex-row items-start justify-start relative')}>
                 {!isMobile &&
@@ -88,6 +139,13 @@ const ProfileScreen = (props: any) => {
                     }
                 </TouchableOpacity>
             </View>
+
+            <ModalBossExplanation
+                isVisible={isBossVisible}
+                onClose={handleCloseModal}
+            >
+                {modalContent}
+            </ModalBossExplanation>
         </ImageBackground>
     );
 };

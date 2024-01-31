@@ -12,6 +12,9 @@ import { getCompletedTutorials } from "services/api/games";
 import IconNotification from "components/IconNotification";
 import ModalBossExplanation from "components/modals/ModalBossExplanation ";
 import Loader from "components/Loader";
+import { getTopMonthlyWinners } from "services/api/user";
+import { MonthlyWinner } from "models/MonthlyWinner";
+import { getTutorialContentForStep } from "tutorials/tutorialGeneral";
 
 interface TutorialsCompleted {
     [key: string]: boolean;
@@ -29,42 +32,83 @@ const MainBoardScreen = ({ }) => {
     const [tutorialsCompleted, setTutorialsCompleted] = useState<TutorialsCompleted | null>(null);
     const iconSize = windowWidth * 0.015;
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [modalContent, setModalContent] = useState(null);
+    const [isBossVisible, setIsBossVisible] = useState(false);
+    const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [loadedImagesCount, setLoadedImagesCount] = useState(0);
     const [loadedStates, setLoadedStates] = useState(Array(8).fill(false));
-
+    const [userNeedsUpdate, setUserNeedsUpdate] = useState(true);
+    const [monthlyWinners, setMonthlyWinners] = useState<any>([]);
 
     useEffect(() => {
-        const loadUser = async () => {
-            setIsLoading(true);
+        const fetchMonthlyWinners = async () => {
             try {
-                setIsUserDataLoaded(true);
+                const response = await getTopMonthlyWinners();
+                setMonthlyWinners(response.data);
             } catch (error) {
-                console.error(error);
+                console.error('Erreur lors de la récupération des gagnants mensuels', error);
             }
         };
-        if (!isUserDataLoaded) {
-            loadUser();
-            // TODO
-            // mettre une update du loader ici
-        }
-    }, [user]);
+
+        fetchMonthlyWinners();
+    }, []);
 
     useEffect(() => {
-        // TODO le récupération des infos user ne se font pas bien avant le chargement de la page
-        if (isUserDataLoaded && user) {
-            updateStorageUserFromAPI(user.id);
-            fetchCompletedTutorials();
+        const updateUserData = async () => {
+            if (userNeedsUpdate && user) {
+                setIsLoading(true);
+                try {
+                    await updateStorageUserFromAPI(user.id);
+                } catch (error) {
+                    console.error('Error updating user data', error);
+                } finally {
+                    setIsLoading(false);
+                    setUserNeedsUpdate(false); // Mise à jour terminée
+                }
+            }
+        };
 
-            console.log("dans loadUser");
+        updateUserData();
+    }, [user, userNeedsUpdate]);
 
-            if (user?.points == 0) {
-                console.log("pas de point, on charge le boss");
-                showModal("Bonjour enquêteur ! Blablabla, explication de l'univers, orientation vers un jeu en particulier")
+    // Gestion tuto général
+    useEffect(() => {
+        if (user && !userNeedsUpdate) {
+            const tutorialProgress = user.tutorial_progress;
+            console.log(tutorialProgress);
+            if (tutorialProgress < 6) {
+                setIsBossVisible(true);
+                const tutorialContent = getTutorialContentForStep(tutorialProgress, tw);
+                setModalContent(tutorialContent);
+            } else {
+                setIsBossVisible(false);
             }
         }
-    }, [isUserDataLoaded]);
+    }, [user, userNeedsUpdate]); 
+    
+
+    useEffect(() => {
+        const fetchTutorials = async () => {
+            if (user && !userNeedsUpdate) {
+                try {
+                    const completedTutorials = await getCompletedTutorials(user.id);
+                    const tutorialsState = completedTutorials.reduce((acc, game) => {
+                        // @ts-ignore
+                        acc[game.name] = true;
+                        return acc;
+                    }, {});
+                    setTutorialsCompleted(tutorialsState);
+                } catch (error) {
+                    console.error('Error fetching tutorials', error);
+                }
+            } else {
+                setTutorialsCompleted(null);
+            }
+        };
+
+        fetchTutorials();
+    }, [user, userNeedsUpdate]);
+
 
     useEffect(() => {
         getMessageMenu()
@@ -76,35 +120,11 @@ const MainBoardScreen = ({ }) => {
             });
     }, []);
 
-    useEffect(() => {
-        console.log('Component re-rendered');
-    }, []);
-
-    const fetchCompletedTutorials = async () => {
-        // TODO au 1er chargement, il faut que ce soit bien appelé avant, parce que là il faut actualiser
-        try {
-            if (user) {
-                const completedTutorials = await getCompletedTutorials(user.id);
-                const tutorialsState = completedTutorials.reduce((acc, game) => {
-                    // @ts-ignore
-                    acc[game.name] = true;
-                    return acc;
-                }, {});
-                setTutorialsCompleted(tutorialsState);
-            }
-
-        } catch (error) {
-            console.error('Erreur lors de la récupération des tutoriels complétés', error);
-        }
-    }
-
     const toggleMessage = () => {
         setMessageExpanded(!messageExpanded);
     }
 
-
     const loaderClose = useCallback(() => {
-        console.log("loaderClose");
         setIsLoading(false);
     }, [setIsLoading]);
 
@@ -132,15 +152,15 @@ const MainBoardScreen = ({ }) => {
             >
                 <View style={tw("flex-1 items-center")}>
                     {menuMessage && menuMessage.active &&
-                        <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 bg-blue-500 bg-opacity-70 rounded-xl"), { zIndex: 1 }]}>
+                        <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 bg-blue-500 bg-opacity-80 rounded-xl max-w-3xl"), { zIndex: 1 }]}>
                             {messageExpanded ? (
                                 <>
-                                    <Text style={tw("text-white text-lg")}>{menuMessage.title}</Text>
-                                    <Text style={tw("text-white")}>{menuMessage.message}</Text>
-                                    <Text style={tw("text-white text-center text-sm mt-2 italic")}>Cliquez sur le message pour le réduire</Text>
+                                    <Text style={tw("text-white text-lg font-primary")}>{menuMessage.title}</Text>
+                                    <Text style={tw("text-white font-primary text-lg")}>{menuMessage.message}</Text>
+                                    <Text style={tw("text-white text-center text-sm mt-2 italic font-primary")}>Cliquez sur le message pour le réduire</Text>
                                 </>
                             ) : (
-                                <Text style={tw("text-white text-lg")}>Cliquez ici</Text>
+                                <Text style={tw("text-white text-lg font-primary")}>Cliquez ici</Text>
                             )}
                         </TouchableOpacity>
                     }
@@ -157,11 +177,33 @@ const MainBoardScreen = ({ }) => {
                                 <Image source={require('images/map.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 90, minHeight: 90 }} />
                             </TouchableOpacity>
 
+
                             <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
                                 style={{
                                     position: 'absolute',
                                     top: windowWidth > 768 ? '54%' : '54%',
                                     left: windowWidth > 768 ? '21%' : '21%',
+                                }}>
+                                <Image source={require('images/polaroid_inconnu.png')}
+                                    onLoadEnd={loaderClose}
+                                    style={{
+                                        width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 70, minHeight: 70,
+                                        shadowColor: 'black',
+                                        shadowOffset: { width: -1, height: 2 },
+                                        shadowOpacity: 0.4,
+                                        shadowRadius: 1,
+                                    }}
+                                    resizeMode="contain"
+                                />
+                            </TouchableOpacity>
+
+
+
+                            <TouchableOpacity onPress={() => navigation.navigate("Classement")}
+                                style={{
+                                    position: 'absolute',
+                                    top: windowWidth > 768 ? '54%' : '54%',
+                                    left: windowWidth > 768 ? '41%' : '41%',
                                 }}>
                                 <Image source={require('images/article.png')}
                                     onLoadEnd={loaderClose}
@@ -176,7 +218,7 @@ const MainBoardScreen = ({ }) => {
                                 />
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => navigation.navigate("HypoMytho")}
+                            {/* <TouchableOpacity onPress={() => navigation.navigate("HypoMytho")}
                                 style={{
                                     position: 'absolute',
                                     top: windowWidth > 768 ? '27%' : '27%',
@@ -190,7 +232,7 @@ const MainBoardScreen = ({ }) => {
                                         shadowOpacity: 0.6,
                                         shadowRadius: 1,
                                     }} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
                             <TouchableOpacity onPress={() => navigation.navigate("MythoTypo")}
                                 style={{
@@ -241,7 +283,7 @@ const MainBoardScreen = ({ }) => {
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity onPress={() => navigation.navigate("MythoTempo")}
+                            {/* <TouchableOpacity onPress={() => navigation.navigate("MythoTempo")}
                                 style={{
                                     position: 'absolute',
                                     top: windowWidth > 768 ? '56%' : '56%',
@@ -255,7 +297,7 @@ const MainBoardScreen = ({ }) => {
                                     shadowRadius: 1,
                                     transform: [{ rotate: '4deg' }]
                                 }} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
                             <TouchableOpacity onPress={() => navigation.navigate("MythoNo")}
                                 style={{
@@ -287,14 +329,39 @@ const MainBoardScreen = ({ }) => {
                                 left: windowWidth > 768 ? '63%' : '63%',
                             }}>
                                 <Image source={require('images/small_postit_month.png')} resizeMode="contain" style={{
-                                    height: windowWidth * 0.04, minWidth: 40, minHeight: 40,
+                                    height: windowWidth * 0.04, minWidth: 100, minHeight: 40,
                                     shadowColor: 'black',
                                     shadowOffset: { width: 1, height: 1 },
                                     shadowOpacity: 0.5,
                                     shadowRadius: 1,
 
                                 }} />
-                                <View
+
+                                <View style={tw("top-0 left-0 right-0 mt-10")}>
+                                    <View style={tw("flex-row justify-center items-center")}>
+                                        <View
+                                            style={[tw('mx-2 p-1 bg-slate-50 border border-slate-200'),
+                                            { width: windowWidth * 0.06, minWidth: 80, minHeight: 40 }]}>
+                                            <Text style={tw("text-center text-xl font-MochiyPopOne text-[#FACE3B]")}>2ème</Text>
+                                            <Text style={tw("text-center font-semibold font-primary")}>{monthlyWinners[1]?.username}</Text>
+                                        </View>
+
+                                        <View style={[tw('mx-2 p-1 bg-slate-50 border border-slate-200'),
+                                        { width: windowWidth * 0.06, minWidth: 80, minHeight: 40 }]}>
+                                            <Text style={tw("text-center text-xl font-MochiyPopOne text-[#FCD903] font-bold")}>1er</Text>
+                                            <Text style={tw("text-center font-semibold font-primary")}>{monthlyWinners[0]?.username}</Text>
+                                        </View>
+
+                                        <View style={[tw('mx-2 p-1 bg-slate-50 border border-slate-200'),
+                                        { width: windowWidth * 0.06, minWidth: 80, minHeight: 40 }]}>
+                                            <Text style={tw("text-center text-xl font-MochiyPopOne text-[#F9B784] font-bold")}>3ème</Text>
+                                            <Text style={tw("text-center font-semibold font-primary")}>{monthlyWinners[2]?.username}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+
+
+                                {/* <View
                                     style={tw("flex-row")}>
                                     <TouchableOpacity style={tw('mt-2')}
                                     >
@@ -325,7 +392,7 @@ const MainBoardScreen = ({ }) => {
                                             shadowRadius: 1,
                                         }} />
                                     </TouchableOpacity>
-                                </View>
+                                </View> */}
                             </View>
 
                             <TouchableOpacity onPress={() => navigation.navigate("Criminels")}
@@ -406,7 +473,7 @@ const MainBoardScreen = ({ }) => {
                 </View>
 
                 <ModalBossExplanation
-                    isVisible={isModalVisible}
+                    isVisible={isBossVisible}
                     onClose={handleCloseModal}
                 >
                     {modalContent}

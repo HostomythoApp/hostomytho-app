@@ -100,6 +100,15 @@ export const getUsersOrderedByPointsInMonthly = async (page: number): Promise<an
   }
 };
 
+export const getTopMonthlyWinners = async (): Promise<any> => {
+  try {
+    return await api.get(`/users/getTopMonthlyWinners`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const getCoeffMultiByUserId = async (id: number): Promise<number> => {
   try {
     return await api.get(`/users/getCoeffMultiByUserId/${id}`);
@@ -125,6 +134,15 @@ export const updateUserCatchProbability = async (id: number, catch_probability: 
     return await api.put(`/users/${id}/catchProbability`, {
       catch_probability,
     });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateTutorialProgress = async (id: number) => {
+  try {
+    return await api.put(`/users/${id}/incrementTutorialProgress`);
   } catch (error) {
     console.error(error);
     throw error;

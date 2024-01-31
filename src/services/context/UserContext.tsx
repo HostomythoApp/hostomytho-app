@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTailwind } from "tailwind-rn";
-import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi, updateTrustIndex } from "services/api/user";
+import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi, updateTrustIndex, updateTutorialProgress } from "services/api/user";
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
@@ -19,6 +19,7 @@ interface UserContextProps {
   incrementCatchProbability: (percentageToAdd: number) => void;
   updateStorageUserFromAPI: (userId: number) => Promise<void>;
   resetCatchProbability: (userId: number) => Promise<void>;
+  incrementTutorialProgress: () => void;
   resetUserState: () => void;
   updateUserStats: (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number) => void;
   equippedSkins: Skin[];
@@ -188,6 +189,13 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  const incrementTutorialProgress = async () => {
+    if (user) {
+      const response = await updateTutorialProgress(user.id);
+      setUser((prevUser: User) => ({ ...prevUser, tutorial_progress: response.data.newTutorialProgress }));
+    }
+  };
+
   // const incrementTrustIndex = async (trustIndexIncrement: number) => {
   //   if (user) {
   //     const response = await updateTrustIndex(user.id, trustIndexIncrement);
@@ -284,7 +292,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, updateUserStats, equippedSkins, setEquippedSkins,unlockAchievementModal }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, incrementTutorialProgress, updateUserStats, equippedSkins, setEquippedSkins, unlockAchievementModal }}>
       {children}
     </UserContext.Provider>
   );

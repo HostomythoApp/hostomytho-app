@@ -17,5 +17,7 @@ export interface User {
     consecutiveDaysPlayed: number;
     created_at: string;
     coeffMulti: number;
+    nb_first_monthly: number;
+    tutorial_progress: number;
   }
   

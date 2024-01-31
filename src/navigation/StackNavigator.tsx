@@ -51,8 +51,7 @@ import { UserProvider } from "services/context/UserContext";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({ }) => {
-  const translateY = useRef(new Animated.Value(300)).current;
-  const tw = useTailwind();
+
   const [isModalVisible, setModalVisible] = useState(false);
   const [content, setContent] = useState(null);
   

@@ -9,6 +9,7 @@ import { RootStackNavigationProp } from "navigation/Types";
 import PrimaryButton from "components/PrimaryButton";
 import CustomModal from "components/modals/CustomModal";
 import { Achievement } from "models/Achievement";
+import HelpButton from "components/button/HelpButton";
 
 export interface Criminal {
     name: string;
@@ -25,6 +26,7 @@ const InvestigationScreen = () => {
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     const [modalVisible, setModalVisible] = useState(false);
     const [arrestDescription, setArrestDescription] = useState<string>('');
+    const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -45,11 +47,11 @@ const InvestigationScreen = () => {
                     // Affiche popup haut-faits s'il y en a de nouveaux
                     if (catchResult.catchEntry.newAchievements && catchResult.catchEntry.newAchievements.length > 0) {
                         catchResult.catchEntry.newAchievements.forEach((achievement: Achievement) => {
-                          setTimeout(() => {
-                            unlockAchievementModal(achievement);
-                          }, 1000);
+                            setTimeout(() => {
+                                unlockAchievementModal(achievement);
+                            }, 1000);
                         });
-                      }
+                    }
 
                     setArrestDescription(catchResult.catchEntry.descriptionArrest);
                     if (catchResult.catchEntry.allCriminalsCaught) {
@@ -68,18 +70,22 @@ const InvestigationScreen = () => {
         setResultModalVisible(true);
     };
 
+    const showHelpModal = () => {
+        setIsHelpModalVisible(true)
+    };
+
     const NoConnectedView = () => (
         <View>
 
-        <View style={tw('flex-1 justify-center items-center p-6 pt-0')}>
-            <Text style={tw('text-xl text-white text-center mb-4 font-primary')}>
-                Créez un compte pour commencer l'enquête
-            </Text>
-            <View style={tw('w-80')}>
-                <PrimaryButton title="Créer un compte" destination="Login" />
-                <PrimaryButton title="Se connecter" backgroundColor="bg-secondary" destination="Connexion" />
+            <View style={tw('flex-1 justify-center items-center p-6 pt-0')}>
+                <Text style={tw('text-xl text-white text-center mb-4 font-primary')}>
+                    Créez un compte pour commencer l'enquête
+                </Text>
+                <View style={tw('w-80')}>
+                    <PrimaryButton title="Créer un compte" destination="Login" />
+                    <PrimaryButton title="Se connecter" backgroundColor="bg-secondary" destination="Connexion" />
+                </View>
             </View>
-        </View>
         </View>
     );
 
@@ -89,7 +95,9 @@ const InvestigationScreen = () => {
                 <SafeAreaView style={tw('flex-1')}>
                     <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')} >
                         <CustomHeaderEmpty title="Enquête en cours" backgroundColor="bg-whiteTransparent" />
-
+                        <View style={tw('flex-row justify-end')}>
+                            <HelpButton onHelpPress={showHelpModal} />
+                        </View>
                         <View style={tw('flex-1 p-2 pt-14 justify-center items-center')}>
                             <Image
                                 source={require('images/unknown3.jpeg')}
@@ -171,6 +179,30 @@ const InvestigationScreen = () => {
                     </>
                 )}
             </CustomModal>
+            {/* TODO a faire */}
+            <CustomModal
+                isVisible={isHelpModalVisible}
+                onClose={() => setIsHelpModalVisible(false)}
+            >
+                <View style={tw('flex-1')}>
+                    <ScrollView
+                        style={[tw('flex-1 max-w-3xl')]}
+                        contentContainerStyle={tw('p-4')}
+                        showsVerticalScrollIndicator={true}
+                        scrollEventThrottle={16}
+                    >
+                        <Text style={tw('font-primary')}>
+                            Le but du jeu est de cliquer sur les mots qui, selon vous, composent une négation ou une absence.
+                            Une fois les mots sélectionnés, validez la sélection. Quand vous pensez avoir trouvé toutes les négations, vérifiez bien d'avoir validé votre dernière selection, et vous pouvez ensuite passer au texte suivant.
+                            {"\n"}
+                            Ici, vous pouvez tenter d'arrêter des criminels.
+                            {"\n\n"}
+                        </Text>
+                    </ScrollView>
+                </View>
+            </CustomModal>
+
+
         </View>
     );
 };

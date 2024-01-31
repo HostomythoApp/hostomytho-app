@@ -99,7 +99,7 @@ const NegationGameScreen = ({ }) => {
       let response;
       if (user) {
         response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
-        // response = await getTextWithTokensById(192);
+        // response = await getTextWithTokensById(284);
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }

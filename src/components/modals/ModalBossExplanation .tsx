@@ -1,59 +1,110 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View, Image } from 'react-native';
+import { Animated, Text, TouchableOpacity, View, Image, Dimensions } from 'react-native';
 import { useTailwind } from "tailwind-rn";
+import { useUser } from 'services/context/UserContext';
+
+const ModalStates = {
+    APPEAR: 'appear',
+    STAY: 'stay',
+    DISAPPEAR: 'disappear',
+};
 
 const ModalBossExplanation = ({ isVisible, onClose, children }: { isVisible: boolean, onClose: any, children: any }) => {
-    const translateX = useRef(new Animated.Value(-1000)).current;
+    const translateX = useRef(new Animated.Value(1000)).current;
     const bubbleOpacity = useRef(new Animated.Value(0)).current;
     const [bubbleVisible, setBubbleVisible] = useState(false);
-
+    const [modalState, setModalState] = useState(ModalStates.APPEAR);
+    const { incrementTutorialProgress } = useUser();
     const tw = useTailwind();
+    const screenWidth = Dimensions.get('window').width;
+    let imageSize, bubbleHeight;
 
+    if (screenWidth <= 768) { // Tablettes petites
+        imageSize = { width: 120, height: 230 };
+        bubbleHeight = {paddingBottom: 130};
+    } else if (screenWidth <= 1024) { // Tablettes grandes
+        imageSize = { width: 160, height: 300 };
+        bubbleHeight = {paddingBottom: 180};
+    } else { // Ordinateurs
+        imageSize = { width: 220, height: 370 };
+        bubbleHeight = {paddingBottom: 220};
+    }
     useEffect(() => {
         if (isVisible) {
-            Animated.timing(translateX, {
-                toValue: 0,
-                duration: 400,
-                useNativeDriver: true
-            }).start(() => {
-                setTimeout(() => {
-                    setBubbleVisible(true);
-                    Animated.timing(bubbleOpacity, {
-                        toValue: 1,
-                        duration: 130,
-                        useNativeDriver: true
-                    }).start();
-                }, 500);
-            });
-        } else {
-            translateX.setValue(-1000);
-            bubbleOpacity.setValue(0);
-            setBubbleVisible(false);
+            setModalState(ModalStates.APPEAR);
+        } else if (!isVisible && modalState !== ModalStates.DISAPPEAR) {
+            setModalState(ModalStates.DISAPPEAR);
         }
-    }, [isVisible, translateX, bubbleOpacity]);
+    }, [isVisible]);
 
+    useEffect(() => {
+        switch (modalState) {
+            case ModalStates.APPEAR:
+                Animated.timing(translateX, {
+                    toValue: 0,
+                    duration: 400,
+                    useNativeDriver: true,
+                }).start(() => {
+                    setTimeout(() => {
+                        setBubbleVisible(true);
+                        Animated.timing(bubbleOpacity, {
+                            toValue: 1,
+                            duration: 130,
+                            useNativeDriver: true,
+                        }).start();
+                    }, 500);
+                });
+                break;
+            case ModalStates.STAY:
+                // Logic to keep the modal in place
+                break;
+            case ModalStates.DISAPPEAR:
+                Animated.timing(translateX, {
+                    toValue: 1000,
+                    duration: 400,
+                    useNativeDriver: true,
+                }).start(() => {
+                    setBubbleVisible(false);
+                    bubbleOpacity.setValue(0);
+                });
+                break;
+            default:
+                break;
+        }
+    }, [modalState, translateX, bubbleOpacity]);
+
+    const handleClose = () => {
+        setModalState(ModalStates.DISAPPEAR);
+        setTimeout(onClose, 500);
+    };
+
+    const handleModalClick = async () => {
+        incrementTutorialProgress();
+    };
 
     if (!isVisible) {
         return null;
     }
     return (
-        <TouchableOpacity style={tw('absolute inset-0 w-full h-full')} activeOpacity={1} onPress={onClose}>
+        <TouchableOpacity style={tw('absolute inset-0 w-full h-full')} activeOpacity={1} onPress={handleModalClick}>
+
             <Animated.View
                 style={{
                     transform: [{ translateX }],
                     position: 'absolute',
                     bottom: 0,
-                    left: 0,
+                    right: 0,
                     flexDirection: 'row',
+                    alignItems: "flex-end"
                 }}
             >
-                <Image
-                    source={require('images/boss.png')}
-                    style={{ width: 180, height: 300, alignSelf: 'flex-end' }}
-                    resizeMode="contain"
-                />
+
                 {bubbleVisible && (
-                    <Animated.View style={{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 500, marginBottom: 15 }}>
+                    <Animated.View 
+                    
+                    style={[{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 500 }, bubbleHeight]}
+                    
+                    >
 
                         <View style={[tw('p-3 rounded-lg bg-white'),
                         {
@@ -71,10 +122,18 @@ const ModalBossExplanation = ({ isVisible, onClose, children }: { isVisible: boo
                         }
                         ]}>
                             <Text style={tw('text-black text-base')}>{children}</Text>
-                            <View style={{ width: 0, height: 0, backgroundColor: 'transparent', borderStyle: 'solid', borderLeftWidth: 15, borderBottomWidth: 15, borderLeftColor: 'transparent', borderBottomColor: 'white', transform: [{ rotate: '14deg' }, { translateX: -9 }, { translateY: 12 }], position: 'absolute', top: 10, left: 0 }} />
+                            <View style={{
+                                width: 0, height: 0, backgroundColor: 'transparent', borderStyle: 'solid', borderLeftWidth: 18, borderBottomWidth: 32, borderLeftColor: 'transparent',
+                                borderBottomColor: 'white', transform: [{ rotate: '85deg' }, { translateX: -10 }, { translateY: -14 }], position: 'absolute', bottom: 0, right: 0
+                            }} />
                         </View>
                     </Animated.View>
                 )}
+                <Image
+                    source={require('images/boss.png')}
+                    style={[{ alignSelf: 'flex-end' }, imageSize]}
+                    resizeMode="contain"
+                />
             </Animated.View>
         </TouchableOpacity>
     );

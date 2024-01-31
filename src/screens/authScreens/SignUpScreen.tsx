@@ -72,7 +72,7 @@ const SignUpScreen = () => {
                 if (response.status === 200 || response.status === 201) {
                     const handleSuccess = async (token: string) => {
                         await storeToken(token);
-                        navigation.navigate("TableauDeBord");
+                        navigation.navigate("Profil");
                     };
                     const token = response.data.token;
                     setUser(response.data.user);
