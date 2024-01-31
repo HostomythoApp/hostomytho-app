@@ -104,7 +104,7 @@ const ContentProfileScreen = (props: any) => {
             <View style={tw('flex-col')}>
                 <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col mt-2') : tw('flex-row mt-8')]}>
                     <View style={[tw('mt-0'), isMobile ? tw('w-full mr-0 mb-4') : tw('w-2/4 mr-2')]}>
-                        <Text style={tw('text-xl font-bold mb-2 pl-2 text-white font-primary')}>Classement</Text>
+                        <Text style={tw('text-xl font-bold mb-2 pl-2 text-white font-primary')}>Classement général</Text>
 
                         <View style={tw('bg-white mb-2 py-4 rounded-lg')}>
                             {ranking[0]?.ranking > 1 && (
@@ -210,7 +210,7 @@ const ContentProfileScreen = (props: any) => {
                         ) : null}
                         <TouchableOpacity onPress={() => navigation.navigate('HautsFaits')} style={tw('p-2 pb-2 pt-1 mt-1 bg-white rounded-lg')}>
                             {userAchievements.length === 0 ? (
-                                <Text style={tw('font-primary')}>Aucun haut fait pour le moment</Text>
+                                <Text style={tw('font-primary text-center')}>Aucun haut fait pour le moment</Text>
 
                             ) : null}
                             <Text style={tw('text-center text-lg')}

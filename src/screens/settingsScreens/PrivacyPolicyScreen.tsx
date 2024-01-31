@@ -16,7 +16,7 @@ const PrivacyPolicysScreen = ({ }) => {
 
                         <View style={{ ...tw('mb-2 p-6 mx-4 max-w-6xl rounded-lg'), backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
                             <Text style={tw('font-primary text-lg')}>
-                                HostoMytho est un jeu gratuit créé dans le cadre d'un projet de recherche par Karën Fort, Bruno Guillaume et Bertrand REMY au sein du LORIA, avec l'aide d'Aurélie Névéol et Nicolas Hiebel. L'objet de ce projet est la construction de corpus annotés de qualité, pour des applications de traitement automatique de la langue (TAL). Ces données sont le produit de l'activité des joueurs de HostoMytho.
+                                HostoMytho est un jeu gratuit créé dans le cadre d'un projet de recherche par Karën Fort, Bruno Guillaume et Bertrand REMY au sein du LORIA, avec l'aide d'Aurélie Névéol et Nicolas Hiebel, et la participation de Jules Steelandt . L'objet de ce projet est la construction de corpus annotés de qualité, pour des applications de traitement automatique de la langue (TAL). Ces données sont le produit de l'activité des joueurs de HostoMytho.
                                 {"\n\n"}
                                 Les données sont accessibles sous des licences libres variées (fonction de la licence de la ressource d'origine), qui sont précisées dans chaque ressource. Le code source de ZombiLingo est librement disponible sur GitHub sous licence CeCILL 2.1.
                                 {"\n\n"}

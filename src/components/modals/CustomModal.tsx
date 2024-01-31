@@ -3,7 +3,7 @@ import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import { useTailwind } from "tailwind-rn";
 import { AntDesign } from '@expo/vector-icons';
 
-const CustomModal = ({ isVisible, onClose, children }: { isVisible: boolean, onClose: any, children: any }) => {
+const CustomModal = ({ isVisible, onClose, children }: { isVisible: boolean, onClose?: any, children: any }) => {
     const translateY = useRef(new Animated.Value(300)).current;
     const tw = useTailwind();
 
@@ -43,23 +43,24 @@ const CustomModal = ({ isVisible, onClose, children }: { isVisible: boolean, onC
                     maxWidth: 700,
                     margin: 20
                 }}>
-                <TouchableOpacity
-                    onPress={onClose}
-                    style={[tw('absolute top-0 right-0 z-10 rounded-full h-8 w-8 justify-center items-center'), {
-                        transform: [{ translateX: 13 }, { translateY: -12 }],
-                        backgroundColor: 'transparent'
-                    }]}
-                >
-                    <View style={[tw('absolute rounded-full'), {
-                        height: 26,
-                        width: 26,
-                        backgroundColor: 'white',
-                        zIndex: 1
-                    }]} />
+                {onClose && (
+                    <TouchableOpacity
+                        onPress={onClose}
+                        style={[tw('absolute top-0 right-0 z-10 rounded-full h-8 w-8 justify-center items-center'), {
+                            transform: [{ translateX: 13 }, { translateY: -12 }],
+                            backgroundColor: 'transparent'
+                        }]}
+                    >
+                        <View style={[tw('absolute rounded-full'), {
+                            height: 26,
+                            width: 26,
+                            backgroundColor: 'white',
+                            zIndex: 1
+                        }]} />
 
-                    <AntDesign name="closecircle" size={31} color="seagreen" style={{ zIndex: 2 }} />
-                </TouchableOpacity>
-
+                        <AntDesign name="closecircle" size={31} color="seagreen" style={{ zIndex: 2 }} />
+                    </TouchableOpacity>
+                )}
                 <TouchableOpacity
                     activeOpacity={1}
                     onPress={e => e.stopPropagation()}

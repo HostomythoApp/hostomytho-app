@@ -25,7 +25,7 @@ export const signUpUser = async (user: Partial<User>) => {
   try {
     const defaultValues = {
       points: 0,
-      trust_index: 0,
+      trust_index: 50,
       theme: "default",
       notifications_enabled: true,
       consecutiveDaysPlayed: 1,

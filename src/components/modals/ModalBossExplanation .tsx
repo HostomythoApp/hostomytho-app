@@ -9,7 +9,7 @@ const ModalStates = {
     DISAPPEAR: 'disappear',
 };
 
-const ModalBossExplanation = ({ isVisible, onClose, children }: { isVisible: boolean, onClose: any, children: any }) => {
+const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress }: { isVisible: boolean, onClose: any, children: any, tutorial_progress?: number }) => {
     const translateX = useRef(new Animated.Value(1000)).current;
     const bubbleOpacity = useRef(new Animated.Value(0)).current;
     const [bubbleVisible, setBubbleVisible] = useState(false);
@@ -21,13 +21,13 @@ const ModalBossExplanation = ({ isVisible, onClose, children }: { isVisible: boo
 
     if (screenWidth <= 768) { // Tablettes petites
         imageSize = { width: 120, height: 230 };
-        bubbleHeight = {paddingBottom: 130};
+        bubbleHeight = { paddingBottom: 130 };
     } else if (screenWidth <= 1024) { // Tablettes grandes
         imageSize = { width: 160, height: 300 };
-        bubbleHeight = {paddingBottom: 180};
+        bubbleHeight = { paddingBottom: 180 };
     } else { // Ordinateurs
         imageSize = { width: 220, height: 370 };
-        bubbleHeight = {paddingBottom: 220};
+        bubbleHeight = { paddingBottom: 220 };
     }
     useEffect(() => {
         if (isVisible) {
@@ -77,16 +77,38 @@ const ModalBossExplanation = ({ isVisible, onClose, children }: { isVisible: boo
         setModalState(ModalStates.DISAPPEAR);
         setTimeout(onClose, 500);
     };
-
     const handleModalClick = async () => {
-        incrementTutorialProgress();
+        // Faire disparaître la bulle
+        Animated.timing(bubbleOpacity, {
+            toValue: 0,
+            duration: 130,
+            useNativeDriver: true,
+        }).start(async () => {
+            await incrementTutorialProgress();
+            console.log(tutorial_progress);
+
+            if (tutorial_progress === 5 || tutorial_progress === 9) {
+                // Si à l'étape 5, déclencher l'état DISAPPEAR
+                setModalState(ModalStates.DISAPPEAR);
+            } else {
+                // Sinon, faire réapparaître la bulle après un délai
+                setTimeout(() => {
+                    Animated.timing(bubbleOpacity, {
+                        toValue: 1,
+                        duration: 130,
+                        useNativeDriver: true,
+                    }).start();
+                }, 500);
+            }
+        });
     };
+
 
     if (!isVisible) {
         return null;
     }
     return (
-        <TouchableOpacity style={tw('absolute inset-0 w-full h-full')} activeOpacity={1} onPress={handleModalClick}>
+        <TouchableOpacity style={tw('absolute inset-0 w-full h-full z-20 overflow-hidden')} activeOpacity={1} onPress={handleModalClick}>
 
             <Animated.View
                 style={{
@@ -100,10 +122,10 @@ const ModalBossExplanation = ({ isVisible, onClose, children }: { isVisible: boo
             >
 
                 {bubbleVisible && (
-                    <Animated.View 
-                    
-                    style={[{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 500 }, bubbleHeight]}
-                    
+                    <Animated.View
+
+                        style={[{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 500 }, bubbleHeight]}
+
                     >
 
                         <View style={[tw('p-3 rounded-lg bg-white'),

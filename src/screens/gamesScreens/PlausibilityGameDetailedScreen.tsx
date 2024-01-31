@@ -639,7 +639,7 @@ const PlausibilityGameDetailedScreen = () => {
                     scrollViewRef.current?.scrollToEnd({ animated: true });
                   }}
                 >
-                  <MaterialIcons name="arrow-downward" size={25} color="white"/>
+                  <MaterialIcons name="arrow-downward" size={25} color="white" />
                   <Text style={tw('font-primary text-white mr-1')}>
                     Annotations
                   </Text>

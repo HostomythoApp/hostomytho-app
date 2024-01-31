@@ -35,6 +35,7 @@ const MainBoardScreen = ({ }) => {
     const [isBossVisible, setIsBossVisible] = useState(false);
     const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [tutorialProgress, setTutorialProgress] = useState(0);
     const [loadedImagesCount, setLoadedImagesCount] = useState(0);
     const [loadedStates, setLoadedStates] = useState(Array(8).fill(false));
     const [userNeedsUpdate, setUserNeedsUpdate] = useState(true);
@@ -62,6 +63,10 @@ const MainBoardScreen = ({ }) => {
                 } catch (error) {
                     console.error('Error updating user data', error);
                 } finally {
+                    if (user.tutorial_progress <= 5) {
+                        console.log("redirection");
+                        navigation.navigate("Profil");
+                    }
                     setIsLoading(false);
                     setUserNeedsUpdate(false); // Mise à jour terminée
                 }
@@ -75,17 +80,20 @@ const MainBoardScreen = ({ }) => {
     useEffect(() => {
         if (user && !userNeedsUpdate) {
             const tutorialProgress = user.tutorial_progress;
+            setTutorialProgress(user.tutorial_progress);
             console.log(tutorialProgress);
-            if (tutorialProgress < 6) {
+            if (tutorialProgress > 5 && tutorialProgress < 10) {
                 setIsBossVisible(true);
                 const tutorialContent = getTutorialContentForStep(tutorialProgress, tw);
                 setModalContent(tutorialContent);
             } else {
-                setIsBossVisible(false);
+                setTimeout(() => {
+                    setIsBossVisible(false);
+                }, 500);
             }
         }
-    }, [user, userNeedsUpdate]); 
-    
+    }, [user, userNeedsUpdate]);
+
 
     useEffect(() => {
         const fetchTutorials = async () => {
@@ -475,6 +483,7 @@ const MainBoardScreen = ({ }) => {
                 <ModalBossExplanation
                     isVisible={isBossVisible}
                     onClose={handleCloseModal}
+                    tutorial_progress={tutorialProgress}
                 >
                     {modalContent}
                 </ModalBossExplanation>

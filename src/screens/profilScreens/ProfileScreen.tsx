@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { TouchableOpacity, Text, View, ScrollView, Dimensions, ImageBackground, Image } from 'react-native';
+import { TouchableOpacity, Text, View, ScrollView, Dimensions, ImageBackground, Image, Linking } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
@@ -14,10 +14,13 @@ import { characterImagesMapping } from 'utils/characterImagesMapping';
 import { getTutorialContentForStep } from 'tutorials/tutorialGeneral';
 import ModalBossExplanation from 'components/modals/ModalBossExplanation ';
 import Loader from 'components/Loader';
+import CustomModal from 'components/modals/CustomModal';
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "navigation/Types";
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
-    const { user, updateStorageUserFromAPI, equippedSkins } = useUser();
+    const { user, updateStorageUserFromAPI, equippedSkins, incrementTutorialProgress } = useUser();
 
     const window = Dimensions.get('window');
     const isMobile = window.width < 768;
@@ -26,7 +29,9 @@ const ProfileScreen = (props: any) => {
     const [isBossVisible, setIsBossVisible] = useState(false);
     const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
     const contentProfileScreenRef = useRef(null);
+    const navigation = useNavigation<RootStackNavigationProp<"PolitiqueDeConfidentialite">>();
     // @ts-ignore
     const characterImage = characterImagesMapping[user?.gender || 'homme'][user?.color_skin || 'clear'];
 
@@ -48,7 +53,6 @@ const ProfileScreen = (props: any) => {
                 } finally {
                     setIsLoading(false);
                     setUserNeedsUpdate(false);
-
                 }
             }
         };
@@ -61,14 +65,19 @@ const ProfileScreen = (props: any) => {
         if (user && !userNeedsUpdate) {
             const tutorialProgress = user.tutorial_progress;
             console.log(tutorialProgress);
-            if (tutorialProgress > 5 && tutorialProgress < 10) {
-                console.log("on affiche le boss");
+            if (tutorialProgress == 0) {
+                console.log("affichage modal");
 
+                setIsHelpModalVisible(true);
+            } else if (tutorialProgress > 0 && tutorialProgress < 6) {
+                console.log("on affiche le boss");
                 setIsBossVisible(true);
                 const tutorialContent = getTutorialContentForStep(tutorialProgress, tw);
                 setModalContent(tutorialContent);
             } else {
-                setIsBossVisible(false);
+                setTimeout(() => {
+                    setIsBossVisible(false);
+                }, 500);
             }
         }
     }, [user, userNeedsUpdate]);
@@ -77,9 +86,13 @@ const ProfileScreen = (props: any) => {
         setViewMode(viewMode === 'profile' ? 'skinsManagement' : 'profile');
     };
 
-    const handleCloseModal = () => {
-        console.log("prout");
+    const acceptPrivacyPolicy = () => {
+        console.log("accepter");
+        incrementTutorialProgress();
+    };
 
+    const handleCloseModal = () => {
+        console.log("handleCloseModal");
     };
 
     return (
@@ -89,8 +102,9 @@ const ProfileScreen = (props: any) => {
             resizeMode="cover"
         >
             {isLoading && <Loader />}
-
-            <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' />
+            {user && user.tutorial_progress > 4 && (
+                <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' />
+            )}
             <View style={tw('flex-1 flex-row items-start justify-start relative')}>
                 {!isMobile &&
                     <View style={tw('w-1/4 h-3/4 mb-10 ml-0 mr-auto mt-auto items-end justify-center')}>
@@ -112,40 +126,87 @@ const ProfileScreen = (props: any) => {
                     </View>
                 }
                 <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center z-20")} style={[tw('w-3/5 h-full'), { marginright: '5%' }]}>
-                    {viewMode === 'profile' ?
-                        <ContentProfileScreen user={user} />
-                        :
-                        <SkinsManagementScreen user={user} />
-                    }
+                    {user && user.tutorial_progress > 1 ? (
+                        viewMode === 'profile' ?
+                            <ContentProfileScreen user={user} />
+                            :
+                            <SkinsManagementScreen user={user} />
+                    ) : (
+                        <View>
+                        </View>
+                    )}
                 </ScrollView>
 
                 <TouchableOpacity
                     onPress={toggleViewMode} // Bascule entre les modes
                     style={tw('absolute bottom-0 left-0 min-w-[50px] min-h-[50px] max-h-[100px] justify-end')}
                 >
-                    {viewMode === 'profile' ?
-                        <View style={tw('bg-black bg-opacity-50 rounded-tr-lg w-full h-full justify-center items-center flex-row')}>
-                            <AntDesign name="skin" size={30} color="#ffffff" style={tw('m-1')} />
-                            <Text style={tw('text-white font-primary ml-1 mr-3 text-lg')}
-                            >Changer d'apparence</Text>
-                        </View>
-                        :
-                        <View style={tw('bg-black bg-opacity-50 rounded-tr-lg w-full h-full justify-center items-center flex-row')}>
-                            <Ionicons name="chevron-back" size={34} color="#ffffff" />
+                    {user && user.tutorial_progress > 3 ? (
+                        viewMode === 'profile' ?
+                            <View style={tw('bg-black bg-opacity-50 rounded-tr-lg w-full h-full justify-center items-center flex-row')}>
+                                <AntDesign name="skin" size={30} color="#ffffff" style={tw('m-1')} />
+                                <Text style={tw('text-white font-primary ml-1 mr-3 text-lg')}
+                                >Changer d'apparence</Text>
+                            </View>
+                            :
+                            <View style={tw('bg-black bg-opacity-50 rounded-tr-lg w-full h-full justify-center items-center flex-row')}>
+                                <Ionicons name="chevron-back" size={34} color="#ffffff" />
 
-                            <Text style={tw('text-white font-primary ml-1 mr-3 text-lg')}
-                            >Retour au profil</Text>
+                                <Text style={tw('text-white font-primary ml-1 mr-3 text-lg')}
+                                >Retour au profil</Text>
+                            </View>
+                    ) : (
+                        <View>
                         </View>
-                    }
+                    )}
                 </TouchableOpacity>
             </View>
 
             <ModalBossExplanation
                 isVisible={isBossVisible}
                 onClose={handleCloseModal}
+                tutorial_progress={user.tutorial_progress}
             >
                 {modalContent}
             </ModalBossExplanation>
+
+            <CustomModal
+                isVisible={isHelpModalVisible}
+            >
+                <View style={tw('flex-1')}>
+                    <ScrollView style={[tw('flex-1, max-w-lg'), { maxHeight: window.height * 0.9 }]}>
+                        <Text style={tw('text-center text-lg font-primary mb-4')}>
+                            À lire attentivement</Text>
+
+                        <Text style={tw('font-primary mb-4 text-center')}>
+                            HostoMytho est un jeu ayant un but. Les données que vous produisez en jouant seront données à la science et seront sous licence
+                            <Text style={tw('text-blue-500')} onPress={() => Linking.openURL('https://coop-ist.cirad.fr/etre-auteur/utiliser-les-licences-creative-commons/4-les-6-licences-cc')}>
+                                {" CC-by-NC 4.0"}.
+                            </Text>
+                        </Text>
+
+                        <Text style={tw('font-primary mb-4 text-center')}>
+                            Pour jouer au jeu, vous devez accepter notre politique de confidentialité.{"\n"} Pour la lire, veuillez cliquer sur le bouton suivant :
+                        </Text>
+
+                        <TouchableOpacity onPress={() => navigation.navigate("PolitiqueDeConfidentialite")} style={tw('bg-primary py-2 px-4 rounded self-center mb-4')}>
+                            <Text style={tw('text-white font-bold text-center font-primary')}>Politique de confidentialité</Text>
+                        </TouchableOpacity>
+
+                        <Text style={tw('font-primary mb-4 text-center')}>
+                            Touchez le bouton Ok pour l'accepter.
+                        </Text>
+
+                        <TouchableOpacity onPress={() => {
+                            acceptPrivacyPolicy();
+                            setIsHelpModalVisible(false);
+                        }} style={tw('bg-primary py-2 px-8 rounded self-center')}>
+                            <Text style={tw('text-white font-bold text-center font-primary')}>Ok</Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+                </View>
+
+            </CustomModal>
         </ImageBackground>
     );
 };
