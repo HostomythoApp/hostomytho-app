@@ -64,13 +64,11 @@ const ProfileScreen = (props: any) => {
     useEffect(() => {
         if (user && !userNeedsUpdate) {
             const tutorialProgress = user.tutorial_progress;
-            console.log(tutorialProgress);
+    
             if (tutorialProgress == 0) {
-                console.log("affichage modal");
-
                 setIsHelpModalVisible(true);
+                setIsBossVisible(false);  // Assurez-vous que le boss est caché à cette étape
             } else if (tutorialProgress > 0 && tutorialProgress < 6) {
-                console.log("on affiche le boss");
                 setIsBossVisible(true);
                 const tutorialContent = getTutorialContentForStep(tutorialProgress, tw);
                 setModalContent(tutorialContent);
@@ -81,18 +79,16 @@ const ProfileScreen = (props: any) => {
             }
         }
     }, [user, userNeedsUpdate]);
-
+    
     const toggleViewMode = () => {
         setViewMode(viewMode === 'profile' ? 'skinsManagement' : 'profile');
     };
 
     const acceptPrivacyPolicy = () => {
-        console.log("accepter");
         incrementTutorialProgress();
     };
 
     const handleCloseModal = () => {
-        console.log("handleCloseModal");
     };
 
     return (
@@ -103,7 +99,7 @@ const ProfileScreen = (props: any) => {
         >
             {isLoading && <Loader />}
             {user && user.tutorial_progress > 4 && (
-                <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' />
+                <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' backToMain={true} />
             )}
             <View style={tw('flex-1 flex-row items-start justify-start relative')}>
                 {!isMobile &&
@@ -131,10 +127,7 @@ const ProfileScreen = (props: any) => {
                             <ContentProfileScreen user={user} />
                             :
                             <SkinsManagementScreen user={user} />
-                    ) : (
-                        <View>
-                        </View>
-                    )}
+                    ) : null}
                 </ScrollView>
 
                 <TouchableOpacity
@@ -155,16 +148,14 @@ const ProfileScreen = (props: any) => {
                                 <Text style={tw('text-white font-primary ml-1 mr-3 text-lg')}
                                 >Retour au profil</Text>
                             </View>
-                    ) : (
-                        <View>
-                        </View>
-                    )}
+                    ) : null}
                 </TouchableOpacity>
             </View>
 
             <ModalBossExplanation
                 isVisible={isBossVisible}
                 onClose={handleCloseModal}
+                // @ts-ignore
                 tutorial_progress={user.tutorial_progress}
             >
                 {modalContent}

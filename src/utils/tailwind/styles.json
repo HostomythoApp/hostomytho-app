@@ -785,11 +785,6 @@
 			"justifyContent": "space-evenly"
 		}
 	},
-	"self-end": {
-		"style": {
-			"alignSelf": "flex-end"
-		}
-	},
 	"self-center": {
 		"style": {
 			"alignSelf": "center"
@@ -1427,6 +1422,12 @@
 			"paddingRight": 24
 		}
 	},
+	"px-8": {
+		"style": {
+			"paddingLeft": 32,
+			"paddingRight": 32
+		}
+	},
 	"py-0": {
 		"style": {
 			"paddingTop": 0,
@@ -1467,24 +1468,6 @@
 		"style": {
 			"paddingTop": 24,
 			"paddingBottom": 24
-		}
-	},
-	"px-8": {
-		"style": {
-			"paddingLeft": 32,
-			"paddingRight": 32
-		}
-	},
-	"px-24": {
-		"style": {
-			"paddingLeft": 96,
-			"paddingRight": 96
-		}
-	},
-	"px-20": {
-		"style": {
-			"paddingLeft": 80,
-			"paddingRight": 80
 		}
 	},
 	"pb-0": {

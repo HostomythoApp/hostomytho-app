@@ -64,11 +64,10 @@ const MainBoardScreen = ({ }) => {
                     console.error('Error updating user data', error);
                 } finally {
                     if (user.tutorial_progress <= 5) {
-                        console.log("redirection");
                         navigation.navigate("Profil");
                     }
                     setIsLoading(false);
-                    setUserNeedsUpdate(false); // Mise à jour terminée
+                    setUserNeedsUpdate(false);
                 }
             }
         };
@@ -80,11 +79,10 @@ const MainBoardScreen = ({ }) => {
     useEffect(() => {
         if (user && !userNeedsUpdate) {
             const tutorialProgress = user.tutorial_progress;
-            setTutorialProgress(user.tutorial_progress);
-            console.log(tutorialProgress);
+            setTutorialProgress(tutorialProgress);
             if (tutorialProgress > 5 && tutorialProgress < 10) {
                 setIsBossVisible(true);
-                const tutorialContent = getTutorialContentForStep(tutorialProgress, tw);
+                const tutorialContent = getTutorialContentForStep(tutorialProgress, tw, navigation);
                 setModalContent(tutorialContent);
             } else {
                 setTimeout(() => {
@@ -433,21 +431,23 @@ const MainBoardScreen = ({ }) => {
                         </View>
 
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate("Parametres")}
-                        style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
-                        <View style={{
-                            backgroundColor: "rgba(0,0,0,0.5)",
-                            borderBottomRightRadius: 30,
-                            width: '100%',
-                            height: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}>
-                            <Image source={require('images/settings1.png')} resizeMode="contain"
-                                style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
-                        </View>
-                    </TouchableOpacity>
+                    {user && user.tutorial_progress > 7 ? (
 
+                        <TouchableOpacity onPress={() => navigation.navigate("Parametres")}
+                            style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
+                            <View style={{
+                                backgroundColor: "rgba(0,0,0,0.5)",
+                                borderBottomRightRadius: 30,
+                                width: '100%',
+                                height: '100%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <Image source={require('images/settings1.png')} resizeMode="contain"
+                                    style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
+                            </View>
+                        </TouchableOpacity>
+                    ) : null}
 
                     {!authState.isAuthenticated &&
                         <View style={[tw("absolute bottom-2 right-2")]}>

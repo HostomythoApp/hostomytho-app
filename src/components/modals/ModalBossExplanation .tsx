@@ -40,23 +40,29 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
     useEffect(() => {
         switch (modalState) {
             case ModalStates.APPEAR:
-                Animated.timing(translateX, {
-                    toValue: 0,
-                    duration: 400,
-                    useNativeDriver: true,
-                }).start(() => {
-                    setTimeout(() => {
-                        setBubbleVisible(true);
-                        Animated.timing(bubbleOpacity, {
-                            toValue: 1,
-                            duration: 130,
-                            useNativeDriver: true,
-                        }).start();
-                    }, 500);
-                });
+                if (isVisible && modalState === ModalStates.APPEAR) {
+                    // Début de l'animation pour faire apparaître le personnage
+                    Animated.timing(translateX, {
+                        toValue: 0,
+                        duration: 400,
+                        useNativeDriver: true,
+                    }).start(() => {
+                        // Retarder l'apparition de la bulle
+                        setTimeout(() => {
+                            setBubbleVisible(true);
+                            // Animation pour faire apparaître la bulle
+                            Animated.timing(bubbleOpacity, {
+                                toValue: 1,
+                                duration: 130,
+                                useNativeDriver: true,
+                            }).start();
+                        }, 1000); // Délai augmenté à 1 seconde
+                    });
+                } else if (!isVisible && modalState !== ModalStates.DISAPPEAR) {
+                    setModalState(ModalStates.DISAPPEAR);
+                }
                 break;
             case ModalStates.STAY:
-                // Logic to keep the modal in place
                 break;
             case ModalStates.DISAPPEAR:
                 Animated.timing(translateX, {
@@ -71,7 +77,7 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
             default:
                 break;
         }
-    }, [modalState, translateX, bubbleOpacity]);
+    }, [isVisible, modalState, translateX, bubbleOpacity]);
 
     const handleClose = () => {
         setModalState(ModalStates.DISAPPEAR);
@@ -85,8 +91,6 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
             useNativeDriver: true,
         }).start(async () => {
             await incrementTutorialProgress();
-            console.log(tutorial_progress);
-
             if (tutorial_progress === 5 || tutorial_progress === 9) {
                 // Si à l'étape 5, déclencher l'état DISAPPEAR
                 setModalState(ModalStates.DISAPPEAR);
@@ -98,7 +102,7 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
                         duration: 130,
                         useNativeDriver: true,
                     }).start();
-                }, 500);
+                }, 400);
             }
         });
     };

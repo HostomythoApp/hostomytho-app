@@ -458,9 +458,7 @@ const PlausibilityGameDetailedScreen = () => {
   };
 
   const returnToChoicePlausibility = async () => {
-    console.log("returnPlausibility");
     setErrorSpecifying(false);
-
   };
 
   const goToNextSentence = async (isCorrect = false) => {
