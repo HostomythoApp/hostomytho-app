@@ -170,7 +170,7 @@ const SignUpScreen = () => {
                             >
                                 {({ handleChange, handleSubmit, values, errors, touched, setFieldValue }) => (
 
-                                    <View style={tw('w-full pt-5 px-2 max-w-5xl justify-center items-center')}>
+                                    <View style={tw('w-full px-2 max-w-5xl justify-center items-center')}>
 
                                         <Text> {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}</Text>
 
@@ -194,7 +194,7 @@ const SignUpScreen = () => {
 
                                         <View style={tw('p-4 w-auto')}>
 
-                                            <Text style={tw('text-2xl mb-4 font-primary')}>Choisissez votre personnage</Text>
+                                            <Text style={tw('text-lg mb-2 font-primary')}>Choisissez votre personnage</Text>
 
                                             <View style={tw('flex-row items-center self-center')}>
                                                 <TouchableOpacity onPress={() => changeCharacter('prev')}>

@@ -163,7 +163,7 @@ const TypeSentenceGameScreen = ({ }) => {
                   `m-0 p-[2px] ${word.isSelected ? colors[word.sentenceId % colors.length] : "bg-transparent"}`
                 )}
               >
-                <Text style={tw("text-2xl font-secondary")}>{word.text + " "}</Text>
+                <Text style={tw("text-2xl font-primary")}>{word.text + " "}</Text>
               </TouchableOpacity>
             ))}
           </View>

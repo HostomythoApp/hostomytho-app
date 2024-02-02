@@ -35,42 +35,49 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
             Lorsque vous pensez avoir identifié le criminel, vous pouvez tenter de l'arrêter dans la section "suspect". Soyez certain de votre choix, car une erreur pourrait sérieusement ralentir votre progression.
         </Text>;
 
-        case 8: return <Text style={tw('font-primary')}>
-            Consultez les règles complètes des enquêtes dans notre hôpital ici :
-            {"\n"}
-            <View style={tw('items-center w-full my-1')}>
-                <TouchableOpacity onPress={() => navigation.navigate("ReglesDuJeu")} style={tw('bg-primary py-2 px-4 rounded self-center')}>
-                    <Text style={tw('text-white font-bold text-center font-primary')}>Règles du Jeu</Text>
-                </TouchableOpacity>
-            </View>
-            {"\n"}
-            Vous pouvez également les retrouver en cliquant sur le bouton en haut à gauche.
-            {"\n"}
-            En cas de besoin, vous trouverez des boutons d'aide à divers endroits :
-            <View style={tw('items-center w-full my-1')}>
-                <TouchableOpacity style={tw('bg-[#BBF7D0] p-2 mr-2 text-center w-11 rounded-b-md')}>
-                    <Entypo name="help" size={16} color="#253529" style={tw('self-center')} />
-                </TouchableOpacity>
-            </View>
-        </Text>;
+        case 8:
+            return (
+                <Text style={tw('font-primary')}>
+                    Consultez les règles complètes des enquêtes dans notre hôpital ici :
+                    {"\n\n"}
+                    <TouchableOpacity onPress={() => navigation.navigate("ReglesDuJeu")} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+                        <Text style={tw('text-white font-bold text-center font-primary')}>Règles du Jeu</Text>
+                    </TouchableOpacity>
+                    {"\n"}
+                    Vous pouvez les retrouver en cliquant sur le bouton en haut à gauche.
+                </Text>
+            );
 
-        case 9: return <Text style={tw('font-primary')}>
-            {"Vous pouvez commencer par là où sont les icones de notifications  "}
-            <View style={{
-                borderRadius: 100,
-                backgroundColor: "rgb(223, 94, 28)",
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 17,
-                height: 18
-            }}>
-                <FontAwesome name="exclamation" size={15} color="white" />
+        case 9: return (
+            <View style={tw('font-primary')}>
+                <Text>
+                    En cas de besoin, vous trouverez des boutons d'aide à divers endroits :
+                </Text>
+
+                <View style={tw('items-center w-full my-2')}>
+                    <TouchableOpacity style={tw('bg-[#BBF7D0] p-2 mr-2 text-center w-11 rounded-b-md')}>
+                        <Entypo name="help" size={16} color="#253529" style={tw('self-center')} />
+                    </TouchableOpacity>
+                </View>
+                <Text style={tw('font-primary')}>
+                    Vous{" pouvez commencer par là où sont les icones de notifications  "}
+                    <View style={{
+                        borderRadius: 100,
+                        backgroundColor: "rgb(223, 94, 28)",
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 17,
+                        height: 18
+                    }}>
+                        <FontAwesome name="exclamation" size={15} color="white" />
+                    </View>
+                    {"\n"}
+                    Un collègue médecin vous orientera et évaluera vos compétences d'enquêteur.
+                    {"\n\n"}
+                    Bonne chance dans vos enquêtes !
+                </Text>
             </View>
-            {"\n"}
-            Un collègue médecin vous orientera et évaluera vos compétences d'enquêteur.
-            {"\n"}
-            Bonne chance dans vos enquêtes !
-        </Text>;
+        );
 
         default: return null;
     }

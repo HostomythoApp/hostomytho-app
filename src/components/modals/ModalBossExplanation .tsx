@@ -127,11 +127,8 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
 
                 {bubbleVisible && (
                     <Animated.View
-
                         style={[{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 500 }, bubbleHeight]}
-
                     >
-
                         <View style={[tw('p-3 rounded-lg bg-white'),
                         {
                             position: 'relative',

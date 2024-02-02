@@ -8,7 +8,6 @@ const fontAssets = {
   "SpringSnowstorm": require("./Spring-Snowstorm.ttf"),
   "HandleeRegular": require("./Handlee-Regular.ttf"),
   "PatrickHandRegular": require("./PatrickHand-Regular.ttf"),
-
   "BubblegumSans": require("./BubblegumSans-Regular.ttf"),
   "IrishGrover": require("./IrishGrover-Regular.ttf"),
   "MochiyPopOne": require("./MochiyPopOne-Regular.ttf"),

@@ -15,6 +15,7 @@ import Loader from "components/Loader";
 import { getTopMonthlyWinners } from "services/api/user";
 import { MonthlyWinner } from "models/MonthlyWinner";
 import { getTutorialContentForStep } from "tutorials/tutorialGeneral";
+import { responsiveFontSize } from "utils/functions";
 
 interface TutorialsCompleted {
     [key: string]: boolean;
@@ -174,14 +175,14 @@ const MainBoardScreen = ({ }) => {
 
                     <View style={StyleSheet.absoluteFill}>
                         <View style={StyleSheet.absoluteFill}>
-                            <TouchableOpacity onPress={() => navigation.navigate("Menu")}
+                            {/* <TouchableOpacity onPress={() => navigation.navigate("Menu")}
                                 style={{
                                     position: 'absolute',
                                     top: windowWidth > 768 ? '43%' : '43%',
                                     left: windowWidth > 768 ? '48%' : '48%',
                                 }}>
                                 <Image source={require('images/map.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 90, minHeight: 90 }} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
 
                             <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
@@ -190,17 +191,17 @@ const MainBoardScreen = ({ }) => {
                                     top: windowWidth > 768 ? '54%' : '54%',
                                     left: windowWidth > 768 ? '21%' : '21%',
                                 }}>
-                                <Image source={require('images/polaroid_inconnu.png')}
+                                <Image source={require('images/polaroid_inconnu_shadow.png')}
                                     onLoadEnd={loaderClose}
                                     style={{
-                                        width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 70, minHeight: 70,
-                                        shadowColor: 'black',
-                                        shadowOffset: { width: -1, height: 2 },
-                                        shadowOpacity: 0.4,
-                                        shadowRadius: 1,
+                                        width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 70, minHeight: 70,
                                     }}
                                     resizeMode="contain"
                                 />
+                                <Text style={{
+                                    ...tw('absolute bottom-[10%] w-full text-center font-secondary'),
+                                    fontSize: responsiveFontSize(17)
+                                }}>Suspect</Text>
                             </TouchableOpacity>
 
 
@@ -208,18 +209,19 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("Classement")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '54%' : '54%',
-                                    left: windowWidth > 768 ? '41%' : '41%',
+                                    top: windowWidth > 768 ? '52%' : '52%',
+                                    left: windowWidth > 768 ? '46%' : '46%',
                                 }}>
-                                <Image source={require('images/article.png')}
+                                <Image source={require('images/ranking.png')}
                                     onLoadEnd={loaderClose}
-                                    style={{
-                                        width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 70, minHeight: 70,
+                                    style={[{
+                                        width: windowWidth * 0.16, height: windowWidth * 0.16, minWidth: 70, minHeight: 70,
                                         shadowColor: 'black',
                                         shadowOffset: { width: -1, height: 2 },
                                         shadowOpacity: 0.4,
                                         shadowRadius: 1,
-                                    }}
+                                    },
+                                    ]}
                                     resizeMode="contain"
                                 />
                             </TouchableOpacity>
@@ -243,20 +245,30 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("MythoTypo")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '53%' : '53%',
-                                    left: windowWidth > 768 ? '68%' : '68%',
+                                    top: windowWidth > 768 ? '40%' : '40%',
+                                    left: windowWidth > 768 ? '33%' : '33%',
                                 }}>
                                 <View style={{ position: 'relative' }}>
                                     <Image
                                         resizeMode="contain"
-                                        source={require('images/paper_2.png')}
-                                        style={{ width: windowWidth * 0.12, height: windowWidth * 0.1, minWidth: 80, minHeight: 80 }}
+                                        source={require('images/postit_yellow.png')}
+                                        style={{
+                                            width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
+                                        }}
                                     />
+                                    <Text style={[tw('font-secondary absolute bottom-[37%] w-full text-center text-[#236087]'),
+                                    {
+                                        fontSize: responsiveFontSize(17)
+                                    }
+                                    ]}>
+                                        Mytho-Typo
+
+                                    </Text>
                                     {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] &&
                                         <IconNotification
                                             size={iconSize}
-                                            top="10%"
-                                            right="15%"
+                                            top="2%"
+                                            right="2%"
                                         />
                                     }
                                 </View>
@@ -266,24 +278,27 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("MythoOuPas")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '40%' : '40%',
-                                    left: windowWidth > 768 ? '30%' : '30%',
+
+                                    top: windowWidth > 768 ? '56%' : '56%',
+                                    left: windowWidth > 768 ? '68%' : '68%',
+                                    transform: [{ rotate: '4deg' }]
                                 }}>
-                                <Image source={require('images/postit_plausibility.png')}
+                                <Image source={require('images/postit_green.png')}
                                     style={{
                                         width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
-                                        shadowColor: 'black',
-                                        shadowOffset: { width: -0.8, height: 1.5 },
-                                        shadowOpacity: 0.4,
-                                        shadowRadius: 1,
                                     }}
                                     resizeMode="contain"
                                 />
+                                <Text style={{
+                                    ...tw('absolute bottom-[14%] left-[1px] w-full text-center font-secondary text-[#416B36]'),
+                                    fontSize: responsiveFontSize(20)
+                                }}>Mytho Ou {"\n"}
+                                    Pas</Text>
                                 {tutorialsCompleted && !tutorialsCompleted["MythoOuPas"] &&
                                     <IconNotification
                                         size={iconSize}
                                         top="1%"
-                                        right="1%"
+                                        right="0%"
                                     />
                                 }
                             </TouchableOpacity>
@@ -309,147 +324,199 @@ const MainBoardScreen = ({ }) => {
                                 style={{
                                     position: 'absolute',
                                     top: windowWidth > 768 ? '20%' : '20%',
-                                    left: windowWidth > 768 ? '40%' : '40%',
-                                }}>
-                                <Image source={require('images/postit_negation.png')} style={{
-                                    width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
-                                    shadowColor: 'black',
-                                    shadowOffset: { width: 1, height: 1 },
-                                    shadowOpacity: 0.5,
-                                    shadowRadius: 1,
+                                    left: windowWidth > 768 ? '43%' : '43%',
                                     transform: [{ rotate: '-8deg' }]
-                                }} />
+                                }}>
+                                <Image source={require('images/postit_pink.png')} style={{
+                                    width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
 
+                                }} />
+                                <Text style={{
+                                    ...tw('absolute bottom-[37%] w-full text-center font-secondary text-[#236087]'),
+                                    fontSize: responsiveFontSize(19)
+                                }}>Mytho-No</Text>
                                 {tutorialsCompleted && !tutorialsCompleted["MythoNo"] &&
                                     <IconNotification
                                         size={iconSize}
                                         top="-5%"
-                                        right="6%"
+                                        right="0%"
                                     />
                                 }
                             </TouchableOpacity>
 
+                            {/* Tableau des gagnants mensuels */}
                             <View style={{
-                                position: 'absolute',
+                                position: 'relative',
                                 top: '16.5%',
-                                left: windowWidth > 768 ? '63%' : '63%',
+                                left: windowWidth > 768 ? '60%' : '60%',
+                                width: windowWidth * 0.25,
+                                height: windowWidth * 0.16,
                             }}>
-                                <Image source={require('images/small_postit_month.png')} resizeMode="contain" style={{
-                                    height: windowWidth * 0.04, minWidth: 100, minHeight: 40,
-                                    shadowColor: 'black',
-                                    shadowOffset: { width: 1, height: 1 },
-                                    shadowOpacity: 0.5,
-                                    shadowRadius: 1,
-
+                                <Image source={require('images/tabs_winners.webp')} style={{
+                                    width: windowWidth * 0.25,
+                                    height: windowWidth * 0.16,
+                                    resizeMode: 'contain',
                                 }} />
 
-                                <View style={tw("top-0 left-0 right-0 mt-10")}>
-                                    <View style={tw("flex-row justify-center items-center")}>
-                                        <View
-                                            style={[tw('mx-2 p-1 bg-slate-50 border border-slate-200'),
-                                            { width: windowWidth * 0.06, minWidth: 80, minHeight: 40 }]}>
-                                            <Text style={tw("text-center text-xl font-MochiyPopOne text-[#FACE3B]")}>2ème</Text>
-                                            <Text style={tw("text-center font-semibold font-primary")}>{monthlyWinners[1]?.username}</Text>
-                                        </View>
+                                {/* Titre */}
+                                <Text style={[tw('font-secondary absolute text-center text-gray-800'),
+                                {
+                                    top: '9%',
+                                    width: '100%',
+                                    fontSize: responsiveFontSize(16),
+                                }]}>
+                                    Enquêteurs du mois
+                                </Text>
 
-                                        <View style={[tw('mx-2 p-1 bg-slate-50 border border-slate-200'),
-                                        { width: windowWidth * 0.06, minWidth: 80, minHeight: 40 }]}>
-                                            <Text style={tw("text-center text-xl font-MochiyPopOne text-[#FCD903] font-bold")}>1er</Text>
-                                            <Text style={tw("text-center font-semibold font-primary")}>{monthlyWinners[0]?.username}</Text>
-                                        </View>
 
-                                        <View style={[tw('mx-2 p-1 bg-slate-50 border border-slate-200'),
-                                        { width: windowWidth * 0.06, minWidth: 80, minHeight: 40 }]}>
-                                            <Text style={tw("text-center text-xl font-MochiyPopOne text-[#F9B784] font-bold")}>3ème</Text>
-                                            <Text style={tw("text-center font-semibold font-primary")}>{monthlyWinners[2]?.username}</Text>
-                                        </View>
+                                {/* Zone du Joueur 2 */}
+                                <View style={{
+                                    position: 'absolute',
+                                    top: '42%',
+                                    left: '11%',
+                                    padding: 5,
+                                    paddingBottom: 0,
+                                    maxWidth: '36%',
+                                    minWidth: 20,
+                                    backgroundColor: "white",
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 5,
+                                    width: 500
+                                }}>
+                                    <TouchableOpacity style={tw('text-center z-10')}>
+                                        <Text style={{
+                                            ...tw('font-secondary text-center'),
+                                            fontSize: responsiveFontSize(14),
+                                        }}>
+                                            {monthlyWinners[1]?.username}
+                                        </Text>
+                                        <Image source={require('images/ranking_2.png')} style={{
+                                            width: windowWidth * 0.03,
+                                            height: windowWidth * 0.03,
+                                            resizeMode: 'contain',
+                                            alignSelf: 'center'
+                                        }} />
+                                    </TouchableOpacity>
+                                </View>
+
+                                {/* Zone du Joueur 3 */}
+                                <View style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    right: '12%',
+                                    padding: 5,
+                                    paddingBottom: 0,
+                                    maxWidth: '36%',
+                                    backgroundColor: "white",
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 5,
+                                    // Revoir taille ici
+                                    width: 500
+                                }}>
+                                    <TouchableOpacity style={tw('text-center z-10')}>
+                                        <Text style={{
+                                            ...tw('font-secondary text-center'),
+                                            fontSize: responsiveFontSize(14),
+                                        }}>
+                                            {monthlyWinners[2]?.username}
+                                        </Text>
+                                        <Image source={require('images/ranking_3.png')} style={{
+                                            width: windowWidth * 0.03,
+                                            height: windowWidth * 0.03,
+                                            resizeMode: 'contain',
+                                            alignSelf: 'center'
+                                        }} />
+                                    </TouchableOpacity>
+                                </View>
+
+                                {/* Zone du Joueur 1 */}
+                                <View style={tw('absolute w-full top-[25%]')}
+                                >
+                                    <View style={{
+                                        position: 'absolute',
+                                        padding: 5,
+                                        paddingBottom: 0,
+                                        maxWidth: '36%',
+                                        backgroundColor: "white",
+                                        borderWidth: 1,
+                                        borderColor: 'gray',
+                                        borderRadius: 5,
+                                        alignSelf: 'center',
+                                        width: 500
+                                    }}>
+                                        <TouchableOpacity style={tw('text-center z-10')}>
+                                            <Text style={{
+                                                ...tw('font-secondary text-center'),
+                                                fontSize: responsiveFontSize(14),
+                                            }}>
+                                                {monthlyWinners[0]?.username}
+                                            </Text>
+                                            <Image source={require('images/ranking_1.png')} style={{
+                                                width: windowWidth * 0.03,
+                                                height: windowWidth * 0.03,
+                                                resizeMode: 'contain',
+                                                alignSelf: 'center'
+                                            }} />
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
 
-
-                                {/* <View
-                                    style={tw("flex-row")}>
-                                    <TouchableOpacity style={tw('mt-2')}
-                                    >
-                                        <Image source={require('images/polaroid_character_3.png')} style={{
-                                            width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 60, minHeight: 60,
-                                            shadowColor: 'black',
-                                            shadowOffset: { width: 1, height: 1 },
-                                            shadowOpacity: 0.5,
-                                            shadowRadius: 1,
-                                        }} />
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={tw('mr-[-18px] ml-[-18px] z-10')}
-                                    >
-                                        <Image source={require('images/polaroid_character_2.png')} style={{
-                                            width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 60, minHeight: 60,
-                                            shadowColor: 'black',
-                                            shadowOffset: { width: 1, height: 1 },
-                                            shadowOpacity: 0.5,
-                                            shadowRadius: 1,
-                                        }} />
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={tw('mt-4')}>
-                                        <Image source={require('images/polaroid_character_1.png')} style={{
-                                            width: windowWidth * 0.08, height: windowWidth * 0.08, minWidth: 60, minHeight: 60,
-                                            shadowColor: 'black',
-                                            shadowOffset: { width: 1, height: 1 },
-                                            shadowOpacity: 0.5,
-                                            shadowRadius: 1,
-                                        }} />
-                                    </TouchableOpacity>
-                                </View> */}
                             </View>
 
                             <TouchableOpacity onPress={() => navigation.navigate("Criminels")}
                                 style={{
                                     position: 'absolute',
-                                    top: '17%',
-                                    left: '21%',
+                                    top: '16.2%',
+                                    left: '20%',
                                     flexDirection: 'row',
 
                                 }}>
-                                <Image source={require('images/suspects/suspect_identification_2.png')} style={{
-                                    width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 65, minHeight: 65,
+                                {/* Baisser taille image */}
+                                <Image source={require('images/pocket_with_photo.png')} style={{
+                                    width: windowWidth * 0.13, height: windowWidth * 0.13, minWidth: 65, minHeight: 65,
                                     shadowColor: 'black',
                                     shadowOffset: { width: 1, height: 1 },
                                     shadowOpacity: 0.5,
                                     shadowRadius: 1,
                                     resizeMode: 'contain',
                                 }} />
-                                <Image source={require('images/suspects/suspect_identification_1.png')} style={{
-                                    width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 65, minHeight: 65,
-                                    shadowColor: 'black',
-                                    shadowOffset: { width: 1, height: 1 },
-                                    shadowOpacity: 0.5,
-                                    shadowRadius: 1,
-                                    resizeMode: 'contain',
-                                    transform: [{ translateX: -25 }, { translateY: 10 }]
-                                }} />
+                                {/* <Text style={[tw('font-secondary absolute bottom-[47%] w-full text-center text-gray-400 '),
+                                {
+                                    fontSize: responsiveFontSize(14),
+                                    // transform: [{ rotate: '-40deg' }]
+                                }
+                                ]}>
+                                   Criminels arrêtés
+                                </Text> */}
                             </TouchableOpacity>
 
                         </View>
 
                     </View>
-                    {user && user.tutorial_progress > 7 ? (
+                    {
+                        user && user.tutorial_progress > 7 ? (
 
-                        <TouchableOpacity onPress={() => navigation.navigate("Parametres")}
-                            style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
-                            <View style={{
-                                backgroundColor: "rgba(0,0,0,0.5)",
-                                borderBottomRightRadius: 30,
-                                width: '100%',
-                                height: '100%',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}>
-                                <Image source={require('images/settings1.png')} resizeMode="contain"
-                                    style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
-                            </View>
-                        </TouchableOpacity>
-                    ) : null}
+                            <TouchableOpacity onPress={() => navigation.navigate("Parametres")}
+                                style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
+                                <View style={{
+                                    backgroundColor: "rgba(0,0,0,0.5)",
+                                    borderBottomRightRadius: 30,
+                                    width: '100%',
+                                    height: '100%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Image source={require('images/settings1.png')} resizeMode="contain"
+                                        style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
+                                </View>
+                            </TouchableOpacity>
+                        ) : null
+                    }
 
-                    {!authState.isAuthenticated &&
+                    {
+                        !authState.isAuthenticated &&
                         <View style={[tw("absolute bottom-2 right-2")]}>
                             <TouchableOpacity onPress={() => navigation.navigate("Connexion")}
                                 style={tw("mb-2 py-2 px-4 bg-blue-500 bg-opacity-70 rounded-xl")}>
@@ -462,7 +529,8 @@ const MainBoardScreen = ({ }) => {
                         </View>
                     }
 
-                    {authState.isAuthenticated &&
+                    {
+                        authState.isAuthenticated &&
                         <TouchableOpacity onPress={() => navigation.navigate("Profil")}
                             style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
                             <View style={{
@@ -478,7 +546,7 @@ const MainBoardScreen = ({ }) => {
                             </View>
                         </TouchableOpacity>
                     }
-                </View>
+                </View >
 
                 <ModalBossExplanation
                     isVisible={isBossVisible}
@@ -487,9 +555,9 @@ const MainBoardScreen = ({ }) => {
                 >
                     {modalContent}
                 </ModalBossExplanation>
-            </ImageBackground>
+            </ImageBackground >
 
-        </View>
+        </View >
     );
 };
 

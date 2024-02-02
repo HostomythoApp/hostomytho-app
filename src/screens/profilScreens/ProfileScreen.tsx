@@ -164,8 +164,7 @@ const ProfileScreen = (props: any) => {
             <CustomModal
                 isVisible={isHelpModalVisible}
             >
-                <View style={tw('flex-1')}>
-                    <ScrollView style={[tw('flex-1, max-w-lg'), { maxHeight: window.height * 0.9 }]}>
+                    <View style={[tw('flex-1, max-w-lg'), { maxHeight: window.height * 0.9 }]}>
                         <Text style={tw('text-center text-lg font-primary mb-4')}>
                             À lire attentivement</Text>
 
@@ -194,7 +193,6 @@ const ProfileScreen = (props: any) => {
                         }} style={tw('bg-primary py-2 px-8 rounded self-center')}>
                             <Text style={tw('text-white font-bold text-center font-primary')}>Ok</Text>
                         </TouchableOpacity>
-                    </ScrollView>
                 </View>
 
             </CustomModal>

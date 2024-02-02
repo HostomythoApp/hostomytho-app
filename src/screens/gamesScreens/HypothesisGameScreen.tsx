@@ -158,7 +158,7 @@ const HypothesisGameScreen = ({ }) => {
                   <Text
                     key={idx}
                     style={[
-                      tw("text-2xl font-secondary text-gray-800"),
+                      tw("text-2xl font-primary text-gray-800"),
                       token.color ? tw(token.color) : null,
                     ]}
                   >
@@ -177,7 +177,7 @@ const HypothesisGameScreen = ({ }) => {
                 >
                   <Text
                     style={[
-                      tw("text-2xl font-secondary text-gray-800"),
+                      tw("text-2xl font-primary text-gray-800"),
                       token.color ? tw(token.color) : null,
                     ]}
                   >

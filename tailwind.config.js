@@ -13,7 +13,8 @@ module.exports = {
       },
       fontFamily: {
         primary: ["Pally"],
-        secondary: ["Pally"],
+        // secondary: ["PatrickHandRegular"],
+        secondary: ["PatrickHandRegular"],
         MarckScript: ["MarckScript"],
         SpringSnowstorm: ["SpringSnowstorm"],
         HandleeRegular: ["HandleeRegular"],

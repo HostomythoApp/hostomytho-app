@@ -18,7 +18,7 @@ const PrivacyPolicysScreen = ({ }) => {
                             <Text style={tw('font-primary text-lg')}>
                                 HostoMytho est un jeu gratuit créé dans le cadre d'un projet de recherche par Karën Fort, Bruno Guillaume et Bertrand REMY au sein du LORIA, avec l'aide d'Aurélie Névéol et Nicolas Hiebel, et la participation de Jules Steelandt . L'objet de ce projet est la construction de corpus annotés de qualité, pour des applications de traitement automatique de la langue (TAL). Ces données sont le produit de l'activité des joueurs de HostoMytho.
                                 {"\n\n"}
-                                Les données sont accessibles sous des licences libres variées (fonction de la licence de la ressource d'origine), qui sont précisées dans chaque ressource. Le code source de ZombiLingo est librement disponible sur GitHub sous licence CeCILL 2.1.
+                                Les données sont accessibles sous des licences libres variées (fonction de la licence de la ressource d'origine), qui sont précisées dans chaque ressource. Le code source d'HostoMytho est librement disponible sur GitHub sous licence CeCILL 2.1.
                                 {"\n\n"}
                                 La présente charte a pour but de permettre aux joueurs de jouer dans l'environnement le plus agréable possible, s'ils respectent les quelques règles établies ci-dessous.
                                 {"\n\n"}
@@ -29,7 +29,7 @@ const PrivacyPolicysScreen = ({ }) => {
                             </Text>
 
                             <Text style={tw('font-primary text-lg')}>
-                                La participation au jeu est entièrement gratuite et l'inscription est ouverte à tous les internautes disposant d'un accès à Internet régulier et éventuellement d'une adresse mail personnelle et active (ce dernier point n'étant pas obligatoire). Des mails pourront être envoyés au joueur en fonctions des évolutions du jeu. Les corpus proposés dans ZombiLingo peuvent contenir des textes ne convenant pas à des personnes de moins de 16 ans.
+                                La participation au jeu est entièrement gratuite et l'inscription est ouverte à tous les internautes disposant d'un accès à Internet régulier et éventuellement d'une adresse mail personnelle et active (ce dernier point n'étant pas obligatoire). Des mails pourront être envoyés au joueur en fonctions des évolutions du jeu. Les corpus proposés dans HostoMytho peuvent contenir des textes ne convenant pas à des personnes de moins de 16 ans.
                             </Text>
                             <Text style={tw('text-2xl font-bold mt-4 mb-2 font-primary')}>
                                 (2) Données Personnelles

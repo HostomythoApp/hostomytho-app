@@ -131,7 +131,7 @@ const TemporalEntityScreen = ({ }) => {
                 )}
               >
                 <Text style={
-                  tw("text-2xl font-secondary")}
+                  tw("text-2xl font-primary")}
                 >{word.text}</Text>
               </TouchableOpacity>
             ))}
