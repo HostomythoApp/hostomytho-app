@@ -220,13 +220,15 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         const newPoints = response.data.newPoints;
         const newCatchProbability = response.data.newCatchProbability;
         const newTrustIndex = response.data.newTrustIndex;
+        const newCoeffMulti = response.data.newCoeffMulti;
 
         // Mettre à jour l'état de l'utilisateur
         setUser((prevUser: any) => ({
           ...prevUser,
           points: newPoints,
           catch_probability: newCatchProbability,
-          trust_index: newTrustIndex
+          trust_index: newTrustIndex,
+          coeffMulti: newCoeffMulti
         }));
 
         // Vérifiez si l'utilisateur a atteint un nouveau palier pour les skins

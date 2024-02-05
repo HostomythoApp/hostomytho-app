@@ -13,7 +13,7 @@ import { RootStackNavigationProp } from 'navigation/Types';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { characterImagesMapping } from 'utils/characterImagesMapping';
-import SmallStatBox from 'components/SmallStatBox';
+// import SmallStatBox from 'components/SmallStatBox';
 
 interface Rank {
     id: number;
@@ -38,7 +38,7 @@ const ContentProfileScreen = (props: any) => {
     const pointsPercentage = (pointsForProgress / nextRewardPoints) * 100;
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
     const window = Dimensions.get('window');
-    const isMobile = window.width < 768;
+    const isMobile = window.width < 748;
 
     useEffect(() => {
         const fetchRanking = async () => {
@@ -174,11 +174,16 @@ const ContentProfileScreen = (props: any) => {
                         <Text style={tw('text-xl font-bold mb-2 text-white font-primary')}>Statistiques</Text>
                         <View style={tw("flex-row flex-wrap")}>
                             {/* Ne se met à jour que quand on joue à 1 jeu. A voir si j'améliore ça */}
-                            <SmallStatBox title="Jours consécutifs joués :" value={user?.consecutiveDaysPlayed} color="border-l-4 border-blue-500" />
-                            <SmallStatBox title="Fiabilité :" value={`${user?.trust_index} %`} color="border-l-4 border-green-500" />
-
+                            <View style={tw(`w-[48%] max-w-[200px] flex justify-around p-2 mr-2 rounded-lg border-l-4 border-blue-500 bg-white mb-2`)}>
+                                <Text style={tw('font-primary text-black leading-7')}>Jours consécutifs joués :</Text>
+                                <Text style={tw('font-primary text-black leading-7 font-extrabold')}>{user?.consecutiveDaysPlayed}</Text>
+                            </View>
+                            <View style={tw(`w-[48%] max-w-[200px] flex justify-around p-2 rounded-lg border-l-4 border-green-500 bg-white mb-2`)}>
+                                <Text style={tw('font-primary text-black leading-7')}>Fiabilité :</Text>
+                                <Text style={tw('font-primary text-black leading-7 font-extrabold')}>{user?.trust_index} %</Text>
+                            </View>
                         </View>
-                        <View style={tw('bg-white mb-2 py-1 rounded-lg w-[164px]')}>
+                        <View style={tw('w-[48%] max-w-[200px] bg-white mb-2 py-1 rounded-lg')}>
                             <Text style={tw('ml-1 mt-1 text-center leading-7')}
                             >. . .</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('Statistiques')}>

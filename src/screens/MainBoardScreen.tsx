@@ -178,8 +178,8 @@ const MainBoardScreen = ({ }) => {
                             {/* <TouchableOpacity onPress={() => navigation.navigate("Menu")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '43%' : '43%',
-                                    left: windowWidth > 768 ? '48%' : '48%',
+                                    top: windowWidth > 748 ? '43%' : '43%',
+                                    left: windowWidth > 748 ? '48%' : '48%',
                                 }}>
                                 <Image source={require('images/map.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 90, minHeight: 90 }} />
                             </TouchableOpacity> */}
@@ -188,8 +188,9 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '54%' : '54%',
-                                    left: windowWidth > 768 ? '21%' : '21%',
+                                    // TODO vérifier si écran horizontal, et si c'est le cas adapter
+                                    top: windowWidth > 748 ? '54%' : '54%',
+                                    left: windowWidth > 748 ? '21%' : '21%',
                                 }}>
                                 <Image source={require('images/polaroid_inconnu_shadow.png')}
                                     onLoadEnd={loaderClose}
@@ -209,8 +210,8 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("Classement")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '52%' : '52%',
-                                    left: windowWidth > 768 ? '46%' : '46%',
+                                    top: windowWidth > 748 ? '52%' : '52%',
+                                    left: windowWidth > 748 ? '46%' : '46%',
                                 }}>
                                 <Image source={require('images/ranking.png')}
                                     onLoadEnd={loaderClose}
@@ -229,8 +230,8 @@ const MainBoardScreen = ({ }) => {
                             {/* <TouchableOpacity onPress={() => navigation.navigate("HypoMytho")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '27%' : '27%',
-                                    left: windowWidth > 768 ? '54%' : '54%',
+                                    top: windowWidth > 748 ? '27%' : '27%',
+                                    left: windowWidth > 748 ? '54%' : '54%',
                                 }}>
                                 <Image source={require('images/postit_hypothese.png')}
                                     style={{
@@ -245,8 +246,8 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("MythoTypo")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '40%' : '40%',
-                                    left: windowWidth > 768 ? '33%' : '33%',
+                                    top: windowWidth > 748 ? '40%' : '40%',
+                                    left: windowWidth > 748 ? '33%' : '33%',
                                 }}>
                                 <View style={{ position: 'relative' }}>
                                     <Image
@@ -279,8 +280,8 @@ const MainBoardScreen = ({ }) => {
                                 style={{
                                     position: 'absolute',
 
-                                    top: windowWidth > 768 ? '56%' : '56%',
-                                    left: windowWidth > 768 ? '68%' : '68%',
+                                    top: windowWidth > 748 ? '56%' : '56%',
+                                    left: windowWidth > 748 ? '68%' : '68%',
                                     transform: [{ rotate: '4deg' }]
                                 }}>
                                 <Image source={require('images/postit_green.png')}
@@ -307,8 +308,8 @@ const MainBoardScreen = ({ }) => {
                             {/* <TouchableOpacity onPress={() => navigation.navigate("MythoTempo")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '56%' : '56%',
-                                    left: windowWidth > 768 ? '37%' : '37%',
+                                    top: windowWidth > 748 ? '56%' : '56%',
+                                    left: windowWidth > 748 ? '37%' : '37%',
                                 }}>
                                 <Image source={require('images/postit_mytho_tempo.png')} style={{
                                     width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60,
@@ -323,8 +324,8 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("MythoNo")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 768 ? '20%' : '20%',
-                                    left: windowWidth > 768 ? '43%' : '43%',
+                                    top: windowWidth > 748 ? '20%' : '20%',
+                                    left: windowWidth > 748 ? '43%' : '43%',
                                     transform: [{ rotate: '-8deg' }]
                                 }}>
                                 <Image source={require('images/postit_pink.png')} style={{
@@ -348,7 +349,7 @@ const MainBoardScreen = ({ }) => {
                             <View style={{
                                 position: 'relative',
                                 top: '16.5%',
-                                left: windowWidth > 768 ? '60%' : '60%',
+                                left: windowWidth > 748 ? '60%' : '60%',
                                 width: windowWidth * 0.25,
                                 height: windowWidth * 0.16,
                             }}>
@@ -361,11 +362,11 @@ const MainBoardScreen = ({ }) => {
                                 {/* Titre */}
                                 <Text style={[tw('font-secondary absolute text-center text-gray-800'),
                                 {
-                                    top: '9%',
+                                    top: '10%',
                                     width: '100%',
                                     fontSize: responsiveFontSize(16),
                                 }]}>
-                                    Enquêteurs du mois
+                                    Enquêteurs du mois précédent
                                 </Text>
 
 
@@ -373,7 +374,7 @@ const MainBoardScreen = ({ }) => {
                                 <View style={{
                                     position: 'absolute',
                                     top: '42%',
-                                    left: '11%',
+                                    left: '9%',
                                     padding: 5,
                                     paddingBottom: 0,
                                     maxWidth: '36%',
@@ -385,18 +386,20 @@ const MainBoardScreen = ({ }) => {
                                     width: 500
                                 }}>
                                     <TouchableOpacity style={tw('text-center z-10')}>
-                                        <Text style={{
-                                            ...tw('font-secondary text-center'),
-                                            fontSize: responsiveFontSize(14),
-                                        }}>
-                                            {monthlyWinners[1]?.username}
-                                        </Text>
+
                                         <Image source={require('images/ranking_2.png')} style={{
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,
                                             resizeMode: 'contain',
                                             alignSelf: 'center'
                                         }} />
+                                        <Text style={{
+                                            ...tw('font-secondary text-center'),
+                                            fontSize: responsiveFontSize(14),
+                                        }}>
+                                            {monthlyWinners[1]?.username}
+
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
 
@@ -404,7 +407,7 @@ const MainBoardScreen = ({ }) => {
                                 <View style={{
                                     position: 'absolute',
                                     top: '50%',
-                                    right: '12%',
+                                    right: '10%',
                                     padding: 5,
                                     paddingBottom: 0,
                                     maxWidth: '36%',
@@ -416,18 +419,19 @@ const MainBoardScreen = ({ }) => {
                                     width: 500
                                 }}>
                                     <TouchableOpacity style={tw('text-center z-10')}>
-                                        <Text style={{
-                                            ...tw('font-secondary text-center'),
-                                            fontSize: responsiveFontSize(14),
-                                        }}>
-                                            {monthlyWinners[2]?.username}
-                                        </Text>
+
                                         <Image source={require('images/ranking_3.png')} style={{
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,
                                             resizeMode: 'contain',
                                             alignSelf: 'center'
                                         }} />
+                                        <Text style={{
+                                            ...tw('font-secondary text-center'),
+                                            fontSize: responsiveFontSize(14),
+                                        }}>
+                                            {monthlyWinners[2]?.username}
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
 
@@ -447,18 +451,19 @@ const MainBoardScreen = ({ }) => {
                                         width: 500
                                     }}>
                                         <TouchableOpacity style={tw('text-center z-10')}>
-                                            <Text style={{
-                                                ...tw('font-secondary text-center'),
-                                                fontSize: responsiveFontSize(14),
-                                            }}>
-                                                {monthlyWinners[0]?.username}
-                                            </Text>
+
                                             <Image source={require('images/ranking_1.png')} style={{
                                                 width: windowWidth * 0.03,
                                                 height: windowWidth * 0.03,
                                                 resizeMode: 'contain',
                                                 alignSelf: 'center'
                                             }} />
+                                            <Text style={{
+                                                ...tw('font-secondary text-center'),
+                                                fontSize: responsiveFontSize(14),
+                                            }}>
+                                                {monthlyWinners[0]?.username}
+                                            </Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -482,14 +487,6 @@ const MainBoardScreen = ({ }) => {
                                     shadowRadius: 1,
                                     resizeMode: 'contain',
                                 }} />
-                                {/* <Text style={[tw('font-secondary absolute bottom-[47%] w-full text-center text-gray-400 '),
-                                {
-                                    fontSize: responsiveFontSize(14),
-                                    // transform: [{ rotate: '-40deg' }]
-                                }
-                                ]}>
-                                   Criminels arrêtés
-                                </Text> */}
                             </TouchableOpacity>
 
                         </View>

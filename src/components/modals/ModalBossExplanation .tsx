@@ -19,7 +19,7 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
     const screenWidth = Dimensions.get('window').width;
     let imageSize, bubbleHeight;
 
-    if (screenWidth <= 768) { // Tablettes petites
+    if (screenWidth <= 748) { // Tablettes petites
         imageSize = { width: 120, height: 230 };
         bubbleHeight = { paddingBottom: 130 };
     } else if (screenWidth <= 1024) { // Tablettes grandes

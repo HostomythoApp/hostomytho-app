@@ -41,7 +41,7 @@ const SignUpScreen = () => {
     const { setUser } = useUser();
 
     const screenWidth = Dimensions.get('window').width;
-    const isMobile = screenWidth < 768;
+    const isMobile = screenWidth < 748;
 
     const inputWidth = isMobile ? '100%' : '80%';
     const man_1 = require('images/character/man_1.png');
