@@ -86,10 +86,11 @@ const MainBoardScreen = ({ }) => {
                 const tutorialContent = getTutorialContentForStep(tutorialProgress, tw, navigation);
                 setModalContent(tutorialContent);
             } else {
-                setTimeout(() => {
-                    setIsBossVisible(false);
-                }, 500);
+                setIsBossVisible(false);
             }
+        } else {
+            setIsBossVisible(false);
+            setTutorialProgress(0);
         }
     }, [user, userNeedsUpdate]);
 
@@ -370,23 +371,8 @@ const MainBoardScreen = ({ }) => {
                                 </Text>
 
 
-                                {/* Zone du Joueur 2 */}
-                                <View style={{
-                                    position: 'absolute',
-                                    top: '42%',
-                                    left: '9%',
-                                    padding: 5,
-                                    paddingBottom: 0,
-                                    maxWidth: '36%',
-                                    minWidth: 20,
-                                    backgroundColor: "white",
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 5,
-                                    width: 500
-                                }}>
+                                <View style={tw('absolute top-[42%] left-[9%] p-1 bg-white border border-gray-500 rounded min-w-[25%]')}>
                                     <TouchableOpacity style={tw('text-center z-10')}>
-
                                         <Image source={require('images/ranking_2.png')} style={{
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,
@@ -398,26 +384,13 @@ const MainBoardScreen = ({ }) => {
                                             fontSize: responsiveFontSize(14),
                                         }}>
                                             {monthlyWinners[1]?.username}
-
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
 
                                 {/* Zone du Joueur 3 */}
-                                <View style={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    right: '10%',
-                                    padding: 5,
-                                    paddingBottom: 0,
-                                    maxWidth: '36%',
-                                    backgroundColor: "white",
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 5,
-                                    // Revoir taille ici
-                                    width: 500
-                                }}>
+                                <View style={tw('absolute top-[50%] right-[10%] p-1 pb-0 bg-white border border-gray-500 rounded min-w-[25%]')}>
+
                                     <TouchableOpacity style={tw('text-center z-10')}>
 
                                         <Image source={require('images/ranking_3.png')} style={{
@@ -436,20 +409,10 @@ const MainBoardScreen = ({ }) => {
                                 </View>
 
                                 {/* Zone du Joueur 1 */}
-                                <View style={tw('absolute w-full top-[25%]')}
+                                <View style={tw('absolute w-full top-[25%] items-center')}
                                 >
-                                    <View style={{
-                                        position: 'absolute',
-                                        padding: 5,
-                                        paddingBottom: 0,
-                                        maxWidth: '36%',
-                                        backgroundColor: "white",
-                                        borderWidth: 1,
-                                        borderColor: 'gray',
-                                        borderRadius: 5,
-                                        alignSelf: 'center',
-                                        width: 500
-                                    }}>
+                                    <View style={tw('p-1 bg-white border border-gray-500 rounded min-w-[25%] self-center')}>
+
                                         <TouchableOpacity style={tw('text-center z-10')}>
 
                                             <Image source={require('images/ranking_1.png')} style={{
@@ -545,13 +508,17 @@ const MainBoardScreen = ({ }) => {
                     }
                 </View >
 
-                <ModalBossExplanation
-                    isVisible={isBossVisible}
-                    onClose={handleCloseModal}
-                    tutorial_progress={tutorialProgress}
-                >
-                    {modalContent}
-                </ModalBossExplanation>
+                {
+                    isBossVisible && (
+                        <ModalBossExplanation
+                            isVisible={isBossVisible}
+                            onClose={handleCloseModal}
+                            tutorial_progress={tutorialProgress}
+                        >
+                            {modalContent}
+                        </ModalBossExplanation>
+                    )
+                }
             </ImageBackground >
 
         </View >

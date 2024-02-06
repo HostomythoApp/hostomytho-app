@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTailwind } from "tailwind-rn";
 import { Ionicons } from '@expo/vector-icons';
@@ -18,6 +18,8 @@ const CustomHeaderEmpty = ({
 }) => {
   const tw = useTailwind();
   const navigation = useNavigation<RootStackNavigationProp<"TableauDeBord">>();
+  const window = Dimensions.get('window');
+  const isMobile = window.width < 960;
 
   const handleBackPress = () => {
     if (backToMain) {
@@ -28,11 +30,11 @@ const CustomHeaderEmpty = ({
   };
 
   return (
-    <View style={tw(`flex-row justify-between items-center p-[18px] z-10 ${backgroundColor} absolute w-full top-0 h-[68px]`)}>
+    <View style={[tw(`flex-row justify-between items-center z-10 ${backgroundColor} absolute w-full top-0`), isMobile ? tw('h-14') : tw('h-[68px]')]}>
       <TouchableOpacity style={tw('pl-4 absolute z-10')} onPress={handleBackPress}>
         <Ionicons name="chevron-back" size={30} color={textColor} />
       </TouchableOpacity>
-      <Text style={tw(`font-primary text-center flex-grow text-2xl font-bold text-${textColor}`)}>{title}</Text>
+      <Text style={tw(`font-primary text-center flex-grow text-xl font-bold text-${textColor}`)}>{title}</Text>
       <View style={tw('pl-4')} />
     </View>
   );

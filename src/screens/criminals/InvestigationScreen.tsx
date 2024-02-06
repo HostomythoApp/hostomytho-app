@@ -27,6 +27,8 @@ const InvestigationScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [arrestDescription, setArrestDescription] = useState<string>('');
     const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
+    const window = Dimensions.get('window');
+    const isMobile = window.width < 960;
 
     useEffect(() => {
         if (user) {
@@ -95,13 +97,13 @@ const InvestigationScreen = () => {
                 <SafeAreaView style={tw('flex-1')}>
                     <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')} >
                         <CustomHeaderEmpty title="Enquête en cours" backgroundColor="bg-whiteTransparent" />
-                        <View style={tw('flex-row justify-end')}>
+                        <View style={[tw('flex-row justify-end w-full'), isMobile ? tw('mt-[56px]') : tw('mt-[68px]')]}>
                             <HelpButton onHelpPress={showHelpModal} />
                         </View>
-                        <View style={tw('flex-1 p-2 pt-14 justify-center items-center')}>
+                        <View style={[tw('flex-1 p-2 justify-center items-center -mt-8')]}>
                             <Image
                                 source={require('images/unknown3.jpeg')}
-                                style={tw('w-64 h-64 -mb-4')}
+                                style={[tw('w-64 h-56')]}
                                 resizeMode="contain"
                             />
                             {user ? (
@@ -170,12 +172,6 @@ const InvestigationScreen = () => {
                         <Text style={tw('font-primary text-lg')}>
                             Il semblerait que la personne que vous avez arrêtée n'était pas la bonne. C'était une fausse piste, mais votre enquête continue !
                         </Text>
-                        {/* TODO Mettre des histoires différentes dans la bdd */}
-                        {/* <Text style={tw('font-primary text-lg')}>
-                            La personne que vous arrêtez s'appelle Kévin Bontrain. Il est menuisier, construit de belles armoires, et ne ferait pas de mal à une mouche. Ce n'est donc malheureusement pas le criminel.
-                            {"\n\n"}
-                            Votre enquête continue !
-                        </Text> */}
                     </>
                 )}
             </CustomModal>
@@ -192,11 +188,10 @@ const InvestigationScreen = () => {
                         scrollEventThrottle={16}
                     >
                         <Text style={tw('font-primary')}>
-                            Le but du jeu est de cliquer sur les mots qui, selon vous, composent une négation ou une absence.
-                            Une fois les mots sélectionnés, validez la sélection. Quand vous pensez avoir trouvé toutes les négations, vérifiez bien d'avoir validé votre dernière selection, et vous pouvez ensuite passer au texte suivant.
-                            {"\n"}
-                            Ici, vous pouvez tenter d'arrêter des criminels.
+                            Ici, vous pouvez tenter d'arrêter des criminels.  {"\n"}
+                            Le taux de certitude correspond au pourcentage de chance de réussir.
                             {"\n\n"}
+                            Si vous tentez l'arrestation mais que celle-ci échoue, votre taux de certitude baissera de 15. Si elle réussit, vous pourrez retrouver le criminel arrêté dans la page correspondante, et votre votre taux de certitude retombera à 0.
                         </Text>
                     </ScrollView>
                 </View>

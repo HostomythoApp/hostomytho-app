@@ -21,6 +21,7 @@ import { completeTutorialForUser, isTutorialCompleted } from "services/api/games
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { createUserErrorDetail } from "services/api/errors";
 import { UserErrorDetail } from "models/UserErrorDetail";
+import { responsiveFontSize } from "utils/functions";
 
 const colors = [
   "bg-yellow-300",
@@ -321,8 +322,11 @@ const PlausibilityGameDetailedScreen = () => {
       >
         <Text
           style={[
-            tw("text-2xl font-primary text-gray-800"),
-            token.color ? tw(token.color) : null
+            tw("font-primary text-gray-800"),
+            token.color ? tw(token.color) : null,       
+            {
+              fontSize: responsiveFontSize(30)
+            }
           ]}
         >
           {token.content}

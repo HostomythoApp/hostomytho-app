@@ -15,6 +15,7 @@ import HelpButton from "components/button/HelpButton";
 import NextButton from "components/button/NextButton";
 import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
+import { responsiveFontSize } from "utils/functions";
 
 const ErrorTypeGameScreen = ({ }) => {
   const tw = useTailwind();
@@ -212,7 +213,7 @@ const ErrorTypeGameScreen = ({ }) => {
       } else {
         const userTypingErrorData = {
           // @ts-ignore
-          user_id: user.id, 
+          user_id: user.id,
           user_error_details_id: text.idUserErrorDetail,
           error_type_id: selectedErrorType,
         };
@@ -294,7 +295,7 @@ const ErrorTypeGameScreen = ({ }) => {
       return null;
     }
     const errorPositions = text.positionErrorTokens.split(", ").map(Number);
-  
+
     return (
       <View style={[
         tw("p-6 m-4 rounded-xl flex-row flex-wrap "),
@@ -319,8 +320,11 @@ const ErrorTypeGameScreen = ({ }) => {
               <Text
                 key={idx}
                 style={[
-                  tw("text-xl font-primary p-[1px]"),
-                  errorPositions.includes(token.position) && tw("bg-red-200")
+                  tw("font-primary p-[1px]"),
+                  errorPositions.includes(token.position) && tw("bg-red-200"),
+                  {
+                    fontSize: responsiveFontSize(30)
+                  }
                 ]}
               >
                 {token.content}

@@ -16,7 +16,7 @@ const LogoutButton = () => {
       await AsyncStorage.clear();
       setUser(null);
       setAuthState({ isAuthenticated: false, token: null, isLoading: false });
-      navigation.navigate("TableauDeBord");
+        navigation.navigate("TableauDeBord");
     } catch (error) {
       console.error('Erreur lors de la déconnexion :', error);
     }

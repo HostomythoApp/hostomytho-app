@@ -64,7 +64,7 @@ const ProfileScreen = (props: any) => {
     useEffect(() => {
         if (user && !userNeedsUpdate) {
             const tutorialProgress = user.tutorial_progress;
-    
+
             if (tutorialProgress == 0) {
                 setIsHelpModalVisible(true);
                 setIsBossVisible(false);  // Assurez-vous que le boss est caché à cette étape
@@ -79,7 +79,7 @@ const ProfileScreen = (props: any) => {
             }
         }
     }, [user, userNeedsUpdate]);
-    
+
     const toggleViewMode = () => {
         setViewMode(viewMode === 'profile' ? 'skinsManagement' : 'profile');
     };
@@ -152,47 +152,50 @@ const ProfileScreen = (props: any) => {
                 </TouchableOpacity>
             </View>
 
-            <ModalBossExplanation
-                isVisible={isBossVisible}
-                onClose={handleCloseModal}
-                // @ts-ignore
-                tutorial_progress={user.tutorial_progress}
-            >
-                {modalContent}
-            </ModalBossExplanation>
+            {
+                isBossVisible && (
+                    <ModalBossExplanation
+                        isVisible={isBossVisible}
+                        onClose={handleCloseModal}
+                        tutorial_progress={user?.tutorial_progress}
+                    >
+                        {modalContent}
+                    </ModalBossExplanation>
+                )
+            }
 
             <CustomModal
                 isVisible={isHelpModalVisible}
             >
-                    <View style={[tw('flex-1, max-w-lg'), { maxHeight: window.height * 0.9 }]}>
-                        <Text style={tw('text-center text-lg font-primary mb-4')}>
-                            À lire attentivement</Text>
+                <View style={[tw('flex-1, max-w-lg'), { maxHeight: window.height * 0.9 }]}>
+                    <Text style={tw('text-center text-lg font-primary mb-4')}>
+                        À lire attentivement</Text>
 
-                        <Text style={tw('font-primary mb-4 text-center')}>
-                            HostoMytho est un jeu ayant un but. Les données que vous produisez en jouant seront données à la science et seront sous licence
-                            <Text style={tw('text-blue-500')} onPress={() => Linking.openURL('https://coop-ist.cirad.fr/etre-auteur/utiliser-les-licences-creative-commons/4-les-6-licences-cc')}>
-                                {" CC-by-NC 4.0"}.
-                            </Text>
+                    <Text style={tw('font-primary mb-4 text-center')}>
+                        HostoMytho est un jeu ayant un but. Les données que vous produisez en jouant seront données à la science et seront sous licence
+                        <Text style={tw('text-blue-500')} onPress={() => Linking.openURL('https://coop-ist.cirad.fr/etre-auteur/utiliser-les-licences-creative-commons/4-les-6-licences-cc')}>
+                            {" CC-by-NC 4.0"}.
                         </Text>
+                    </Text>
 
-                        <Text style={tw('font-primary mb-4 text-center')}>
-                            Pour jouer au jeu, vous devez accepter notre politique de confidentialité.{"\n"} Pour la lire, veuillez cliquer sur le bouton suivant :
-                        </Text>
+                    <Text style={tw('font-primary mb-4 text-center')}>
+                        Pour jouer au jeu, vous devez accepter notre politique de confidentialité.{"\n"} Pour la lire, veuillez cliquer sur le bouton suivant :
+                    </Text>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("PolitiqueDeConfidentialite")} style={tw('bg-primary py-2 px-4 rounded self-center mb-4')}>
-                            <Text style={tw('text-white font-bold text-center font-primary')}>Politique de confidentialité</Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("PolitiqueDeConfidentialite")} style={tw('bg-primary py-2 px-4 rounded self-center mb-4')}>
+                        <Text style={tw('text-white font-bold text-center font-primary')}>Politique de confidentialité</Text>
+                    </TouchableOpacity>
 
-                        <Text style={tw('font-primary mb-4 text-center')}>
-                            Touchez le bouton Ok pour l'accepter.
-                        </Text>
+                    <Text style={tw('font-primary mb-4 text-center')}>
+                        Touchez le bouton Ok pour l'accepter.
+                    </Text>
 
-                        <TouchableOpacity onPress={() => {
-                            acceptPrivacyPolicy();
-                            setIsHelpModalVisible(false);
-                        }} style={tw('bg-primary py-2 px-8 rounded self-center')}>
-                            <Text style={tw('text-white font-bold text-center font-primary')}>Ok</Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        acceptPrivacyPolicy();
+                        setIsHelpModalVisible(false);
+                    }} style={tw('bg-primary py-2 px-8 rounded self-center')}>
+                        <Text style={tw('text-white font-bold text-center font-primary')}>Ok</Text>
+                    </TouchableOpacity>
                 </View>
 
             </CustomModal>

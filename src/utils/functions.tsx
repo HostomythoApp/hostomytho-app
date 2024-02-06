@@ -29,8 +29,11 @@ export function splitText(text: any): any {
 export const responsiveFontSize = (fontSize: number) => {
   const { width } = Dimensions.get('window');
   const standardScreenWidth = 1200;
-  const WidthCoefficient = width / standardScreenWidth;
-  const size = fontSize * WidthCoefficient;
+  const widthCoefficient = width / standardScreenWidth;
+  let size = fontSize * widthCoefficient;
 
-  return size > 10 ? size : 10;
+  size = Math.max(size, 10);
+  size = Math.min(size, 24);
+
+  return size;
 };

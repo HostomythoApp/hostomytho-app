@@ -16,6 +16,7 @@ import HelpButton from "components/button/HelpButton";
 import CustomModal from "components/modals/CustomModal";
 import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
 import NextButton from "components/button/NextButton";
+import { responsiveFontSize } from "utils/functions";
 
 const colors = [
   "bg-yellow-300",
@@ -398,8 +399,11 @@ const NegationGameScreen = ({ }) => {
                   <Text
                     key={idx}
                     style={[
-                      tw("text-2xl font-primary text-gray-800"),
+                      tw("font-primary text-gray-800"),
                       token.color ? tw(token.color) : null,
+                      {
+                        fontSize: responsiveFontSize(30)
+                      }
                     ]}
                   >
                     {token.content}
@@ -417,8 +421,11 @@ const NegationGameScreen = ({ }) => {
                   >
                     <Text
                       style={[
-                        tw("text-2xl font-primary text-gray-800"),
+                        tw("font-primary text-gray-800"),
                         token.color ? tw(token.color) : null,
+                        {
+                          fontSize: responsiveFontSize(30)
+                        }
                       ]}
                     >
                       {token.content}

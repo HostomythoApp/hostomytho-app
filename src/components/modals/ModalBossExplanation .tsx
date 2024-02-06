@@ -21,10 +21,10 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
 
     if (screenWidth <= 748) { // Tablettes petites
         imageSize = { width: 120, height: 230 };
-        bubbleHeight = { paddingBottom: 130 };
+        bubbleHeight = { paddingBottom: 120 };
     } else if (screenWidth <= 1024) { // Tablettes grandes
         imageSize = { width: 160, height: 300 };
-        bubbleHeight = { paddingBottom: 180 };
+        bubbleHeight = { paddingBottom: 170 };
     } else { // Ordinateurs
         imageSize = { width: 220, height: 370 };
         bubbleHeight = { paddingBottom: 220 };
