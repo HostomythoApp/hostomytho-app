@@ -17,7 +17,7 @@ import { completeTutorialForUser, isTutorialCompleted } from "services/api/games
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { responsiveFontSize } from "utils/functions";
 
-const ErrorTypeGameScreen = ({ }) => {
+const MythoTypoScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithError>();
   const [errorTypes, setErrorTypes] = useState<ErrorType[]>([]);
@@ -268,9 +268,9 @@ const ErrorTypeGameScreen = ({ }) => {
         <TouchableOpacity
           key={errorType.id}
           style={[
-            tw("m-2 p-2 rounded-full border border-[#5077BE] text-center items-center justify-center "),
+            tw("m-2 p-2 rounded-full  text-center items-center justify-center "),
             {
-              backgroundColor: isSelected ? '#5077BE' : 'white',
+              backgroundColor: isSelected ? '#B0E0E6' : '#adbfe1',
               minWidth: 150,
             }
           ]}
@@ -278,7 +278,7 @@ const ErrorTypeGameScreen = ({ }) => {
         >
           <Text style={[
             tw("text-base font-primary"),
-            isSelected ? tw("text-white") : tw("text-[#5077BE]")
+            isSelected ? tw("text-black") : tw("text-white")
           ]}>
             {errorType.name}
           </Text>
@@ -301,7 +301,7 @@ const ErrorTypeGameScreen = ({ }) => {
       <View style={[
         tw("p-6 m-4 rounded-xl flex-row flex-wrap "),
         {
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backgroundColor: 'rgba(176, 224, 230, 0.92)',
           shadowColor: 'black',
           shadowOffset: { width: -2.6, height: 3 },
           shadowOpacity: 0.6,
@@ -343,7 +343,7 @@ const ErrorTypeGameScreen = ({ }) => {
         <ScrollView>
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={goToNextSentence} isDisabled={isTutorial} />
+            <NextButton bgColor="rgba(176, 224, 230, 0.93)" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
           <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>
@@ -399,7 +399,8 @@ const ErrorTypeGameScreen = ({ }) => {
         {selectedErrorType > 0 && (
           <View style={tw('absolute bottom-3 right-4 flex-col w-auto')}>
             <TouchableOpacity
-              style={tw("bg-primary p-3 flex-row items-center justify-center rounded-full")}
+              disabled={showMessage}
+              style={tw("bg-primary py-2 px-4 flex-row items-center justify-center rounded-full")}
               onPress={onNextCard}
             >
               <Text style={tw("text-white text-lg font-primary")}>Erreur suivante</Text>
@@ -453,4 +454,4 @@ const ErrorTypeGameScreen = ({ }) => {
   );
 };
 
-export default ErrorTypeGameScreen;
+export default MythoTypoScreen;

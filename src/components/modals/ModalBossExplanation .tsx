@@ -112,7 +112,11 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
         return null;
     }
     return (
-        <TouchableOpacity style={tw('absolute inset-0 w-full h-full z-20 overflow-hidden')} activeOpacity={1} onPress={handleModalClick}>
+        <TouchableOpacity style={[tw('absolute inset-0 w-full h-full z-20 overflow-hidden'),
+        {
+            backgroundColor: 'rgba(60, 60, 60, 0.5)'
+        }]}
+            activeOpacity={1} onPress={handleModalClick}>
 
             <Animated.View
                 style={{
@@ -121,7 +125,7 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
                     bottom: 0,
                     right: 0,
                     flexDirection: 'row',
-                    alignItems: "flex-end"
+                    alignItems: "flex-end",
                 }}
             >
 

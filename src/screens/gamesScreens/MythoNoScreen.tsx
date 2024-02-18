@@ -25,7 +25,7 @@ const colors = [
   "bg-pink-300",
 ];
 
-const NegationGameScreen = ({ }) => {
+const MythoNoScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithTokens>();
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
@@ -374,6 +374,7 @@ const NegationGameScreen = ({ }) => {
           style={[
             tw("bg-[#DAEBDC] rounded-xl justify-center mx-2 mt-4"),
             {
+              backgroundColor: 'rgba(255, 222, 173, 0.92)',
               minHeight: 150,
               shadowColor: "#000",
               shadowOffset: { width: 0, height: 2 },
@@ -481,7 +482,7 @@ const NegationGameScreen = ({ }) => {
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="#DAEBDC" func={goToNextSentence} isDisabled={isTutorial} />
+            <NextButton bgColor="rgba(255, 222, 173, 0.92)" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
@@ -629,4 +630,4 @@ const NegationGameScreen = ({ }) => {
   );
 };
 
-export default NegationGameScreen;
+export default MythoNoScreen;

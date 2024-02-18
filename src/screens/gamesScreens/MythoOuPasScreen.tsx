@@ -30,7 +30,7 @@ const colors = [
   "bg-pink-300",
 ];
 
-const PlausibilityGameDetailedScreen = () => {
+const MythoOuPasScreen = () => {
   const tw = useTailwind();
   const [isModalPlausibilityVisible, setIsModalPlausibilityVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
@@ -520,7 +520,7 @@ const PlausibilityGameDetailedScreen = () => {
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="rgba(255, 255, 255, 0.9)" func={goToNextSentence} isDisabled={isTutorial} />
+            <NextButton bgColor="rgb(255, 254, 224)" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
 
@@ -567,7 +567,7 @@ const PlausibilityGameDetailedScreen = () => {
                 )
               }
 
-              <View style={tw("mx-4 mt-2 mb-2")}>
+              <View style={tw("mx-4 mt-2 mb-2 pb-12")}>
                 {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
                 )}
               </View>
@@ -789,4 +789,4 @@ const PlausibilityGameDetailedScreen = () => {
   );
 };
 
-export default PlausibilityGameDetailedScreen;
+export default MythoOuPasScreen;

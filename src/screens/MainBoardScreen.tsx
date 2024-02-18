@@ -280,9 +280,8 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("MythoOuPas")}
                                 style={{
                                     position: 'absolute',
-
-                                    top: windowWidth > 748 ? '56%' : '56%',
-                                    left: windowWidth > 748 ? '68%' : '68%',
+                                    top: windowWidth > 748 ? '20%' : '20%',
+                                    left: windowWidth > 748 ? '43%' : '43%',
                                     transform: [{ rotate: '4deg' }]
                                 }}>
                                 <Image source={require('images/postit_green.png')}
@@ -325,8 +324,8 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("MythoNo")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 748 ? '20%' : '20%',
-                                    left: windowWidth > 748 ? '43%' : '43%',
+                                    top: windowWidth > 748 ? '56%' : '56%',
+                                    left: windowWidth > 748 ? '68%' : '68%',
                                     transform: [{ rotate: '-8deg' }]
                                 }}>
                                 <Image source={require('images/postit_pink.png')} style={{

@@ -54,10 +54,10 @@ const CustomHeaderInGame: React.FC<Props> = ({
   
   const pointsGainedStyle = useAnimatedStyle(() => {
     return {
-      fontSize: 18,
+      fontSize: 16,
       color: 'white',
       backgroundColor: 'rgba(59, 130, 246, 0.8)',
-      padding: 5,
+      padding: 4,
       marginLeft: 25,
       borderRadius: 10,
       opacity: opacity.value,

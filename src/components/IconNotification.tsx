@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 const IconNotification = ({ size, top, right }: { size: number; top: string; right: string }) => {
   return (
@@ -12,15 +12,11 @@ const IconNotification = ({ size, top, right }: { size: number; top: string; rig
       width: size,
       height: size,
       borderRadius: 100,
-      backgroundColor: "rgb(223, 94, 28)",
+      backgroundColor: "rgb(221, 49, 7)",
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      <FontAwesome
-        name="exclamation"
-        size={size - 5}
-        color="white"
-      />
+      <Entypo name="magnifying-glass" size={size - 5} color={"white"} />
     </View>
   );
 };

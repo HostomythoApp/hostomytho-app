@@ -7,7 +7,7 @@ import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
 import ResetPasswordScreen from "screens/authScreens/ResetPasswordScreen";
-import PlausibilityGameDetailedScreen from "screens/gamesScreens/PlausibilityGameDetailedScreen";
+import MythoOuPasScreen from "screens/gamesScreens/MythoOuPasScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
 import AdminHomeScreen from "screens/adminScreens/AdminHomeScreen";
@@ -18,9 +18,9 @@ import ManageUsersSreen from "screens/adminScreens/ManageUsersSreen";
 import AdminStatisticsScreen from "screens/adminScreens/AdminStatisticsScreen";
 import UserMessagingScreen from "screens/adminScreens/UserMessagingScreen";
 import HypothesisGameScreen from "screens/gamesScreens/HypothesisGameScreen";
-import ErrorTypeGameScreen from "screens/gamesScreens/ErrorTypeGameScreen";
+import MythoTypoScreen from "screens/gamesScreens/MythoTypoScreen";
 import ConditionGameScreen from "screens/gamesScreens/ConditionGameScreen";
-import NegationGameScreen from "screens/gamesScreens/NegationGameScreen";
+import MythoNoScreen from "screens/gamesScreens/MythoNoScreen";
 import AchievementsScreen from "screens/profilScreens/AchievementsScreen";
 import RankingScreen from "screens/profilScreens/RankingScreen";
 import RankingMonthScreen from "screens/profilScreens/RankingMonthScreen";
@@ -92,9 +92,9 @@ const StackNavigator = ({ }) => {
                 options={({ navigation }) => ({
                   header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
                 })} />
-              <Stack.Screen name="MythoOuPas" component={PlausibilityGameDetailedScreen} />
+              <Stack.Screen name="MythoOuPas" component={MythoOuPasScreen} />
 
-              <Stack.Screen name="MythoNo" component={NegationGameScreen} />
+              <Stack.Screen name="MythoNo" component={MythoNoScreen} />
 
               <Stack.Screen name="Investigation" component={InvestigationScreen} />
 
@@ -110,7 +110,7 @@ const StackNavigator = ({ }) => {
 
               <Stack.Screen name="CondiMytho" component={ConditionGameScreen} />
 
-              <Stack.Screen name="MythoTypo" component={ErrorTypeGameScreen} />
+              <Stack.Screen name="MythoTypo" component={MythoTypoScreen} />
 
               <Stack.Screen name="ParametreProfil" component={ProfileSettingsScreen} options={{ headerShown: false }} />
 
