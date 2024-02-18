@@ -35,6 +35,7 @@ const MainInput = ({
       secureTextEntry={hide}
       onChangeText={setter}
       value={value}
+      keyboardType="default"
     />
   );
 };

@@ -190,6 +190,7 @@ const ErrorTypeGameScreen = ({ }) => {
 
     try {
       const isTestResult = await isErrorTest(text.idUserErrorDetail);
+      // TODO donner points quand pas test
       if (isTestResult.isTest) {
         const errorTypeData = await getTypeByErrorId(text.idUserErrorDetail);
         const isUserCorrect = selectedErrorType === errorTypeData.id;

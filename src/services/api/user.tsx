@@ -1,15 +1,15 @@
 import { User } from "models/User";
 import api from "./index";
 
-export const getUsers = async (): Promise<User[]> => {
-  try {
-    const response = await api.get(`/users`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+// export const getUsers = async (): Promise<User[]> => {
+//   try {
+//     const response = await api.get(`/users`);
+//     return response.data;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
 
 export const getUserById = async (id: number): Promise<User> => {
   try {

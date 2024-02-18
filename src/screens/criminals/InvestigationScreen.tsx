@@ -100,14 +100,16 @@ const InvestigationScreen = () => {
                         <View style={[tw('flex-row justify-end w-full'), isMobile ? tw('mt-[56px]') : tw('mt-[68px]')]}>
                             <HelpButton onHelpPress={showHelpModal} />
                         </View>
-                        <View style={[tw('flex-1 p-2 justify-center items-center -mt-8')]}>
-                            <Image
-                                source={require('images/unknown3.jpeg')}
-                                style={[tw('w-64 h-56')]}
-                                resizeMode="contain"
-                            />
+                        <View style={[tw('flex-1 p-2 justify-center items-center -mt-8 h-28')]}>
+
                             {user ? (
-                                <View>
+                                <View style={tw('w-full items-center')}
+                                >
+                                    <Image
+                                        source={require('images/unknown3.jpeg')}
+                                        style={[tw('w-64 h-56')]}
+                                        resizeMode="contain"
+                                    />
                                     <Text style={tw('text-center font-bold font-primary text-lg text-white')}>Taux de certitude par rapport au criminel: {investigationProgress}%</Text>
                                     <View style={tw('bg-gray-300 h-4 rounded mt-2 w-96')}>
                                         <View

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Dimensions, ImageBackground } from "react-native";
+import { View, Text, ScrollView, Dimensions, ImageBackground, TextInput } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -174,16 +174,15 @@ const SignUpScreen = () => {
 
                                         <Text> {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}</Text>
 
-                                        <MainInput
-                                            text={'Pseudo'}
+                                        <TextInput
+                                            style={{
+                                                ...tw("my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md font-primary w-4/5 max-w-xl min-w-[200px]"),
+                                                ...(touched.username && !!errors.username ? tw("border-red-500") : {})
+                                            }} placeholder={'Pseudo'}
+                                            secureTextEntry={false}
+                                            onChangeText={handleChange('username')}
                                             value={values.username}
-                                            setter={handleChange('username')}
-                                            hide={false}
-                                            onSubmitEditing={handleSubmit}
-                                            isError={touched.username && !!errors.username}
-                                            width={inputWidth}
-                                            minWidth={300}
-                                            maxWidth={600}
+                                            keyboardType="default"
                                         />
                                         {touched.username && errors.username && <Text style={tw("text-red-500")}>{errors.username}</Text>}
 
@@ -210,19 +209,20 @@ const SignUpScreen = () => {
 
                                         </View>
 
-                                        <MainInput
-                                            text={"Mot de passe"}
+                                        <TextInput
+                                            style={{
+                                                ...tw("my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md font-primary w-4/5 max-w-xl min-w-[200px]"),
+                                                ...(touched.password && !!errors.password ? tw("border-red-500") : {})
+                                            }}
+                                            placeholder={'Mot de passe'}
+                                            secureTextEntry={true}
+                                            onChangeText={handleChange('password')}
                                             value={values.password}
-                                            setter={handleChange('password')}
-                                            onSubmitEditing={handleSubmit}
-                                            isError={touched.password && !!errors.password}
-                                            width={inputWidth}
-                                            maxWidth={600}
-                                            hide={true}
+                                            keyboardType="default"
                                         />
                                         {touched.password && errors.password && <Text style={tw("text-red-500")}>{errors.password}</Text>}
 
-                                        <MainInput
+                                        {/* <MainInput
                                             text={"Retaper votre mot de passe"}
                                             value={values.password2}
                                             setter={handleChange('password2')}
@@ -231,9 +231,21 @@ const SignUpScreen = () => {
                                             width={inputWidth}
                                             maxWidth={600}
                                             hide={true}
+                                        /> */}
+
+                                        <TextInput
+                                            style={{
+                                                ...tw("my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md font-primary w-4/5 max-w-xl min-w-[200px]"),
+                                                ...(touched.password2 && !!errors.password2 ? tw("border-red-500") : {})
+                                            }}
+                                            placeholder={'Retaper votre mot de passe'}
+                                            secureTextEntry={true}
+                                            onChangeText={handleChange('password2')}
+                                            value={values.password2}
                                         />
+
                                         {touched.password2 && errors.password2 && <Text style={tw("text-red-500")}>{errors.password2}</Text>}
-                                        <MainInput
+                                        {/* <MainInput
                                             text={"email (facultatif)"}
                                             value={values.email}
                                             setter={handleChange('email')}
@@ -241,6 +253,13 @@ const SignUpScreen = () => {
                                             width={inputWidth}
                                             maxWidth={600}
                                             hide={false}
+                                        /> */}
+                                        <TextInput
+                                            style={tw("my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md font-primary w-4/5 max-w-xl min-w-[200px]")}
+                                            placeholder={'email (facultatif)'}
+                                            onChangeText={handleChange('email')}
+                                            value={values.email}
+                                            keyboardType="email-address"
                                         />
                                         <Text style={tw('font-primary max-w-[540px] text-gray-700 mt-2 text-center')}>
                                             Si votre adresse e-mail n'est pas valide ou si vous n'en mettez pas, nous ne serons pas en mesure de prendre contact avec vous, ni de réinitialiser votre mot de passe. Nous ne la transmettrons pas (à des fins commerciales ou autre) et ne l'utiliserons que pour le jeu.

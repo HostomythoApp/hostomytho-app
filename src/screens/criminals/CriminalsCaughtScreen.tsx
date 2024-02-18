@@ -91,6 +91,7 @@ const CriminalsCaughtScreen = () => {
                                     data={criminals}
                                     showsHorizontalScrollIndicator
                                     automaticallyAdjustContentInsets
+                                    disableGesture={true}
                                     renderItem={({ item }) => (
                                         <View style={[styles.child]} >
                                             <Image

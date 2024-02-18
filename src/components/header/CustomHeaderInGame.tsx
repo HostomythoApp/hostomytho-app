@@ -9,7 +9,6 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import Explosion from 'components/Explosion';
 
 interface Props {
   title: string;
@@ -28,56 +27,57 @@ const CustomHeaderInGame: React.FC<Props> = ({
   const [displayPoints, setDisplayPoints] = useState<number>(user?.points ?? 0);
   const window = Dimensions.get('window');
   const isMobile = window.width < 960;
-  const [showExplosion, setShowExplosion] = useState(false);
   const [animatedColor, setAnimatedColor] = useState(textColor);
+  const [pointsGained, setPointsGained] = useState<number>(0);
+  const opacity = useSharedValue(0);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
     if (user?.points !== undefined && user.points !== displayPoints) {
-      setShowExplosion(true);
-      setAnimatedColor('green');
-
-      let currentPoints = displayPoints;
-      const pointsDiff = user.points - currentPoints;
-      const duration = pointsDiff * 15;
-      intervalId = setInterval(() => {
-        if (currentPoints < user.points) {
-          currentPoints++;
-          setDisplayPoints(currentPoints);
-        } else {
-          clearInterval(intervalId);
-          setShowExplosion(false);
-          setAnimatedColor(textColor);
-        }
-      }, duration);
-
-      return () => {
-        clearInterval(intervalId);
-      };
+      const pointsDiff = user.points - displayPoints;
+  
+      if (pointsDiff > 0) {
+        setPointsGained(pointsDiff);
+        opacity.value = withSpring(1, { stiffness: 100, damping: 15 });
+  
+        const timeoutId = setTimeout(() => {
+          setDisplayPoints(user.points);
+          opacity.value = withSpring(0, { stiffness: 100, damping: 15 });
+        }, 2000);
+  
+        return () => clearTimeout(timeoutId);
+      } else {
+        setDisplayPoints(user.points);
+      }
     }
-  }, [user?.points, textColor]);
+  }, [user?.points, displayPoints]);
+  
+  
+  const pointsGainedStyle = useAnimatedStyle(() => {
+    return {
+      fontSize: 18,
+      color: 'white',
+      backgroundColor: 'rgba(59, 130, 246, 0.8)',
+      padding: 5,
+      marginLeft: 25,
+      borderRadius: 10,
+      opacity: opacity.value,
+      transform: [{ scale: opacity.value }],
+      position: 'absolute',
+      alignSelf: 'center',
+      zIndex: 20
+    };
+  });
 
-
-  useEffect(() => {
-    if (showExplosion) {
-      setAnimatedColor('green');
-    } else {
-      setAnimatedColor(textColor);
-    }
-  }, [showExplosion, textColor]);
+  const totalPointsStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value === 1 ? 0 : 1,
+    };
+  });
 
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
       color: animatedColor,
       alignSelf: 'center',
-    };
-  });
-
-  const animatedTextContainerStyle = useAnimatedStyle(() => {
-    return {
-      height: isMobile ? 24 : 28,
-      justifyContent: 'center',
     };
   });
 
@@ -95,7 +95,13 @@ const CustomHeaderInGame: React.FC<Props> = ({
             <MaterialIcons style={tw(`mr-2`)} name="person-search" size={18} color={animatedColor} />
 
           </Animated.View>
-          <Animated.Text style={[tw(`font-primary`), animatedTextStyle]}>{Math.round(displayPoints)} points</Animated.Text>
+          <Animated.Text style={[tw(`font-primary text-lg`), pointsGainedStyle]}>
+            +{Math.round(pointsGained)} points
+          </Animated.Text>
+          <Animated.Text style={[tw(`font-primary`), animatedTextStyle, totalPointsStyle]}>
+            {Math.round(displayPoints)} points
+          </Animated.Text>
+
           <View
 
             style={[tw('absolute bottom-0 right-0 bg-green-700 rounded-full w-6 h-5 flex items-center justify-center left-0'), {
@@ -106,7 +112,6 @@ const CustomHeaderInGame: React.FC<Props> = ({
               x{user.coeffMulti}
             </Text>
           </View>
-          {showExplosion && <Explosion x={0} y={0} />}
         </Animated.View>
       }
     </View>
