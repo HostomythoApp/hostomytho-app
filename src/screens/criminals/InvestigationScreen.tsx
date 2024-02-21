@@ -177,7 +177,7 @@ const InvestigationScreen = () => {
                     </>
                 )}
             </CustomModal>
-            {/* TODO a faire */}
+
             <CustomModal
                 isVisible={isHelpModalVisible}
                 onClose={() => setIsHelpModalVisible(false)}

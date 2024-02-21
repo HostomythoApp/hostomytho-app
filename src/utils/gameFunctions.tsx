@@ -12,6 +12,7 @@ export const checkUserSelection = async (
     errorMargin: number = 1,
     tokenErrorMargin: number = 1,
 ): Promise<{ isValid: boolean, testSpecifications: TestSpecification[] }> => {
+
     try {
         const testSpecifications = await getTestSpecificationsByTextId(textId, gameType);
         if (userSentenceSpecifications.length !== testSpecifications.length) {
@@ -48,9 +49,9 @@ export const checkUserSelectionPlausibility = async (
     textId: number,
     userErrorDetails: ErrorDetail[],
     userRateSelected: number,
-    errorMargin: number = 3,
+    errorMargin: number = 10,
     plausibilityMargin: number = 25,
-    tokenErrorMargin: number = 3
+    tokenErrorMargin: number = 10
 ): Promise<{
     isValid: boolean,
     testPlausibilityError: TestPlausibilityError[],
@@ -84,7 +85,7 @@ export const checkUserSelectionPlausibility = async (
         }
 
         // Cas 3: L'utilisateur a spécifié des erreurs
-        const isErrorDetailsCorrect = areUserErrorsCorrect(userErrorDetails, testPlausibilityError, errorMargin, tokenErrorMargin);
+        const isErrorDetailsCorrect = areUserErrorsCorrect(userErrorDetails, testPlausibilityError);
 
         const testPlausibilityPassed = isErrorDetailsCorrect && isPlausibilityCorrect;
 
@@ -109,31 +110,25 @@ export const checkUserSelectionPlausibility = async (
 
 const areUserErrorsCorrect = (
     userErrorDetails: ErrorDetail[],
-    testPlausibilityError: TestPlausibilityError[],
-    errorMargin: number,
-    tokenErrorMargin: number
+    testPlausibilityError: TestPlausibilityError[]
 ): boolean => {
-    return userErrorDetails.every(errorDetail => {
-        const userWordPositions = errorDetail.word_positions.split(',').map(pos => parseInt(pos));
-        const matchingTestSpec = testPlausibilityError.find(spec => {
-            const testWordPositions = spec.word_positions.split(',').map(pos => parseInt(pos));
-            return hasMatchingPositions(userWordPositions, testWordPositions, errorMargin, tokenErrorMargin);
-        });
-        return !!matchingTestSpec;
-    });
-};
+    // Convertir toutes les positions des erreurs de la base de données en un seul tableau
+    const allTestErrorPositions = testPlausibilityError.flatMap(spec =>
+        spec.word_positions.split(',').map(pos => parseInt(pos))
+    );
+console.log("allTestErrorPositions");
+console.log(allTestErrorPositions);
 
-const hasMatchingPositions = (
-    userWordPositions: number[],
-    testWordPositions: number[],
-    errorMargin: number,
-    tokenErrorMargin: number
-): boolean => {
-    const matchingPositions = testWordPositions.filter(testPos => {
-        return userWordPositions.some(
-            userPos => Math.abs(userPos - testPos) <= errorMargin
-        );
+
+    // Vérifier si au moins une position des erreurs sélectionnées par l'utilisateur
+    // correspond à une position dans les erreurs de la base de données
+    return userErrorDetails.some(errorDetail => {
+        const userWordPositions = errorDetail.word_positions.split(',').map(pos => parseInt(pos));
+        console.log("userWordPositions");
+        console.log(userWordPositions);
+        
+        
+
+        return userWordPositions.some(userPos => allTestErrorPositions.includes(userPos));
     });
-    const tokenDifference = Math.abs(testWordPositions.length - userWordPositions.length);
-    return matchingPositions.length > 0 && tokenDifference <= tokenErrorMargin;
 };

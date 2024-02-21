@@ -99,7 +99,7 @@ const HypothesisGameScreen = ({ }) => {
     }]);
 
     setNextId(nextId + 1);
-    setColorIndex((colorIndex + 1) % colors.length);
+    setColorIndex((colorIndex) % colors.length);
   };
 
 
@@ -215,7 +215,7 @@ const HypothesisGameScreen = ({ }) => {
   const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
     const newTokens = [...text.tokens];
     newTokens.forEach((token, index) => {
-      if (positions.includes(index + 1)) {
+      if (positions.includes(index)) {
         token.color = 'text-red-500';
       }
     });

@@ -100,7 +100,7 @@ const MythoNoScreen = ({ }) => {
       let response;
       if (user) {
         response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
-        // response = await getTextWithTokensById(284);
+        // response = await getTextWithTokensById(347);
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }
@@ -467,7 +467,7 @@ const MythoNoScreen = ({ }) => {
   const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
     const newTokens = [...text.tokens];
     newTokens.forEach((token, index) => {
-      if (positions.includes(index + 1)) {
+      if (positions.includes(index)) {
         token.color = 'text-red-500';
       }
     });

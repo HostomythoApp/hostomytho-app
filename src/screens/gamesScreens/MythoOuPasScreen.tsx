@@ -106,7 +106,8 @@ const MythoOuPasScreen = () => {
     try {
       let response;
       if (user) {
-        response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+        // response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+        response = await getTextWithTokensById(350);
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }
@@ -217,13 +218,8 @@ const MythoOuPasScreen = () => {
 
       if (noErrorSpecified || noErrorInDatabase) {
         if (checkResult.testPlausibilityPassed) {
-          // Si l'utilisateur a spécifié des erreurs mais que la base de données n'en contient pas, accorder 10 points pour la bonne plausibilité.
-          // if (!noErrorSpecified && noErrorInDatabase) {
-          //   animationGainPoints(10, 1, 1);
-          // } else {
           // TODO Baisser les points donnés
           animationGainPoints(10, 1, 1);
-          // }
           goToNextSentence(true);
           return;
         } else {
@@ -323,7 +319,7 @@ const MythoOuPasScreen = () => {
         <Text
           style={[
             tw("font-primary text-gray-800"),
-            token.color ? tw(token.color) : null,       
+            token.color ? tw(token.color) : null,
             {
               fontSize: responsiveFontSize(30)
             }
@@ -454,7 +450,7 @@ const MythoOuPasScreen = () => {
   const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
     const newTokens = [...text.tokens];
     newTokens.forEach((token, index) => {
-      if (positions.includes(index + 1)) {
+      if (positions.includes(index)) {
         token.color = 'text-red-500';
       }
     });
@@ -466,6 +462,7 @@ const MythoOuPasScreen = () => {
   };
 
   const goToNextSentence = async (isCorrect = false) => {
+    // TODO Ici vérifier quand c'est faux et un test, relancer un autre test en faisant fetchNewText
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
       if (isCorrect) {
