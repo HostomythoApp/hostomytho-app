@@ -88,7 +88,7 @@ const CustomHeaderInGame: React.FC<Props> = ({
           <Ionicons name="chevron-back" size={30} color={textColor} />
         </View>
       </TouchableOpacity>
-      <Text style={[tw(`font-primary text-center flex-grow font-bold text-${textColor}`), isMobile ? tw('text-xl') : tw('text-2xl')]}>{title}</Text>
+      <Text style={[tw(`font-primary text-center flex-grow text-${textColor}`), isMobile ? tw('text-xl') : tw('text-2xl')]}>{title}</Text>
       {user?.points !== undefined &&
         <Animated.View style={tw('flex-row items-center justify-center w-32')}>
           <Animated.View style={tw('text-lg')}>

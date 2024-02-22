@@ -36,6 +36,7 @@ export type RootStackParamList = {
     Modal: undefined;
     Objectifs: undefined;
     ReglesDuJeu: undefined;
+    ProfilJoueur: { userId: number };
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

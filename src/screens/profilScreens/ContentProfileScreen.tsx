@@ -13,7 +13,6 @@ import { RootStackNavigationProp } from 'navigation/Types';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { characterImagesMapping } from 'utils/characterImagesMapping';
-// import SmallStatBox from 'components/SmallStatBox';
 
 interface Rank {
     id: number;
@@ -60,11 +59,11 @@ const ContentProfileScreen = (props: any) => {
         <View style={[tw('w-full mt-4 px-2 max-w-5xl'), isMobile ? tw('pt-2') : tw('pt-6')]}>
             <View style={tw('flex-row justify-center')}>
                 <View style={[tw(''), isMobile ? tw('w-4/5') : tw('w-3/5')]}>
-                    <Text style={[tw('font-bold mb-6 text-center text-[whitesmoke] font-MochiyPopOne'), isMobile ? tw('text-3xl') : tw(' text-5xl leading-10 pt-8')]}>{user?.username}</Text>
+                    <Text style={[tw('mb-6 text-center text-[whitesmoke] font-MochiyPopOne'), isMobile ? tw('text-3xl') : tw(' text-5xl leading-10 pt-8')]}>{user?.username}</Text>
 
                     <Text style={tw('text-lg mb-4 text-center text-white font-primary')}>Points: {user?.points}</Text>
 
-                    <Text style={tw('text-lg font-bold mb-2 w-full text-white font-primary')}>
+                    <Text style={tw('text-xl mb-2 w-full text-white font-primary')}>
                         Progression avant la prochaine récompense
                     </Text>
                     <View style={tw('bg-gray-300 h-4 rounded ')}>
@@ -104,7 +103,7 @@ const ContentProfileScreen = (props: any) => {
             <View style={tw('flex-col')}>
                 <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col mt-2') : tw('flex-row mt-8')]}>
                     <View style={[tw('mt-0'), isMobile ? tw('w-full mr-0 mb-4') : tw('w-2/4 mr-2')]}>
-                        <Text style={tw('text-xl font-bold mb-2 pl-2 text-white font-primary')}>Classement général</Text>
+                        <Text style={tw('text-xl mb-2 pl-2 text-white font-primary')}>Classement général</Text>
 
                         <View style={tw('bg-white mb-2 py-4 rounded-lg')}>
                             {ranking[0]?.ranking > 1 && (
@@ -135,7 +134,7 @@ const ContentProfileScreen = (props: any) => {
                         </View>
                     </View>
                     <View style={[tw('flex-1'), isMobile ? tw('') : tw('mr-2')]}>
-                        <Text style={tw('text-xl font-bold mb-2 pl-2 text-white font-primary')}>Classement mensuel</Text>
+                        <Text style={tw('text-xl mb-2 pl-2 text-white font-primary')}>Classement mensuel</Text>
                         <View style={tw('bg-white mb-2 py-4 rounded-lg')}>
                             {rankingMonthly[0]?.ranking > 1 && (
                                 <Text style={tw('pl-2')}>. . .</Text>
@@ -171,7 +170,7 @@ const ContentProfileScreen = (props: any) => {
                 <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col mt-2') : tw('flex-row mt-3')]}>
                     <View style={[tw('mt-0'), isMobile ? tw('w-full mr-0 mb-4') : tw('w-2/4 mr-2')]}>
 
-                        <Text style={tw('text-xl font-bold mb-2 text-white font-primary')}>Statistiques</Text>
+                        <Text style={tw('text-xl mb-2 text-white font-primary')}>Statistiques</Text>
                         <View style={tw("flex-row flex-wrap")}>
                             {/* Ne se met à jour que quand on joue à 1 jeu. A voir si j'améliore ça */}
                             <View style={tw(`w-[48%] max-w-[200px] flex justify-around p-2 mr-2 rounded-lg border-l-4 border-blue-500 bg-white mb-2`)}>
@@ -195,14 +194,14 @@ const ContentProfileScreen = (props: any) => {
 
 
                     <View style={[tw('flex-1'), isMobile ? tw('') : tw('mr-2')]}>
-                        <Text style={tw('text-xl font-bold mb-1 text-white font-primary')}>Hauts faits</Text>
+                        <Text style={tw('text-xl mb-1 text-white font-primary')}>Hauts faits</Text>
                         {userAchievements.length > 0 ? (
                             <>
                                 {userAchievements.slice(0, 2).map((achievement) => (
                                     <View style={tw("flex-row items-center p-4 mt-1 bg-white rounded-lg")} key={achievement.id}>
                                         <AchievementIcon achievement={achievement} />
                                         <View style={tw("ml-3")}>
-                                            <Text style={tw("font-bold text-lg font-primary")}>
+                                            <Text style={tw("font-primary")}>
                                                 {achievement.name}
                                             </Text>
                                             <Text style={tw("text-gray-600 text-xs font-primary")}>

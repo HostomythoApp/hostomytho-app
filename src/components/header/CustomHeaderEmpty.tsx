@@ -34,7 +34,7 @@ const CustomHeaderEmpty = ({
       <TouchableOpacity style={tw('pl-4 absolute z-10')} onPress={handleBackPress}>
         <Ionicons name="chevron-back" size={30} color={textColor} />
       </TouchableOpacity>
-      <Text style={tw(`font-primary text-center flex-grow text-xl font-bold text-${textColor}`)}>{title}</Text>
+      <Text style={tw(`font-primary text-center flex-grow text-xl text-${textColor}`)}>{title}</Text>
       <View style={tw('pl-4')} />
     </View>
   );

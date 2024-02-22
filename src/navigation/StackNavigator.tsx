@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "screens/MainScreen";
 import MainBoardScreen from "screens/MainBoardScreen";
 import ProfileScreen from "screens/profilScreens/ProfileScreen";
+import OtherProfileScreen from "screens/profilScreens/OtherProfileScreen";
 import ContentProfileScreen from "screens/profilScreens/ContentProfileScreen";
 import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
@@ -10,7 +11,6 @@ import ResetPasswordScreen from "screens/authScreens/ResetPasswordScreen";
 import MythoOuPasScreen from "screens/gamesScreens/MythoOuPasScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
-import AdminHomeScreen from "screens/adminScreens/AdminHomeScreen";
 import EditRewardsSreen from "screens/adminScreens/EditRewardsSreen";
 import ExportDataSreen from "screens/adminScreens/ExportDataSreen";
 import ManageTextsScreen from "screens/adminScreens/ManageTextsScreen";
@@ -40,10 +40,8 @@ import CustomHeader from "components/header/CustomHeader";
 import AdminNavigator from "./AdminNavigator";
 import InvestigationScreen from "screens/criminals/InvestigationScreen";
 import CriminalsCaughtScreen from "screens/criminals/CriminalsCaughtScreen";
-import { Animated, Text, TouchableOpacity, View } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import React, { useRef, useEffect, useState, useContext } from 'react';
-import { useTailwind } from "tailwind-rn";
+import { View } from 'react-native';
+import React, { useState } from 'react';
 import ModalContext from "services/context/ModalContext";
 import TimedModalContext from "components/modals/TimedModalContext";
 import { UserProvider } from "services/context/UserContext";
@@ -54,7 +52,7 @@ const StackNavigator = ({ }) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [content, setContent] = useState(null);
-  
+
   return (
     <ModalContext.Provider
       value={{
@@ -81,6 +79,7 @@ const StackNavigator = ({ }) => {
                 headerShown: false
               })}
             >
+
               <Stack.Screen name="TableauDeBord"
                 component={MainBoardScreen}
                 options={({ }) => ({
@@ -92,42 +91,39 @@ const StackNavigator = ({ }) => {
                 options={({ navigation }) => ({
                   header: () => <CustomHeader title="Menu principal" navigation={navigation} />,
                 })} />
-              <Stack.Screen name="MythoOuPas" component={MythoOuPasScreen} />
-
-              <Stack.Screen name="MythoNo" component={MythoNoScreen} />
 
               <Stack.Screen name="Investigation" component={InvestigationScreen} />
-
               <Stack.Screen name="Criminels" component={CriminalsCaughtScreen} />
 
+              {/* Games */}
+              <Stack.Screen name="MythoOuPas" component={MythoOuPasScreen} />
+              <Stack.Screen name="MythoNo" component={MythoNoScreen} />
               <Stack.Screen name="HypoMytho" component={HypothesisGameScreen} />
-
-              <Stack.Screen name="Profil" component={ProfileScreen} />
-
-              <Stack.Screen name="ProfilC" component={ContentProfileScreen} />
-
-              <Stack.Screen name="GestionApparence" component={SkinsManagementScreen} />
-
               <Stack.Screen name="CondiMytho" component={ConditionGameScreen} />
-
               <Stack.Screen name="MythoTypo" component={MythoTypoScreen} />
-
-              <Stack.Screen name="ParametreProfil" component={ProfileSettingsScreen} options={{ headerShown: false }} />
-
-              <Stack.Screen name="HautsFaits" component={AchievementsScreen} />
-
               <Stack.Screen name="MythoTempo" component={TemporalLinkGameScreen} />
-
               <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
-
               <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
 
+              {/* Profil */}
+              <Stack.Screen name="Profil" component={ProfileScreen} />
+              <Stack.Screen name="ProfilC" component={ContentProfileScreen} />
+              <Stack.Screen name="ParametreProfil" component={ProfileSettingsScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="GestionApparence" component={SkinsManagementScreen} />
+              <Stack.Screen name="HautsFaits" component={AchievementsScreen} />
+              <Stack.Screen name="Classement" component={RankingScreen} />
+              <Stack.Screen name="ClassementMensuel" component={RankingMonthScreen} />
+              <Stack.Screen name="Statistiques" component={StatisticsScreen} />
+              <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
+              <Stack.Screen name="ProfilJoueur" component={OtherProfileScreen} />
+
+              {/* Auth */}
               <Stack.Screen name="Connexion" component={SignInScreen} />
               <Stack.Screen name="Login" component={SignUpScreen} />
               <Stack.Screen name="MotDePasseOublie" component={ForgetPasswordScreen} />
               <Stack.Screen name="NouveauMotDePasse" component={ResetPasswordScreen} />
 
-              {/* Paramètres */}
+              {/* Params */}
               <Stack.Screen name="Parametres" component={SettingsScreen} />
               <Stack.Screen name="Notif" component={NotifScreen} />
               <Stack.Screen name="Objectifs" component={ObjectivesScreen} />
@@ -136,12 +132,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ReglesDuJeu" component={GameRulesScreen} />
               <Stack.Screen name="APropos" component={AboutScreen} />
 
-              <Stack.Screen name="Classement" component={RankingScreen} />
-              <Stack.Screen name="ClassementMensuel" component={RankingMonthScreen} />
-
-              <Stack.Screen name="Statistiques" component={StatisticsScreen} />
-
-              {/* Partie admin */}
+              {/* Part admin */}
               <Stack.Screen name="Admin"
                 options={{
                   headerShown: false
@@ -153,15 +144,10 @@ const StackNavigator = ({ }) => {
 
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
-              <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
-
               <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
-
               <Stack.Screen name="EditRewards" component={EditRewardsSreen} />
-
               <Stack.Screen name="ExportData" component={ExportDataSreen} />
-
 
             </Stack.Group>
 

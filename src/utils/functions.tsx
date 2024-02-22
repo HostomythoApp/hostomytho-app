@@ -1,4 +1,7 @@
 import { Dimensions } from "react-native";
+const { width } = Dimensions.get('window');
+const standardScreenWidth = 1200;
+const widthCoefficient = width / standardScreenWidth;
 
 export function shuffleArray(array: any) {
   const newArr = [...array];
@@ -27,13 +30,17 @@ export function splitText(text: any): any {
 
 // Taille de font en fonction de la largeur d'écran
 export const responsiveFontSize = (fontSize: number) => {
-  const { width } = Dimensions.get('window');
-  const standardScreenWidth = 1200;
-  const widthCoefficient = width / standardScreenWidth;
   let size = fontSize * widthCoefficient;
-
   size = Math.max(size, 10);
   size = Math.min(size, 24);
+
+  return size;
+};
+
+export const responsiveTitle = (fontSize: number) => {
+  let size = fontSize * widthCoefficient;
+  size = Math.max(size, 15);
+  size = Math.min(size, 44);
 
   return size;
 };

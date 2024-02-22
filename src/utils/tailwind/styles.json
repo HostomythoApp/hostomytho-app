@@ -653,14 +653,14 @@
 			"width": 384
 		}
 	},
-	"w-[164px]": {
-		"style": {
-			"width": 164
-		}
-	},
 	"w-[250px]": {
 		"style": {
 			"width": 250
+		}
+	},
+	"w-[30%]": {
+		"style": {
+			"width": "30%"
 		}
 	},
 	"w-[32%]": {
@@ -686,6 +686,11 @@
 	"min-w-[1200px]": {
 		"style": {
 			"minWidth": 1200
+		}
+	},
+	"min-w-[140px]": {
+		"style": {
+			"minWidth": 140
 		}
 	},
 	"min-w-[180px]": {
@@ -731,6 +736,11 @@
 	"max-w-[200px]": {
 		"style": {
 			"maxWidth": 200
+		}
+	},
+	"max-w-[250px]": {
+		"style": {
+			"maxWidth": 250
 		}
 	},
 	"max-w-[320px]": {

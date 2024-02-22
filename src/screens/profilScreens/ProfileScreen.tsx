@@ -67,7 +67,7 @@ const ProfileScreen = (props: any) => {
 
             if (tutorialProgress == 0) {
                 setIsHelpModalVisible(true);
-                setIsBossVisible(false);  // Assurez-vous que le boss est caché à cette étape
+                setIsBossVisible(false);
             } else if (tutorialProgress > 0 && tutorialProgress < 6) {
                 setIsBossVisible(true);
                 const tutorialContent = getTutorialContentForStep(tutorialProgress, tw);

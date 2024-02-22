@@ -5,6 +5,8 @@ import { getUsersOrderedByPointsInMonthly } from 'services/api/user';
 import { User } from "models/User";
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "navigation/Types";
 
 const RankingMonthScreen = ({ }) => {
     const tw = useTailwind();
@@ -14,6 +16,7 @@ const RankingMonthScreen = ({ }) => {
     const [hasMoreUsers, setHasMoreUsers] = useState(true);
     const { user } = useUser();
     const currentUserId = user?.id;
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     useEffect(() => {
         fetchUsers();
@@ -40,9 +43,12 @@ const RankingMonthScreen = ({ }) => {
                 item.id === currentUserId ? tw('bg-blue-300') :
                     index % 2 === 0 ? tw('bg-blue-100') : tw('bg-white'),
             ]}>
-            <Text style={tw('font-primary')}>
-                {item.ranking}. {item.username}
-            </Text>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("ProfilJoueur", { userId: item.id })}
+            ><Text style={tw('font-primary')}>
+                    {item.ranking}. {item.username}
+                </Text>
+            </TouchableOpacity>
             <Text style={tw('font-primary')}>{item.monthly_points} points</Text>
         </View>
     );

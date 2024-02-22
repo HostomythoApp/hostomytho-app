@@ -116,19 +116,13 @@ const areUserErrorsCorrect = (
     const allTestErrorPositions = testPlausibilityError.flatMap(spec =>
         spec.word_positions.split(',').map(pos => parseInt(pos))
     );
-console.log("allTestErrorPositions");
-console.log(allTestErrorPositions);
 
 
     // Vérifier si au moins une position des erreurs sélectionnées par l'utilisateur
     // correspond à une position dans les erreurs de la base de données
     return userErrorDetails.some(errorDetail => {
         const userWordPositions = errorDetail.word_positions.split(',').map(pos => parseInt(pos));
-        console.log("userWordPositions");
-        console.log(userWordPositions);
-        
-        
-
+ 
         return userWordPositions.some(userPos => allTestErrorPositions.includes(userPos));
     });
 };

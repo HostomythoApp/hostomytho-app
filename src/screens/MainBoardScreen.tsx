@@ -42,6 +42,7 @@ const MainBoardScreen = ({ }) => {
     const [userNeedsUpdate, setUserNeedsUpdate] = useState(true);
     const [monthlyWinners, setMonthlyWinners] = useState<any>([]);
 
+
     useEffect(() => {
         const fetchMonthlyWinners = async () => {
             try {
@@ -176,15 +177,6 @@ const MainBoardScreen = ({ }) => {
 
                     <View style={StyleSheet.absoluteFill}>
                         <View style={StyleSheet.absoluteFill}>
-                            {/* <TouchableOpacity onPress={() => navigation.navigate("Menu")}
-                                style={{
-                                    position: 'absolute',
-                                    top: windowWidth > 748 ? '43%' : '43%',
-                                    left: windowWidth > 748 ? '48%' : '48%',
-                                }}>
-                                <Image source={require('images/map.png')} style={{ width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 90, minHeight: 90 }} />
-                            </TouchableOpacity> */}
-
 
                             <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
                                 style={{
@@ -227,22 +219,6 @@ const MainBoardScreen = ({ }) => {
                                     resizeMode="contain"
                                 />
                             </TouchableOpacity>
-
-                            {/* <TouchableOpacity onPress={() => navigation.navigate("HypoMytho")}
-                                style={{
-                                    position: 'absolute',
-                                    top: windowWidth > 748 ? '27%' : '27%',
-                                    left: windowWidth > 748 ? '54%' : '54%',
-                                }}>
-                                <Image source={require('images/postit_hypothese.png')}
-                                    style={{
-                                        width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60,
-                                        shadowColor: 'black',
-                                        shadowOffset: { width: -1.6, height: 1 },
-                                        shadowOpacity: 0.6,
-                                        shadowRadius: 1,
-                                    }} />
-                            </TouchableOpacity> */}
 
                             <TouchableOpacity onPress={() => navigation.navigate("MythoTypo")}
                                 style={{
@@ -304,23 +280,6 @@ const MainBoardScreen = ({ }) => {
                                 }
                             </TouchableOpacity>
 
-
-                            {/* <TouchableOpacity onPress={() => navigation.navigate("MythoTempo")}
-                                style={{
-                                    position: 'absolute',
-                                    top: windowWidth > 748 ? '56%' : '56%',
-                                    left: windowWidth > 748 ? '37%' : '37%',
-                                }}>
-                                <Image source={require('images/postit_mytho_tempo.png')} style={{
-                                    width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60,
-                                    shadowColor: 'black',
-                                    shadowOffset: { width: -1, height: 2 },
-                                    shadowOpacity: 0.5,
-                                    shadowRadius: 1,
-                                    transform: [{ rotate: '4deg' }]
-                                }} />
-                            </TouchableOpacity> */}
-
                             <TouchableOpacity onPress={() => navigation.navigate("MythoNo")}
                                 style={{
                                     position: 'absolute',
@@ -369,9 +328,10 @@ const MainBoardScreen = ({ }) => {
                                     Enquêteurs du mois précédent
                                 </Text>
 
-
                                 <View style={tw('absolute top-[42%] left-[9%] p-1 bg-white border border-gray-500 rounded min-w-[25%]')}>
-                                    <TouchableOpacity style={tw('text-center z-10')}>
+                                    <TouchableOpacity style={tw('text-center z-10')}
+                                        onPress={() => navigation.navigate("ProfilJoueur", { userId: monthlyWinners[1]?.user_id })}
+                                    >
                                         <Image source={require('images/ranking_2.png')} style={{
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,
@@ -390,7 +350,10 @@ const MainBoardScreen = ({ }) => {
                                 {/* Zone du Joueur 3 */}
                                 <View style={tw('absolute top-[50%] right-[10%] p-1 pb-0 bg-white border border-gray-500 rounded min-w-[25%]')}>
 
-                                    <TouchableOpacity style={tw('text-center z-10')}>
+                                    <TouchableOpacity
+                                        style={tw('text-center z-10')}
+                                        onPress={() => navigation.navigate("ProfilJoueur", { userId: monthlyWinners[2]?.user_id })}
+                                    >
 
                                         <Image source={require('images/ranking_3.png')} style={{
                                             width: windowWidth * 0.03,
@@ -412,7 +375,9 @@ const MainBoardScreen = ({ }) => {
                                 >
                                     <View style={tw('p-1 bg-white border border-gray-500 rounded min-w-[25%] self-center')}>
 
-                                        <TouchableOpacity style={tw('text-center z-10')}>
+                                        <TouchableOpacity style={tw('text-center z-10')}
+                                            onPress={() => navigation.navigate("ProfilJoueur", { userId: monthlyWinners[0]?.user_id })}
+                                        >
 
                                             <Image source={require('images/ranking_1.png')} style={{
                                                 width: windowWidth * 0.03,

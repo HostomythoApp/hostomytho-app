@@ -30,11 +30,9 @@ const StatisticsScreen = ({ }) => {
             <View style={tw('w-auto m-auto max-w-6xl')}>
               <SectionHeader title="Statistiques personnelles" />
               <View style={tw('justify-center flex-row rounded-xl shadow-lg p-4 pt-0 flex-wrap')}>
-
                 <StatBox title="Jours consécutifs joués :" value={user?.consecutiveDaysPlayed} color="border-l-4 border-blue-500" />
                 <StatBox title="Fiabilité :" value={`${user?.trust_index} %`} color="border-l-4 border-green-500" />
                 <StatBox title="Coefficient multiplicateur :" value={user?.coeffMulti} color="border-l-4 border-purple-500" />
-                {/* <StatBox title="Annotations créées :" value="15" color="border-l-4 border-yellow-500" /> */}
                 <StatBox title="Nombre de fois 1er à un classement mensuel :" value={user?.nb_first_monthly} color="border-l-4 border-yellow-500" />
                 <StatBox title="Personnes parrainées :" value="0" color="border-l-4 border-red-500" />
                 <StatBox title="Compte créé le :" value={user?.created_at} color="border-l-4 border-blue-500" />

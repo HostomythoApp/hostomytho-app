@@ -118,6 +118,15 @@ export const getCoeffMultiByUserId = async (id: number): Promise<number> => {
   }
 };
 
+export const getUserDetailsById = async (id: number): Promise<any> => {
+  try {
+    return await api.get(`/users/getUserDetailsById/${id}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const updateUserPoints = async (id: number, points: number) => {
   try {
     return await api.put(`/users/${id}/points`, {
