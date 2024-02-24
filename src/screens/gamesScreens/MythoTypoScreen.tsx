@@ -38,6 +38,7 @@ const MythoTypoScreen = ({ }) => {
   const [tutorialFailed, setTutorialFailed] = useState(false);
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
+  const [isInvisibleTest, setIsInvisibleTest] = useState(false);
 
   useEffect(() => {
     fetchNewTypesError();
@@ -96,6 +97,15 @@ const MythoTypoScreen = ({ }) => {
     }
   };
 
+  const fetchTestText = async () => {
+    try {
+      const response = await getTextTestWithErrorValidated();
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du texte de test.", error);
+    }
+  };
+
   const fetchNewTypesError = async () => {
     const responseTypeError = await getTypesError();
     setErrorTypes(responseTypeError);
@@ -110,6 +120,7 @@ const MythoTypoScreen = ({ }) => {
     if (nextStep <= 3) {
       let response;
       switch (nextStep) {
+        // TODO mettre de meilleurs exemples
         case 1:
           response = await getTextWithErrorValidated();
           setText(response);
@@ -149,14 +160,6 @@ const MythoTypoScreen = ({ }) => {
     }
   };
 
-  const fetchTestText = async () => {
-    try {
-      const response = await getTextTestWithErrorValidated();
-      setText(response);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du texte de test.", error);
-    }
-  };
 
   const showModal = (content: any) => {
     setModalContent(content);
@@ -201,15 +204,17 @@ const MythoTypoScreen = ({ }) => {
           }
           goToNextSentence(isUserCorrect);
         } else {
-          if (!isTutorial) {
-            updateUserStats(0, 0, -1);
-          }
-          const messageCorrection = getCorrectionMessage(errorTypeData.id);
-          setShowMessage(true);
-          setMessageContent(messageCorrection);
-        }
-        if (!isTutorial) {
 
+
+          if (isInvisibleTest) {
+            updateUserStats(2, 1, 1);
+          goToNextSentence(false);
+        } else {
+            updateUserStats(0, 0, -1);
+            const messageCorrection = getCorrectionMessage(errorTypeData.id);
+            setShowMessage(true);
+            setMessageContent(messageCorrection);
+          }
         }
       } else {
         const userTypingErrorData = {
@@ -242,7 +247,15 @@ const MythoTypoScreen = ({ }) => {
     if (isTutorial) {
       nextTutorialStep();
     } else {
-      fetchNewText();
+
+      if (isCorrect) {
+        setIsInvisibleTest(false);
+        fetchNewText();
+      } else {
+        fetchTestText();
+
+        setIsInvisibleTest(true);
+      }
     }
   };
 

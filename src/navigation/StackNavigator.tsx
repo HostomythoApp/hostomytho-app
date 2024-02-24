@@ -96,7 +96,6 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="Criminels" component={CriminalsCaughtScreen} />
 
               {/* Games */}
-              <Stack.Screen name="MythoOuPas" component={MythoOuPasScreen} />
               <Stack.Screen name="MythoNo" component={MythoNoScreen} />
               <Stack.Screen name="HypoMytho" component={HypothesisGameScreen} />
               <Stack.Screen name="CondiMytho" component={ConditionGameScreen} />
@@ -104,6 +103,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="MythoTempo" component={TemporalLinkGameScreen} />
               <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
               <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
+              <Stack.Screen name="MythoOuPas" component={MythoOuPasScreen} />
 
               {/* Profil */}
               <Stack.Screen name="Profil" component={ProfileScreen} />

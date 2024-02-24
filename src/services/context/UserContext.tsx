@@ -210,13 +210,13 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
       try {
         let coeffTrustIndex = user.trust_index / 100;
-        coeffTrustIndex = Math.max(coeffTrustIndex, 0.4);
+        coeffTrustIndex = Math.max(coeffTrustIndex, 0.15);
 
         const additionalPoints = Math.round(pointsToAdd * coeffTrustIndex * user.coeffMulti);
 
         user.points += additionalPoints;
 
-        const response = await updateUserStatsApi(user.id, percentageToAdd, pointsToAdd, trustIndexIncrement);
+        const response = await updateUserStatsApi(user.id, percentageToAdd, additionalPoints, trustIndexIncrement);
         const newPoints = response.data.newPoints;
         const newCatchProbability = response.data.newCatchProbability;
         const newTrustIndex = response.data.newTrustIndex;

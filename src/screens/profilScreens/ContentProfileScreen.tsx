@@ -214,7 +214,7 @@ const ContentProfileScreen = (props: any) => {
                         ) : null}
                         <TouchableOpacity onPress={() => navigation.navigate('HautsFaits')} style={tw('p-2 pb-2 pt-1 mt-1 bg-white rounded-lg')}>
                             {userAchievements.length === 0 ? (
-                                <Text style={tw('font-primary text-center')}>Aucun haut fait pour le moment</Text>
+                                <Text style={tw('font-primary text-center mt-2')}>Aucun haut fait pour le moment</Text>
 
                             ) : null}
                             <Text style={tw('text-center text-lg')}

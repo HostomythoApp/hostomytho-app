@@ -7,4 +7,5 @@ export const suspectsImagesMapping = {
         6: require('images/suspects/suspect_identification_6.png'),
         7: require('images/suspects/suspect_identification_7.png'),
         8: require('images/suspects/suspect_identification_8.png'),
+        9: require('images/suspects/suspect_identification_9.png'),
 };

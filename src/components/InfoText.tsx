@@ -60,12 +60,13 @@ const InfoText: React.FC<InfoTextProps> = ({ num, origin, test_plausibility, is_
 
             {isInfoVisible && (
                 <View style={tw('p-2 mt-1 bg-gray-100 rounded items-start')}>
+                    <Text style={tw('mb-1 text-sm')}>textId : {textId}</Text>
                     <Text style={tw('mb-1 text-sm')}>Num : {num}</Text>
                     {origin && <Text style={tw('mb-1 text-sm')}>Origine : {origin}</Text>}
                     {is_plausibility_test && <Text style={tw('mb-1 text-sm')}>C'est un test de plausibilité</Text>}
                     {idUserErrorDetail && <Text style={tw('mb-1 text-sm')}>C'est une erreur de test</Text>}
                     {vote_weight && <Text style={tw('mb-1 text-sm')}>Poids de l'erreur : {vote_weight}</Text>}
-                    {!!test_plausibility && (
+                    {is_plausibility_test && (
                         <Text style={tw('mb-1 text-sm')}>Taux de plausibilité: {test_plausibility}</Text>
                     )}
 

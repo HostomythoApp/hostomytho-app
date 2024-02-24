@@ -58,6 +58,7 @@ const MythoOuPasScreen = () => {
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isInvisibleTest, setIsInvisibleTest] = useState(false);
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -106,14 +107,23 @@ const MythoOuPasScreen = () => {
     try {
       let response;
       if (user) {
-        // response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
-        response = await getTextWithTokensById(350);
+        response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+        // response = await getTextWithTokensById(116);
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }
       setText(response);
     } catch (error) {
       console.error("Erreur lors de la récupération du nouveau texte :", error);
+    }
+  };
+
+  const fetchTestText = async () => {
+    try {
+      const response = await getTextTestPlausibility();
+      setText(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du texte de test.", error);
     }
   };
 
@@ -126,17 +136,16 @@ const MythoOuPasScreen = () => {
     if (nextStep <= 3) {
       let response;
       switch (nextStep) {
-        // TODO Ici, mettre de meilleurs exemples de tests
         case 1:
-          response = await getTextWithTokensById(113);
+          response = await getTextWithTokensById(345);
           setText(response);
           break;
         case 2:
-          response = await getTextWithTokensById(112);
+          response = await getTextWithTokensById(349);
           setText(response);
           break;
         case 3:
-          response = await getTextWithTokensById(117);
+          response = await getTextWithTokensById(352);
           setText(response);
           break;
       }
@@ -164,15 +173,6 @@ const MythoOuPasScreen = () => {
           setTutorialFailed(true);
         }
       }
-    }
-  };
-
-  const fetchTestText = async () => {
-    try {
-      const response = await getTextTestPlausibility();
-      setText(response);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du texte de test.", error);
     }
   };
 
@@ -204,6 +204,7 @@ const MythoOuPasScreen = () => {
   // *****************************************************
 
   const onNextCard = async () => {
+
     if (!text) {
       console.error("Aucun texte à traiter.");
       return;
@@ -218,8 +219,7 @@ const MythoOuPasScreen = () => {
 
       if (noErrorSpecified || noErrorInDatabase) {
         if (checkResult.testPlausibilityPassed) {
-          // TODO Baisser les points donnés
-          animationGainPoints(10, 1, 1);
+          animationGainPoints(7, 1, 1);
           goToNextSentence(true);
           return;
         } else {
@@ -253,7 +253,7 @@ const MythoOuPasScreen = () => {
               <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
             </View>
           );
-          animationGainPoints(10, 0, 1);
+          animationGainPoints(7, 0, 1);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -274,17 +274,23 @@ const MythoOuPasScreen = () => {
               <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
             </View>
           );
-          animationGainPoints(10, 0, 1);
+          animationGainPoints(7, 0, 1);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          animationGainPoints(15, 2, 2);
+          animationGainPoints(12, 2, 2);
           goToNextSentence(true);
           return;
         }
       }
 
-      setMessageContent(messageHeader);
-      setShowMessage(true);
-      setSelectionStarted(false);
+      if (!checkResult.isValid) {
+        setMessageContent(messageHeader);
+        if (!isInvisibleTest) {
+          setShowMessage(true);
+        } else {
+          goToNextSentence(false);
+        }
+        setSelectionStarted(false);
+      }
       return;
     } else {
       const userTextRating = {
@@ -305,6 +311,34 @@ const MythoOuPasScreen = () => {
       await createUserErrorDetail(rest);
     }
     goToNextSentence();
+  };
+
+
+  const goToNextSentence = async (isCorrect = true) => {
+    if (isTutorial) {
+      setQuestionsAsked(questionsAsked + 1);
+      if (isCorrect) {
+        setCorrectAnswers(correctAnswers + 1);
+      }
+    }
+    setErrorDetails([]);
+    setShowMessage(false);
+    setMessageContent(<></>);
+    setErrorSpecifying(false);
+    setHighlightEnabled(false);
+    setUserRateSelected(100);
+    if (isTutorial) {
+      nextTutorialStep();
+    } else {
+      if (isCorrect) {
+        setIsInvisibleTest(false);
+        fetchNewText();
+      } else {
+        fetchTestText();
+        setIsInvisibleTest(true);
+      }
+
+    }
   };
 
   const HighlightedWord = ({ token, index }: { token: Token; index: number }) => {
@@ -461,26 +495,6 @@ const MythoOuPasScreen = () => {
     setErrorSpecifying(false);
   };
 
-  const goToNextSentence = async (isCorrect = false) => {
-    // TODO Ici vérifier quand c'est faux et un test, relancer un autre test en faisant fetchNewText
-    if (isTutorial) {
-      setQuestionsAsked(questionsAsked + 1);
-      if (isCorrect) {
-        setCorrectAnswers(correctAnswers + 1);
-      }
-    }
-    setErrorDetails([]);
-    setShowMessage(false);
-    setMessageContent(<></>);
-    setErrorSpecifying(false);
-    setHighlightEnabled(false);
-    setUserRateSelected(100);
-    if (isTutorial) {
-      nextTutorialStep();
-    } else {
-      fetchNewText();
-    }
-  };
 
   const plausibilityDescription = (value: any) => {
     if (value === 0) return "très peu plausible";

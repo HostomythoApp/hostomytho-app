@@ -153,6 +153,7 @@ export const getTextTestPlausibility = async (): Promise<TextWithTokens> => {
     throw error;
   }
 };
+// TODO Pour sécuriser, faire une requete spéciale quand moderator connecté qui renvoie la plausibilité pour éviter de la mettre dans la requete du dessus
 
 export const getTextById = async (id: number): Promise<Text[]> => {
   try {
