@@ -223,8 +223,8 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("MythoTypo")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 748 ? '40%' : '40%',
-                                    left: windowWidth > 748 ? '33%' : '33%',
+                                    top: windowWidth > 748 ? '20%' : '20%',
+                                    left: windowWidth > 748 ? '43%' : '43%',
                                 }}>
                                 <View style={{ position: 'relative' }}>
                                     <Image
@@ -240,7 +240,6 @@ const MainBoardScreen = ({ }) => {
                                     }
                                     ]}>
                                         Mytho-Typo
-
                                     </Text>
                                     {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] &&
                                         <IconNotification
@@ -256,8 +255,8 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("MythoOuPas")}
                                 style={{
                                     position: 'absolute',
-                                    top: windowWidth > 748 ? '20%' : '20%',
-                                    left: windowWidth > 748 ? '43%' : '43%',
+                                    top: windowWidth > 748 ? '40%' : '40%',
+                                    left: windowWidth > 748 ? '33%' : '33%',
                                     transform: [{ rotate: '4deg' }]
                                 }}>
                                 <Image source={require('images/postit_green.png')}

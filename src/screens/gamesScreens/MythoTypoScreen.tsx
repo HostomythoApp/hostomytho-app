@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, ScrollView
 import { useTailwind } from "tailwind-rn";
 import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
-import { getTextTestWithErrorValidated, getTextWithErrorValidated, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
+import { getTextTestWithErrorValidated, getTextWithErrorValidated, getTextWithErrorValidatedById, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
 import { createUserTypingError, getTypeByErrorId, getTypesError, isErrorTest } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
@@ -117,19 +117,23 @@ const MythoTypoScreen = ({ }) => {
     const nextStep = tutorialStep + 1;
     setTutorialStep(nextStep);
 
-    if (nextStep <= 3) {
+    if (nextStep <= 4) {
       let response;
       switch (nextStep) {
-        // TODO mettre de meilleurs exemples
+        // TODO mettre de meilleurs exemples, montrer exemple avec répétition
         case 1:
-          response = await getTextWithErrorValidated();
+          response = await getTextWithErrorValidatedById(5);
           setText(response);
           break;
         case 2:
-          response = await getTextWithErrorValidated();
+          response = await getTextWithErrorValidatedById(4);
           setText(response);
           break;
         case 3:
+          response = await getTextWithErrorValidatedById(49);
+          setText(response);
+          break;
+        case 4:
           response = await getTextWithErrorValidated();
           setText(response);
           break;
@@ -143,7 +147,7 @@ const MythoTypoScreen = ({ }) => {
         fetchTestText();
       } else {
         // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
-        if (correctAnswers >= 4) {
+        if (correctAnswers >= 5) {
           showModal(getTutorialContentForStep(98, tw));
           setIsTutorial(false);
           if (user) {
@@ -193,7 +197,6 @@ const MythoTypoScreen = ({ }) => {
 
     try {
       const isTestResult = await isErrorTest(text.idUserErrorDetail);
-      // TODO donner points quand pas test
       if (isTestResult.isTest) {
         const errorTypeData = await getTypeByErrorId(text.idUserErrorDetail);
         const isUserCorrect = selectedErrorType === errorTypeData.id;
@@ -208,8 +211,8 @@ const MythoTypoScreen = ({ }) => {
 
           if (isInvisibleTest) {
             updateUserStats(2, 1, 1);
-          goToNextSentence(false);
-        } else {
+            goToNextSentence(false);
+          } else {
             updateUserStats(0, 0, -1);
             const messageCorrection = getCorrectionMessage(errorTypeData.id);
             setShowMessage(true);
@@ -217,6 +220,7 @@ const MythoTypoScreen = ({ }) => {
           }
         }
       } else {
+        updateUserStats(2, 1, 0);
         const userTypingErrorData = {
           // @ts-ignore
           user_id: user.id,

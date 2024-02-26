@@ -90,6 +90,22 @@ export const getTextWithErrorValidated = async (): Promise<TextWithError> => {
   }
 };
 
+export const getTextWithErrorValidatedById = async (textId: number): Promise<TextWithError> => {
+  try {
+    const response = await api.get(`/texts/getTextWithErrorValidatedByErrorId/${textId}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
 export const getTextTestWithErrorValidated = async (): Promise<TextWithError> => {
   try {
     const response = await api.get(`/texts/getTextTestWithErrorValidated`);

@@ -21,9 +21,15 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 3: return <Text style={tw('font-primary')}>
+            Il arrive souvent que les erreurs soient des répétitions de mots. Classez les dans la catégorie "Autre".
+            {"\n\n"}
+            Parfois, le texte surligné peut aussi ne pas être une erreur.
+        </Text>;
+
+        case 4: return <Text style={tw('font-primary')}>
             Nous avons fait le tour des explications.
             {"\n\n"}
-            Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indices.
+            Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 5 bonnes réponses, vous pourrez vous lancer à la recherche d'indices.
             {"\n\n"}
             Bon courage !
         </Text>;
@@ -83,10 +89,10 @@ export const getModalHelpContent = (tw: any) => {
             <HighlightedText>"Autre" </HighlightedText> si le type est différent.
             {"\n"}
             <ItalicPhrase>
-                - "Le patient, interné au grand hôpital de <HighlightedText>Dublin en France</HighlightedText>."
+                - "<HighlightedText>La biopsie rénale a montré une glomérulonéphrite extramembraneuse. La biopsie rénale a montré une glomérulonéphrite extramembraneuse. La biopsie rénale a montré une glomérulonéphrite extramembraneuse.</HighlightedText>"
             </ItalicPhrase>
             {"\n"}
-            L'erreur vient de l'incohérence de l'information.
+            L'erreur est la répétition de la phrase.
             {"\n\n"}
 
             Cliquez <HighlightedText>"Pas d'erreur" </HighlightedText> si le texte surligné est bon.
