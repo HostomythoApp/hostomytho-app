@@ -9,32 +9,41 @@ export const checkUserSelection = async (
     textId: number,
     userSentenceSpecifications: UserSentenceSpecification[],
     gameType: 'hypothesis' | 'condition' | 'negation',
-    errorMargin: number = 1,
-    tokenErrorMargin: number = 1,
+    positionErrorMargin: number = 3, // Marge d'erreur pour la position des mots
+    negationErrorMargin: number = 1, // Marge d'erreur pour le compte des négations
 ): Promise<{ isValid: boolean, testSpecifications: TestSpecification[] }> => {
 
     try {
         const testSpecifications = await getTestSpecificationsByTextId(textId, gameType);
-        if (userSentenceSpecifications.length !== testSpecifications.length) {
+        // Ajustement de la condition pour le nombre de sélections
+        // La tolérance s'applique désormais même s'il n'y a qu'une seule négation
+        if (testSpecifications.length === 1 && userSentenceSpecifications.length > testSpecifications.length + negationErrorMargin) {
+            return { isValid: false, testSpecifications };
+        } else if (testSpecifications.length > 1 && Math.abs(userSentenceSpecifications.length - testSpecifications.length) > negationErrorMargin) {
             return { isValid: false, testSpecifications };
         }
 
-        for (let userSentenceSpecification of userSentenceSpecifications) {
-            const userWordPositions = userSentenceSpecification.word_positions.split(',').map(pos => parseInt(pos));
-            const matchingTestSpec = testSpecifications.find(spec => {
-                const testWordPositions = spec.word_positions.split(',').map(pos => parseInt(pos));
-                const matchingPositions = testWordPositions.filter(testPos => {
-                    return userWordPositions.some(userPos => Math.abs(userPos - testPos) <= errorMargin);
-                });
+        let matchedNegationsCount = 0;
 
-                const tokenDifference = Math.abs(testWordPositions.length - userWordPositions.length);
-                return matchingPositions.length > 0 && tokenDifference <= tokenErrorMargin;
+        // Vérification de la correspondance des positions de mots pour chaque négation
+        testSpecifications.forEach(testSpec => {
+            const testWordPositions = testSpec.word_positions.split(',').map(pos => parseInt(pos));
+
+            const isMatched = userSentenceSpecifications.some(userSpec => {
+                const userWordPositions = userSpec.word_positions.split(',').map(pos => parseInt(pos));
+                return testWordPositions.some(testPos => 
+                    userWordPositions.some(userPos => Math.abs(userPos - testPos) <= positionErrorMargin));
             });
 
-            if (!matchingTestSpec) {
-                return { isValid: false, testSpecifications };
-            } else {
+            if (isMatched) {
+                matchedNegationsCount++;
             }
+        });
+
+        // Toutes les négations doivent avoir au moins une position correspondante parmi les sélections de l'utilisateur
+        if (matchedNegationsCount < testSpecifications.length) {
+            console.log("Toutes les négations n'ont pas été trouvées");
+            return { isValid: false, testSpecifications };
         }
 
         return { isValid: true, testSpecifications };
@@ -44,6 +53,8 @@ export const checkUserSelection = async (
         return { isValid: false, testSpecifications: [] };
     }
 };
+
+
 
 export const checkUserSelectionPlausibility = async (
     textId: number,

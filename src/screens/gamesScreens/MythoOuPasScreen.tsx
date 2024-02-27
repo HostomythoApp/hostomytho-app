@@ -137,7 +137,7 @@ const MythoOuPasScreen = () => {
       let response;
       switch (nextStep) {
         case 1:
-          response = await getTextWithTokensById(345);
+          response = await getTextWithTokensById(344);
           setText(response);
           break;
         case 2:
@@ -145,7 +145,7 @@ const MythoOuPasScreen = () => {
           setText(response);
           break;
         case 3:
-          response = await getTextWithTokensById(352);
+          response = await getTextWithTokensById(351);
           setText(response);
           break;
       }

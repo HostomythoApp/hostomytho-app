@@ -100,7 +100,7 @@ const MythoNoScreen = ({ }) => {
       let response;
       if (user) {
         response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
-        // response = await getTextWithTokensById(347);
+        // response = await getTextWithTokensById(108);
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }
@@ -119,7 +119,6 @@ const MythoNoScreen = ({ }) => {
     if (nextStep <= 5) {
       let response;
       switch (nextStep) {
-        // TODO Mettre meilleurs exemples, dont un avec la plausibilité donnée, et des erreurs à selectionner 
         case 1:
           response = await getTextWithTokensById(113);
           setText(response);
