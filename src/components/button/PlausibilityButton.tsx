@@ -14,10 +14,10 @@ const PlausibilityButton = ({ config }: { config: ButtonConfig }) => {
 
     return (
         <TouchableOpacity
-            style={tw(`items-center justify-center ml-2 rounded-full w-8 h-8 my-auto ${config.backgroundColor}`)}
+            style={tw(`items-center justify-center ml-2 rounded-full w-6 h-6 ${config.backgroundColor}`)}
         >
             {/* @ts-ignore */}
-            <Icon name={config.iconName} size={22} color={config.iconColor} />
+            <Icon name={config.iconName} size={16} color={config.iconColor} />
         </TouchableOpacity>
     );
 };

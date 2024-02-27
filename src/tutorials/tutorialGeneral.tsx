@@ -49,40 +49,19 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
             );
 
         case 9: return (
-            <View style={tw('font-primary')}>
-                <Text style={tw('font-primary')}>
+            <Text style={tw('font-primary text-base')}>
+                Démarrez par les jeux «Mytho Ou Pas» et «Mytho-Typo» en cliquant sur le tableau de bord.
+                Un collègue médecin vous orientera et évaluera vos compétences d'enquêteur.
+                {"\n"}
 
-                    Démarrez par les jeux « Mytho-No », « Mytho Ou Pas » et « Mytho-Typo » en cliquant sur le tableau de bord.
-                    Un collègue médecin vous orientera et évaluera vos compétences d'enquêteur.
-                  
-                    Les{" icônes "}
-                    <View style={{
-                        borderRadius: 100,
-                        backgroundColor: "rgb(217, 73, 16)",
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 17,
-                        height: 18
-                    }}>
-                        <Entypo name="magnifying-glass" size={15} color="white" />
-                    </View>
-                    {" sur les jeux indiquent qu'il pense que vous devez encore vous former pour commencer à chercher dans de vrais textes."}
-                    {"\n\n"}
-                </Text>
+                En cas de besoin, vous trouverez des boutons d'aide à divers endroits :
 
-                <Text>
-                    En cas de besoin, vous trouverez des boutons d'aide à divers endroits :
-                </Text>
-
-                <View style={tw('items-center w-full my-2')}>
-                    <TouchableOpacity style={tw('bg-[#BBF7D0] p-2 mr-2 text-center w-11 rounded-b-md')}>
-                        <Entypo name="help" size={16} color="#253529" style={tw('self-center')} />
-                    </TouchableOpacity>
+                <View style={tw('bg-[#BBF7D0] p-2 mr-2 text-center w-11 rounded-b-md')}>
+                    <Entypo name="help" size={16} color="#253529" style={tw('self-center')} />
                 </View>
-                <Text>
+                {"\n"}
                 Bonne chance dans vos enquêtes !
-                </Text>
-            </View>
+            </Text>
         );
 
         default: return null;
