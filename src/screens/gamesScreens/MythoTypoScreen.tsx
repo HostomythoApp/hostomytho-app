@@ -203,14 +203,14 @@ const MythoTypoScreen = ({ }) => {
 
         if (isUserCorrect) {
           if (!isTutorial) {
-            updateUserStats(2, 1, 1);
+            updateUserStats(4, 1, 2);
           }
           goToNextSentence(isUserCorrect);
         } else {
 
 
           if (isInvisibleTest) {
-            updateUserStats(2, 1, 1);
+            updateUserStats(4, 1, 2);
             goToNextSentence(false);
           } else {
             updateUserStats(0, 0, -1);
@@ -220,13 +220,14 @@ const MythoTypoScreen = ({ }) => {
           }
         }
       } else {
-        updateUserStats(2, 1, 0);
+        updateUserStats(4, 1, 0);
         const userTypingErrorData = {
           // @ts-ignore
           user_id: user.id,
           user_error_details_id: text.idUserErrorDetail,
           error_type_id: selectedErrorType,
         };
+        // TODO augmenter poids erreur concernée
         await createUserTypingError(userTypingErrorData);
         goToNextSentence(true);
       }

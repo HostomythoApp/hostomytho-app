@@ -107,6 +107,7 @@ const MainBoardScreen = ({ }) => {
                         return acc;
                     }, {});
                     setTutorialsCompleted(tutorialsState);
+
                 } catch (error) {
                     console.error('Error fetching tutorials', error);
                 }
@@ -120,6 +121,8 @@ const MainBoardScreen = ({ }) => {
 
 
     useEffect(() => {
+        console.log(authState.isAuthenticated);
+        // TODO récupérer un message différent si on est connecté ou pas
         getMessageMenu()
             .then((message) => {
                 setMenuMessage(message);
@@ -181,7 +184,7 @@ const MainBoardScreen = ({ }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
                                 style={{
                                     position: 'absolute',
-                                    // TODO vérifier si écran horizontal, et si c'est le cas adapter
+                                    // TODO vérifier si écran horizontal, et si c'est le cas, adapter
                                     top: windowWidth > 748 ? '54%' : '54%',
                                     left: windowWidth > 748 ? '21%' : '21%',
                                 }}>

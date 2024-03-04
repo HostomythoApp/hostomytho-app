@@ -95,6 +95,7 @@ const CriminalsCaughtScreen = () => {
                                     renderItem={({ item }) => (
                                         <View style={[styles.child]} >
                                             <Image
+                                            // TODO Réduire la taille en mobile
                                                 // @ts-ignore
                                                 source={suspectsImagesMapping[item.imageId]}
                                                 style={tw('w-64 h-64 rounded-md')}

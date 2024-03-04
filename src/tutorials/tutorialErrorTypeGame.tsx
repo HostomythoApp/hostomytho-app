@@ -74,7 +74,7 @@ export const getModalHelpContent = (tw: any) => {
                 - "Les symptôme du patient sont très variés et <HighlightedText>inclut </HighlightedText>des maux de tête."
             </ItalicPhrase>
             {"\n"}
-            Il y a un problème de conjugaison avec le verbe inclure qui devraient être au pluriel.
+            Il y a un problème de conjugaison avec le verbe inclure qui devrait être au pluriel.
             {"\n\n"}
 
             <HighlightedText>"Médicale" </HighlightedText> pour les incohérences et erreurs médicales.

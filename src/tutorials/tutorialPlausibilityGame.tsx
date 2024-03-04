@@ -91,7 +91,7 @@ export const getModalHelpContent = (tw: any) => {
                 </Text>
                 {"\n"}
                 Sélectionnez le bouton qui correspond au niveau de plausibilité que vous associez au texte. Vous aurez ensuite le choix de passer au texte suivant, ou de préciser où est l'erreur ou le doute que vous avez.
-                Les erreurs et doutent peuvent être de type grammaticale, de cohérence médicale, de vocabulaire médicale, ou tout autres types. {"\n"}
+                Les erreurs et doutes peuvent être de type grammatical, de cohérence médicale, de vocabulaire médical, ou tout autre type. {"\n"}
                 Si vous choisissez de préciser l'erreur, cliquez sur les mots ou phrases qui constituent l'erreur ou la zone de doute, et validez la sélection. Vous pouvez ainsi ajouter plusieurs erreurs. Vérifiez bien d'avoir validé votre dernière selection, et vous pouvez ensuite passer au texte suivant.
 
                 {"\n\n"}

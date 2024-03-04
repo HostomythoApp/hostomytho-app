@@ -69,37 +69,16 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
 };
 
 
-export const getModalHelpContent = (tw: any) => {
-    const ItalicPhrase = ({ children }: { children: any }) => {
-        return <Text style={tw('italic')}>{children}</Text>;
-    };
-
-    const HighlightedText = ({ children }: { children: any }) => {
-        return <Text style={tw('text-green-700 italic font-bold')}>{children}</Text>;
-    };
-
+export const getMessageMainBoardContent = (tw: any) => {
     return (
         <TouchableWithoutFeedback>
             <Text style={tw('font-primary')}>
-                Vous pouvez essayer ici de jouer aux tâches d'annotations, mais si vous souhaitez tenter d'arrêter les criminels et vous mesurer aux autres enquêteurs, créez un compte, ça ne prend que quelques secondes.
-                {"\n\n"}
-
+                Bienvenue sur HostoMytho
                 {"\n"}
-                Sélectionnez le bouton qui correspond au niveau de plausibilité que vous associez au texte. Vous aurez ensuite le choix de passer au texte suivant, ou de préciser où est l'erreur ou le doute que vous avez.
-                Les erreurs et doutent peuvent être de type grammaticale, de cohérence médicale, de vocabulaire médicale, ou tout autres types. {"\n"}
-                Si vous choisissez de préciser l'erreur, cliquez sur les mots ou phrases qui constituent l'erreur ou la zone de doute, et validez la sélection. Vous pouvez ainsi ajouter plusieurs erreurs. Vérifiez bien d'avoir validé votre dernière selection, et vous pouvez ensuite passer au texte suivant.
 
+                Ici, vous pouvez essayer de jouer aux différents jeux d'annotations, mais si vous souhaitez tenter d'arrêter les criminels et vous mesurer aux autres enquêteurs, créez un compte, ça ne prend que quelques secondes !
                 {"\n\n"}
-                Exemples d'erreurs dans des phrases :
-                {"\n\n"}
-                <ItalicPhrase>
-                    "Lors de sa visite pour un vaccin contre la grippe, il a été annoncé au jeune garçon qu'il devait subir <HighlightedText> une radiographie du thorax pour examiner la santé de ses dents de sagesse</HighlightedText>."
-                </ItalicPhrase>
-                {"\n"}
-                - Il faut spécifier : <HighlightedText>"une radiographie du thorax pour examiner la santé de ses dents de sagesse"</HighlightedText>
-                {"\n\n"}
-
-
+                Les données d'annotations que vous produirez en étant connecté et en jouant, seront récupérées et serviront à la science.
             </Text>
         </TouchableWithoutFeedback>
     );

@@ -251,7 +251,7 @@ const MythoNoScreen = ({ }) => {
           setCorrectAnswers(correctAnswers + 1);
         }
         if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 1), 100);
+          if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 2), 100);
         }
       }
     } else {

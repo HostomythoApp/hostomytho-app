@@ -154,8 +154,6 @@ const InvestigationScreen = () => {
                     <>
                         <Text style={tw('font-primary text-lg')}>
                             {arrestDescription}
-                            {"\n\n"}
-                            Félicitations, vous avez eu du flair et votre enquête a mené à la bonne piste !
                         </Text>
                         <TouchableOpacity
                             onPress={() => {
