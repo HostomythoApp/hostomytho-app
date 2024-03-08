@@ -74,10 +74,7 @@ export const getMessageMainBoardContent = (tw: any) => {
         <TouchableWithoutFeedback>
             <Text style={tw('font-primary')}>
                 Bienvenue sur HostoMytho
-                {"\n"}
-
                 Ici, vous pouvez essayer de jouer aux différents jeux d'annotations, mais si vous souhaitez tenter d'arrêter les criminels et vous mesurer aux autres enquêteurs, créez un compte, ça ne prend que quelques secondes !
-                {"\n\n"}
                 Les données d'annotations que vous produirez en étant connecté et en jouant, seront récupérées et serviront à la science.
             </Text>
         </TouchableWithoutFeedback>

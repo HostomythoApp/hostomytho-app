@@ -120,17 +120,33 @@ const MainBoardScreen = ({ }) => {
     }, [user, userNeedsUpdate]);
 
 
+    // useEffect(() => {
+    //     console.log(authState.isAuthenticated);
+    //     // TODO récupérer un message différent si on est connecté ou pas
+    //     getMessageMenu()
+    //         .then((message) => {
+    //             setMenuMessage(message);
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // }, []);
+
     useEffect(() => {
+        // console.log(authState.isAuthenticated);
         console.log(authState.isAuthenticated);
-        // TODO récupérer un message différent si on est connecté ou pas
-        getMessageMenu()
+    
+        const messageType = authState.isAuthenticated ? 'home_connected' : 'home_not_connected';
+    
+        getMessageMenu(messageType)
             .then((message) => {
                 setMenuMessage(message);
             })
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }, [authState.isAuthenticated]); 
+    
 
     const toggleMessage = () => {
         setMessageExpanded(!messageExpanded);

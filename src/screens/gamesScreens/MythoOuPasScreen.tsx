@@ -304,12 +304,13 @@ const MythoOuPasScreen = () => {
 
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       animationGainPoints(10, 0, 0);
+
+      for (let errorDetail of errorDetails) {
+        const { id, ...rest } = errorDetail;
+        await createUserErrorDetail(rest);
+      }
     }
 
-    for (let errorDetail of errorDetails) {
-      const { id, ...rest } = errorDetail;
-      await createUserErrorDetail(rest);
-    }
     goToNextSentence();
   };
 
@@ -337,7 +338,6 @@ const MythoOuPasScreen = () => {
         fetchTestText();
         setIsInvisibleTest(true);
       }
-
     }
   };
 

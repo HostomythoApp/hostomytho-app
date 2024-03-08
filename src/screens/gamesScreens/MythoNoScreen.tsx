@@ -50,6 +50,7 @@ const MythoNoScreen = ({ }) => {
   const window = Dimensions.get('window');
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
+  const [isInvisibleTest, setIsInvisibleTest] = useState(false);
 
 
   useEffect(() => {
@@ -96,11 +97,13 @@ const MythoNoScreen = ({ }) => {
   }, [resetTutorialFlag]);
 
   const fetchNewText = async () => {
+    console.log("fetchNewText");
+
     try {
       let response;
       if (user) {
-        response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
-        // response = await getTextWithTokensById(108);
+        // response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+        response = await getTextWithTokensById(105);
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }
@@ -201,7 +204,6 @@ const MythoNoScreen = ({ }) => {
     if (tutorialContent) {
       showModal(tutorialContent);
     }
-
   };
 
   // *****************************************************
@@ -240,25 +242,15 @@ const MythoNoScreen = ({ }) => {
         setShowMessage(true);
         setLoading(false);
         setSelectionStarted(false);
-        if (tutorialStep > 4) {
-          setQuestionsAsked(questionsAsked + 1);
-        }
         return;
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-        if (tutorialStep > 4) {
-          setQuestionsAsked(questionsAsked + 1);
-          setCorrectAnswers(correctAnswers + 1);
-        }
         if (!isTutorial) {
           if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 2), 100);
         }
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      if (tutorialStep > 4) {
-        setQuestionsAsked(questionsAsked + 1);
-      }
       if (!isTutorial) {
         if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 0), 100);
         // Création des specifications dans la bdd
@@ -268,19 +260,33 @@ const MythoNoScreen = ({ }) => {
         }
       }
     }
-    if (questionsAsked === 4) {
-      if (correctAnswers >= 4) {
-        setIsTutorial(false);
-        if (user) {
-          completeTutorialForUser(user.id, 1);
-        }
-      } else {
-        setCorrectAnswers(0);
-        setQuestionsAsked(0);
-        setTutorialStep(0);
+    goToNextSentence();
+  };
+
+  const goToNextSentence = async (isCorrect = true) => {
+    if (isTutorial) {
+      setQuestionsAsked(questionsAsked + 1);
+      if (isCorrect) {
+        setCorrectAnswers(correctAnswers + 1);
       }
     }
-    goToNextSentence();
+
+    setUserSentenceSpecifications([]);
+    setShowMessage(false);
+    setMessageContent("");
+    setLoading(false);
+
+    if (isTutorial) {
+      nextTutorialStep();
+    } else {
+      if (isCorrect) {
+        setIsInvisibleTest(false);
+        fetchNewText();
+      } else {
+        fetchTestText();
+        setIsInvisibleTest(true);
+      }
+    }
   };
 
   const onTokenPress = useCallback((wordIndex: number) => {
@@ -451,17 +457,6 @@ const MythoNoScreen = ({ }) => {
     </View>
   );
 
-  const goToNextSentence = async () => {
-    setUserSentenceSpecifications([]);
-    setShowMessage(false);
-    setMessageContent("");
-    setLoading(false);
-    if (isTutorial) {
-      nextTutorialStep();
-    } else {
-      fetchNewText();
-    }
-  };
 
   const updateTokensColor = (text: TextWithTokens, positions: number[]) => {
     const newTokens = [...text.tokens];
@@ -488,7 +483,7 @@ const MythoNoScreen = ({ }) => {
             {text && renderText(text)}
           </View>
           {
-            tutorialStep > 4 && isTutorial &&
+            isTutorial &&
             <View style={tw('mx-4 p-4 bg-white rounded-lg w-72')}>
               <View style={tw('flex-row justify-between items-center mb-2')}>
                 <Text style={tw('font-primary text-base text-gray-600')}>
