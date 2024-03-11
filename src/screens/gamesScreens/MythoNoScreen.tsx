@@ -102,8 +102,8 @@ const MythoNoScreen = ({ }) => {
     try {
       let response;
       if (user) {
-        // response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
-        response = await getTextWithTokensById(105);
+        response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+        // response = await getTextWithTokensById(105);
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }
