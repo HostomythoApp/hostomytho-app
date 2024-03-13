@@ -15,8 +15,12 @@ export const checkUserSelection = async (
 
     try {
         const testSpecifications = await getTestSpecificationsByTextId(textId, gameType);
-        // Ajustement de la condition pour le nombre de sélections
-        // La tolérance s'applique désormais même s'il n'y a qu'une seule négation
+        // Condition pour gérer le cas où il n'y a aucune négation dans la BDD
+        if (testSpecifications.length === 0 && userSentenceSpecifications.length > 0) {
+            return { isValid: false, testSpecifications };
+        }
+
+        // Ajustements pour le nombre de sélections en tenant compte de la tolérance
         if (testSpecifications.length === 1 && userSentenceSpecifications.length > testSpecifications.length + negationErrorMargin) {
             return { isValid: false, testSpecifications };
         } else if (testSpecifications.length > 1 && Math.abs(userSentenceSpecifications.length - testSpecifications.length) > negationErrorMargin) {
@@ -42,7 +46,6 @@ export const checkUserSelection = async (
 
         // Toutes les négations doivent avoir au moins une position correspondante parmi les sélections de l'utilisateur
         if (matchedNegationsCount < testSpecifications.length) {
-            console.log("Toutes les négations n'ont pas été trouvées");
             return { isValid: false, testSpecifications };
         }
 
@@ -53,7 +56,6 @@ export const checkUserSelection = async (
         return { isValid: false, testSpecifications: [] };
     }
 };
-
 
 
 export const checkUserSelectionPlausibility = async (
@@ -127,7 +129,6 @@ const areUserErrorsCorrect = (
     const allTestErrorPositions = testPlausibilityError.flatMap(spec =>
         spec.word_positions.split(',').map(pos => parseInt(pos))
     );
-
 
     // Vérifier si au moins une position des erreurs sélectionnées par l'utilisateur
     // correspond à une position dans les erreurs de la base de données

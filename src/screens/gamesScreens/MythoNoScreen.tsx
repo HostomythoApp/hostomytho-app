@@ -97,8 +97,6 @@ const MythoNoScreen = ({ }) => {
   }, [resetTutorialFlag]);
 
   const fetchNewText = async () => {
-    console.log("fetchNewText");
-
     try {
       let response;
       if (user) {
@@ -223,8 +221,8 @@ const MythoNoScreen = ({ }) => {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
       if (!checkResult.isValid) {
         const correctSpecification = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
-
         const allPositions = checkResult.testSpecifications.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+
         setText(currentText => {
           if (!currentText) return currentText;
           return updateTokensColor(currentText, allPositions);
@@ -239,20 +237,24 @@ const MythoNoScreen = ({ }) => {
 
         if (user) setTimeout(() => updateUserStats(0, 0, -1), 100);
         setMessageContent(`${messageHeader}\n${correctSpecification}`);
-        setShowMessage(true);
+        if (!isInvisibleTest) {
+          setShowMessage(true);
+        } else {
+          goToNextSentence(false);
+        }
         setLoading(false);
         setSelectionStarted(false);
         return;
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 2), 100);
+          if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 2, 2), 100);
         }
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       if (!isTutorial) {
-        if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 1, 0), 100);
+        if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 2, 0), 100);
         // Création des specifications dans la bdd
         for (let userSentenceSpecification of userSentenceSpecifications) {
           const { id, ...rest } = userSentenceSpecification;
@@ -581,7 +583,7 @@ const MythoNoScreen = ({ }) => {
               </View>
               <TouchableOpacity
                 style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
-                onPress={goToNextSentence}
+                onPress={() => goToNextSentence(false)}
               >
                 <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
               </TouchableOpacity>
