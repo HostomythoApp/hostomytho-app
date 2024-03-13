@@ -147,7 +147,7 @@ const MythoTypoScreen = ({ }) => {
         fetchTestText();
       } else {
         // Si nous avons posé les 10 questions, on vérifie si l'utilisateur a réussi le tutoriel.
-        if (correctAnswers >= 5) {
+        if (correctAnswers >= 4) {
           showModal(getTutorialContentForStep(98, tw));
           setIsTutorial(false);
           if (user) {
