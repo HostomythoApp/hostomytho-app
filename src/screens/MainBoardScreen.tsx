@@ -437,8 +437,8 @@ const MainBoardScreen = ({ }) => {
                         </View>
 
                     </View>
-                    {
-                        user && user.tutorial_progress > 7 ? (
+                    {/* {
+                        user && user.tutorial_progress > 7 ? ( */}
 
                             <TouchableOpacity onPress={() => navigation.navigate("Parametres")}
                                 style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
@@ -454,8 +454,8 @@ const MainBoardScreen = ({ }) => {
                                         style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
                                 </View>
                             </TouchableOpacity>
-                        ) : null
-                    }
+                        {/* ) : null
+                    } */}
 
                     {
                         !authState.isAuthenticated &&

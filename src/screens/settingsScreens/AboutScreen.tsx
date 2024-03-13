@@ -28,8 +28,8 @@ const AboutScreen = ({ }) => {
                 Pour lire le fonctionnement détaillé de ces récompenses, ou des autres fonctionnalités de l'application, lisez les<TouchableOpacity onPress={() => navigation.navigate('ReglesDuJeu')}><Text style={{ color: 'blue' }}> règles du jeu</Text>
                 </TouchableOpacity>.
                 {"\n\n"}
-                Avant de jouer, lisez la <TouchableOpacity onPress={() => navigation.navigate('PolitiqueDeConfidentialite')}><Text style={{ color: 'blue' }}> charte d'HostoMytho</Text>
-                </TouchableOpacity>..
+                Avant de jouer, lisez la <TouchableOpacity onPress={() => navigation.navigate('PolitiqueDeConfidentialite')}><Text style={{ color: 'blue' }}>charte d'HostoMytho</Text>
+                </TouchableOpacity>.
               </Text>
 
               <Text style={tw('text-3xl font-bold mt-6 mb-2 font-primary')}>
@@ -39,25 +39,25 @@ const AboutScreen = ({ }) => {
                 <Text style={{ color: 'blue' }}
                   onPress={() => Linking.openURL('https://members.loria.fr/KFort/')}>
                   Karën Fort
-                </Text> -- (Équipe Sémagramme, LORIA) : conception et animation du jeu
+                </Text> : (Équipe Sémagramme, LORIA) conception et animation du jeu
                 {"\n"}
 
                 <Text style={{ color: 'blue' }}
                   onPress={() => Linking.openURL('https://members.loria.fr/BGuillaume/')}>
                   Bruno Guillaume
-                </Text> -- (Équipe Sémagramme, LORIA) : conception et animation du jeu
+                </Text> : (Équipe Sémagramme, LORIA) conception et animation du jeu
                 {"\n"}
 
                 <Text style={{ color: 'blue' }}
                   onPress={() => Linking.openURL('https://www.linkedin.com/in/bertrand-remy-b3456674/')}>
                   Bertrand Remy
-                </Text> -- (Équipe Sémagramme, LORIA) : conception et développement du jeu
+                </Text> : (Équipe Sémagramme, LORIA) conception et développement du jeu
                 {"\n"}
 
                 <Text style={{ color: 'blue' }}
                   onPress={() => Linking.openURL('https://www.babelio.com/auteur/Yan-Lindingre/55656')}>
                   Yan Lindingre
-                </Text> -- Dessins de l'application
+                </Text> : Dessins de l'application
               </Text>
 
               <Text style={tw('text-3xl font-bold mt-4 mb-2 font-primary')}>
