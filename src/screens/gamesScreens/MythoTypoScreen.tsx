@@ -203,14 +203,14 @@ const MythoTypoScreen = ({ }) => {
 
         if (isUserCorrect) {
           if (!isTutorial) {
-            updateUserStats(4, 2, 2);
+            updateUserStats(3, 1, 2);
           }
           goToNextSentence(isUserCorrect);
         } else {
 
 
           if (isInvisibleTest) {
-            updateUserStats(4, 2, 2);
+            updateUserStats(3, 1, 2);
             goToNextSentence(false);
           } else {
             updateUserStats(0, 0, -1);
@@ -220,7 +220,7 @@ const MythoTypoScreen = ({ }) => {
           }
         }
       } else {
-        updateUserStats(4, 2, 0);
+        updateUserStats(3, 1, 0);
         const userTypingErrorData = {
           // @ts-ignore
           user_id: user.id,

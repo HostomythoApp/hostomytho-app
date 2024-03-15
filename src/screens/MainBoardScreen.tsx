@@ -134,7 +134,6 @@ const MainBoardScreen = ({ }) => {
 
     useEffect(() => {
         // console.log(authState.isAuthenticated);
-        console.log(authState.isAuthenticated);
     
         const messageType = authState.isAuthenticated ? 'home_connected' : 'home_not_connected';
     

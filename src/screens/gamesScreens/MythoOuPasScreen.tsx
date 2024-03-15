@@ -108,7 +108,7 @@ const MythoOuPasScreen = () => {
       let response;
       if (user) {
         response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
-        // response = await getTextWithTokensById(116);
+        // response = await getTextWithTokensById(299);
       } else {
         response = await getTextWithTokensByGameType('plausibility');
       }
@@ -302,13 +302,14 @@ const MythoOuPasScreen = () => {
       };
       await createUserTextRating(userTextRating);
 
-      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      animationGainPoints(10, 0, 0);
 
       for (let errorDetail of errorDetails) {
         const { id, ...rest } = errorDetail;
         await createUserErrorDetail(rest);
       }
+
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      animationGainPoints(10, 0, 0);
     }
 
     goToNextSentence();
