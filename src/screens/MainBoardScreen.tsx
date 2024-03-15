@@ -134,9 +134,9 @@ const MainBoardScreen = ({ }) => {
 
     useEffect(() => {
         // console.log(authState.isAuthenticated);
-    
+
         const messageType = authState.isAuthenticated ? 'home_connected' : 'home_not_connected';
-    
+
         getMessageMenu(messageType)
             .then((message) => {
                 setMenuMessage(message);
@@ -144,8 +144,8 @@ const MainBoardScreen = ({ }) => {
             .catch((error) => {
                 console.error(error);
             });
-    }, [authState.isAuthenticated]); 
-    
+    }, [authState.isAuthenticated]);
+
 
     const toggleMessage = () => {
         setMessageExpanded(!messageExpanded);
@@ -439,21 +439,21 @@ const MainBoardScreen = ({ }) => {
                     {/* {
                         user && user.tutorial_progress > 7 ? ( */}
 
-                            <TouchableOpacity onPress={() => navigation.navigate("Parametres")}
-                                style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
-                                <View style={{
-                                    backgroundColor: "rgba(0,0,0,0.5)",
-                                    borderBottomRightRadius: 30,
-                                    width: '100%',
-                                    height: '100%',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Image source={require('images/settings1.png')} resizeMode="contain"
-                                        style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
-                                </View>
-                            </TouchableOpacity>
-                        {/* ) : null
+                    <TouchableOpacity onPress={() => navigation.navigate("Parametres")}
+                        style={{ position: 'absolute', top: 0, left: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
+                        <View style={{
+                            backgroundColor: "rgba(0,0,0,0.5)",
+                            borderBottomRightRadius: 30,
+                            width: '100%',
+                            height: '100%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <Image source={require('images/settings1.png')} resizeMode="contain"
+                                style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
+                        </View>
+                    </TouchableOpacity>
+                    {/* ) : null
                     } */}
 
                     {

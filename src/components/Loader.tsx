@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import LottieView from 'lottie-react-native';
+// import LottieView from 'lottie-react-native';
 
 const Loader = () => {
     const tw = useTailwind();
@@ -12,8 +12,8 @@ const Loader = () => {
             <Text style={tw('font-primary text-sm text-white')}
             >Chargement...</Text>
             <View style={tw('w-28 mt-44 absolute')}>
-                <LottieView style={tw('w-full h-full ')}
-                    source={require('lotties/loader.json')} autoPlay loop />
+                {/* <LottieView style={tw('w-full h-full ')}
+                    source={require('lotties/loader.json')} autoPlay loop /> */}
             </View>
         </View>
     );
