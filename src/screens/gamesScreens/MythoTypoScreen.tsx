@@ -16,6 +16,7 @@ import NextButton from "components/button/NextButton";
 import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { responsiveFontSize } from "utils/functions";
+import SuccessModal from "components/modals/SuccessModal";
 
 const MythoTypoScreen = ({ }) => {
   const tw = useTailwind();
@@ -25,6 +26,7 @@ const MythoTypoScreen = ({ }) => {
   const [selectedErrorType, setSelectedErrorType] = useState<number>(0);
   const { updateUserStats } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
   const window = Dimensions.get('window');
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
@@ -134,7 +136,7 @@ const MythoTypoScreen = ({ }) => {
           setText(response);
           break;
         case 4:
-          response = await getTextWithErrorValidated();
+          response = await getTextTestWithErrorValidated();
           setText(response);
           break;
       }
@@ -241,6 +243,7 @@ const MythoTypoScreen = ({ }) => {
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
       if (isCorrect) {
+        setSuccessModalVisible(true);
         setCorrectAnswers(correctAnswers + 1);
       }
     }
@@ -264,6 +267,9 @@ const MythoTypoScreen = ({ }) => {
     }
   };
 
+  const handleDismissSuccessModal = () => {
+    setSuccessModalVisible(false);
+  };
 
   const getCorrectionMessage = (errorTypeId: number) => {
     switch (errorTypeId) {
@@ -467,6 +473,11 @@ const MythoTypoScreen = ({ }) => {
             </ScrollView>
           </View>
         </CustomModal>
+
+        <SuccessModal
+          isVisible={successModalVisible}
+          onDismiss={handleDismissSuccessModal}
+        />
       </SafeAreaView >
     </ImageBackground >
   );

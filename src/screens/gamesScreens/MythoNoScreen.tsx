@@ -17,6 +17,7 @@ import CustomModal from "components/modals/CustomModal";
 import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
 import NextButton from "components/button/NextButton";
 import { responsiveFontSize } from "utils/functions";
+import SuccessModal from "components/modals/SuccessModal";
 
 const colors = [
   "bg-yellow-300",
@@ -40,6 +41,7 @@ const MythoNoScreen = ({ }) => {
   const [messageContent, setMessageContent] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [isTutorial, setIsTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
@@ -269,6 +271,7 @@ const MythoNoScreen = ({ }) => {
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
       if (isCorrect) {
+        setSuccessModalVisible(true);
         setCorrectAnswers(correctAnswers + 1);
       }
     }
@@ -289,6 +292,10 @@ const MythoNoScreen = ({ }) => {
         setIsInvisibleTest(true);
       }
     }
+  };
+
+  const handleDismissSuccessModal = () => {
+    setSuccessModalVisible(false);
   };
 
   const onTokenPress = useCallback((wordIndex: number) => {
@@ -337,7 +344,7 @@ const MythoNoScreen = ({ }) => {
       type: "negation",
       content: selectedTokens.map(token => token.content).join(''),
       word_positions: wordPositions,
-      specification_weight: user?.status === 'medecin' ? user?.trust_index * 2 : user?.trust_index,
+      specification_weight: user?.status === 'medecin' ? user?.trust_index + 30 : user?.trust_index,
       color: colors[colorIndex]
     }]);
 
@@ -620,6 +627,10 @@ const MythoNoScreen = ({ }) => {
           </View>
         </CustomModal>
 
+        <SuccessModal
+          isVisible={successModalVisible}
+          onDismiss={handleDismissSuccessModal}
+        />
       </SafeAreaView>
     </ImageBackground>
 

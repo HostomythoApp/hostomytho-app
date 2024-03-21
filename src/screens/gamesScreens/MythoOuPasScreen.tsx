@@ -22,6 +22,7 @@ import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { createUserErrorDetail } from "services/api/errors";
 import { UserErrorDetail } from "models/UserErrorDetail";
 import { responsiveFontSize } from "utils/functions";
+import SuccessModal from "components/modals/SuccessModal";
 
 const colors = [
   "bg-yellow-300",
@@ -33,6 +34,7 @@ const colors = [
 const MythoOuPasScreen = () => {
   const tw = useTailwind();
   const [isModalPlausibilityVisible, setIsModalPlausibilityVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
   const [errorSpecifying, setErrorSpecifying] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -320,6 +322,7 @@ const MythoOuPasScreen = () => {
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
       if (isCorrect) {
+        setSuccessModalVisible(true);
         setCorrectAnswers(correctAnswers + 1);
       }
     }
@@ -340,6 +343,10 @@ const MythoOuPasScreen = () => {
         setIsInvisibleTest(true);
       }
     }
+  };
+
+  const handleDismissSuccessModal = () => {
+    setSuccessModalVisible(false);
   };
 
   const HighlightedWord = ({ token, index }: { token: Token; index: number }) => {
@@ -383,7 +390,7 @@ const MythoOuPasScreen = () => {
       id: nextId,
       user_id: user?.id,
       text_id: text.id,
-      vote_weight: user?.trust_index,
+      vote_weight: user?.status === 'medecin' ? user?.trust_index + 30 : user?.trust_index,
       content: selectedTokens.map(token => token.content).join(''),
       word_positions: wordPositions,
       color: colors[colorIndex]
@@ -794,7 +801,12 @@ const MythoOuPasScreen = () => {
             </ScrollView>
           </View>
         </CustomModal>
-
+        
+        <SuccessModal
+          isVisible={successModalVisible}
+          onDismiss={handleDismissSuccessModal}
+        />
+        
       </SafeAreaView >
     </ImageBackground >
 

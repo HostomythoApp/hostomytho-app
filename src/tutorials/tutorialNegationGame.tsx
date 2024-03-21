@@ -10,7 +10,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             Par exemple, si le texte contient "Le bilan d'extension du patient malade est sans particularité.", il faut identifier les mots "sans particularité".
             Pour ce faire, cliquez sur les mots et validez la sélection.
             {"\n\n"}
-            A vous d'essayer sur ce texte :
+            Vous gagnerez des points à la fin de la formation. Pour le moment, essayez sur ce texte pour vous entraîner :
         </Text>;
 
         case 2: return <Text style={tw('font-primary')}>

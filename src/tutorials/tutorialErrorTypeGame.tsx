@@ -9,7 +9,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 1: return <Text style={tw('font-primary')}> Certains passages de textes ont spécialement attiré votre attention. Triez-les en spécifiant le type de l'erreur surlignée, afin d'éclaircir les pistes.
             {"\n"}
             Il peut y avoir plusieurs types d'erreurs : les erreurs de français pour les erreurs grammaticales, ou de français en général. Les erreurs médicales pour les incohérences et erreurs médicales. Si vous pensez que l'erreur est d'un autre type, choisissez le bouton "Autre".
-            Enfin, si vous penser que ce n'est pas une erreur, cliquez sur "Pas d'erreur".
+            Enfin, si vous pensez que ce n'est pas une erreur, cliquez sur "Pas d'erreur". Annotez quelques textes pour vous entrainer ; quand vous serez prêt, vous pourrez gagner des points.
         </Text>;
 
         case 2: return <Text style={tw('font-primary')}>

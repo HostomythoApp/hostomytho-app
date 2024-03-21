@@ -23,7 +23,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible
             <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complétement plausible
             {"\n"}
-            Lisez le texte, et attribuez-lui une note de plausibilité.
+            Lisez le texte, et attribuez-lui une note de plausibilité. Vous commencerez à gagner des points à la fin de la formation.
         </Text>;
 
         case 2: return <Text style={tw('font-primary')}>

@@ -32,7 +32,7 @@
     "formik": "^2.4.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.72.6",
+    "react-native": "0.72.10",
     "react-native-asset": "^2.1.1",
     "react-native-dotenv": "^3.4.9",
     "react-native-gesture-handler": "~2.12.0",
@@ -49,12 +49,10 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.14",
-    "@types/react-native": "^0.72.7",
     "babel-plugin-module-resolver": "^5.0.0",
     "concurrently": "^8.2.2",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.31",
-    "react-devtools": "^2.1.7",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.1.3"
   },

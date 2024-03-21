@@ -1821,6 +1821,12 @@
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
 		}
 	},
+	"text-green-500": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(34 197 94 / var(--tw-text-opacity))"
+		}
+	},
 	"md:mt-6": {
 		"style": {
 			"marginTop": 24
