@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, ImageBackground, Image, TouchableOpacity, StyleSheet, Dimensions, Touchable } from "react-native";
+import React, { useCallback, useEffect, useState, useRef } from "react";
+import { View, Text, ImageBackground, Image, TouchableOpacity, StyleSheet, Dimensions, Animated } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { useAuth } from "services/context/AuthContext";
 import { useUser } from "services/context/UserContext";
@@ -41,6 +41,7 @@ const MainBoardScreen = ({ }) => {
     const [loadedStates, setLoadedStates] = useState(Array(8).fill(false));
     const [userNeedsUpdate, setUserNeedsUpdate] = useState(true);
     const [monthlyWinners, setMonthlyWinners] = useState<any>([]);
+    const rotation = useRef(new Animated.Value(0)).current;
 
 
     useEffect(() => {
@@ -119,22 +120,7 @@ const MainBoardScreen = ({ }) => {
         fetchTutorials();
     }, [user, userNeedsUpdate]);
 
-
-    // useEffect(() => {
-    //     console.log(authState.isAuthenticated);
-    //     // TODO récupérer un message différent si on est connecté ou pas
-    //     getMessageMenu()
-    //         .then((message) => {
-    //             setMenuMessage(message);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    // }, []);
-
     useEffect(() => {
-        // console.log(authState.isAuthenticated);
-
         const messageType = authState.isAuthenticated ? 'home_connected' : 'home_not_connected';
 
         getMessageMenu(messageType)
@@ -146,15 +132,30 @@ const MainBoardScreen = ({ }) => {
             });
     }, [authState.isAuthenticated]);
 
-
     const toggleMessage = () => {
         setMessageExpanded(!messageExpanded);
     }
 
+    useEffect(() => {
+        const animate = () => {
+            Animated.sequence([
+                Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 0.0, duration: 100, useNativeDriver: true })
+            ]).start(() => setTimeout(animate, 7000));
+        };
+
+        const timerId = setTimeout(animate, 5000);
+
+        return () => clearTimeout(timerId);
+    }, [rotation]);
+
+
     const loaderClose = useCallback(() => {
         setIsLoading(false);
     }, [setIsLoading]);
-
 
     // *********** Gestion Tuto *******************
     const showModal = (content: any) => {
@@ -179,19 +180,32 @@ const MainBoardScreen = ({ }) => {
             >
                 <View style={tw("flex-1 items-center")}>
                     {menuMessage && menuMessage.active &&
-                        <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 bg-blue-500 bg-opacity-80 rounded-xl max-w-3xl"), { zIndex: 1 }]}>
-                            {messageExpanded ? (
-                                <>
-                                    <Text style={tw("text-white text-lg font-primary")}>{menuMessage.title}</Text>
-                                    <Text style={tw("text-white font-primary text-lg")}>{menuMessage.message}</Text>
-                                    <Text style={tw("text-white text-center text-sm mt-2 italic font-primary")}>Cliquez sur le message pour le réduire</Text>
-                                </>
+                        <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 rounded-xl w-[75%] h-[35%] items-end"), { zIndex: 1 }]}>
+                            {!messageExpanded ? (
+                                <Animated.View
+                                    style={[
+                                        tw('w-[12%] h-[54%] max-h-40 max-w-40'),
+                                        {
+                                            transform: [{
+                                                rotate: rotation.interpolate({
+                                                    inputRange: [-1, 1],
+                                                    outputRange: ['-0.1rad', '0.1rad']
+                                                })
+                                            }]
+                                        }]}
+                                >
+                                    <Image resizeMode="contain" source={require('images/envelope.png')} style={tw(" w-full h-full")} />
+                                </Animated.View>
+
                             ) : (
-                                <Text style={tw("text-white text-lg font-primary")}>Cliquez ici</Text>
+                                <View style={tw("bg-white rounded-xl p-4 shadow-lg border border-gray-200")}>
+                                    <Text style={tw("text-black text-lg font-primary")}>{menuMessage.title}</Text>
+                                    <Text style={tw("text-black font-primary text-lg")}>{menuMessage.message}</Text>
+                                    <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>Cliquez sur le message pour le réduire</Text>
+                                </View>
                             )}
                         </TouchableOpacity>
                     }
-
 
                     <View style={StyleSheet.absoluteFill}>
                         <View style={StyleSheet.absoluteFill}>

@@ -39,7 +39,7 @@ const SuccessModal = ({ isVisible, onDismiss }: { isVisible: boolean, onDismiss:
 
     return isVisible ? (
         <TouchableOpacity
-            style={tw('absolute inset-0 justify-center items-center w-full h-full')}
+            style={tw('absolute inset-0 justify-center items-center w-full h-full z-40')}
             activeOpacity={1}
             onPress={onDismiss}
         >

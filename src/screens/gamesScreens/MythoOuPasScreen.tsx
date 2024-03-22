@@ -221,11 +221,11 @@ const MythoOuPasScreen = () => {
 
       if (noErrorSpecified || noErrorInDatabase) {
         if (checkResult.testPlausibilityPassed) {
-          animationGainPoints(7, 1, 1);
+          if (!isTutorial) animationGainPoints(7, 1, 1);
           goToNextSentence(true);
           return;
         } else {
-          animationGainPoints(0, -1, -1);
+          if (!isTutorial) animationGainPoints(0, -1, -1);
           messageHeader = (
             <View style={tw('flex-row items-center')}>
               <Text style={tw('text-[#B22222] font-primary text-lg')}
@@ -255,7 +255,7 @@ const MythoOuPasScreen = () => {
               <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
             </View>
           );
-          animationGainPoints(7, 0, 1);
+          if (!isTutorial) animationGainPoints(7, 0, 1);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -267,7 +267,7 @@ const MythoOuPasScreen = () => {
               </View>
             </View>
           );
-          animationGainPoints(0, -1, -1);
+          if (!isTutorial) animationGainPoints(0, -1, -1);
         } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -276,9 +276,9 @@ const MythoOuPasScreen = () => {
               <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
             </View>
           );
-          animationGainPoints(7, 0, 1);
+          if (!isTutorial) animationGainPoints(7, 0, 1);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          animationGainPoints(12, 2, 2);
+          if (!isTutorial) animationGainPoints(12, 2, 2);
           goToNextSentence(true);
           return;
         }
@@ -613,14 +613,19 @@ const MythoOuPasScreen = () => {
         >
           <View style={tw('flex-row ')}>
             <TouchableOpacity
-              style={tw("bg-orange-100 p-3 mr-3 rounded-lg")}
+              style={[
+                tw("p-3 mr-3 rounded-lg bg-orange-200"),
+                tutorialStep === 1 ? tw(" opacity-30") : tw("opacity-100"),
+              ]}
               onPress={() => {
                 setIsModalPlausibilityVisible(false);
                 setHighlightEnabled(true);
                 setErrorSpecifying(true);
               }}
+              disabled={tutorialStep === 1}
             >
-              <Text style={tw("text-orange-500 font-semibold")}>Source du doute</Text>
+              <Text style={tw("font-semibold text-orange-500")}
+              >Source du doute</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -801,12 +806,12 @@ const MythoOuPasScreen = () => {
             </ScrollView>
           </View>
         </CustomModal>
-        
+
         <SuccessModal
           isVisible={successModalVisible}
           onDismiss={handleDismissSuccessModal}
         />
-        
+
       </SafeAreaView >
     </ImageBackground >
 
