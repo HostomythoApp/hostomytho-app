@@ -172,7 +172,6 @@ const MainBoardScreen = ({ }) => {
     return (
         <View style={{ flex: 1 }}>
             {isLoading && <Loader />}
-
             <ImageBackground
                 source={require('images/bg_desk_smaller.webp')}
                 onLoadEnd={loaderClose}
@@ -180,25 +179,37 @@ const MainBoardScreen = ({ }) => {
             >
                 <View style={tw("flex-1 items-center")}>
                     {menuMessage && menuMessage.active &&
-                        <TouchableOpacity onPress={toggleMessage} style={[tw("absolute top-0 right-0 p-4 rounded-xl w-[75%] h-[35%] items-end"), { zIndex: 1 }]}>
+                        <TouchableOpacity onPress={toggleMessage}
+                            style={[
+                                tw("absolute top-0 right-0 p-4 rounded-lg items-end z-30"),
+                                messageExpanded ? tw("w-[75%] h-auto max-w-4xl") : tw("w-[10%] h-[20%] min-w-20 min-h-20")
+                            ]}
+                        >
                             {!messageExpanded ? (
                                 <Animated.View
                                     style={[
-                                        tw('w-[12%] h-[54%] max-h-40 max-w-40'),
-                                        {
-                                            transform: [{
-                                                rotate: rotation.interpolate({
-                                                    inputRange: [-1, 1],
-                                                    outputRange: ['-0.1rad', '0.1rad']
-                                                })
-                                            }]
-                                        }]}
+                                        { transform: [{ rotate: rotation.interpolate({ inputRange: [-1, 1], outputRange: ['-0.1rad', '0.1rad'] }) }] },
+                                        messageExpanded ? tw('w-[12%] h-[54%] max-h-40 max-w-40') : tw('w-full h-full')
+                                    ]}
                                 >
-                                    <Image resizeMode="contain" source={require('images/envelope.png')} style={tw(" w-full h-full")} />
+                                    <Image resizeMode="contain" source={require('images/envelope.png')} style={tw("w-full h-full")} />
                                 </Animated.View>
-
                             ) : (
-                                <View style={tw("bg-white rounded-xl p-4 shadow-lg border border-gray-200")}>
+                                <View style={[tw("bg-white rounded-xl p-4 shadow-lg border border-gray-200 w-full"),
+                                {
+                                    position: 'relative',
+                                    // Ombres pour iOS
+                                    shadowColor: "#000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.45,
+                                    shadowRadius: 5,
+                                    // Ombre pour Android
+                                    elevation: 10,
+                                }]
+                                }>
                                     <Text style={tw("text-black text-lg font-primary")}>{menuMessage.title}</Text>
                                     <Text style={tw("text-black font-primary text-lg")}>{menuMessage.message}</Text>
                                     <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>Cliquez sur le message pour le réduire</Text>

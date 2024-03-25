@@ -46,8 +46,8 @@ const SuccessModal = ({ isVisible, onDismiss }: { isVisible: boolean, onDismiss:
             <Animated.Image
                 source={successImage}
                 style={{
-                    width: 200,
-                    height: 200,
+                    width: 150,
+                    height: 150,
                     opacity,
                     transform: [{ scale }, { rotate }],
                 }}

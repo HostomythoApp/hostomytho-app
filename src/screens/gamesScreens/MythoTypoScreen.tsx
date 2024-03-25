@@ -122,7 +122,6 @@ const MythoTypoScreen = ({ }) => {
     if (nextStep <= 4) {
       let response;
       switch (nextStep) {
-        // TODO mettre de meilleurs exemples, montrer exemple avec répétition
         case 1:
           response = await getTextWithErrorValidatedById(5);
           setText(response);

@@ -114,6 +114,11 @@
 			"zIndex": 20
 		}
 	},
+	"z-30": {
+		"style": {
+			"zIndex": 30
+		}
+	},
 	"z-40": {
 		"style": {
 			"zIndex": 40
@@ -518,14 +523,14 @@
 			"height": 36
 		}
 	},
+	"h-[20%]": {
+		"style": {
+			"height": "20%"
+		}
+	},
 	"h-[300px]": {
 		"style": {
 			"height": 300
-		}
-	},
-	"h-[35%]": {
-		"style": {
-			"height": "35%"
 		}
 	},
 	"h-[54%]": {
@@ -536,6 +541,11 @@
 	"h-[68px]": {
 		"style": {
 			"height": 68
+		}
+	},
+	"h-auto": {
+		"style": {
+			"height": "auto"
 		}
 	},
 	"h-full": {
@@ -551,6 +561,11 @@
 	"max-h-[100px]": {
 		"style": {
 			"maxHeight": 100
+		}
+	},
+	"min-h-20": {
+		"style": {
+			"minHeight": 80
 		}
 	},
 	"min-h-[50px]": {
@@ -673,6 +688,11 @@
 			"width": 384
 		}
 	},
+	"w-[10%]": {
+		"style": {
+			"width": "10%"
+		}
+	},
 	"w-[12%]": {
 		"style": {
 			"width": "12%"
@@ -711,6 +731,11 @@
 	"w-full": {
 		"style": {
 			"width": "100%"
+		}
+	},
+	"min-w-20": {
+		"style": {
+			"minWidth": 80
 		}
 	},
 	"min-w-[1200px]": {
@@ -756,6 +781,11 @@
 	"max-w-40": {
 		"style": {
 			"maxWidth": 160
+		}
+	},
+	"max-w-4xl": {
+		"style": {
+			"maxWidth": 896
 		}
 	},
 	"max-w-5xl": {

@@ -93,7 +93,7 @@ const InvestigationScreen = () => {
 
     return (
         <View style={tw('flex-1')}>
-            <ImageBackground source={require('images/bgdark.jpg')} style={tw('flex-1')} resizeMode="cover">
+            <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')} resizeMode="cover">
                 <SafeAreaView style={tw('flex-1')}>
                     <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')} >
                         <CustomHeaderEmpty title="Enquête en cours" backgroundColor="bg-whiteTransparent" />

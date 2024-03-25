@@ -527,6 +527,7 @@ const MythoOuPasScreen = () => {
     setTimeout(() => {
       // TODO augmenter trustEarned seulement quand la question était un test
       const addLengthPoints: number = text && typeof text.length === 'number' ? text.length / 60 : 0;
+      console.log("animationGainPoints");
 
       updateUserStats(pointsEarned + addLengthPoints, catchProbability, trustEarned);
     }, 100);
