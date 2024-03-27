@@ -173,7 +173,7 @@ const MainBoardScreen = ({ }) => {
         <View style={{ flex: 1 }}>
             {isLoading && <Loader />}
             <ImageBackground
-                source={require('images/bg_desk_smaller.webp')}
+                source={require('images/bg_desk_smaller.jpg')}
                 onLoadEnd={loaderClose}
                 style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}
             >
@@ -277,13 +277,6 @@ const MainBoardScreen = ({ }) => {
                                             width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
                                         }}
                                     />
-                                    <Text style={[tw('font-secondary absolute bottom-[37%] w-full text-center text-[#236087]'),
-                                    {
-                                        fontSize: responsiveFontSize(17)
-                                    }
-                                    ]}>
-                                        Mytho-Typo
-                                    </Text>
                                     {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] &&
                                         <IconNotification
                                             size={iconSize}
@@ -308,11 +301,6 @@ const MainBoardScreen = ({ }) => {
                                     }}
                                     resizeMode="contain"
                                 />
-                                <Text style={{
-                                    ...tw('absolute bottom-[14%] left-[1px] w-full text-center font-secondary text-[#416B36]'),
-                                    fontSize: responsiveFontSize(20)
-                                }}>Mytho Ou {"\n"}
-                                    Pas</Text>
                                 {tutorialsCompleted && !tutorialsCompleted["MythoOuPas"] &&
                                     <IconNotification
                                         size={iconSize}
@@ -333,10 +321,6 @@ const MainBoardScreen = ({ }) => {
                                     width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
 
                                 }} />
-                                <Text style={{
-                                    ...tw('absolute bottom-[37%] w-full text-center font-secondary text-[#236087]'),
-                                    fontSize: responsiveFontSize(19)
-                                }}>Mytho-No</Text>
                                 {tutorialsCompleted && !tutorialsCompleted["MythoNo"] &&
                                     <IconNotification
                                         size={iconSize}
@@ -354,7 +338,7 @@ const MainBoardScreen = ({ }) => {
                                 width: windowWidth * 0.25,
                                 height: windowWidth * 0.16,
                             }}>
-                                <Image source={require('images/tabs_winners.webp')} style={{
+                                <Image source={require('images/tabs_winners.png')} style={{
                                     width: windowWidth * 0.25,
                                     height: windowWidth * 0.16,
                                     resizeMode: 'contain',

@@ -83,7 +83,7 @@ const ResetPasswordScreen = () => {
 
 
     return (
-        <ImageBackground source={require('images/bg_room_1.webp')} style={tw('absolute bottom-0 left-0 w-full h-full')}>
+        <ImageBackground source={require('images/bg_room_1.jpg')} style={tw('absolute bottom-0 left-0 w-full h-full')}>
 
             <View style={tw("flex-1 items-center text-black")}>
 

@@ -155,7 +155,7 @@ const SignUpScreen = () => {
 
 
     return (
-        <ImageBackground source={require('images/bg_bureau.webp')} style={tw('absolute bottom-0 left-0 w-full h-full')}>
+        <ImageBackground source={require('images/bg_office.jpg')} style={tw('absolute bottom-0 left-0 w-full h-full')}>
             <View style={tw("flex-1 items-center")}>
                 <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                     <CustomHeaderEmpty title="Inscription" backgroundColor="bg-whiteTransparent" />

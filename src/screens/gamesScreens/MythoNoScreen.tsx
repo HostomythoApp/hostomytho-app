@@ -480,7 +480,7 @@ const MythoNoScreen = ({ }) => {
 
 
   return (
-    <ImageBackground source={require('images/bg_room_1.webp')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_1.jpg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />

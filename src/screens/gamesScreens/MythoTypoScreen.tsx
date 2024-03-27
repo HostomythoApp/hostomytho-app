@@ -361,7 +361,7 @@ const MythoTypoScreen = ({ }) => {
   };
 
   return (
-    <ImageBackground source={require('images/bg_room_1.webp')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_1.jpg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView>
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
@@ -426,7 +426,7 @@ const MythoTypoScreen = ({ }) => {
               style={tw("bg-primary py-2 px-4 flex-row items-center justify-center rounded-full")}
               onPress={onNextCard}
             >
-              <Text style={tw("text-white text-lg font-primary")}>Erreur suivante</Text>
+              <Text style={tw("text-white text-lg font-primary")}>Cas suivant</Text>
               <MaterialIcons name="navigate-next" size={24} color={'white'} />
             </TouchableOpacity>
           </View>

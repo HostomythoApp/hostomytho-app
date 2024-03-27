@@ -269,7 +269,7 @@ const HypothesisGameScreen = ({ }) => {
   };
 
   return (
-    <ImageBackground source={require('images/bg_room_2.webp')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_2.jpg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={tw("")}>
           <CustomHeaderInGame title="Hypo-Mytho" backgroundColor="bg-whiteTransparent" />

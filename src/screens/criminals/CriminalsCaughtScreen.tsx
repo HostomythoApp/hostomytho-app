@@ -71,7 +71,7 @@ const CriminalsCaughtScreen = () => {
 
     return (
         <View style={tw('flex-1')}>
-            <ImageBackground source={require('images/bg_bureau.webp')} style={tw('flex-1')} resizeMode="cover">
+            <ImageBackground source={require('images/bg_office.jpg')} style={tw('flex-1')} resizeMode="cover">
             </ImageBackground>
             <SafeAreaView style={[tw('flex-1'), StyleSheet.absoluteFillObject]}>
                 <ScrollView>

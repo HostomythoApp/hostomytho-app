@@ -265,7 +265,7 @@ const ConditionGameScreen = ({ }) => {
   };
 
   return (
-    <ImageBackground source={require('images/bg_room_2.webp')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_2.jpg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1 ")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Condi-Mytho" backgroundColor="bg-whiteTransparent" />

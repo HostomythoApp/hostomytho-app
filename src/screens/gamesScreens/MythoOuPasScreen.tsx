@@ -535,7 +535,7 @@ const MythoOuPasScreen = () => {
 
 
   return (
-    <ImageBackground source={require('images/bg_room_2.webp')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_room_2.jpg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
@@ -745,7 +745,7 @@ const MythoOuPasScreen = () => {
                     setIsModalPlausibilityVisible(true);
                     setUserRateSelected(50);
                   }}  >
-                  <AntDesign name="question" size={30} color="orange" />
+                  <Entypo name="minus" size={24} color="orange" />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-green-50')}

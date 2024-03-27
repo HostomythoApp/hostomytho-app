@@ -22,7 +22,7 @@ const LogoutButton = () => {
     }
   };
 
-  return <FunctionButton text={"Déconnexion"} func={handleLogout} />;
+  return <FunctionButton text={"Se déconnecter"} func={handleLogout} />;
 };
 
 export default LogoutButton;

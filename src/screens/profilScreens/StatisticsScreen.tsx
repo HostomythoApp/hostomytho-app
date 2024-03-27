@@ -22,7 +22,7 @@ const StatisticsScreen = ({ }) => {
   }, []);
 
   return (
-    <ImageBackground source={require('images/bg_bureau.webp')} style={tw('flex-1')}>
+    <ImageBackground source={require('images/bg_office.jpg')} style={tw('flex-1')}>
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView contentContainerStyle={tw("flex-grow justify-center")} style={tw('w-full')}>
           <CustomHeaderEmpty title="Statistiques" backgroundColor="bg-whiteTransparent" />

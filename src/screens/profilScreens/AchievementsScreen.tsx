@@ -26,7 +26,7 @@ const AchievementsScreen = () => {
 
     return (
         <ImageBackground
-            source={require('images/bg_bureau.webp')}
+            source={require('images/bg_office.jpg')}
             style={tw("absolute bottom-0 left-0 w-full h-full")}
             resizeMode="cover"
         >
@@ -48,7 +48,7 @@ const AchievementsScreen = () => {
                     </View>
                 )}
                 keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={tw('p-4')}
+                contentContainerStyle={tw('pb-20')} 
             />
         </ImageBackground>
 

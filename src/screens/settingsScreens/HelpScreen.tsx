@@ -59,7 +59,7 @@ const HelpScreen = () => {
   };
 
   return (
-    <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('absolute bottom-0 left-0 w-full h-full')}>
+    <ImageBackground source={require('images/bg_corridor.jpg')} style={tw('absolute bottom-0 left-0 w-full h-full')}>
       <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
         <CustomHeaderEmpty title="Aide et contact" backgroundColor="bg-whiteTransparent" />
         <View style={tw('mx-auto w-full max-w-[640px] pt-20 items-center')}>

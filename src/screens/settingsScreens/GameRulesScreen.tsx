@@ -8,7 +8,7 @@ const GameRulesScreen = ({ }) => {
     const tw = useTailwind();
 
     return (
-        <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>
+        <ImageBackground source={require('images/bg_corridor.jpg')} style={tw('flex-1')}>
             <View style={tw("flex-1 items-center text-black")}>
                 <ScrollView style={tw('w-full')}>
                     <CustomHeaderEmpty title="Règles du jeu et explications" backgroundColor="bg-whiteTransparent" />

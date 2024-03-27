@@ -4,13 +4,14 @@ import { useTailwind } from "tailwind-rn";
 import PrimaryButton from "components/PrimaryButton";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { useAuth } from "services/context/AuthContext";
+import LogoutButton from "components/LogoutButton";
 
 const SettingsScreen = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
 
     return (
-        <ImageBackground source={require('images/bg_corridor_dark.webp')} style={tw('flex-1')}>
+        <ImageBackground source={require('images/bg_corridor.jpg')} style={tw('flex-1')}>
             <View style={tw("flex-1 ")}>
                 <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                     <CustomHeaderEmpty title="Paramètres" backgroundColor="bg-whiteTransparent" />
@@ -22,11 +23,11 @@ const SettingsScreen = ({ }) => {
                                 <PrimaryButton title="Aide et contact" destination="Aide" />
                                 <PrimaryButton title="Politique de confidentialité" destination="PolitiqueDeConfidentialite" />
 
-                                {/* {authState.isAuthenticated &&
+                                {authState.isAuthenticated &&
                                     <View>
-                                        <PrimaryButton title="Notifications" destination="Notif" />
+                                        <LogoutButton />
                                     </View>
-                                } */}
+                                }
                             </View>
                         </View>
                     </View>
