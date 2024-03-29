@@ -1,11 +1,11 @@
 {
   "cli": {
-    "version": ">= 3.14.0",
+    "version": ">= 7.6.2",
     "promptToConfigurePushNotifications": false
   },
   "build": {
     "development": {
-      "node": "18.18.0",
+      "node": "20.10.0",
       "developmentClient": true,
       "distribution": "internal"
     },
@@ -13,7 +13,7 @@
       "distribution": "internal"
     },
     "production": {
-      "node": "18.18.0",
+      "node": "20.10.0",
       "android": {
         "buildType": "apk"
       }

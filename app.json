@@ -2,7 +2,7 @@
   "expo": {
     "name": "hostomytho",
     "slug": "hostomytho",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "landscape",
     "icon": "./src/assets/images/icon.png",
     "splash": {
@@ -15,7 +15,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hostomytho.hostomytho"
+      "bundleIdentifier": "com.hostomytho.hostomytho",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +31,8 @@
       [
         "./src/utils/plugins/withDisableForcedDarkModeAndroid.js",
         {}
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {
