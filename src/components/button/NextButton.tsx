@@ -1,41 +1,66 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTailwind } from 'tailwind-rn';
 
-const NextButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)', isDisabled = false }: { func: () => void, bgColor?: string, isDisabled?: boolean }) => {
+const NextButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)', isDisabled = false }: { func: any, bgColor: string, isDisabled: boolean }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
     const tw = useTailwind();
+    let hoverTimeout: any;
 
-    const buttonStyle = StyleSheet.create({
-        button: {
-            height: 36,
-            marginRight: 8,
-            width: 44,
-            borderBottomLeftRadius: 6,
-            borderBottomRightRadius: 6,
-            backgroundColor: isDisabled ? 'rgba(218, 235, 220, 0.5)' : bgColor,
-            alignItems: 'center',
-            justifyContent: 'center',
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+        hoverTimeout = setTimeout(() => {
+            setShowTooltip(true);
+        }, 800);
+    };
 
-        },
-        icon: {
-            color: isDisabled ? 'rgba(37, 53, 41, 0.5)' : '#253529',
-            size: 22,
-        },
-    });
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+        setShowTooltip(false);
+        clearTimeout(hoverTimeout);
+    };
+
+    useEffect(() => {
+        return () => {
+            if (hoverTimeout) {
+                clearTimeout(hoverTimeout);
+            }
+        };
+    }, []);
 
     return (
-        <TouchableOpacity
-            style={buttonStyle.button}
-            onPress={func}
-            disabled={isDisabled}
-        >
-            <Text style={tw('mt-2 invisible peer-invalid:visible text-pink-600 text-sm')}>
-                Please provide a valid email address.
-            </Text>
-            <MaterialIcons name="next-plan" size={buttonStyle.icon.size} color={buttonStyle.icon.color} />
-        </TouchableOpacity>
+        <View>
+            <TouchableOpacity
+                onPress={func}
+                disabled={isDisabled}
+                // @ts-ignore
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={[tw("h-9 mr-2 w-11 rounded-b-md items-center justify-center bg-opacity-75 "),
+                {
+                    backgroundColor: 'rgba(187, 247, 208, 0.92)',
+                    shadowColor: 'black',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 4,
+                }]}
+            >
+                {showTooltip && (
+                    <View style={tw('absolute top-10 transform -translate-x-1/2 bg-black bg-opacity-75 rounded px-2 py-1')}>
+                        <Text style={tw('text-white text-xs font-primary')}
+                            numberOfLines={1}
+                        >
+                            Texte suivant
+                        </Text>
+                    </View>
+                )}
+                <MaterialIcons name="next-plan" size={22} color={isDisabled ? 'rgba(37, 53, 41, 0.5)' : '#253529'} />
+            </TouchableOpacity>
+        </View>
     );
+
 };
 
 export default NextButton;

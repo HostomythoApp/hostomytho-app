@@ -291,7 +291,7 @@ const MythoTypoScreen = ({ }) => {
         <TouchableOpacity
           key={errorType.id}
           style={[
-            tw("m-2 p-2 rounded-full  text-center items-center justify-center "),
+            tw("m-2 p-2 rounded-full text-center items-center justify-center "),
             {
               backgroundColor: isSelected ? '#B0E0E6' : '#adbfe1',
               minWidth: 150,
@@ -365,8 +365,8 @@ const MythoTypoScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView>
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
-          <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="rgba(176, 224, 230, 0.93)" func={goToNextSentence} isDisabled={isTutorial} />
+          <View style={tw('flex-row justify-end z-20')}>
+            <NextButton bgColor="#B0E0E6" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
           <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>

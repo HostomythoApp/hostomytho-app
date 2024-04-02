@@ -280,7 +280,7 @@ const MythoNoScreen = ({ }) => {
     setShowMessage(false);
     setMessageContent("");
     setLoading(false);
-
+    setColorIndex(0);
     if (isTutorial) {
       nextTutorialStep();
     } else {
@@ -484,8 +484,8 @@ const MythoNoScreen = ({ }) => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
-          <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="rgba(255, 222, 173, 0.92)" func={goToNextSentence} isDisabled={isTutorial} />
+          <View style={tw('flex-row justify-end z-20')}>
+            <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
           <View style={tw("mb-2 flex-1 justify-center items-center")}>

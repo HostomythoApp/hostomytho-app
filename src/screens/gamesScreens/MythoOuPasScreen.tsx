@@ -332,6 +332,7 @@ const MythoOuPasScreen = () => {
     setErrorSpecifying(false);
     setHighlightEnabled(false);
     setUserRateSelected(100);
+    setColorIndex(0);
     if (isTutorial) {
       nextTutorialStep();
     } else {
@@ -539,8 +540,8 @@ const MythoOuPasScreen = () => {
       <SafeAreaView style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
-          <View style={tw('flex-row justify-end')}>
-            <NextButton bgColor="rgb(255, 254, 224)" func={goToNextSentence} isDisabled={isTutorial} />
+          <View style={tw('flex-row justify-end z-20')}>
+            <NextButton bgColor="#FFFEE0" func={goToNextSentence} isDisabled={isTutorial} />
             <HelpButton onHelpPress={showHelpModal} />
           </View>
 
@@ -613,21 +614,22 @@ const MythoOuPasScreen = () => {
           onClose={handleCloseModalPlausibility}
         >
           <View style={tw('flex-row ')}>
-            <TouchableOpacity
-              style={[
-                tw("p-3 mr-3 rounded-lg bg-orange-200"),
-                tutorialStep === 1 ? tw(" opacity-30") : tw("opacity-100"),
-              ]}
-              onPress={() => {
-                setIsModalPlausibilityVisible(false);
-                setHighlightEnabled(true);
-                setErrorSpecifying(true);
-              }}
-              disabled={tutorialStep === 1}
-            >
-              <Text style={tw("font-semibold text-orange-500")}
-              >Source du doute</Text>
-            </TouchableOpacity>
+            {tutorialStep === 1 && (
+
+              <TouchableOpacity
+                style={[
+                  tw("p-3 mr-3 rounded-lg bg-orange-200 opacity-100"),
+                ]}
+                onPress={() => {
+                  setIsModalPlausibilityVisible(false);
+                  setHighlightEnabled(true);
+                  setErrorSpecifying(true);
+                }}
+              >
+                <Text style={tw("font-semibold text-orange-500")}
+                >Source du doute</Text>
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity
               style={tw("bg-green-200 p-3 rounded-lg")}
