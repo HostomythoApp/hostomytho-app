@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextTestNegation, getTextWithTokensById, getSmallTextWithTokensNotPlayed, getSmallTextWithTokens } from "services/api/texts";
+import { getTextTestNegation, getTextWithTokensNotPlayed, getTextWithTokensById, getTextWithTokensByGameType } from "services/api/texts";
 import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
@@ -26,7 +26,7 @@ const colors = [
   "bg-pink-300",
 ];
 
-const MythoNoScreen = ({ }) => {
+const MythoNoFullTextScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithTokens>();
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
@@ -102,25 +102,16 @@ const MythoNoScreen = ({ }) => {
     try {
       let response;
       if (user) {
-        const randomNumber = Math.floor(Math.random() * 100);
-        console.log(randomNumber);
-
-        // 8% de chance d'avoir un test
-        if (randomNumber < 8) {
-          response = await getTextTestNegation();
-        } else {
-          response = await getSmallTextWithTokensNotPlayed(user.id, 'plausibility');
-        }
+        response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+        // response = await getTextWithTokensById(105);
       } else {
-        // Si l'utilisateur n'est pas connecté, récupérer un texte de test par défaut
-        response = await getTextTestNegation();
+        response = await getTextWithTokensByGameType('plausibility');
       }
       setText(response);
     } catch (error) {
       console.error("Erreur lors de la récupération du nouveau texte :", error);
     }
   };
-
 
   // *********** Gestion Tuto *******************
   const nextTutorialStep = async () => {
@@ -225,6 +216,8 @@ const MythoNoScreen = ({ }) => {
     }
 
     setLoading(true);
+    const addLengthPoints: number = text.length / 60;
+
     // TODO Il faudrait mettre le is_negation_spec_test dans le checkUserSelection, pour que ce ne soit pas visible dans le console.log
     if (text?.is_negation_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
@@ -257,13 +250,13 @@ const MythoNoScreen = ({ }) => {
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5, 2, 2), 100);
+          if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 2, 2), 100);
         }
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       if (!isTutorial) {
-        if (user) setTimeout(() => updateUserStats(5, 2, 0), 100);
+        if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 2, 0), 100);
         // Création des specifications dans la bdd
         for (let userSentenceSpecification of userSentenceSpecifications) {
           const { id, ...rest } = userSentenceSpecification;
@@ -644,4 +637,4 @@ const MythoNoScreen = ({ }) => {
   );
 };
 
-export default MythoNoScreen;
+export default MythoNoFullTextScreen;

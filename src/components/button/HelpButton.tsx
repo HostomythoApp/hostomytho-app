@@ -12,7 +12,7 @@ const HelpButton = ({ onHelpPress }: { onHelpPress: any }) => {
     const handleMouseEnter = () => {
         hoverTimeout = setTimeout(() => {
             setShowTooltip(true);
-        }, 800);
+        }, 600);
     };
 
     const handleMouseLeave = () => {
@@ -45,7 +45,7 @@ const HelpButton = ({ onHelpPress }: { onHelpPress: any }) => {
                 }]}
             >
                 {showTooltip && (
-                    <View style={tw('absolute top-10 right-1/2 transform translate-x-1/2 bg-black bg-opacity-75 rounded px-2 py-1 z-50')}>
+                    <View style={tw('absolute top-10 right-1/2 bg-black bg-opacity-75 rounded px-2 py-1 z-50')}>
                         <Text style={tw('text-white text-xs z-50 font-primary')}
                             numberOfLines={1}
                         >

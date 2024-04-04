@@ -14,11 +14,6 @@
 			"inset": 0
 		}
 	},
-	"-top-10": {
-		"style": {
-			"top": -40
-		}
-	},
 	"bottom-0": {
 		"style": {
 			"bottom": 0
@@ -1405,12 +1400,6 @@
 		"style": {
 			"--tw-bg-opacity": 1,
 			"backgroundColor": "rgb(253 224 71 / var(--tw-bg-opacity))"
-		}
-	},
-	"bg-[#5FB06F]": {
-		"style": {
-			"--tw-bg-opacity": 1,
-			"backgroundColor": "rgb(95 176 111 / var(--tw-bg-opacity))"
 		}
 	},
 	"bg-opacity-50": {

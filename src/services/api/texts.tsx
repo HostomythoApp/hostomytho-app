@@ -41,6 +41,40 @@ export const getTextWithTokensNotPlayed = async (userId: number, gameType: strin
   }
 };
 
+export const getSmallTextWithTokensNotPlayed = async (userId: number, gameType: string): Promise<TextWithTokens> => {
+  // TODO cacher les infos sensibles comme is_test, ...
+  try {
+    const response = await api.get(`/texts/getSmallTextWithTokensNotPlayed/${userId}/${gameType}/150`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
+export const getSmallTextWithTokens = async (gameType: string): Promise<TextWithTokens> => {
+  // TODO cacher les infos sensibles comme is_test, ...
+  try {
+    const response = await api.get(`/texts/getSmallTextWithTokens/${gameType}/100`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
 export const getTextWithTokensByGameType = async (gameType: string): Promise<TextWithTokens> => {
   // TODO cacher les infos sensibles comme is_test, ...
   try {

@@ -13,7 +13,7 @@ const NextButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)', isDisabled = fal
         setIsHovered(true);
         hoverTimeout = setTimeout(() => {
             setShowTooltip(true);
-        }, 800);
+        }, 600);
     };
 
     const handleMouseLeave = () => {
@@ -48,7 +48,7 @@ const NextButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)', isDisabled = fal
                 }]}
             >
                 {showTooltip && (
-                    <View style={tw('absolute top-10 transform -translate-x-1/2 bg-black bg-opacity-75 rounded px-2 py-1')}>
+                    <View style={tw('absolute top-10 bg-black bg-opacity-75 rounded px-2 py-1')}>
                         <Text style={tw('text-white text-xs font-primary')}
                             numberOfLines={1}
                         >

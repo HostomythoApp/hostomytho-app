@@ -7,7 +7,7 @@ import { Token } from "models/Token";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
-import { createUserTextRating, getSmallTextWithTokensNotPlayed, getTextTestPlausibility, getTextWithTokensById } from "services/api/texts";
+import { createUserTextRating, getTextTestPlausibility, getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
@@ -31,7 +31,7 @@ const colors = [
   "bg-pink-300",
 ];
 
-const MythoOuPasScreen = () => {
+const MythoOuPasFullTextScreen = () => {
   const tw = useTailwind();
   const [isModalPlausibilityVisible, setIsModalPlausibilityVisible] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
@@ -109,16 +109,10 @@ const MythoOuPasScreen = () => {
     try {
       let response;
       if (user) {
-        const randomNumber = Math.floor(Math.random() * 100);
-        // 8% de chance d'avoir un test
-        if (randomNumber < 8) {
-          response = await getTextTestPlausibility();
-        } else {
-          response = await getSmallTextWithTokensNotPlayed(user.id, 'plausibility');
-        }
+        response = await getTextWithTokensNotPlayed(user.id, 'plausibility');
+        // response = await getTextWithTokensById(299);
       } else {
-        // Si l'utilisateur n'est pas connecté, récupérer un texte de test par défaut
-        response = await getTextTestPlausibility();
+        response = await getTextWithTokensByGameType('plausibility');
       }
       setText(response);
     } catch (error) {
@@ -227,7 +221,7 @@ const MythoOuPasScreen = () => {
 
       if (noErrorSpecified || noErrorInDatabase) {
         if (checkResult.testPlausibilityPassed) {
-          if (!isTutorial) animationGainPoints(5, 1, 1);
+          if (!isTutorial) animationGainPoints(7, 1, 1);
           goToNextSentence(true);
           return;
         } else {
@@ -261,7 +255,7 @@ const MythoOuPasScreen = () => {
               <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
             </View>
           );
-          if (!isTutorial) animationGainPoints(5, 0, 1);
+          if (!isTutorial) animationGainPoints(7, 0, 1);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -282,9 +276,9 @@ const MythoOuPasScreen = () => {
               <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
             </View>
           );
-          if (!isTutorial) animationGainPoints(5, 0, 1);
+          if (!isTutorial) animationGainPoints(7, 0, 1);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          if (!isTutorial) animationGainPoints(8, 2, 2);
+          if (!isTutorial) animationGainPoints(12, 2, 2);
           goToNextSentence(true);
           return;
         }
@@ -317,7 +311,7 @@ const MythoOuPasScreen = () => {
       }
 
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      animationGainPoints(5, 0, 0);
+      animationGainPoints(10, 0, 0);
     }
 
     goToNextSentence();
@@ -618,7 +612,7 @@ const MythoOuPasScreen = () => {
           onClose={handleCloseModalPlausibility}
         >
           <View style={tw('flex-row ')}>
-            {tutorialStep !== 1 && (
+            {tutorialStep === 1 && (
 
               <TouchableOpacity
                 style={[
@@ -642,7 +636,6 @@ const MythoOuPasScreen = () => {
                 onNextCard();
               }}
             >
-              {/* TODO Peut-être mettre shadow sur bouton */}
               <Text style={tw("text-green-700 font-semibold")}>Aller au texte suivant</Text>
             </TouchableOpacity>
           </View>
@@ -826,4 +819,4 @@ const MythoOuPasScreen = () => {
   );
 };
 
-export default MythoOuPasScreen;
+export default MythoOuPasFullTextScreen;
