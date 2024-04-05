@@ -9,6 +9,7 @@ import SignUpScreen from "screens/authScreens/SignUpScreen";
 import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
 import ResetPasswordScreen from "screens/authScreens/ResetPasswordScreen";
 import MythoOuPasScreen from "screens/gamesScreens/MythoOuPasScreen";
+import MythoOuPasFullTextScreen from "screens/gamesScreens/MythoOuPasFullTextScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
 import EditRewardsSreen from "screens/adminScreens/EditRewardsSreen";
@@ -104,6 +105,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
               <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
               <Stack.Screen name="MythoOuPas" component={MythoOuPasScreen} />
+              <Stack.Screen name="MythoOuPasFullText" component={MythoOuPasFullTextScreen} />
 
               {/* Profil */}
               <Stack.Screen name="Profil" component={ProfileScreen} />

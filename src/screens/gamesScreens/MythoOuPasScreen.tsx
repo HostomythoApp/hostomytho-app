@@ -306,6 +306,7 @@ const MythoOuPasScreen = () => {
         user_id: user.id,
         text_id: text.id,
         plausibility: userRateSelected,
+        sentence_positions: text.sentence_positions,
         vote_weight: user?.trust_index
       };
       await createUserTextRating(userTextRating);

@@ -64,6 +64,7 @@ const CriminalsCaughtScreen = () => {
 
     const styles = StyleSheet.create({
         container: { flex: 1, paddingTop: 96 },
+        // @ts-ignore
         child: { width, justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center', padding: 48 },
         pagination: { position: 'absolute', top: 90 },
         paginationItem: { height: 36, width: 36 }

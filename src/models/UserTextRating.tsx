@@ -3,6 +3,6 @@ export interface UserTextRating {
     user_id?: number;
     text_id?: number;
     plausibility: number;
+    sentence_positions: string;
     vote_weight: number;
-    // TODO Ajouter un id_sentence ou full rating
 }

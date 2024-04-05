@@ -300,6 +300,7 @@ const MythoOuPasFullTextScreen = () => {
         user_id: user.id,
         text_id: text.id,
         plausibility: userRateSelected,
+        sentence_positions: "full",
         vote_weight: user?.trust_index
       };
       await createUserTextRating(userTextRating);

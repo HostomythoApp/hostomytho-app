@@ -10,6 +10,7 @@ export interface TextWithTokens {
   is_negation_specification_test: boolean;
   is_plausibility_test: boolean;
   test_plausibility?: number;
+  sentence_positions?: string;
   tokens: Token[];
   length: number,
 }
