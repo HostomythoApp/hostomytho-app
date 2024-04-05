@@ -44,7 +44,7 @@ export const getTextWithTokensNotPlayed = async (userId: number, gameType: strin
 export const getSmallTextWithTokensNotPlayed = async (userId: number, gameType: string): Promise<TextWithTokens> => {
   // TODO cacher les infos sensibles comme is_test, ...
   try {
-    const response = await api.get(`/texts/getSmallTextWithTokensNotPlayed/${userId}/${gameType}/150`);
+    const response = await api.get(`/texts/getSmallTextWithTokensNotPlayed/${userId}/${gameType}/120`);
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -61,7 +61,7 @@ export const getSmallTextWithTokensNotPlayed = async (userId: number, gameType: 
 export const getSmallTextWithTokens = async (gameType: string): Promise<TextWithTokens> => {
   // TODO cacher les infos sensibles comme is_test, ...
   try {
-    const response = await api.get(`/texts/getSmallTextWithTokens/${gameType}/100`);
+    const response = await api.get(`/texts/getSmallTextWithTokens/${gameType}/120`);
     return response.data;
   } catch (error: any) {
     if (error.response) {

@@ -301,7 +301,7 @@ const MythoOuPasFullTextScreen = () => {
         text_id: text.id,
         plausibility: userRateSelected,
         sentence_positions: "full",
-        vote_weight: user?.trust_index
+        vote_weight: user?.status === 'medecin' ? user?.trust_index + 30 : user?.trust_index,
       };
       await createUserTextRating(userTextRating);
 
