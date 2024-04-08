@@ -17,6 +17,7 @@ import { completeTutorialForUser, isTutorialCompleted } from "services/api/games
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
+import WikiButton from "components/button/WikiButton";
 
 const MythoTypoScreen = ({ }) => {
   const tw = useTailwind();
@@ -362,12 +363,15 @@ const MythoTypoScreen = ({ }) => {
 
   return (
     <ImageBackground source={require('images/bg_room_1.jpg')} style={tw('flex-1')}>
-      <SafeAreaView style={tw("flex-1")}>
+      <View style={tw("flex-1")}>
         <ScrollView>
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
-          <View style={tw('flex-row justify-end z-20')}>
-            <NextButton bgColor="#B0E0E6" func={goToNextSentence} isDisabled={isTutorial} />
-            <HelpButton onHelpPress={showHelpModal} />
+          <View style={tw('flex-row justify-between z-20')}>
+            <WikiButton func={undefined} bgColor={""} />
+            <View style={tw('flex-row')}>
+              <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
+              <HelpButton onHelpPress={showHelpModal} />
+            </View>
           </View>
           <View style={tw("flex-wrap flex-row justify-around p-4 pb-0 rounded-xl")}>
             {renderErrorTypeButtons()}
@@ -477,7 +481,7 @@ const MythoTypoScreen = ({ }) => {
           isVisible={successModalVisible}
           onDismiss={handleDismissSuccessModal}
         />
-      </SafeAreaView >
+      </View >
     </ImageBackground >
   );
 };

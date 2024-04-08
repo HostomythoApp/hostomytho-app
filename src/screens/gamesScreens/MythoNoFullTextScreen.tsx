@@ -18,6 +18,7 @@ import { completeTutorialForUser, isTutorialCompleted } from "services/api/games
 import NextButton from "components/button/NextButton";
 import { responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
+import WikiButton from "components/button/WikiButton";
 
 const colors = [
   "bg-yellow-300",
@@ -481,12 +482,15 @@ const MythoNoFullTextScreen = ({ }) => {
 
   return (
     <ImageBackground source={require('images/bg_room_1.jpg')} style={tw('flex-1')}>
-      <SafeAreaView style={tw("flex-1")}>
+      <View style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
-          <View style={tw('flex-row justify-end z-20')}>
-            <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
-            <HelpButton onHelpPress={showHelpModal} />
+          <View style={tw('flex-row justify-between z-20')}>
+            <WikiButton func={undefined} bgColor={""} />
+            <View style={tw('flex-row')}>
+              <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
+              <HelpButton onHelpPress={showHelpModal} />
+            </View>
           </View>
           <View style={tw("mb-2 flex-1 justify-center items-center")}>
             {text && renderText(text)}
@@ -631,7 +635,7 @@ const MythoNoFullTextScreen = ({ }) => {
           isVisible={successModalVisible}
           onDismiss={handleDismissSuccessModal}
         />
-      </SafeAreaView>
+      </View>
     </ImageBackground>
 
   );

@@ -39,6 +39,11 @@
 			"left": 0
 		}
 	},
+	"left-1/2": {
+		"style": {
+			"left": "50%"
+		}
+	},
 	"left-4": {
 		"style": {
 			"left": 16

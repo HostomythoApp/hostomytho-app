@@ -37,7 +37,7 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
         return null;
     }
     return (
-        <TouchableOpacity style={[tw('absolute inset-0 w-full h-full z-20 overflow-hidden'),
+        <TouchableOpacity style={[tw('absolute w-full h-full z-20 overflow-hidden'),
         {
             backgroundColor: 'rgba(60, 60, 60, 0.5)'
         }]}
