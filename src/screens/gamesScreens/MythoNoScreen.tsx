@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
@@ -54,7 +54,7 @@ const MythoNoScreen = ({ }) => {
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
-
+  const [wikiMode, setWikiMode] = useState(false);
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -287,6 +287,7 @@ const MythoNoScreen = ({ }) => {
     setMessageContent("");
     setLoading(false);
     setColorIndex(0);
+    toggleWikiMode(false);
     if (isTutorial) {
       nextTutorialStep();
     } else {
@@ -304,26 +305,34 @@ const MythoNoScreen = ({ }) => {
     setSuccessModalVisible(false);
   };
 
+  const toggleWikiMode = (newMode?: boolean) => { setWikiMode(newMode !== undefined ? newMode : !wikiMode); }
+
   const onTokenPress = useCallback((wordIndex: number) => {
-    setText(currentText => {
-      if (!currentText) return currentText;
+    if (wikiMode) {
+      const token = text!.tokens[wordIndex];
+      const word = token.content;
+      const url = `https://fr.wikipedia.org/wiki/${encodeURIComponent(word)}`;
+      Linking.openURL(url).catch(err => console.error("An error occurred", err));
+      toggleWikiMode(false);
+    } else {
+      setText(currentText => {
+        if (!currentText) return currentText;
 
-      const newTokens = [...currentText.tokens];
-      const token = newTokens[wordIndex];
-      token.isCurrentSelection = !token.isCurrentSelection;
+        const newTokens = [...currentText.tokens];
+        const token = newTokens[wordIndex];
+        token.isCurrentSelection = !token.isCurrentSelection;
 
-      if (token.isCurrentSelection) {
-        token.color = 'bg-blue-200';
-      } else {
-        delete token.color;
-      }
-
-      const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
-      setSelectionStarted(anyTokenSelected);
-
-      return { ...currentText, tokens: newTokens };
-    });
-  }, []);
+        if (token.isCurrentSelection) {
+          token.color = 'bg-blue-200';
+        } else {
+          delete token.color;
+        }
+        const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
+        setSelectionStarted(anyTokenSelected);
+        return { ...currentText, tokens: newTokens };
+      });
+    }
+  }, [wikiMode]);
 
 
   const addSentenceSpecification = () => {
@@ -488,9 +497,16 @@ const MythoNoScreen = ({ }) => {
     <ImageBackground source={require('images/bg_room_1.jpg')} style={tw('flex-1')}>
       <View style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
+          {wikiMode && (
+            <View style={tw('p-[21px] w-full bg-blue-100 rounded-lg absolute z-30')}>
+              <Text style={tw('font-primary text-lg text-center text-blue-800')}>
+                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau sur le bouton Wiki pour quitter ce mode.
+              </Text>
+            </View>
+          )}
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
-          <View style={tw('flex-row justify-between z-20')}>
-            <WikiButton func={undefined} bgColor={""} />
+          <View style={tw('flex-row justify-between z-40')}>
+            <WikiButton func={() => toggleWikiMode()} bgColor={"#4A90E2"} />
             <View style={tw('flex-row')}>
               <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
               <HelpButton onHelpPress={showHelpModal} />

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, ScrollView, Dimensions } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
@@ -42,6 +42,7 @@ const MythoTypoScreen = ({ }) => {
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
+  const [wikiMode, setWikiMode] = useState(false);
 
   useEffect(() => {
     fetchNewTypesError();
@@ -251,6 +252,7 @@ const MythoTypoScreen = ({ }) => {
     setShowMessage(false);
     setMessageContent("");
     setLoading(false);
+    toggleWikiMode(false);
 
     if (isTutorial) {
       nextTutorialStep();
@@ -271,6 +273,8 @@ const MythoTypoScreen = ({ }) => {
     setSuccessModalVisible(false);
   };
 
+  const toggleWikiMode = (newMode?: boolean) => { setWikiMode(newMode !== undefined ? newMode : !wikiMode); }
+
   const getCorrectionMessage = (errorTypeId: number) => {
     switch (errorTypeId) {
       case 1:
@@ -289,7 +293,7 @@ const MythoTypoScreen = ({ }) => {
       const isSelected = selectedErrorType === errorType.id;
 
       return (
-        <TouchableOpacity
+        <View
           key={errorType.id}
           style={[
             tw("m-2 p-2 rounded-full text-center items-center justify-center "),
@@ -298,6 +302,7 @@ const MythoTypoScreen = ({ }) => {
               minWidth: 150,
             }
           ]}
+          // @ts-ignore
           onPress={() => onTypeErrorPress(errorType)}
         >
           <Text style={[
@@ -306,7 +311,7 @@ const MythoTypoScreen = ({ }) => {
           ]}>
             {errorType.name}
           </Text>
-        </TouchableOpacity>
+        </View>
       );
     });
   };
@@ -314,6 +319,16 @@ const MythoTypoScreen = ({ }) => {
   const onTypeErrorPress = (errorType: ErrorType) => {
     setSelectedErrorType(errorType.id);
   };
+
+  const onTokenPress = useCallback((wordIndex: number) => {
+    if (wikiMode) {
+      const token = text!.tokens[wordIndex];
+      const word = token.content;
+      const url = `https://fr.wikipedia.org/wiki/${encodeURIComponent(word)}`;
+      Linking.openURL(url).catch(err => console.error("An error occurred", err));
+      toggleWikiMode(false);
+    }
+  }, [wikiMode]);
 
   const renderText = () => {
     if (typeof text === "undefined") {
@@ -342,18 +357,23 @@ const MythoTypoScreen = ({ }) => {
           } else {
             // Pour les autres tokens, retourner simplement le texte
             return (
-              <Text
+              <TouchableOpacity
                 key={idx}
+                onPress={showMessage ? undefined : () => onTokenPress(idx)}
                 style={[
                   tw("font-primary p-[1px]"),
-                  errorPositions.includes(token.position) && tw("bg-red-200"),
-                  {
-                    fontSize: responsiveFontSize(30)
-                  }
-                ]}
-              >
-                {token.content}
-              </Text>
+                  errorPositions.includes(token.position) && tw("bg-red-200")]}>
+                <Text
+                  style={[
+                    tw("font-primary text-gray-800"),
+                    token.color ? tw(token.color) : null,
+                    {
+                      fontSize: responsiveFontSize(30)
+                    }
+                  ]}>
+                  {token.content}
+                </Text>
+              </TouchableOpacity>
             );
           }
         })}
@@ -365,9 +385,16 @@ const MythoTypoScreen = ({ }) => {
     <ImageBackground source={require('images/bg_room_1.jpg')} style={tw('flex-1')}>
       <View style={tw("flex-1")}>
         <ScrollView>
+          {wikiMode && (
+            <View style={tw('p-[21px] w-full bg-blue-100 rounded-lg absolute z-30')}>
+              <Text style={tw('font-primary text-lg text-center text-blue-800')}>
+                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau sur le bouton Wiki pour quitter ce mode.
+              </Text>
+            </View>
+          )}
           <CustomHeaderInGame title="Mytho-Typo" backgroundColor="bg-whiteTransparent" />
-          <View style={tw('flex-row justify-between z-20')}>
-            <WikiButton func={undefined} bgColor={""} />
+          <View style={tw('flex-row justify-between z-40')}>
+            <WikiButton func={() => toggleWikiMode()} bgColor={"#4A90E2"} />
             <View style={tw('flex-row')}>
               <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
               <HelpButton onHelpPress={showHelpModal} />

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Dimensions, ImageBackground, LogBox } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useUser } from 'services/context/UserContext';
@@ -62,6 +62,7 @@ const MythoOuPasScreen = () => {
   const [resetTutorialFlag, setResetTutorialFlag] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
+  const [wikiMode, setWikiMode] = useState(false);
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -341,6 +342,7 @@ const MythoOuPasScreen = () => {
     setHighlightEnabled(false);
     setUserRateSelected(100);
     setColorIndex(0);
+    toggleWikiMode(false);
     if (isTutorial) {
       nextTutorialStep();
     } else {
@@ -357,6 +359,9 @@ const MythoOuPasScreen = () => {
   const handleDismissSuccessModal = () => {
     setSuccessModalVisible(false);
   };
+
+  const toggleWikiMode = (newMode?: boolean) => { setWikiMode(newMode !== undefined ? newMode : !wikiMode); }
+
 
   const HighlightedWord = ({ token, index }: { token: Token; index: number }) => {
     const isSelected = selectedWords.includes(index);
@@ -418,26 +423,34 @@ const MythoOuPasScreen = () => {
     return sentence ? sentence.color : "bg-transparent";
   };
 
-  const onTokenPress = (wordIndex: number) => {
-    if (!highlightEnabled) return;
-    setText(currentText => {
-      if (!currentText) return currentText;
+  const onTokenPress = useCallback((wordIndex: number) => {
+    if (wikiMode) {
+      const token = text!.tokens[wordIndex];
+      const word = token.content;
+      const url = `https://fr.wikipedia.org/wiki/${encodeURIComponent(word)}`;
+      Linking.openURL(url).catch(err => console.error("An error occurred", err));
+      toggleWikiMode(false);
+    } else {
+      if (!highlightEnabled) return;
+      setText(currentText => {
+        if (!currentText) return currentText;
 
-      const newTokens = [...currentText.tokens];
-      const token = newTokens[wordIndex];
-      token.isCurrentSelection = !token.isCurrentSelection;
+        const newTokens = [...currentText.tokens];
+        const token = newTokens[wordIndex];
+        token.isCurrentSelection = !token.isCurrentSelection;
 
-      if (token.isCurrentSelection) {
-        token.color = 'bg-blue-200';
-      } else {
-        delete token.color;
-      }
+        if (token.isCurrentSelection) {
+          token.color = 'bg-blue-200';
+        } else {
+          delete token.color;
+        }
 
-      const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
-      setSelectionStarted(anyTokenSelected);
-      return { ...currentText, tokens: newTokens };
-    });
-  };
+        const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
+        setSelectionStarted(anyTokenSelected);
+        return { ...currentText, tokens: newTokens };
+      });
+    }
+  }, [wikiMode]);
 
 
   const renderErrorDetail = (errorDetail: ErrorDetail) => (
@@ -545,9 +558,16 @@ const MythoOuPasScreen = () => {
     <ImageBackground source={require('images/bg_room_2.jpg')} style={tw('flex-1')}>
       <View style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
+          {wikiMode && (
+            <View style={tw('p-[21px] w-full bg-blue-100 rounded-lg absolute z-30')}>
+              <Text style={tw('font-primary text-lg text-center text-blue-800')}>
+                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau sur le bouton Wiki pour quitter ce mode.
+              </Text>
+            </View>
+          )}
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
-          <View style={tw('flex-row justify-between z-20')}>
-            <WikiButton func={undefined} bgColor={""} />
+          <View style={tw('flex-row justify-between z-40')}>
+            <WikiButton func={() => toggleWikiMode()} bgColor={"#4A90E2"} />
             <View style={tw('flex-row')}>
               <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
               <HelpButton onHelpPress={showHelpModal} />

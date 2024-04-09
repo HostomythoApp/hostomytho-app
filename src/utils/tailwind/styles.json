@@ -1518,6 +1518,14 @@
 			"paddingLeft": 2
 		}
 	},
+	"p-[21px]": {
+		"style": {
+			"paddingTop": 21,
+			"paddingRight": 21,
+			"paddingBottom": 21,
+			"paddingLeft": 21
+		}
+	},
 	"px-1": {
 		"style": {
 			"paddingLeft": 4,
