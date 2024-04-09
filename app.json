@@ -2,7 +2,7 @@
   "expo": {
     "name": "hostomytho",
     "slug": "hostomytho",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "landscape",
     "icon": "./src/assets/images/icon.png",
     "splash": {
@@ -15,7 +15,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hostomytho.hostomytho"
+      "bundleIdentifier": "com.hostomytho.hostomytho",
+      "buildNumber": "2",
+      "infoPlist": {
+        "NSPrivacyAccessedAPIDiskSpaceUsageDescription": "Cette application vérifie l'espace disque disponible pour s'assurer qu'il y a suffisamment de place pour télécharger et stocker le contenu nécessaire sans impacter les performances de votre appareil.",
+        "NSPrivacyAccessedAPISystemBootTimeUsageDescription": "Nous utilisons l'heure de démarrage du système pour fournir des fonctionnalités de suivi du temps d'activité, ce qui nous aide à optimiser l'expérience utilisateur et à offrir des rappels personnalisés.",
+        "NSPrivacyAccessedAPIFileTimestampUsageDescription": "L'accès aux horodatages des fichiers nous permet de vérifier la dernière mise à jour du contenu, assurant que vous recevez toujours les informations les plus récentes et pertinentes.",
+        "NSPrivacyAccessedAPIUserDefaultsUsageDescription": "Cette application utilise UserDefaults pour sauvegarder vos préférences et paramètres personnalisés, garantissant une expérience cohérente à chaque utilisation."
+      }
     },
     "android": {
       "adaptiveIcon": {
