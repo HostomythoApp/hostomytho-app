@@ -1510,20 +1510,20 @@
 			"paddingLeft": 1
 		}
 	},
-	"p-[2px]": {
-		"style": {
-			"paddingTop": 2,
-			"paddingRight": 2,
-			"paddingBottom": 2,
-			"paddingLeft": 2
-		}
-	},
 	"p-[21px]": {
 		"style": {
 			"paddingTop": 21,
 			"paddingRight": 21,
 			"paddingBottom": 21,
 			"paddingLeft": 21
+		}
+	},
+	"p-[2px]": {
+		"style": {
+			"paddingTop": 2,
+			"paddingRight": 2,
+			"paddingBottom": 2,
+			"paddingLeft": 2
 		}
 	},
 	"px-1": {
