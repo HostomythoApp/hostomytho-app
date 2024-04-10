@@ -1,25 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { TouchableOpacity, Text, View } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import { FontAwesome } from '@expo/vector-icons';
 
-const WikiButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)' }: { func: any, bgColor: string }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const [showTooltip, setShowTooltip] = useState(false);
-    const tw = useTailwind();
-    let hoverTimeout: any;
+interface WikiButtonProps {
+  func: () => void;
+}
 
-    const handleMouseEnter = () => {
-        setIsHovered(true);
+const WikiButton: React.FC<WikiButtonProps> = ({ func }) => {
+    const [showTooltip, setShowTooltip] = useState<boolean>(false);
+    const isHoveredRef = useRef<boolean>(false);
+    const tw = useTailwind();
+    let hoverTimeout: NodeJS.Timeout | null = null;
+
+    const handleMouseEnter = (): void => {
+        isHoveredRef.current = true;
+        
         hoverTimeout = setTimeout(() => {
-            setShowTooltip(true);
+            if (isHoveredRef.current) {
+                setShowTooltip(true);
+            }
         }, 600);
     };
 
-    const handleMouseLeave = () => {
-        setIsHovered(false);
+    const handleMouseLeave = (): void => {
+        isHoveredRef.current = false;
         setShowTooltip(false);
-        clearTimeout(hoverTimeout);
+        if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+        }
     };
 
     useEffect(() => {
@@ -48,7 +57,7 @@ const WikiButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)' }: { func: any, b
             >
                 {showTooltip && (
                     <View style={tw('absolute top-10 left-1/2 bg-black bg-opacity-75 rounded px-2 py-1')}>
-                        <Text style={tw('text-white text-xs font-primary')}
+                        <Text style={tw('text-white text-sm font-primary')}
                             numberOfLines={1}
                         >
                             Définition de mot
@@ -59,7 +68,6 @@ const WikiButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)' }: { func: any, b
             </TouchableOpacity>
         </View>
     );
-
 };
 
 export default WikiButton;

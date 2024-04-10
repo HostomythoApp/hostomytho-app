@@ -21,9 +21,10 @@ import { completeTutorialForUser, isTutorialCompleted } from "services/api/games
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { createUserErrorDetail } from "services/api/errors";
 import { UserErrorDetail } from "models/UserErrorDetail";
-import { responsiveFontSize } from "utils/functions";
+import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
 import WikiButton from "components/button/WikiButton";
+import RatingButton from "components/button/RatingButton";
 
 const colors = [
   "bg-yellow-300",
@@ -427,8 +428,7 @@ const MythoOuPasScreen = () => {
     if (wikiMode) {
       const token = text!.tokens[wordIndex];
       const word = token.content;
-      const url = `https://fr.wikipedia.org/wiki/${encodeURIComponent(word)}`;
-      Linking.openURL(url).catch(err => console.error("An error occurred", err));
+      openWikipediaPageForWord(word);
       toggleWikiMode(false);
     } else {
       if (!highlightEnabled) return;
@@ -567,9 +567,9 @@ const MythoOuPasScreen = () => {
           )}
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-between z-40')}>
-            <WikiButton func={() => toggleWikiMode()} bgColor={"#4A90E2"} />
+            <WikiButton func={() => toggleWikiMode()} />
             <View style={tw('flex-row')}>
-              <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
+              <NextButton func={goToNextSentence} isDisabled={isTutorial} />
               <HelpButton onHelpPress={showHelpModal} />
             </View>
           </View>
@@ -755,47 +755,40 @@ const MythoOuPasScreen = () => {
                   },
                 ]}
               >
-
-                <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-red-200')}
+                <RatingButton
                   onPress={async () => {
                     setIsModalPlausibilityVisible(true);
                     setUserRateSelected(0);
-                  }} >
-                  <Entypo name="cross" size={32} color="red" />
-                </TouchableOpacity>
+                  }} iconName="cross" iconColor="red" bgColor="bg-red-200" tooltipText="Totalement faux" iconSize={32} iconLibrary="Entypo"
+                />
 
-                <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-orange-100')}
+                <RatingButton
                   onPress={async () => {
                     setIsModalPlausibilityVisible(true);
                     setUserRateSelected(25);
-                  }} >
-                  <Entypo name="flag" size={28} color="orange" />
-                </TouchableOpacity>
+                  }} iconName="flag" iconColor="orange" bgColor="bg-orange-100" tooltipText="Plutôt faux" iconSize={28} iconLibrary="Entypo"
+                />
 
-                <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-yellow-100')}
-                  onPress={() => {
+                <RatingButton
+                  onPress={async () => {
                     setIsModalPlausibilityVisible(true);
                     setUserRateSelected(50);
-                  }}  >
-                  <Entypo name="minus" size={24} color="orange" />
-                </TouchableOpacity>
+                  }} iconName="minus" iconColor="orange" bgColor="bg-yellow-100" tooltipText="Moyennement plausible" iconSize={24} iconLibrary="Entypo"
+                />
 
-                <TouchableOpacity style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-green-50')}
+                <RatingButton
                   onPress={async () => {
-                    setUserRateSelected(75);
                     setIsModalPlausibilityVisible(true);
-                  }} >
-                  <Ionicons name="checkmark" size={24} color="#48d1cc" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={tw('items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 my-auto bg-green-200')}
+                    setUserRateSelected(75);
+                  }} iconName="checkmark" iconColor="#48d1cc" bgColor="bg-green-50" tooltipText="Plutôt plausible" iconSize={24} iconLibrary="Ionicons"
+                />
+
+                <RatingButton
                   onPress={async () => {
                     setUserRateSelected(100);
                     onNextCard();
-                  }}
-                >
-                  <Ionicons name="checkmark-done-sharp" size={24} color="green" />
-                </TouchableOpacity>
+                  }} iconName="checkmark-done-sharp" iconColor="green" bgColor="bg-green-200" tooltipText="Complètement plausible" iconSize={24} iconLibrary="Ionicons"
+                />
               </View>
             }
           </>

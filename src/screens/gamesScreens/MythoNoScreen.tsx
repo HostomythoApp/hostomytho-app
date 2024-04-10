@@ -16,7 +16,7 @@ import HelpButton from "components/button/HelpButton";
 import CustomModal from "components/modals/CustomModal";
 import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
 import NextButton from "components/button/NextButton";
-import { responsiveFontSize } from "utils/functions";
+import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
 import WikiButton from "components/button/WikiButton";
 
@@ -311,8 +311,7 @@ const MythoNoScreen = ({ }) => {
     if (wikiMode) {
       const token = text!.tokens[wordIndex];
       const word = token.content;
-      const url = `https://fr.wikipedia.org/wiki/${encodeURIComponent(word)}`;
-      Linking.openURL(url).catch(err => console.error("An error occurred", err));
+      openWikipediaPageForWord(word);
       toggleWikiMode(false);
     } else {
       setText(currentText => {
@@ -506,9 +505,9 @@ const MythoNoScreen = ({ }) => {
           )}
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-between z-40')}>
-            <WikiButton func={() => toggleWikiMode()} bgColor={"#4A90E2"} />
+            <WikiButton func={() => toggleWikiMode()} />
             <View style={tw('flex-row')}>
-              <NextButton bgColor="#FFDEAD" func={goToNextSentence} isDisabled={isTutorial} />
+              <NextButton func={goToNextSentence} isDisabled={isTutorial} />
               <HelpButton onHelpPress={showHelpModal} />
             </View>
           </View>

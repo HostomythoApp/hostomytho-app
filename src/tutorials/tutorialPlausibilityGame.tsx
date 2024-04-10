@@ -21,7 +21,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible
             <PlausibilityButton config={getPlausibilityConfig(50).buttonConfig as ButtonConfig} /> Moyennement plausible
             <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible
-            <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complétement plausible
+            <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complètement plausible
             {"\n"}
             Lisez le texte, et attribuez-lui une note de plausibilité. Vous commencerez à gagner des points à la fin de la formation.
         </Text>;
@@ -87,7 +87,7 @@ export const getModalHelpContent = (tw: any) => {
                 </Text>
                 {"\n"}
                 <Text style={tw('flex-row items-center justify-center m-1')}>
-                    <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complétement plausible
+                    <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complètement plausible
                 </Text>
                 {"\n"}
                 Sélectionnez le bouton qui correspond au niveau de plausibilité que vous associez au texte. Vous aurez ensuite le choix de passer au texte suivant, ou de préciser où est l'erreur ou le doute que vous avez.

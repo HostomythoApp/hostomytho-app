@@ -21,7 +21,7 @@ export const plausibilityConfigs = [
     },
     {
         maxThreshold: 100,
-        description: "complétement plausible",
+        description: "complètement plausible",
         buttonConfig: { backgroundColor: 'bg-green-200', iconName: 'checkmark-done-sharp', iconColor: 'green', iconSet: 'Ionicons' }
     },
 ];

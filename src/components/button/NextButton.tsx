@@ -1,25 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTailwind } from 'tailwind-rn';
 
-const NextButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)', isDisabled = false }: { func: any, bgColor: string, isDisabled: boolean }) => {
-    const [isHovered, setIsHovered] = useState(false);
+const NextButton = ({ func, isDisabled = false }: { func: any, isDisabled: boolean }) => {
     const [showTooltip, setShowTooltip] = useState(false);
+    const isHoveredRef = useRef<boolean>(false);
     const tw = useTailwind();
     let hoverTimeout: any;
 
     const handleMouseEnter = () => {
-        setIsHovered(true);
+        isHoveredRef.current = true;
         hoverTimeout = setTimeout(() => {
-            setShowTooltip(true);
+            if (isHoveredRef.current) {
+                setShowTooltip(true);
+            }
         }, 600);
     };
 
-    const handleMouseLeave = () => {
-        setIsHovered(false);
+    const handleMouseLeave = (): void => {
+        isHoveredRef.current = false;
         setShowTooltip(false);
-        clearTimeout(hoverTimeout);
+        if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+        }
     };
 
     useEffect(() => {
@@ -49,7 +53,7 @@ const NextButton = ({ func, bgColor = 'rgba(255, 255, 255, 1)', isDisabled = fal
             >
                 {showTooltip && (
                     <View style={tw('absolute top-10 bg-black bg-opacity-75 rounded px-2 py-1')}>
-                        <Text style={tw('text-white text-xs font-primary')}
+                        <Text style={tw('text-white text-sm z-50 font-primary')}
                             numberOfLines={1}
                         >
                             Texte suivant

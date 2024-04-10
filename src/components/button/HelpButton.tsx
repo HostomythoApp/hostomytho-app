@@ -1,23 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { useTailwind } from 'tailwind-rn';
 
 const HelpButton = ({ onHelpPress }: { onHelpPress: any }) => {
     const [showTooltip, setShowTooltip] = useState(false);
+    const isHoveredRef = useRef<boolean>(false);
     const tw = useTailwind();
     let hoverTimeout: any;
 
 
     const handleMouseEnter = () => {
+        isHoveredRef.current = true;
         hoverTimeout = setTimeout(() => {
-            setShowTooltip(true);
+            if (isHoveredRef.current) {
+                setShowTooltip(true);
+            }
         }, 600);
     };
 
-    const handleMouseLeave = () => {
+    const handleMouseLeave = (): void => {
+        isHoveredRef.current = false;
         setShowTooltip(false);
-        clearTimeout(hoverTimeout);
+        if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+        }
     };
 
     useEffect(() => {
@@ -46,7 +53,7 @@ const HelpButton = ({ onHelpPress }: { onHelpPress: any }) => {
             >
                 {showTooltip && (
                     <View style={tw('absolute top-10 right-1/2 bg-black bg-opacity-75 rounded px-2 py-1 z-50')}>
-                        <Text style={tw('text-white text-xs z-50 font-primary')}
+                        <Text style={tw('text-white text-sm z-50 font-primary')}
                             numberOfLines={1}
                         >
                             Besoin d'aide ?
