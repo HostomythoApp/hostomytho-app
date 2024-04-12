@@ -293,7 +293,7 @@ const MythoTypoScreen = ({ }) => {
       const isSelected = selectedErrorType === errorType.id;
 
       return (
-        <View
+        <TouchableOpacity
           key={errorType.id}
           style={[
             tw("m-2 p-2 rounded-full text-center items-center justify-center "),
@@ -311,7 +311,7 @@ const MythoTypoScreen = ({ }) => {
           ]}>
             {errorType.name}
           </Text>
-        </View>
+        </TouchableOpacity>
       );
     });
   };

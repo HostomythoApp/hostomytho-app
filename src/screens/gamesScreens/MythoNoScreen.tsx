@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking, BackHandler } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
@@ -475,7 +475,16 @@ const MythoNoScreen = ({ }) => {
         <Text style={tw(`text-lg mr-2 ${sentenceSpecification.color ? sentenceSpecification.color : ''} font-primary`)}>{sentenceSpecification.content}</Text>
       </View>
       <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
-        <Entypo name="cross" size={24} color="red" />
+        <View style={[tw('flex-row items-center'), {
+          // TODO Revoir la couleur       
+          backgroundColor: 'rgba(129, 83, 123, 0.2)',
+        }
+        ]}
+        >
+          <Entypo name="cross" size={24} color="red" />
+          <Text style={tw('font-primary font-bold text-red-500')}
+          >annuler la sélection</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );

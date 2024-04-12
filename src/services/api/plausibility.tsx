@@ -21,3 +21,13 @@ export const getCorrectPlausibilityByTextId = async (textId: number): Promise<nu
     throw error;
   }
 };
+
+export const getReasonForRateByTextId = async (textId: number): Promise<string> => {
+  try {
+    const response = await api.get(`/plausibility/getReasonForRateByTextId/${textId}`);
+    return response.data.reason_for_rate;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

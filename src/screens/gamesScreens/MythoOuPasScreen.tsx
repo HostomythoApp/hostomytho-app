@@ -118,6 +118,8 @@ const MythoOuPasScreen = () => {
           response = await getTextTestPlausibility();
         } else {
           response = await getSmallTextWithTokensNotPlayed(user.id, 'plausibility');
+          // response = await getTextWithTokensById(114);
+
         }
       } else {
         // Si l'utilisateur n'est pas connecté, récupérer un texte de test par défaut
@@ -236,11 +238,16 @@ const MythoOuPasScreen = () => {
         } else {
           if (!isTutorial) animationGainPoints(0, -1, -1);
           messageHeader = (
-            <View style={tw('flex-row items-center')}>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Hmm ce texte était plutôt </Text>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}>{getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+            <View>
+              <View style={tw('flex-row items-center text-wrap')}>
+                <Text style={tw('text-[#B22222] font-primary text-lg')}
+                >Hmm ce texte était plutôt  </Text>
+                <Text style={tw('text-[#B22222] font-primary text-lg')}>{getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+                <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+              </View>
+              <Text style={tw('text-[#B22222] font-primary text-lg text-wrap')} >
+                {checkResult.reasonForRate}
+              </Text>
             </View>
           );
         }
@@ -252,38 +259,56 @@ const MythoOuPasScreen = () => {
           if (!currentText) return currentText;
           return updateTokensColor(currentText, allPositions);
         });
-
+        // TODO a vérifier le responsive et tous les cas 
         if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           <Text>
             {plausibilityDescription(checkResult.correctPlausibility)}
           </Text>;
           messageHeader = (
-            <View style={tw('flex-row items-center')}>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Vous avez bien identifié les zones de doute, mais le texte était plutôt {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+            <View>
+              <View style={tw('flex-row items-center')}>
+                <Text style={tw('text-[#B22222] font-primary text-lg')}
+                >Vous avez bien identifié les zones de doute, mais le texte était plutôt {getPlausibilityConfig(checkResult.correctPlausibility).description}
+                  {'\n'}
+                </Text>
+                <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+              </View>
+              <Text style={tw('text-[#B22222] font-primary text-lg text-wrap')} >
+                {checkResult.reasonForRate}
+              </Text>
             </View>
           );
           if (!isTutorial) animationGainPoints(5, 0, 1);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
-              <View style={tw('flex-row items-center')}>
-                <Text style={tw('text-[#B22222] font-primary text-lg')}>Et le texte était {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-                <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+              <View>
+                <Text style={tw('text-[#B22222] font-primary text-lg')}
+                >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}
+                </Text>
+                <View style={tw('flex-row items-center')}>
+                  <Text style={tw('text-[#B22222] font-primary text-lg')}>Et le texte était {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+                  <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+                </View>
               </View>
+              <Text style={tw('text-[#B22222] font-primary text-lg text-wrap')} >
+                {checkResult.reasonForRate}
+              </Text>
             </View>
           );
           if (!isTutorial) animationGainPoints(0, -1, -1);
         } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
-            </View>
+              <View>
+                <Text style={tw('text-[#B22222] font-primary text-lg')}
+                >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}
+                </Text>
+                <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
+              </View>              <Text style={tw('text-[#B22222] font-primary text-lg text-wrap')} >
+                {checkResult.reasonForRate}
+              </Text>
+            </View >
           );
           if (!isTutorial) animationGainPoints(5, 0, 1);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
@@ -796,7 +821,8 @@ const MythoOuPasScreen = () => {
         {showMessage &&
           <View style={tw(' flex-col w-full bottom-0')} >
             <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
-              <View>
+              <View style={tw(' w-5/6')}
+              >
                 {messageContent}
               </View>
               <TouchableOpacity

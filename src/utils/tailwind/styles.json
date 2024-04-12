@@ -14,9 +14,9 @@
 			"inset": 0
 		}
 	},
-	"-top-10": {
+	"-top-8": {
 		"style": {
-			"top": -40
+			"top": -32
 		}
 	},
 	"bottom-0": {
@@ -107,21 +107,6 @@
 	"top-[50%]": {
 		"style": {
 			"top": "50%"
-		}
-	},
-	"-top-4": {
-		"style": {
-			"top": -16
-		}
-	},
-	"-top-6": {
-		"style": {
-			"top": -24
-		}
-	},
-	"-top-8": {
-		"style": {
-			"top": -32
 		}
 	},
 	"z-10": {
@@ -758,6 +743,16 @@
 			"width": "100%"
 		}
 	},
+	"w-11/12": {
+		"style": {
+			"width": "91.666667%"
+		}
+	},
+	"w-5/6": {
+		"style": {
+			"width": "83.333333%"
+		}
+	},
 	"min-w-20": {
 		"style": {
 			"minWidth": 80
@@ -963,6 +958,11 @@
 	"overflow-hidden": {
 		"style": {
 			"overflow": "hidden"
+		}
+	},
+	"text-wrap": {
+		"style": {
+			"textWrap": "wrap"
 		}
 	},
 	"rounded": {

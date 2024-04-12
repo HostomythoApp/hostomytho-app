@@ -3,7 +3,7 @@ import { TestPlausibilityError } from "models/TestPlausibilityError";
 import { TestSpecification } from "models/TestSpecification";
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { getTestSpecificationsByTextId } from "services/api/testSpecifications";
-import { getTestPlausibilityErrorByTextId, getCorrectPlausibilityByTextId } from "services/api/plausibility";
+import { getTestPlausibilityErrorByTextId, getCorrectPlausibilityByTextId, getReasonForRateByTextId } from "services/api/plausibility";
 
 export const checkUserSelection = async (
     textId: number,
@@ -64,17 +64,19 @@ export const checkUserSelectionPlausibility = async (
     userRateSelected: number,
     errorMargin: number = 10,
     plausibilityMargin: number = 25,
-    tokenErrorMargin: number = 10
+    tokenErrorMargin: number = 10,
 ): Promise<{
     isValid: boolean,
     testPlausibilityError: TestPlausibilityError[],
     correctPlausibility?: number,
     testPlausibilityPassed?: boolean,
     isErrorDetailsCorrect?: boolean,
+    reasonForRate?: string
 }> => {
     try {
         const testPlausibilityError = await getTestPlausibilityErrorByTextId(textId);
         const textPlausibility = await getCorrectPlausibilityByTextId(textId);
+        const reasonForRateText = await getReasonForRateByTextId(textId);
         const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
 
         // Cas 1: L'utilisateur n'a pas spécifié d'erreurs
@@ -84,6 +86,7 @@ export const checkUserSelectionPlausibility = async (
                 testPlausibilityError: [],
                 correctPlausibility: textPlausibility,
                 testPlausibilityPassed: isPlausibilityCorrect,
+                reasonForRate: reasonForRateText,
             };
         }
 
@@ -94,6 +97,7 @@ export const checkUserSelectionPlausibility = async (
                 testPlausibilityError: [],
                 correctPlausibility: textPlausibility,
                 testPlausibilityPassed: isPlausibilityCorrect,
+                reasonForRate: reasonForRateText,
             };
         }
 
@@ -107,7 +111,8 @@ export const checkUserSelectionPlausibility = async (
             testPlausibilityError,
             correctPlausibility: textPlausibility,
             testPlausibilityPassed: isPlausibilityCorrect,
-            isErrorDetailsCorrect
+            isErrorDetailsCorrect,
+            reasonForRate: reasonForRateText,
         };
 
 
