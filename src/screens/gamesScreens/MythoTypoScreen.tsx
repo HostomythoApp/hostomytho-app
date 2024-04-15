@@ -125,25 +125,29 @@ const MythoTypoScreen = ({ }) => {
       let response;
       switch (nextStep) {
         case 1:
+          break;
+        case 2:
           response = await getTextWithErrorValidatedById(5);
           setText(response);
           break;
-        case 2:
+        case 3:
           response = await getTextWithErrorValidatedById(4);
           setText(response);
           break;
-        case 3:
-          response = await getTextWithErrorValidatedById(49);
-          setText(response);
-          break;
         case 4:
-          response = await getTextTestWithErrorValidated();
+          response = await getTextWithErrorValidatedById(51);
           setText(response);
           break;
       }
       const tutorialContent = getTutorialContentForStep(nextStep, tw);
       if (tutorialContent) {
-        showModal(tutorialContent);
+        if (tutorialStep == 1) {
+          setTimeout(() => {
+            showModal(tutorialContent);
+          }, 600);
+        } else {
+          showModal(tutorialContent);
+        }
       }
     } else {
       if (questionsAsked < 7) {
@@ -175,6 +179,9 @@ const MythoTypoScreen = ({ }) => {
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
+    if (tutorialStep == 1) {
+      nextTutorialStep();
+    }
   };
 
   const launchTuto = () => {
@@ -282,9 +289,11 @@ const MythoTypoScreen = ({ }) => {
       case 2:
         return "L'erreur concerne la cohérence médicale du texte.";
       case 3:
+        return "L'erreur est une répétition.";
+      case 4:
         return "L'erreur appartient à une autre catégorie.";
       default:
-        return "Ce n'était finalement pas une erreur";
+        return "Ce n'était pas une erreur.";
     }
   };
 

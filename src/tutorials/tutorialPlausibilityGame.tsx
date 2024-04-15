@@ -14,15 +14,14 @@ const getPlausibilityConfig = (plausibility?: number) => {
 export const getTutorialContentForStep = (step: number, tw: any) => {
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Vous avez recueilli des dossiers patients. Analysez-les, trouvez ceux qui contiennent des erreurs et vous paraissent suspects. Cela vous permettra de trouver des pistes vers le criminel.
-            Le but est donc d'évaluer la crédibilité d'un texte en lui attribuant un niveau de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
-            {"\n"}
+        case 1: return <Text style={tw('font-primary')}> Le but du jeu est d'évaluer la crédibilité d'un texte en lui attribuant un niveau de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
+            {"\n\n"}
             <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible
             <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible
             <PlausibilityButton config={getPlausibilityConfig(50).buttonConfig as ButtonConfig} /> Moyennement plausible
             <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible
             <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complètement plausible
-            {"\n"}
+            {"\n\n"}
             Lisez le texte, et attribuez-lui une note de plausibilité. Vous commencerez à gagner des points à la fin de la formation.
         </Text>;
 

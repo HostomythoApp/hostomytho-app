@@ -4,15 +4,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Text, TouchableWithoutFeedback } from 'react-native';
 
 export const getTutorialContentForStep = (step: number, tw: any) => {
+    const HighlightedText = ({ children }: { children: any }) => {
+        return <Text style={tw('text-[#5077BE] font-bold')}>{children}</Text>;
+    };
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Certains passages de textes ont spécialement attiré votre attention. Triez-les en spécifiant le type de l'erreur surlignée, afin d'éclaircir les pistes.
-            {"\n"}
-            Il peut y avoir plusieurs types d'erreurs : les erreurs de français pour les erreurs grammaticales, ou de français en général. Les erreurs médicales pour les incohérences et erreurs médicales. Si vous pensez que l'erreur est d'un autre type, choisissez le bouton "Autre".
-            Enfin, si vous pensez que ce n'est pas une erreur, cliquez sur "Pas d'erreur". Annotez quelques textes pour vous entrainer ; quand vous serez prêt, vous pourrez gagner des points.
-        </Text>;
-
-        case 2: return <Text style={tw('font-primary')}>
+        case 1: return <Text style={tw('font-primary')}> Le but du jeu ici est de spécifier le type de l'erreur surlignée.
             Si l'erreur est de plusieurs types, selectionnez celui qui vous semble le plus important.
             {"\n\n"}
             Et si vous avez un doute et que ne souhaitez pas répondre, cliquez sur le bouton
@@ -20,10 +17,25 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             en haut à droite pour passer au prochain exemple. Vous pourrez l'utiliser dès la fin de ce tutoriel.
         </Text>;
 
-        case 3: return <Text style={tw('font-primary')}>
-            Il arrive souvent que les erreurs soient des répétitions de mots. Classez les dans la catégorie "Autre".
+        case 2: return <Text style={tw('font-primary')}>
+            Sélectionnez <HighlightedText>"Français" </HighlightedText>pour les erreurs grammaticales ou de français en général :
+            {"\n"}
+            - "Les symptôme du patient sont très variés et <HighlightedText>inclut </HighlightedText>des maux de tête."
             {"\n\n"}
-            Parfois, le texte surligné peut aussi ne pas être une erreur.
+
+            <HighlightedText>"Médical" </HighlightedText>concerne les erreurs de cohérences médicales :
+            {"\n"}
+            - "Lors de sa visite pour un vaccin contre la grippe, il a été annoncé au patient qu'il devait subir <HighlightedText> une radiographie du thorax pour examiner la santé de ses dents de sagesse</HighlightedText>."
+        </Text>;
+
+        case 3: return <Text style={tw('font-primary')}>
+            Sélectionnez <HighlightedText>"Répétition" </HighlightedText>si le texte contient des répétitions.
+            {"\n"}
+            - "<HighlightedText>La biopsie rénale a montré une glomérulonéphrite extramembraneuse. La biopsie rénale a montré une glomérulonéphrite extramembraneuse. La biopsie rénale a montré une glomérulonéphrite...</HighlightedText>"
+            {"\n\n"}
+            Cliquez  <HighlightedText>"Autre" </HighlightedText> si l'erreur n'est pas classable dans les catégories précédentes, ou contient des problèmes éthiques, des propos racistes, ou toute autre déviance
+            {"\n\n"}
+            Ou <HighlightedText>"Pas d'erreur" </HighlightedText> si le texte surligné est bon.
         </Text>;
 
         case 4: return <Text style={tw('font-primary')}>
@@ -86,7 +98,7 @@ export const getModalHelpContent = (tw: any) => {
             L'erreur vient de l'incohérence de l'information.
             {"\n\n"}
 
-            <HighlightedText>"Autre" </HighlightedText> si le type est différent.
+            <HighlightedText>"Répétition" </HighlightedText> si le texte contient des répétitions.
             {"\n"}
             <ItalicPhrase>
                 - "<HighlightedText>La biopsie rénale a montré une glomérulonéphrite extramembraneuse. La biopsie rénale a montré une glomérulonéphrite extramembraneuse. La biopsie rénale a montré une glomérulonéphrite extramembraneuse.</HighlightedText>"
@@ -94,6 +106,8 @@ export const getModalHelpContent = (tw: any) => {
             {"\n"}
             L'erreur est la répétition de la phrase.
             {"\n\n"}
+
+            <HighlightedText>"Autre" </HighlightedText> si l'erreur n'est pas classable dans les catégories précédentes, ou contient des problèmes éthiques, racistes, ou toute autre déviance
 
             Cliquez <HighlightedText>"Pas d'erreur" </HighlightedText> si le texte surligné est bon.
             {"\n\n"}
