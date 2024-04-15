@@ -59,7 +59,7 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
                     resizeMode="contain"
                 />
                 {bubbleVisible && (
-                    <Animated.View style={{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 500, marginBottom: 15 }}>
+                    <Animated.View style={{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 530, marginBottom: 15 }}>
 
                         <View style={[tw('p-3 rounded-lg bg-white'),
                         {

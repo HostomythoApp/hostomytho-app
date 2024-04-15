@@ -476,13 +476,12 @@ const MythoNoScreen = ({ }) => {
       </View>
       <TouchableOpacity onPress={() => removeUserSentenceSpecification(sentenceSpecification.id)}>
         <View style={[tw('flex-row items-center'), {
-          // TODO Revoir la couleur       
-          backgroundColor: 'rgba(129, 83, 123, 0.2)',
+          backgroundColor: 'rgba(129, 83, 123, 0.4)',
         }
         ]}
         >
           <Entypo name="cross" size={24} color="red" />
-          <Text style={tw('font-primary font-bold text-red-500')}
+          <Text style={tw('font-primary font-extrabold text-red-500')}
           >annuler la sélection</Text>
         </View>
       </TouchableOpacity>

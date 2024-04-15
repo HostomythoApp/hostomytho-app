@@ -459,24 +459,23 @@ const MythoOuPasScreen = () => {
       if (!highlightEnabled) return;
       setText(currentText => {
         if (!currentText) return currentText;
-
+  
         const newTokens = [...currentText.tokens];
         const token = newTokens[wordIndex];
         token.isCurrentSelection = !token.isCurrentSelection;
-
+  
         if (token.isCurrentSelection) {
           token.color = 'bg-blue-200';
         } else {
           delete token.color;
         }
-
+  
         const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
         setSelectionStarted(anyTokenSelected);
         return { ...currentText, tokens: newTokens };
       });
     }
-  }, [wikiMode]);
-
+  }, [wikiMode, highlightEnabled, text, setText, setSelectionStarted]);
 
   const renderErrorDetail = (errorDetail: ErrorDetail) => (
     <View key={errorDetail.id} style={tw(`flex-row items-center m-1 max-w-[400px] ml-9`)}>

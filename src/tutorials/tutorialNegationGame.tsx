@@ -3,11 +3,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 
 export const getTutorialContentForStep = (step: number, tw: any) => {
+    const HighlightedText = ({ children }: { children: any }) => {
+        return <Text style={tw('text-[#5077BE] font-bold')}>{children}</Text>;
+    };
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Voici des dossiers patients. Sélectionnez les absences de quelque chose dans le texte ; cela vous permettra de trouver des indices. 
+        case 1: return <Text style={tw('font-primary')}> Voici des dossiers patients. Sélectionnez les absences de quelque chose dans le texte.
             {"\n"}
-            Par exemple, si le texte contient "Le bilan d'extension du patient malade est sans particularité.", il faut identifier les mots "sans particularité".
+            Par exemple, si le texte contient <HighlightedText>"Le bilan d'extension du patient malade est sans particularité." </HighlightedText>, il faut identifier les mots <HighlightedText>"sans particularité". </HighlightedText>
             Pour ce faire, cliquez sur les mots et validez la sélection.
             {"\n\n"}
             Vous gagnerez des points à la fin de la formation. Pour le moment, essayez sur ce texte pour vous entraîner :
@@ -25,21 +28,15 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 3: return <Text style={tw('font-primary')}>
             Certains cas peuvent être imbriqués, et un mot peut servir dans plusieurs négations.
             {"\n"}
-            Dans cet exemple : Les suites opératoires étaient simples sans récidive neurologique ni métastases secondaires.
+            Dans cet exemple : <HighlightedText> Les suites opératoires étaient simples sans récidive neurologique ni métastases secondaires.</HighlightedText>
             {"\n"}
-            Les deux négations à spécifier sont "sans récidive neurologique" et "sans métastases secondaires".
-            {"\n\n"}
-            À vous d'essayer avec cet exemple :
+            Les deux négations à spécifier sont <HighlightedText>"sans récidive neurologique" </HighlightedText>et <HighlightedText>"sans métastases secondaires".</HighlightedText>
         </Text>;
 
         case 4: return <Text style={tw('font-primary')}>
-            Il faut réussir à bien identifier l'assertion négative.
+            Un autre exemple : <HighlightedText> L'échographie était demandée par la patiente qui ne présentait pas d'autres métrorragies ou autres pathologies gynécologiques..</HighlightedText>
             {"\n"}
-            Dans cet exemple : L'échographie était demandée par la patiente qui ne présentait pas d'autres métrorragies ou autres pathologies gynécologiques..
-            {"\n"}
-            Les deux négations à spécifier sont "pas d'métrorragies" et "pas d'pathologies gynécologiques".
-            {"\n\n"}
-            À vous d'essayer avec cet exemple :
+            Les deux négations à spécifier sont <HighlightedText>"pas d'métrorragies" </HighlightedText>et <HighlightedText>"pas d'pathologies gynécologiques".</HighlightedText>
         </Text>;
 
         case 5: return <Text style={tw('font-primary')}>
