@@ -11,7 +11,7 @@ const FunctionButton = ({
   width?: number,
 }) => {
   const tw = useTailwind();
-  const widthStyle = { minWidth: 300, maxWidth: width || 500 };
+  const widthStyle = { minWidth: 250, maxWidth: width || 500 };
 
   return (
     <TouchableOpacity

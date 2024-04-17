@@ -788,6 +788,16 @@
 			"minWidth": 540
 		}
 	},
+	"min-w-[300px]": {
+		"style": {
+			"minWidth": 300
+		}
+	},
+	"min-w-[250px]": {
+		"style": {
+			"minWidth": 250
+		}
+	},
 	"max-w-40": {
 		"style": {
 			"maxWidth": 160
@@ -898,6 +908,11 @@
 	"flex-wrap": {
 		"style": {
 			"flexWrap": "wrap"
+		}
+	},
+	"content-around": {
+		"style": {
+			"alignContent": "space-around"
 		}
 	},
 	"items-start": {

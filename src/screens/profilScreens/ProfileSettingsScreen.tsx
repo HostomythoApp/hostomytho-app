@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 import InputField from 'components/InputField';
 import { FontAwesome } from '@expo/vector-icons';
+import PrimaryButton from 'components/PrimaryButton';
 
 const ProfileSettingsScreen = (props: any) => {
     const tw = useTailwind();
@@ -93,8 +94,9 @@ const ProfileSettingsScreen = (props: any) => {
                             </TouchableOpacity>
                         </View>
                         <Text style={tw('text-base mb-2 font-primary text-center')}>
-                            {user?.status ? `Vous êtes ${user.status}` : "Aucun statut renseigné"}
+                            {user?.status ? `Statut : ${user.status}` : "Aucun statut renseigné"}
                         </Text>
+                        <PrimaryButton title="Modifier le mot de passe" destination="ChangePassword" />
 
                         <LogoutButton />
                         <FunctionButton text={"Supprimer le compte"} func={() => setModalVisible(true)} />

@@ -39,12 +39,24 @@ export const tokenValidation = async (token: string): Promise<any> => {
   } catch (error) {
     throw error;
   }
-};  
+};
 
 export const resetPassword = async (token: string, newPassword: string) => {
   try {
     return await api.post(`/utils/resetPassword`, {
       token,
+      newPassword
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const changePassword = async (id: number, newPassword: string) => {
+  try {
+    return await api.post(`/utils/changePassword`, {
+      id,
       newPassword
     });
   } catch (error) {

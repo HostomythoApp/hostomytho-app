@@ -8,6 +8,7 @@ import SignInScreen from "screens/authScreens/SignInScreen";
 import SignUpScreen from "screens/authScreens/SignUpScreen";
 import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
 import ResetPasswordScreen from "screens/authScreens/ResetPasswordScreen";
+import ChangePasswordScreen from "screens/authScreens/ChangePasswordScreen";
 import MythoOuPasScreen from "screens/gamesScreens/MythoOuPasScreen";
 import MythoOuPasFullTextScreen from "screens/gamesScreens/MythoOuPasFullTextScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
@@ -124,6 +125,9 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="Login" component={SignUpScreen} />
               <Stack.Screen name="MotDePasseOublie" component={ForgetPasswordScreen} />
               <Stack.Screen name="NouveauMotDePasse" component={ResetPasswordScreen} />
+              <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+
+              
 
               {/* Params */}
               <Stack.Screen name="Parametres" component={SettingsScreen} />
