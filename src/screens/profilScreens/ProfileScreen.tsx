@@ -106,7 +106,7 @@ const ProfileScreen = (props: any) => {
                     <View style={tw('w-1/4 h-3/4 mb-10 ml-0 mr-auto mt-auto items-end justify-center')}>
                         <Image
                             source={characterImage}
-                            style={tw('absolute w-full h-full ')}
+                            style={tw('absolute w-full h-full')}
                             resizeMode="contain"
                         />
 

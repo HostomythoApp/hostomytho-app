@@ -139,49 +139,12 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         <Text style={tw('text-center text-green-600 font-bold text-lg font-primary')}>Points supplémentaires gagnés</Text>
         <View style={tw('border-b border-gray-400 my-4')} />
         <Text style={tw('text-center font-primary')}>Vous avez déjà débloqué tous les skins disponibles. En récompense, vous gagnez 5 points supplémentaires !</Text>
-      {/* TODO dire que ça va le refaire tous les 100 points */}
+        {/* TODO dire que ça va le refaire tous les 100 points */}
       </View>
     );
     modalContext.showModal();
   };
 
-  // const incrementPoints = async (pointsToAdd: number, isBonus: boolean = false) => {
-
-  //   if (user) {
-  //     const oldPoints = user.points;
-  //     const response = await updateUserPoints(user.id, pointsToAdd);
-  //     const newPoints = response.data.newPoints;
-
-  //     setUser((prevUser: any) => ({ ...prevUser, points: response.data.newPoints }));
-  //     // Gain de skin tous les 100 points
-  //     const oldRewardTier = Math.floor(oldPoints / 100);
-  //     const newRewardTier = Math.floor(newPoints / 100);
-
-  //     if (newRewardTier > oldRewardTier) {
-  //       try {
-  //         const response = await getRandomSkin(user.id);
-
-  //         if (response.allSkinsUnlocked) {
-  //           unlockPointsModal();
-  //           if (!isBonus) {
-  //             incrementPoints(5, true);
-  //           }
-  //         } else {
-  //           // Si c'est un nouveau skin, on affiche la modal pour le skin
-  //           unlockSkinModal(response);
-  //         }
-  //       } catch (error) {
-  //         console.error("Error getting random skin:", error);
-  //       }
-  //     }
-  //     // Si il y a de nouvelles réalisations, on déclenche l'affichage du modal pour chacune d'entre elles
-  //     if (response.data.newAchievements && response.data.newAchievements.length > 0) {
-  //       response.data.newAchievements.forEach((achievement: Achievement) => {
-  //         unlockAchievementModal(achievement);
-  //       });
-  //     }
-  //   }
-  // };
 
   const incrementCatchProbability = async (percentageToAdd: number) => {
     if (user) {
@@ -196,13 +159,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       setUser((prevUser: User) => ({ ...prevUser, tutorial_progress: response.data.newTutorialProgress }));
     }
   };
-
-  // const incrementTrustIndex = async (trustIndexIncrement: number) => {
-  //   if (user) {
-  //     const response = await updateTrustIndex(user.id, trustIndexIncrement);
-  //     setUser((prevUser: any) => ({ ...prevUser, trust_index: response.data.newTrustIndex }));
-  //   }
-  // };
 
   const updateUserStats = async (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number, isBonus: boolean = false) => {
 

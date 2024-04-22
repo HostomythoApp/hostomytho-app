@@ -16,6 +16,8 @@ import { getTopMonthlyWinners } from "services/api/user";
 import { MonthlyWinner } from "models/MonthlyWinner";
 import { getTutorialContentForStep } from "tutorials/tutorialGeneral";
 import { responsiveFontSize } from "utils/functions";
+import CharacterPortrait from "components/CharacterPortrait";
+import { loadMonthlyWinners, saveMonthlyWinners } from "utils/storage";
 
 interface TutorialsCompleted {
     [key: string]: boolean;
@@ -24,7 +26,7 @@ interface TutorialsCompleted {
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
-    const { user, updateStorageUserFromAPI } = useUser();
+    const { user, updateStorageUserFromAPI, equippedSkins } = useUser();
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     const windowWidth = Dimensions.get('window').width;
     const [menuMessage, setMenuMessage] = useState<MessageMenu | null>(null);
@@ -46,14 +48,18 @@ const MainBoardScreen = ({ }) => {
 
     useEffect(() => {
         const fetchMonthlyWinners = async () => {
-            try {
-                const response = await getTopMonthlyWinners();
-                setMonthlyWinners(response.data);
-            } catch (error) {
-                console.error('Erreur lors de la récupération des gagnants mensuels', error);
+            let winners = await loadMonthlyWinners();
+            if (!winners) {
+                try {
+                    const response = await getTopMonthlyWinners();
+                    winners = response.data;
+                    saveMonthlyWinners(winners);
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des gagnants mensuels', error);
+                }
             }
+            setMonthlyWinners(winners);
         };
-
         fetchMonthlyWinners();
     }, []);
 
@@ -144,7 +150,7 @@ const MainBoardScreen = ({ }) => {
                 Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
                 Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
                 Animated.timing(rotation, { toValue: 0.0, duration: 100, useNativeDriver: true })
-            ]).start(() => setTimeout(animate, 7000));
+            ]).start(() => setTimeout(animate, 13000));
         };
 
         const timerId = setTimeout(animate, 5000);
@@ -195,7 +201,7 @@ const MainBoardScreen = ({ }) => {
                                     <Image resizeMode="contain" source={require('images/envelope.png')} style={tw("w-full h-full")} />
                                 </Animated.View>
                             ) : (
-                                <View style={[tw("bg-white rounded-xl p-4 shadow-lg border border-gray-200 w-full"),
+                                <View style={[tw("bg-white rounded-xl p-4 border border-gray-200 w-full"),
                                 {
                                     position: 'relative',
                                     // Ombres pour iOS
@@ -330,6 +336,14 @@ const MainBoardScreen = ({ }) => {
                                 }
                             </TouchableOpacity>
 
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    top: windowWidth > 748 ? '56%' : '56%',
+                                    left: windowWidth > 748 ? '68%' : '68%',
+                                }}>
+                            </View>
+
                             {/* Tableau des gagnants mensuels */}
                             <View style={{
                                 position: 'relative',
@@ -354,73 +368,109 @@ const MainBoardScreen = ({ }) => {
                                     Enquêteurs du mois précédent
                                 </Text>
 
-                                <View style={tw('absolute top-[42%] left-[9%] p-1 bg-white border border-gray-500 rounded min-w-[25%]')}>
-                                    <TouchableOpacity style={tw('text-center z-10')}
+                                {/* Zone du Joueur 2 */}
+                                <View style={[tw('absolute top-[41%] left-[9%] bg-white border border-gray-500 rounded min-w-[25%]'), { height: windowWidth * 0.07 }]}>
+                                    <TouchableOpacity
+                                        style={tw('text-center z-10')}
                                         onPress={() => navigation.navigate("ProfilJoueur", { userId: monthlyWinners[1]?.user_id })}
                                     >
+
+                                        <View style={[tw('overflow-hidden relative'), { height: windowWidth * 0.068 }]}>
+                                            <Text style={{
+                                                ...tw('font-secondary text-center'),
+                                                fontSize: responsiveFontSize(14),
+                                            }}>
+                                                {monthlyWinners[1]?.username}
+                                            </Text>
+
+                                            {monthlyWinners[1] && (
+                                                <CharacterPortrait
+                                                    key={monthlyWinners[1].user_id}
+                                                    gender={monthlyWinners[1].user?.gender}
+                                                    color_skin={monthlyWinners[1].user?.color_skin}
+                                                    skins={monthlyWinners[1].equippedSkins || []}
+                                                />
+                                            )}
+                                        </View>
+
                                         <Image source={require('images/ranking_2.png')} style={{
+                                            position: 'absolute',
+                                            bottom: -18,
+                                            right: -5,
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,
                                             resizeMode: 'contain',
-                                            alignSelf: 'center'
                                         }} />
-                                        <Text style={{
-                                            ...tw('font-secondary text-center'),
-                                            fontSize: responsiveFontSize(14),
-                                        }}>
-                                            {monthlyWinners[1]?.username}
-                                        </Text>
                                     </TouchableOpacity>
                                 </View>
 
                                 {/* Zone du Joueur 3 */}
-                                <View style={tw('absolute top-[50%] right-[10%] p-1 pb-0 bg-white border border-gray-500 rounded min-w-[25%]')}>
+                                <View style={[tw('absolute top-[48%] right-[10%] bg-white border border-gray-500 rounded min-w-[25%]'), { height: windowWidth * 0.07 }]}>
 
                                     <TouchableOpacity
                                         style={tw('text-center z-10')}
                                         onPress={() => navigation.navigate("ProfilJoueur", { userId: monthlyWinners[2]?.user_id })}
                                     >
-
+                                        <View style={[tw('overflow-hidden relative'), { height: windowWidth * 0.068 }]}>
+                                            <Text style={{
+                                                ...tw('font-secondary text-center'),
+                                                fontSize: responsiveFontSize(14),
+                                            }}>
+                                                {monthlyWinners[2]?.username}
+                                            </Text>
+                                            {monthlyWinners[2] && (
+                                                <CharacterPortrait
+                                                    key={monthlyWinners[2].user_id}
+                                                    gender={monthlyWinners[2].user?.gender}
+                                                    color_skin={monthlyWinners[2].user?.color_skin}
+                                                    skins={monthlyWinners[2].equippedSkins || []}
+                                                />
+                                            )}
+                                        </View>
                                         <Image source={require('images/ranking_3.png')} style={{
+                                            position: 'absolute',
+                                            bottom: -18,
+                                            right: -5,
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,
                                             resizeMode: 'contain',
-                                            alignSelf: 'center'
                                         }} />
-                                        <Text style={{
-                                            ...tw('font-secondary text-center'),
-                                            fontSize: responsiveFontSize(14),
-                                        }}>
-                                            {monthlyWinners[2]?.username}
-                                        </Text>
                                     </TouchableOpacity>
                                 </View>
 
                                 {/* Zone du Joueur 1 */}
-                                <View style={tw('absolute w-full top-[25%] items-center')}
-                                >
-                                    <View style={tw('p-1 bg-white border border-gray-500 rounded min-w-[25%] self-center')}>
+                                <View style={[tw('absolute top-[24%] items-center self-center  bg-white border border-gray-500 rounded min-w-[25%]'), { height: windowWidth * 0.07 }]}>
 
-                                        <TouchableOpacity style={tw('text-center z-10')}
-                                            onPress={() => navigation.navigate("ProfilJoueur", { userId: monthlyWinners[0]?.user_id })}
-                                        >
-
-                                            <Image source={require('images/ranking_1.png')} style={{
-                                                width: windowWidth * 0.03,
-                                                height: windowWidth * 0.03,
-                                                resizeMode: 'contain',
-                                                alignSelf: 'center'
-                                            }} />
+                                    <TouchableOpacity style={tw('text-center z-10')}
+                                        onPress={() => navigation.navigate("ProfilJoueur", { userId: monthlyWinners[0]?.user_id })}
+                                    >
+                                        <View style={[tw('overflow-hidden relative'), { height: windowWidth * 0.068 }]}>
                                             <Text style={{
                                                 ...tw('font-secondary text-center'),
                                                 fontSize: responsiveFontSize(14),
                                             }}>
                                                 {monthlyWinners[0]?.username}
                                             </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
+                                            {monthlyWinners[0] && (
+                                                <CharacterPortrait
+                                                    key={monthlyWinners[0].user_id}
+                                                    gender={monthlyWinners[0].user?.gender}
+                                                    color_skin={monthlyWinners[0].user?.color_skin}
+                                                    skins={monthlyWinners[0].equippedSkins || []}
+                                                />
+                                            )}
+                                        </View>
+                                        <Image source={require('images/ranking_1.png')} style={{
+                                            position: 'absolute',
+                                            bottom: -18,
+                                            right: -5,
+                                            width: windowWidth * 0.03,
+                                            height: windowWidth * 0.03,
+                                            resizeMode: 'contain',
+                                        }} />
 
+                                    </TouchableOpacity>
+                                </View>
                             </View>
 
                             <TouchableOpacity onPress={() => navigation.navigate("Criminels")}
@@ -479,20 +529,20 @@ const MainBoardScreen = ({ }) => {
                         </View>
                     }
 
+
                     {
                         authState.isAuthenticated &&
                         <TouchableOpacity onPress={() => navigation.navigate("Profil")}
-                            style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100 }}>
+                            style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100, overflow: 'hidden' }}>
                             <View style={{
                                 backgroundColor: "rgba(0,0,0,0.5)",
                                 borderTopLeftRadius: 30,
                                 width: '100%',
-                                height: '100%',
+                                height: '154%',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                             }}>
-                                <Image source={require('images/icon_profil.png')} resizeMode="contain"
-                                    style={{ width: windowWidth * 0.06, height: windowWidth * 0.06, minWidth: 60, minHeight: 60 }} />
+                                <CharacterPortrait gender={user?.gender} color_skin={user?.color_skin} skins={equippedSkins} ></CharacterPortrait>
                             </View>
                         </TouchableOpacity>
                     }
