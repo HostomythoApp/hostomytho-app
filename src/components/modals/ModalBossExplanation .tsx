@@ -21,10 +21,10 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
 
     if (screenWidth <= 748) { // Tablettes petites
         imageSize = { width: 120, height: 230 };
-        bubbleHeight = { paddingBottom: 120 };
+        bubbleHeight = { paddingBottom: 110 };
     } else if (screenWidth <= 1024) { // Tablettes grandes
         imageSize = { width: 160, height: 300 };
-        bubbleHeight = { paddingBottom: 170 };
+        bubbleHeight = { paddingBottom: 150 };
     } else { // Ordinateurs
         imageSize = { width: 220, height: 370 };
         bubbleHeight = { paddingBottom: 220 };
@@ -112,12 +112,9 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
         return null;
     }
     return (
-        <TouchableOpacity style={[tw('absolute inset-0 w-full h-full z-20 overflow-hidden'),
-        {
+        <View style={[tw('absolute inset-0 w-full h-full z-20 overflow-hidden'), {
             backgroundColor: 'rgba(60, 60, 60, 0.5)'
-        }]}
-            activeOpacity={1} onPress={handleModalClick}>
-
+        }]}>
             <Animated.View
                 style={{
                     transform: [{ translateX }],
@@ -128,15 +125,13 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
                     alignItems: "flex-end",
                 }}
             >
-
                 {bubbleVisible && (
                     <Animated.View
                         style={[{ paddingLeft: 10, opacity: bubbleOpacity, maxWidth: 500 }, bubbleHeight]}
                     >
-                        <View style={[tw('p-3 rounded-lg bg-white'),
-                        {
+                        <View style={[tw('p-3 rounded-lg bg-white'), {
                             position: 'relative',
-                            // Ombres pour iOS
+                            // Shadows for iOS
                             shadowColor: "#000",
                             shadowOffset: {
                                 width: -3,
@@ -144,16 +139,21 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
                             },
                             shadowOpacity: 0.25,
                             shadowRadius: 6.84,
-                            // Ombre pour Android
+                            // Shadow for Android
                             elevation: 10,
-                        }
-                        ]}>
+                        }]}>
                             <Text style={tw('text-black text-base')}>{children}</Text>
                             <View style={{
                                 width: 0, height: 0, backgroundColor: 'transparent', borderStyle: 'solid', borderLeftWidth: 18, borderBottomWidth: 32, borderLeftColor: 'transparent',
                                 borderBottomColor: 'white', transform: [{ rotate: '85deg' }, { translateX: -10 }, { translateY: -14 }], position: 'absolute', bottom: 0, right: 0
                             }} />
                         </View>
+                        <TouchableOpacity
+                            onPress={handleModalClick}
+                            style={tw('bg-primary py-2 px-4 rounded self-center mt-4')}
+                        >
+                            <Text style={tw('text-white font-bold text-center font-primary')}>J'ai compris</Text>
+                        </TouchableOpacity>
                     </Animated.View>
                 )}
                 <Image
@@ -162,8 +162,9 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
                     resizeMode="contain"
                 />
             </Animated.View>
-        </TouchableOpacity>
+        </View>
     );
+
 };
 
 export default ModalBossExplanation;

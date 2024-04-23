@@ -238,6 +238,12 @@
 			"marginBottom": "auto"
 		}
 	},
+	"mx-1": {
+		"style": {
+			"marginLeft": 4,
+			"marginRight": 4
+		}
+	},
 	"-mt-1": {
 		"style": {
 			"marginTop": -4

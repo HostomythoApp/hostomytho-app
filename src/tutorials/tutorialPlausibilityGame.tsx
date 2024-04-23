@@ -22,23 +22,43 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible
             <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complètement plausible
             {"\n\n"}
-            Lisez le texte, et attribuez-lui une note de plausibilité. Vous commencerez à gagner des points à la fin de la formation.
+            Lisez le texte, et attribuez-lui une plausibilité. Vous commencerez à gagner des points à la fin de ce tuto.
         </Text>;
 
         case 2: return <Text style={tw('font-primary')}>
-            Si vous trouvez qu'un texte est faux et contient des erreurs, vous pouvez spécifier où sont la ou les erreurs, quel que soit leur type : erreur grammaticale, de cohérence, un passage biaisé ou offensant, ...
+            Si vous pensez qu'un texte contient des erreurs, vous pouvez spécifier où elles sont, quel que soit leur type : erreur grammaticale, de cohérence, un passage biaisé ou offensant, ...
+            {"\n"} Pour ce faire, sélectionnez la plausibilité comme prédédemment, cliquez sur
+            <View
+                style={[
+                    tw("px-1 py-1 mx-1 rounded-lg bg-orange-200 opacity-100"),
+                ]}
+            >
+                <Text style={tw("font-semibold text-orange-500 text-sm")}
+                >Source du doute</Text>
+            </View>puis cliquez sur les mots qui composent cette erreur.
             {"\n\n"}
-            Si vous ne souhaitez pas préciser où est l'erreur, vous le pouvez aussi, mais cela vous fera moins avancer dans l'enquête.
+            Vous n'êtes pas obligés de le faire, mais cela vous fera moins gagner de points.
         </Text>;
 
         case 3: return <Text style={tw('font-primary')}>
-            Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indices.
+            Certains textes contiennent des mots techniques compliqués, mais pas d'inquiétude, de nombreuses erreurs sont identifiables sans compétences en médecine particulière.
+            Si toutefois vous souhaitez avoir la définition d'un mot, cliquez sur le bouton W en haut à gauche, puis sur le mot dont vous souhaitez la définition. Cela vous dirigera vers une page Wikipédia associée.
+            {"\n\n"}
+            Essayez de traiter ce texte.
+        </Text>;
+
+        case 4: return <Text style={tw('font-primary')}>
+            Il arrive régulièrement que l'erreur soit une répétition de mots ou de phrases. Portez une attention particulière à cela.
+        </Text>;
+
+        case 5: return <Text style={tw('font-primary')}>
+            Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses sur l'ensemble de la formation, vous pourrez vous lancer à la recherche d'indices.
             {"\n\n"}
             Bon courage !
         </Text>;
 
         case 98: return <Text style={tw('font-primary')}>
-            Vous savez désormais spécifier la plausilité des textes. À vous de jouer.
+            Vous savez désormais spécifier la plausilité des textes. Vos réponses vont maintenant vous rapporter des points et faire avancer votre recherche de criminel.
             {"\n\n"}
             Le bouton avec le point d'interrogation en haut à droite vous permet d'accéder au rappel des consignes, et vous pourrez y relancer ce tutoriel si vous le souhaitez.
             {"\n\n"}
@@ -48,7 +68,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 99: return <Text style={tw('font-primary')}>
             Vous avez fait un peu trop d'erreurs. Il est plus prudent de refaire l'exercice, sinon vous risquez de partir sur de mauvaises pistes.
             {"\n\n"}
-            Du coup, recommençons depuis le début..
+            Du coup, recommençons..
         </Text>;
         default: return null;
     }

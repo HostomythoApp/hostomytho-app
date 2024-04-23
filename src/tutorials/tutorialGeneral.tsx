@@ -6,8 +6,8 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
 
     switch (step) {
         case 1: return <Text style={tw('font-primary')}>
-            Bienvenue, enquêteur. Vous avez été mandaté pour démasquer des criminels dissimulés dans notre hôpital. Votre mission consiste à explorer l'hôpital à la recherche d'indices et de pistes. Faites attention, ces criminels sont rusés et se cachent parmi les médecins et les patients.{"\n"}
-            En examinant minutieusement les documents et les dossiers des patients, vous pourrez identifier des anomalies ou des incohérences qui vous mettront sur la bonne voie.
+            Bienvenue, enquêteur. Vous avez été mandaté pour démasquer des criminels dissimulés dans notre hôpital, se faisant passer pour des médecins et des patients. 
+            Votre mission consiste à examiner des dossiers patients, et d'identifier des anomalies ou des incohérences, afin de débusquer les faux médecins et les faux malades.
         </Text>;
 
         case 2: return <Text style={tw('font-primary')}>
@@ -15,11 +15,11 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
         </Text>;
 
         case 3: return <Text style={tw('font-primary')}>
-            Vous trouverez également ici les hauts faits, qui sont des tâches spécifiques à accomplir. En les réalisant, vous gagnerez de plus en plus de points, ce qui accélérera votre progression dans les enquêtes. Ne les négligez pas !
+            Vous trouverez également ici les hauts faits, qui sont des tâches spécifiques à accomplir. En les réalisant, vous accélérerez votre progression dans les enquêtes et votre gain de points. Ne les négligez pas !
         </Text>;
 
         case 4: return <Text style={tw('font-primary')}>
-            En cliquant en bas à gauche, vous accéderez à votre garde-robe. Vous pourrez y changer d'apparence et de style pour adopter un look distingué. Certains objets sont très rares et vous permettront de vous vanter auprès des autres.
+            En cliquant en bas à gauche, vous accéderez à votre garde-robe. Vous pourrez y changer d'apparence et de style pour adopter un look distingué.
             Pour gagner ces apparences, gagnez des récompenses en remplissant la barre de progression visible ici.
         </Text>;
 
@@ -28,11 +28,11 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
         </Text>;
 
         case 6: return <Text style={tw('font-primary')}>
-            Voici votre tableau de bord. Ici, vous pouvez lancer la recherche d'indices en accédant aux dossiers des patients. La plupart du temps, vous ne recevrez pas d'indication sur l'exactitude de vos réponses. Parfois, nous insérerons des textes pièges pour tester vos compétences et vérifier si vous êtes digne de confiance. L'hôpital regorge de menteurs, et il est difficile de savoir à qui se fier.
+            Voici votre tableau de bord. Ici, vous avez accès à différents mini-jeux qui vous permettront de gagner des points et avancer dans l'enquête. 
         </Text>;
 
         case 7: return <Text style={tw('font-primary')}>
-            Lorsque vous pensez avoir identifié le criminel, vous pouvez tenter de l'arrêter dans la section "suspect". Soyez certain de votre choix, car une erreur pourrait sérieusement ralentir votre progression.
+            Lorsque vous pensez avoir identifié le criminel, vous pouvez tenter de l'arrêter dans la section "suspect".
         </Text>;
 
         case 8:
@@ -50,12 +50,10 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
 
         case 9: return (
             <Text style={tw('font-primary text-base')}>
-                Démarrez par les jeux «Mytho Ou Pas» et «Mytho-Typo» en cliquant sur le tableau de bord.
+                Commencez par le jeu «Mytho Ou Pas».
                 Un collègue médecin vous orientera et évaluera vos compétences d'enquêteur.
                 {"\n"}
-
                 En cas de besoin, vous trouverez des boutons d'aide à divers endroits :
-
                 <View style={tw('bg-[#BBF7D0] p-2 mr-2 text-center w-11 rounded-b-md')}>
                     <Entypo name="help" size={16} color="#253529" style={tw('self-center')} />
                 </View>

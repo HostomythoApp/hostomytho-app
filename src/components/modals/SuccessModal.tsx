@@ -27,7 +27,7 @@ const SuccessModal = ({ isVisible, onDismiss }: { isVisible: boolean, onDismiss:
                     toValue: 0,
                     useNativeDriver: true,
                 }).start(onDismiss);
-            }, 2000);
+            }, 1000);
         } else {
             scale.setValue(0); // Réinitialisation de l'animation
         }

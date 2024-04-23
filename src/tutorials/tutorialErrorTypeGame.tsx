@@ -49,15 +49,15 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 98: return <Text style={tw('font-primary')}>
             Vous savez désormais spécifier les types d'erreur. À vous de jouer.
             {"\n\n"}
-            Le bouton avec le point d'interrogation en haut à droite vous permet d'accéder au rappel des consignes, et vous pourrez y relancer ce tutoriel si vous le souhaitez.
-            {"\n\n"}
+            N'oubliez pas que plus vous donnez de bonnes réponses, plus votre taux de fiabilité sera élevé, et plus vous gagnerez de points. Vous pouvez aussi augmenter votre coefficient multiplicateur en remportant des hauts-faits, visibles sur votre page de profil.
+            {"\n"}
             Bon courage dans vos recherches !
         </Text>;
 
         case 99: return <Text style={tw('font-primary')}>
             Vous avez fait un peu trop d'erreurs. Il est plus prudent de refaire l'exercice, sinon vous risquez de partir sur de mauvaises pistes.
             {"\n\n"}
-            Du coup, recommençons depuis le début..
+            Du coup, recommençons..
         </Text>;
 
         default: return null;

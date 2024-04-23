@@ -538,7 +538,7 @@ const MainBoardScreen = ({ }) => {
                                 backgroundColor: "rgba(0,0,0,0.5)",
                                 borderTopLeftRadius: 30,
                                 width: '100%',
-                                height: '154%',
+                                height: '100%',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                             }}>

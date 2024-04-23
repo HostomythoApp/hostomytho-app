@@ -37,11 +37,10 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
         return null;
     }
     return (
-        <TouchableOpacity style={[tw('absolute w-full h-full z-20 overflow-hidden'),
+        <View style={[tw('absolute w-full h-full z-20 overflow-hidden'),
         {
             backgroundColor: 'rgba(60, 60, 60, 0.5)'
-        }]}
-            activeOpacity={1} onPress={onClose}>
+        }]}>
 
 
             <Animated.View
@@ -64,7 +63,6 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
                         <View style={[tw('p-3 rounded-lg bg-white'),
                         {
                             position: 'relative',
-                            // Ombres pour iOS
                             shadowColor: "#000",
                             shadowOffset: {
                                 width: -3,
@@ -72,17 +70,22 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
                             },
                             shadowOpacity: 0.25,
                             shadowRadius: 6.84,
-                            // Ombre pour Android
                             elevation: 10,
                         }
                         ]}>
                             <Text style={tw('text-black text-base')}>{children}</Text>
                             <View style={{ width: 0, height: 0, backgroundColor: 'transparent', borderStyle: 'solid', borderLeftWidth: 15, borderBottomWidth: 15, borderLeftColor: 'transparent', borderBottomColor: 'white', transform: [{ rotate: '14deg' }, { translateX: -9 }, { translateY: 12 }], position: 'absolute', top: 10, left: 0 }} />
                         </View>
+                        <TouchableOpacity
+                            onPress={onClose}
+                            style={tw('bg-secondary py-2 px-4 rounded self-center mt-4')}
+                        >
+                            <Text style={tw('text-white font-bold text-center font-primary')}>J'ai compris</Text>
+                        </TouchableOpacity>
                     </Animated.View>
                 )}
             </Animated.View>
-        </TouchableOpacity>
+        </View>
     );
 };
 

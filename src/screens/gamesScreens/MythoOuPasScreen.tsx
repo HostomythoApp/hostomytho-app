@@ -146,7 +146,7 @@ const MythoOuPasScreen = () => {
     const nextStep = tutorialStep + 1;
     setTutorialStep(nextStep);
 
-    if (nextStep <= 3) {
+    if (nextStep <= 5) {
       let response;
       switch (nextStep) {
         case 1:
@@ -154,11 +154,19 @@ const MythoOuPasScreen = () => {
           setText(response);
           break;
         case 2:
-          response = await getTextWithTokensById(349);
+          response = await getTextWithTokensById(145);
           setText(response);
           break;
         case 3:
+          response = await getTextWithTokensById(194);
+          setText(response);
+          break;
+        case 4:
           response = await getTextWithTokensById(351);
+          setText(response);
+          break;
+        case 5:
+          response = await getTextTestPlausibility();
           setText(response);
           break;
       }
@@ -459,17 +467,17 @@ const MythoOuPasScreen = () => {
       if (!highlightEnabled) return;
       setText(currentText => {
         if (!currentText) return currentText;
-  
+
         const newTokens = [...currentText.tokens];
         const token = newTokens[wordIndex];
         token.isCurrentSelection = !token.isCurrentSelection;
-  
+
         if (token.isCurrentSelection) {
           token.color = 'bg-blue-200';
         } else {
           delete token.color;
         }
-  
+
         const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
         setSelectionStarted(anyTokenSelected);
         return { ...currentText, tokens: newTokens };
