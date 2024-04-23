@@ -23,7 +23,7 @@ const MythoTypoScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithError>();
   const [errorTypes, setErrorTypes] = useState<ErrorType[]>([]);
-  const { user } = useUser();
+  const { user, completeTutorial } = useUser();
   const [selectedErrorType, setSelectedErrorType] = useState<number>(0);
   const { updateUserStats } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
@@ -158,7 +158,7 @@ const MythoTypoScreen = ({ }) => {
           showModal(getTutorialContentForStep(98, tw));
           setIsTutorial(false);
           if (user) {
-            completeTutorialForUser(user.id, 3);
+            completeTutorial(3, "MythoTypo");
           }
         } else {
           showModal(getTutorialContentForStep(99, tw));

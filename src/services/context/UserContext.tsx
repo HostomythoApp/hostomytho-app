@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTailwind } from "tailwind-rn";
 import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi, updateTrustIndex, updateTutorialProgress } from "services/api/user";
@@ -10,6 +10,7 @@ import AchievementIcon from "components/AchievementIcon";
 import { getEquippedUserSkins, getRandomSkin } from "services/api/skins";
 import { Skin } from "models/Skin";
 import SkinImage from "components/SkinImage";
+import { completeTutorialForUser, getCompletedTutorials } from "services/api/games";
 
 interface UserContextProps {
   user: User | null;
@@ -24,6 +25,9 @@ interface UserContextProps {
   equippedSkins: Skin[];
   setEquippedSkins: React.Dispatch<React.SetStateAction<Skin[]>>;
   unlockAchievementModal: (achievement: Achievement) => Promise<void>;
+  tutorialsCompleted: Record<string, boolean>;
+  fetchTutorialsCompleted: () => Promise<void>;
+  completeTutorial: (gameId: number, tutorialName: string) => Promise<void>;
 }
 interface UserProviderProps {
   children: React.ReactNode;
@@ -37,6 +41,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUserState] = useState<User | null>(null);
   const modalContext = useContext(ModalContext);
   const [equippedSkins, setEquippedSkins] = useState<Skin[]>([]);
+  const [tutorialsCompleted, setTutorialsCompleted] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const fetchEquippedSkins = async () => {
@@ -101,6 +106,42 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       console.error("Error removing user:", error);
     }
   };
+
+  // Gestion des tutorials
+  const completeTutorial = useCallback(async (gameId: number, tutorialName: string) => {
+    if (user) {
+      try {
+        await completeTutorialForUser(user.id, gameId);
+        setTutorialsCompleted(prev => ({
+          ...prev,
+          [tutorialName]: true
+        }));
+      } catch (error) {
+        console.error('Error completing tutorial', error);
+      }
+    }
+  }, [user]);
+
+  const fetchTutorialsCompleted = useCallback(async () => {
+    if (user) {
+      try {
+        const games = await getCompletedTutorials(user.id);
+        const tutorialsState = games.reduce((acc, game) => {
+          acc[game.name] = true;
+          return acc;
+        }, {} as Record<string, boolean>);
+        setTutorialsCompleted(tutorialsState);
+      } catch (error) {
+        console.error('Error fetching tutorials', error);
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      fetchTutorialsCompleted();
+    }
+  }, [user, fetchTutorialsCompleted]);
 
   const unlockSkinModal = (skin: Skin) => {
     modalContext.setContent(
@@ -250,7 +291,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, incrementTutorialProgress, updateUserStats, equippedSkins, setEquippedSkins, unlockAchievementModal }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, incrementTutorialProgress, updateUserStats, equippedSkins, setEquippedSkins, unlockAchievementModal, tutorialsCompleted, fetchTutorialsCompleted, completeTutorial }}>
       {children}
     </UserContext.Provider>
   );

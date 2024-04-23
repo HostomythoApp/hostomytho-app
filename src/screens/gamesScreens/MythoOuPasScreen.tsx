@@ -45,7 +45,7 @@ const MythoOuPasScreen = () => {
   const [nextId, setNextId] = useState(0);
   const [colorIndex, setColorIndex] = useState(0);
   const window = Dimensions.get('window');
-  const { user, updateUserStats } = useUser();
+  const { user, updateUserStats, completeTutorial } = useUser();
   const [text, setText] = useState<TextWithTokens>();
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
   const [messageContent, setMessageContent] = useState<JSX.Element>(<></>);
@@ -184,7 +184,7 @@ const MythoOuPasScreen = () => {
           setIsTutorial(false);
 
           if (user) {
-            completeTutorialForUser(user.id, 2);
+            completeTutorial(2, "MythoOuPas");
           }
         } else {
           showModal(getTutorialContentForStep(99, tw));

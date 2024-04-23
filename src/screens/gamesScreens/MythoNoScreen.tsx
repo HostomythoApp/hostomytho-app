@@ -35,7 +35,7 @@ const MythoNoScreen = ({ }) => {
   const { updateUserStats } = useUser();
   const [isSelectionStarted, setSelectionStarted] = useState(false);
   const [nextId, setNextId] = useState(0);
-  const { user } = useUser();
+  const { user, completeTutorial } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -161,7 +161,7 @@ const MythoNoScreen = ({ }) => {
           setIsTutorial(false);
 
           if (user) {
-            completeTutorialForUser(user.id, 1);
+            completeTutorial(1, "MythoNo");
           }
         } else {
           showModal(getTutorialContentForStep(99, tw));

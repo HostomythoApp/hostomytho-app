@@ -27,13 +27,12 @@ interface TutorialsCompleted {
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
-    const { user, updateStorageUserFromAPI, equippedSkins } = useUser();
+    const { user, updateStorageUserFromAPI, equippedSkins, tutorialsCompleted } = useUser();
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     const windowWidth = Dimensions.get('window').width;
     const [menuMessage, setMenuMessage] = useState<MessageMenu | null>(null);
     const [messageExpanded, setMessageExpanded] = useState(false);
     const [isUserDataLoaded, setIsUserDataLoaded] = useState(false);
-    const [tutorialsCompleted, setTutorialsCompleted] = useState<TutorialsCompleted | null>(null);
     const iconSize = windowWidth * 0.015;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isBossVisible, setIsBossVisible] = useState(false);
@@ -100,30 +99,6 @@ const MainBoardScreen = ({ }) => {
             setIsBossVisible(false);
             setTutorialProgress(0);
         }
-    }, [user, userNeedsUpdate]);
-
-
-    useEffect(() => {
-        const fetchTutorials = async () => {
-            if (user && !userNeedsUpdate) {
-                try {
-                    const completedTutorials = await getCompletedTutorials(user.id);
-                    const tutorialsState = completedTutorials.reduce((acc, game) => {
-                        // @ts-ignore
-                        acc[game.name] = true;
-                        return acc;
-                    }, {});
-                    setTutorialsCompleted(tutorialsState);
-
-                } catch (error) {
-                    console.error('Error fetching tutorials', error);
-                }
-            } else {
-                setTutorialsCompleted(null);
-            }
-        };
-
-        fetchTutorials();
     }, [user, userNeedsUpdate]);
 
     useEffect(() => {
@@ -292,7 +267,7 @@ const MainBoardScreen = ({ }) => {
                                             right="2%"
                                         />
                                     }
-                                    {!tutorialsCompleted || !tutorialsCompleted["MythoTypo"] &&
+                                    {!tutorialsCompleted || !tutorialsCompleted["MythoOuPas"] &&
                                         <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
                                     }
                                 </View>
@@ -340,7 +315,7 @@ const MainBoardScreen = ({ }) => {
                                         right="0%"
                                     />
                                 }
-                                {!tutorialsCompleted || !tutorialsCompleted["MythoTypo"] &&
+                                {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] && // Modification ici pour afficher le cadenas seulement si le tuto n'est pas complété
                                     <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
                                 }
                             </TouchableOpacity>
