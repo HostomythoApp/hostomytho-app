@@ -7,9 +7,10 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 import { getMessageMenu } from "services/api/utils";
 import { MessageMenu } from 'models/MessageMenu';
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { getCompletedTutorials } from "services/api/games";
 import IconNotification from "components/IconNotification";
+import { FontAwesome } from '@expo/vector-icons';
 import ModalBossExplanation from "components/modals/ModalBossExplanation ";
 import Loader from "components/Loader";
 import { getTopMonthlyWinners } from "services/api/user";
@@ -44,7 +45,6 @@ const MainBoardScreen = ({ }) => {
     const [userNeedsUpdate, setUserNeedsUpdate] = useState(true);
     const [monthlyWinners, setMonthlyWinners] = useState<any>([]);
     const rotation = useRef(new Animated.Value(0)).current;
-
 
     useEffect(() => {
         const fetchMonthlyWinners = async () => {
@@ -153,7 +153,7 @@ const MainBoardScreen = ({ }) => {
             ]).start(() => setTimeout(animate, 13000));
         };
 
-        const timerId = setTimeout(animate, 5000);
+        const timerId = setTimeout(animate, 13000);
 
         return () => clearTimeout(timerId);
     }, [rotation]);
@@ -269,11 +269,13 @@ const MainBoardScreen = ({ }) => {
                                 />
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => navigation.navigate("MythoTypo")}
+                            <TouchableOpacity
+                                onPress={tutorialsCompleted && tutorialsCompleted["MythoOuPas"] ? () => navigation.navigate("MythoTypo") : undefined}
                                 style={{
                                     position: 'absolute',
                                     top: windowWidth > 748 ? '20%' : '20%',
                                     left: windowWidth > 748 ? '43%' : '43%',
+                                    opacity: tutorialsCompleted && tutorialsCompleted["MythoOuPas"] ? 1 : 0.6
                                 }}>
                                 <View style={{ position: 'relative' }}>
                                     <Image
@@ -283,12 +285,15 @@ const MainBoardScreen = ({ }) => {
                                             width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
                                         }}
                                     />
-                                    {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] &&
+                                    {tutorialsCompleted && tutorialsCompleted["MythoOuPas"] && !tutorialsCompleted["MythoTypo"] &&
                                         <IconNotification
                                             size={iconSize}
                                             top="2%"
                                             right="2%"
                                         />
+                                    }
+                                    {!tutorialsCompleted || !tutorialsCompleted["MythoTypo"] &&
+                                        <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
                                     }
                                 </View>
                             </TouchableOpacity>
@@ -316,33 +321,30 @@ const MainBoardScreen = ({ }) => {
                                 }
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => navigation.navigate("MythoNo")}
+                            <TouchableOpacity
+                                onPress={tutorialsCompleted && tutorialsCompleted["MythoTypo"] ? () => navigation.navigate("MythoNo") : undefined}
                                 style={{
                                     position: 'absolute',
                                     top: windowWidth > 748 ? '56%' : '56%',
                                     left: windowWidth > 748 ? '68%' : '68%',
-                                    transform: [{ rotate: '-8deg' }]
+                                    transform: [{ rotate: '-8deg' }],
+                                    opacity: tutorialsCompleted && tutorialsCompleted["MythoTypo"] ? 1 : 0.6
                                 }}>
                                 <Image source={require('images/postit_pink.png')} style={{
                                     width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
-
                                 }} />
-                                {tutorialsCompleted && !tutorialsCompleted["MythoNo"] &&
+                                {tutorialsCompleted && tutorialsCompleted["MythoTypo"] && !tutorialsCompleted["MythoNo"] &&
                                     <IconNotification
                                         size={iconSize}
                                         top="-5%"
                                         right="0%"
                                     />
                                 }
+                                {!tutorialsCompleted || !tutorialsCompleted["MythoTypo"] &&
+                                    <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
+                                }
                             </TouchableOpacity>
 
-                            <View
-                                style={{
-                                    position: 'absolute',
-                                    top: windowWidth > 748 ? '56%' : '56%',
-                                    left: windowWidth > 748 ? '68%' : '68%',
-                                }}>
-                            </View>
 
                             {/* Tableau des gagnants mensuels */}
                             <View style={{

@@ -15,7 +15,6 @@ interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => Promise<void>;
   removeUser: () => Promise<void>;
-  // incrementPoints: (points: number) => void;
   incrementCatchProbability: (percentageToAdd: number) => void;
   updateStorageUserFromAPI: (userId: number) => Promise<void>;
   resetCatchProbability: (userId: number) => Promise<void>;

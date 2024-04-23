@@ -15,7 +15,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ gender, color_ski
   const tw = useTailwind();
   const windowWidth = Dimensions.get('window').width;
   const portraitWidth = windowWidth * 0.087;
-  const portraitHeight = portraitWidth * 1.27; 
+  const portraitHeight = portraitWidth * 1.15; 
 
   // @ts-ignore
   const characterImage = characterImagesMapping[gender || 'homme'][color_skin || 'clear'];
