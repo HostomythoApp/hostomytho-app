@@ -37,7 +37,8 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
                 >Source du doute</Text>
             </View>puis cliquez sur les mots qui composent cette erreur.
             {"\n\n"}
-            Vous n'êtes pas obligés de le faire, mais cela vous fera moins gagner de points.
+            Vous n'êtes pas obligés de le faire, mais cela vous fera gagner plus de points.
+
         </Text>;
 
         case 3: return <Text style={tw('font-primary')}>

@@ -9,7 +9,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
     };
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Le but du jeu ici est de spécifier le type de l'erreur surlignée.
+        case 1: return <Text style={tw('font-primary')}> Le but du jeu ici est de spécifier le type de l'erreur surlignée en rose.
             Si l'erreur est de plusieurs types, selectionnez celui qui vous semble le plus important.
             {"\n\n"}
             Et si vous avez un doute et que ne souhaitez pas répondre, cliquez sur le bouton
@@ -39,6 +39,10 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 4: return <Text style={tw('font-primary')}>
+            Quand un texte est très long, vous n'avez pas forcément besoin de lire le texte en entier. Regardez en priorité l'endroit où est surlignée l'erreur ; la plupart du temps, cela vous suffira à trouver son type.
+        </Text>;
+
+        case 5: return <Text style={tw('font-primary')}>
             Nous avons fait le tour des explications.
             {"\n\n"}
             Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 5 bonnes réponses, vous pourrez vous lancer à la recherche d'indices.

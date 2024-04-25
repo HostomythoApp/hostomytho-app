@@ -268,6 +268,7 @@ const MainBoardScreen = ({ }) => {
                                         />
                                     }
                                     {!tutorialsCompleted || !tutorialsCompleted["MythoOuPas"] &&
+                                        // TODO responsive lock
                                         <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
                                     }
                                 </View>
@@ -372,7 +373,7 @@ const MainBoardScreen = ({ }) => {
 
                                         <Image source={require('images/ranking_2.png')} style={{
                                             position: 'absolute',
-                                            bottom: -18,
+                                            bottom: -14,
                                             right: -5,
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,
@@ -406,7 +407,7 @@ const MainBoardScreen = ({ }) => {
                                         </View>
                                         <Image source={require('images/ranking_3.png')} style={{
                                             position: 'absolute',
-                                            bottom: -18,
+                                            bottom: -14,
                                             right: -5,
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,
@@ -439,7 +440,7 @@ const MainBoardScreen = ({ }) => {
                                         </View>
                                         <Image source={require('images/ranking_1.png')} style={{
                                             position: 'absolute',
-                                            bottom: -18,
+                                            bottom: -14,
                                             right: -5,
                                             width: windowWidth * 0.03,
                                             height: windowWidth * 0.03,

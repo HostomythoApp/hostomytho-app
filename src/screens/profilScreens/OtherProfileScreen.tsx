@@ -113,7 +113,7 @@ const OtherProfileScreen = (props: any) => {
                     <View style={tw('w-full flex justify-center pt-4')}>
                         <View style={tw('w-auto m-auto max-w-6xl')}>
 
-                            <View style={tw('justify-center flex-row rounded-xl shadow-lg p-4 pt-0 flex-wrap')}>
+                            <View style={tw('justify-center flex-row rounded-xl p-4 pt-0 flex-wrap')}>
                                 <StatBox title="Classement général :" value={dataUser?.generalRanking} color="border-l-4 border-blue-500" />
                                 <StatBox title="Classement mensuel :" value={dataUser?.monthlyRanking} color="border-l-4 border-green-500" />
                                 <StatBox title="Meilleur enquêteur mensuel :" value={dataUser?.nbFirstMonthly} color="border-l-4 border-yellow-500" />

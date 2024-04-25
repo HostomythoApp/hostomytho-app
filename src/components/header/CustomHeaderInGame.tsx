@@ -85,7 +85,7 @@ const CustomHeaderInGame: React.FC<Props> = ({
     <View style={tw(`flex-row justify-between items-center ${backgroundColor} p-0`)}>
       <TouchableOpacity style={[tw('p-5'), isMobile ? tw('p-3') : tw('p-[18px]')]} onPress={() => navigation.goBack()}>
         <View >
-          <Ionicons name="chevron-back" size={30} color={textColor} />
+          <Ionicons name="arrow-back" size={30} color={textColor} />
         </View>
       </TouchableOpacity>
       <Text style={[tw(`font-primary text-center flex-grow text-${textColor}`), isMobile ? tw('text-xl') : tw('text-2xl')]}>{title}</Text>

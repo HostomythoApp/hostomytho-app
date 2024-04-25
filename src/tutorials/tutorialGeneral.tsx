@@ -44,7 +44,7 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
                         <Text style={tw('text-white font-bold text-center font-primary')}>Règles du Jeu</Text>
                     </TouchableOpacity>
                     {"\n"}
-                    Vous pouvez les retrouver en cliquant sur le bouton en haut à gauche.
+                    Vous pouvez les retrouver en cliquant sur le bouton des paramètres en haut à gauche.
                 </Text>
             );
 

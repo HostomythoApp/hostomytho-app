@@ -308,7 +308,7 @@ const MythoNoFullTextScreen = ({ }) => {
       const token = text!.tokens[wordIndex];
       const word = token.content;
       openWikipediaPageForWord(word);
-      toggleWikiMode(false);
+      // toggleWikiMode(false);
     } else {
       setText(currentText => {
         if (!currentText) return currentText;
@@ -494,9 +494,11 @@ const MythoNoFullTextScreen = ({ }) => {
       <View style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           {wikiMode && (
-            <View style={tw('p-[21px] w-full bg-blue-100 rounded-lg absolute z-30')}>
-              <Text style={tw('font-primary text-lg text-center text-blue-800')}>
-                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau sur le bouton Wiki pour quitter ce mode.
+            <View style={tw('p-[13px] w-full bg-blue-100 absolute z-30')}>
+              <Text style={tw('font-primary text-[16px] text-center text-blue-800')}>
+                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau dessus pour quitter ce mode.
+                {"\n"}
+                Attention, certaines pages peuvent contenir des images sensibles ou inappropriés.
               </Text>
             </View>
           )}

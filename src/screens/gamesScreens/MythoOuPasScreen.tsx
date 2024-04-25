@@ -50,7 +50,6 @@ const MythoOuPasScreen = () => {
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
   const [messageContent, setMessageContent] = useState<JSX.Element>(<></>);
   const [showMessage, setShowMessage] = useState(false);
-  const [noMoreTexts, setNoMoreTexts] = useState(false);
   const [userRateSelected, setUserRateSelected] = useState(100);
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -462,7 +461,7 @@ const MythoOuPasScreen = () => {
       const token = text!.tokens[wordIndex];
       const word = token.content;
       openWikipediaPageForWord(word);
-      toggleWikiMode(false);
+      // toggleWikiMode(false);
     } else {
       if (!highlightEnabled) return;
       setText(currentText => {
@@ -496,6 +495,8 @@ const MythoOuPasScreen = () => {
       )}
       <TouchableOpacity onPress={() => removeErrorDetail(errorDetail.id)}>
         <Entypo name="cross" size={24} color="red" />
+        <Text style={tw('font-primary font-extrabold text-red-500')}
+        >annuler la sélection</Text>
       </TouchableOpacity>
     </View>
   );
@@ -575,11 +576,18 @@ const MythoOuPasScreen = () => {
 
 
   const animationGainPoints = (pointsEarned: number, catchProbability: number, trustEarned: number) => {
+    console.log("pointsEarned");
+    console.log(pointsEarned);
+    console.log("catchProbability");
+    console.log(catchProbability);
+    console.log("trustEarned");
+    console.log(trustEarned);
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
 
     setTimeout(() => {
       // TODO augmenter trustEarned seulement quand la question était un test
+      // TODO  retirer le gain par rapport à la longueur
       const addLengthPoints: number = text && typeof text.length === 'number' ? text.length / 60 : 0;
       updateUserStats(pointsEarned + addLengthPoints, catchProbability, trustEarned);
     }, 100);
@@ -591,9 +599,11 @@ const MythoOuPasScreen = () => {
       <View style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           {wikiMode && (
-            <View style={tw('p-[21px] w-full bg-blue-100 rounded-lg absolute z-30')}>
-              <Text style={tw('font-primary text-lg text-center text-blue-800')}>
-                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau sur le bouton Wiki pour quitter ce mode.
+            <View style={tw('p-[13px] w-full bg-blue-100 absolute z-30')}>
+              <Text style={tw('font-primary text-[16px] text-center text-blue-800')}>
+                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau dessus pour quitter ce mode.
+                {"\n"}
+                Attention, certaines pages peuvent contenir des images sensibles ou inappropriés.
               </Text>
             </View>
           )}
@@ -606,55 +616,50 @@ const MythoOuPasScreen = () => {
             </View>
           </View>
 
-          {noMoreTexts ? (
-            <View style={tw('items-center justify-center mt-4')}>
-              <Text style={tw('text-lg text-red-500')}>Plus de texte pour le moment. Reviens plus tard.</Text>
-            </View>
-          ) : (
-            <View>
-              <View style={tw("flex-1 mb-2")}>
-                {text && renderText(text)}
-              </View>
 
-              {
-                isTutorial &&
-                <View style={tw('mx-4 p-4 bg-white rounded-lg w-72')}>
-                  <View style={tw('flex-row justify-between items-center mb-2')}>
-                    <Text style={tw('font-primary text-base text-gray-600')}>
-                      Texte :
-                    </Text>
-                    <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
-                      {Math.min(questionsAsked, 7)} / 7
-                    </Text>
-                  </View>
-                  <View style={tw('flex-row justify-between items-center')}>
-                    <Text style={tw('font-primary text-base text-gray-600')}>
-                      Bonnes réponses :
-                    </Text>
-                    <Text style={tw('font-primary text-lg font-bold text-green-600')}>
-                      {correctAnswers}
-                    </Text>
-                  </View>
+          <View>
+            <View style={tw("flex-1 mb-2")}>
+              {text && renderText(text)}
+            </View>
+
+            {
+              isTutorial &&
+              <View style={tw('mx-4 p-4 bg-white rounded-lg w-72')}>
+                <View style={tw('flex-row justify-between items-center mb-2')}>
+                  <Text style={tw('font-primary text-base text-gray-600')}>
+                    Texte :
+                  </Text>
+                  <Text style={tw('font-primary text-lg font-bold text-blue-600')}>
+                    {Math.min(questionsAsked, 7)} / 7
+                  </Text>
                 </View>
-              }
-
-              {
-                tutorialFailed && (
-                  <TouchableOpacity
-                    onPress={launchTuto}
-                    style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
-                  >
-                    <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
-                  </TouchableOpacity>
-                )
-              }
-
-              <View style={tw("mx-4 mt-2 mb-2 pb-12")}>
-                {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
-                )}
+                <View style={tw('flex-row justify-between items-center')}>
+                  <Text style={tw('font-primary text-base text-gray-600')}>
+                    Bonnes réponses :
+                  </Text>
+                  <Text style={tw('font-primary text-lg font-bold text-green-600')}>
+                    {correctAnswers}
+                  </Text>
+                </View>
               </View>
+            }
+
+            {
+              tutorialFailed && (
+                <TouchableOpacity
+                  onPress={launchTuto}
+                  style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
+                >
+                  <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
+                </TouchableOpacity>
+              )
+            }
+
+            <View style={tw("mx-4 mt-2 mb-2 pb-12")}>
+              {errorDetails.map(errorDetail => renderErrorDetail(errorDetail)
+              )}
             </View>
-          )}
+          </View>
           <View>
             {user?.moderator && (
               <View style={tw("mb-4 mx-2 h-[300px]")}>

@@ -121,21 +121,26 @@ const MythoTypoScreen = ({ }) => {
     const nextStep = tutorialStep + 1;
     setTutorialStep(nextStep);
 
-    if (nextStep <= 4) {
+    if (nextStep <= 5) {
       let response;
       switch (nextStep) {
         case 1:
           break;
         case 2:
+          // response = await getTextWithErrorValidatedById(54);
           response = await getTextWithErrorValidatedById(5);
           setText(response);
           break;
         case 3:
-          response = await getTextWithErrorValidatedById(4);
+          response = await getTextWithErrorValidatedById(53);
           setText(response);
           break;
         case 4:
-          response = await getTextWithErrorValidatedById(51);
+          response = await getTextWithErrorValidatedById(145);
+          setText(response);
+          break;
+        case 5:
+          response = await getTextTestWithErrorValidated();
           setText(response);
           break;
       }
@@ -334,7 +339,7 @@ const MythoTypoScreen = ({ }) => {
       const token = text!.tokens[wordIndex];
       const word = token.content;
       openWikipediaPageForWord(word);
-      toggleWikiMode(false);
+      // toggleWikiMode(false);
     }
   }, [wikiMode]);
 
@@ -394,9 +399,11 @@ const MythoTypoScreen = ({ }) => {
       <View style={tw("flex-1")}>
         <ScrollView>
           {wikiMode && (
-            <View style={tw('p-[21px] w-full bg-blue-100 rounded-lg absolute z-30')}>
-              <Text style={tw('font-primary text-lg text-center text-blue-800')}>
-                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau sur le bouton Wiki pour quitter ce mode.
+            <View style={tw('p-[13px] w-full bg-blue-100 absolute z-30')}>
+              <Text style={tw('font-primary text-[16px] text-center text-blue-800')}>
+                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau dessus pour quitter ce mode.
+                {"\n"}
+                Attention, certaines pages peuvent contenir des images sensibles ou inappropriés.
               </Text>
             </View>
           )}

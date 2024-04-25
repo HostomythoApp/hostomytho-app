@@ -59,7 +59,7 @@ const GameRulesScreen = ({ }) => {
                                 Compétition entre Joueurs
                             </Text>
                             <Text style={tw('font-primary text-lg')}>
-                                Vous n'êtes pas seul dans cette enquête. D'autres joueurs tentent également de se distinguer auprès de leur boss. Pour mesurer votre talent d'enquêteur face à cette concurrence, HostoMytho propose un classement des meilleurs détectives, véritable panthéon des plus grands enquêteurs. De plus, un classement mensuel met en lumière les détectives les plus performants du moment. Les trois premiers de ce classement sont célébrés sur la page d'accueil pendant tout le mois suivant, offrant une reconnaissance méritée pour leurs prouesses exceptionnelles.
+                                Vous n'êtes pas seul dans cette enquête. D'autres joueurs tentent également de se distinguer auprès de leur boss. Pour mesurer votre talent d'enquêteur face à cette concurrence, HostoMytho propose un classement des meilleurs détectives. De plus, un classement mensuel met en lumière les détectives les plus performants du moment. Les trois premiers de ce classement sont célébrés sur la page d'accueil pendant tout le mois suivant, offrant une reconnaissance méritée pour leurs prouesses exceptionnelles.
                             </Text>
 
                             <Text style={tw('text-2xl font-bold mt-6 mb-2 font-primary')}>

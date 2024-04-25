@@ -29,7 +29,7 @@ const StatisticsScreen = ({ }) => {
           <View style={tw('w-full flex justify-center pt-20')}>
             <View style={tw('w-auto m-auto max-w-6xl')}>
               <SectionHeader title="Statistiques personnelles" />
-              <View style={tw('justify-center flex-row rounded-xl shadow-lg p-4 pt-0 flex-wrap')}>
+              <View style={tw('justify-center flex-row rounded-xl p-4 pt-0 flex-wrap')}>
                 <StatBox title="Jours consécutifs joués :" value={user?.consecutiveDaysPlayed} color="border-l-4 border-blue-500" />
                 <StatBox title="Fiabilité :" value={`${user?.trust_index} %`} color="border-l-4 border-green-500" />
                 <StatBox title="Coefficient multiplicateur :" value={user?.coeffMulti} color="border-l-4 border-purple-500" />
