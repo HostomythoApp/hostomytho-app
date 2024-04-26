@@ -239,7 +239,7 @@ const MythoOuPasScreen = () => {
 
       if (noErrorSpecified || noErrorInDatabase) {
         if (checkResult.testPlausibilityPassed) {
-          if (!isTutorial) animationGainPoints(5, 1, 1);
+          if (!isTutorial) animationGainPoints(10, 1, 1);
           goToNextSentence(true);
           return;
         } else {
@@ -285,7 +285,7 @@ const MythoOuPasScreen = () => {
               </Text>
             </View>
           );
-          if (!isTutorial) animationGainPoints(5, 0, 1);
+          if (!isTutorial) animationGainPoints(10, 1, 1);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -317,9 +317,9 @@ const MythoOuPasScreen = () => {
               </Text>
             </View >
           );
-          if (!isTutorial) animationGainPoints(5, 0, 1);
+          if (!isTutorial) animationGainPoints(10, 1, 1);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          if (!isTutorial) animationGainPoints(8, 2, 2);
+          if (!isTutorial) animationGainPoints(14, 1, 2);
           goToNextSentence(true);
           return;
         }
@@ -353,7 +353,7 @@ const MythoOuPasScreen = () => {
       }
 
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      animationGainPoints(5, 0, 0);
+      animationGainPoints(10, 1, 0);
     }
 
     goToNextSentence();
@@ -576,20 +576,12 @@ const MythoOuPasScreen = () => {
 
 
   const animationGainPoints = (pointsEarned: number, catchProbability: number, trustEarned: number) => {
-    console.log("pointsEarned");
-    console.log(pointsEarned);
-    console.log("catchProbability");
-    console.log(catchProbability);
-    console.log("trustEarned");
-    console.log(trustEarned);
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
 
     setTimeout(() => {
       // TODO augmenter trustEarned seulement quand la question était un test
-      // TODO  retirer le gain par rapport à la longueur
-      const addLengthPoints: number = text && typeof text.length === 'number' ? text.length / 60 : 0;
-      updateUserStats(pointsEarned + addLengthPoints, catchProbability, trustEarned);
+      updateUserStats(pointsEarned, catchProbability, trustEarned);
     }, 100);
   }
 

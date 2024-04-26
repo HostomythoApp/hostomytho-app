@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTailwind } from "tailwind-rn";
-import { updateUserPoints, getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi, updateTrustIndex, updateTutorialProgress } from "services/api/user";
+import { getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi, updateTutorialProgress } from "services/api/user";
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
@@ -228,33 +228,42 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           coeffMulti: newCoeffMulti
         }));
 
+        let shouldDelaySkinModal = false;
+        let skinResponse: any;
+        
+        // Afficher les nouvelles réalisations immédiatement si elles existent
+        if (response.data.newAchievements && response.data.newAchievements.length > 0) {
+          response.data.newAchievements.forEach((achievement: Achievement) => {
+            unlockAchievementModal(achievement);
+          });
+        }
+        
         // Vérifiez si l'utilisateur a atteint un nouveau palier pour les skins
         const oldRewardTier = Math.floor(oldPoints / 100);
         const newRewardTier = Math.floor(newPoints / 100);
-
+        
         if (newRewardTier > oldRewardTier) {
           try {
-            const skinResponse = await getRandomSkin(user.id);
-
+            skinResponse = await getRandomSkin(user.id);
+        
             if (skinResponse.allSkinsUnlocked) {
               unlockPointsModal();
               if (!isBonus) {
                 updateUserStats(5, 0, 0, true);
               }
             } else {
-              unlockSkinModal(skinResponse);
+              shouldDelaySkinModal = true; // Marquer pour un délai si la modale des skins doit s'afficher
             }
           } catch (error) {
             console.error("Error getting random skin:", error);
           }
         }
-
-        // Afficher les nouvelles réalisations si elles existent
-        // TODO Gérer le cas où 2 haut-faits sont débloqués en même temps
-        if (response.data.newAchievements && response.data.newAchievements.length > 0) {
-          response.data.newAchievements.forEach((achievement: Achievement) => {
-            unlockAchievementModal(achievement);
-          });
+        
+        // Si un délai est nécessaire pour la modale des skins, affichez-la après 5 secondes
+        if (shouldDelaySkinModal && skinResponse && !skinResponse.allSkinsUnlocked) {
+          setTimeout(() => {
+            unlockSkinModal(skinResponse);
+          }, 6000);
         }
 
       } catch (error) {

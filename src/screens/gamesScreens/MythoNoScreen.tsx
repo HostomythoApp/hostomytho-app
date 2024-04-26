@@ -256,13 +256,13 @@ const MythoNoScreen = ({ }) => {
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5, 2, 2), 100);
+          if (user) setTimeout(() => updateUserStats(5, 1, 2), 100);
         }
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       if (!isTutorial) {
-        if (user) setTimeout(() => updateUserStats(5, 2, 0), 100);
+        if (user) setTimeout(() => updateUserStats(5, 1, 0), 100);
         // Création des specifications dans la bdd
         for (let userSentenceSpecification of userSentenceSpecifications) {
           const { id, ...rest } = userSentenceSpecification;

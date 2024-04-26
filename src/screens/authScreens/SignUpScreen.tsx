@@ -214,24 +214,13 @@ const SignUpScreen = () => {
                                                 ...tw("my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md font-primary w-4/5 max-w-xl min-w-[200px]"),
                                                 ...(touched.password && !!errors.password ? tw("border-red-500") : {})
                                             }}
-                                            placeholder={'Mot de passe'}
+                                            placeholder={'Mot de passe (6 caractères minimum) '}
                                             secureTextEntry={true}
                                             onChangeText={handleChange('password')}
                                             value={values.password}
                                             keyboardType="default"
                                         />
                                         {touched.password && errors.password && <Text style={tw("text-red-500")}>{errors.password}</Text>}
-
-                                        {/* <MainInput
-                                            text={"Retaper votre mot de passe"}
-                                            value={values.password2}
-                                            setter={handleChange('password2')}
-                                            onSubmitEditing={handleSubmit}
-                                            isError={touched.password2 && !!errors.password2}
-                                            width={inputWidth}
-                                            maxWidth={600}
-                                            hide={true}
-                                        /> */}
 
                                         <TextInput
                                             style={{
@@ -245,15 +234,7 @@ const SignUpScreen = () => {
                                         />
 
                                         {touched.password2 && errors.password2 && <Text style={tw("text-red-500")}>{errors.password2}</Text>}
-                                        {/* <MainInput
-                                            text={"email (facultatif)"}
-                                            value={values.email}
-                                            setter={handleChange('email')}
-                                            onSubmitEditing={handleSubmit}
-                                            width={inputWidth}
-                                            maxWidth={600}
-                                            hide={false}
-                                        /> */}
+ 
                                         <TextInput
                                             style={tw("my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md font-primary w-4/5 max-w-xl min-w-[200px]")}
                                             placeholder={'email (facultatif)'}
