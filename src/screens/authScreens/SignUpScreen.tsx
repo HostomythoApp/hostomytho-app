@@ -82,8 +82,12 @@ const SignUpScreen = () => {
                 }
             })
             .catch((error: any) => {
-                if (error.response && error.response.status === 409) {
-                    setErrorMessage("Ce nom d'utilisateur est déjà pris.");
+                if (error.response) {
+                    if (error.response.status === 409) {
+                        setErrorMessage(error.response.data.error);
+                    } else {
+                        setErrorMessage(`Erreur lors de l'inscription : ${error.message}`);
+                    }
                 } else {
                     console.log(`Erreur lors de l'inscription : ${error.message}`);
                 }
@@ -234,7 +238,7 @@ const SignUpScreen = () => {
                                         />
 
                                         {touched.password2 && errors.password2 && <Text style={tw("text-red-500")}>{errors.password2}</Text>}
- 
+
                                         <TextInput
                                             style={tw("my-1 px-2 py-1 leading-6 text-gray-700 border border-gray-300 rounded-md font-primary w-4/5 max-w-xl min-w-[200px]")}
                                             placeholder={'email (facultatif)'}

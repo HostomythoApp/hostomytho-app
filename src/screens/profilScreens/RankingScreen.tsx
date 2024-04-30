@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { getUsersOrderedByPoints } from 'services/api/user';
 import { User } from "models/User";
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { useNavigation } from "@react-navigation/native";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { RootStackNavigationProp } from "navigation/Types";
 
 const RankingScreen = ({ }) => {
@@ -62,7 +63,14 @@ const RankingScreen = ({ }) => {
             <View style={tw("flex-1 items-center text-black")}>
                 <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                     <CustomHeaderEmpty title="Classement général" backgroundColor="bg-whiteTransparent" />
+
                     <View style={tw("flex-1 p-4 mx-auto min-w-[540px] pt-20 justify-center")}>
+                        <TouchableOpacity style={tw(`flex-row items-center justify-center w-1/2 mb-5 bg-secondary py-2 rounded self-end `)}
+                            onPress={() => navigation.navigate('ClassementMensuel')}>
+                            <Text style={tw('text-center font-primary text-white mr-2')}>Voir le classement mensuel</Text>
+                            <MaterialCommunityIcons name="calendar-month" size={24} color="white" />
+                        </TouchableOpacity>
+
                         {users.map((item, index) => renderItem({ item, index }))}
                         <View style={tw('flex-row mt-2 justify-between')}>
                             {page > 1 ? (
@@ -86,7 +94,7 @@ const RankingScreen = ({ }) => {
                     </View>
                 </ScrollView>
             </View>
-        </ImageBackground>
+        </ImageBackground >
     );
 };
 

@@ -332,7 +332,7 @@ const MainBoardScreen = ({ }) => {
                             }}>
                                 <Image source={require('images/tabs_winners.png')} style={{
                                     width: windowWidth * 0.25,
-                                    height: windowWidth * 0.16,
+                                    height: windowWidth * 0.175,
                                     resizeMode: 'contain',
                                 }} />
 
@@ -447,6 +447,20 @@ const MainBoardScreen = ({ }) => {
                                             resizeMode: 'contain',
                                         }} />
 
+                                    </TouchableOpacity>
+                                </View>
+
+
+                                <View style={[tw('font-secondary absolute text-center'),
+                                {
+                                    bottom: '0',
+                                    width: '100%',
+                                }]}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('ClassementMensuel')}>
+                                        <Text style={{
+                                            ...tw('text-blue-500 mt-2 text-center font-primary'),
+                                            fontSize: responsiveFontSize(10),
+                                        }}>Voir le classement mensuel en cours</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>

@@ -63,7 +63,7 @@ const LoginScreen = () => {
                         <View style={{ ...tw('mb-2 p-8 m-4 items-center rounded-lg w-full'), backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
 
                             <MainInput
-                                text={"Pseudo"}
+                                text={"Pseudo ou adresse email"}
                                 value={username}
                                 setter={setUsername}
                                 hide={false}

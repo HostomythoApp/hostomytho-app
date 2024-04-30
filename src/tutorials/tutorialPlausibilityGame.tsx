@@ -14,7 +14,7 @@ const getPlausibilityConfig = (plausibility?: number) => {
 export const getTutorialContentForStep = (step: number, tw: any) => {
 
     switch (step) {
-        case 1: return <Text style={tw('font-primary')}> Le but du jeu est d'évaluer la crédibilité d'un texte en lui attribuant un niveau de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
+        case 1: return <Text allowFontScaling={false} style={tw('font-primary')}> Le but du jeu est d'évaluer la crédibilité d'un texte en lui attribuant un niveau de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
             {"\n\n"}
             <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible
             <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible
@@ -25,7 +25,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             Lisez le texte, et attribuez-lui une plausibilité. Vous commencerez à gagner des points à la fin de ce tuto.
         </Text>;
 
-        case 2: return <Text style={tw('font-primary')}>
+        case 2: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Si vous pensez qu'un texte contient des erreurs, vous pouvez spécifier où elles sont, quel que soit leur type : erreur grammaticale, de cohérence, un passage biaisé ou offensant, ...
             {"\n"} Pour ce faire, sélectionnez la plausibilité comme prédédemment, cliquez sur
             <View
@@ -41,24 +41,24 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
 
         </Text>;
 
-        case 3: return <Text style={tw('font-primary')}>
+        case 3: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Certains textes contiennent des mots techniques compliqués, mais pas d'inquiétude, de nombreuses erreurs sont identifiables sans compétences en médecine particulière.
             Si toutefois vous souhaitez avoir la définition d'un mot, cliquez sur le bouton W en haut à gauche, puis sur le mot dont vous souhaitez la définition. Cela vous dirigera vers une page Wikipédia associée.
             {"\n\n"}
             Essayez de traiter ce texte.
         </Text>;
 
-        case 4: return <Text style={tw('font-primary')}>
+        case 4: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Il arrive régulièrement que l'erreur soit une répétition de mots ou de phrases. Portez une attention particulière à cela.
         </Text>;
 
-        case 5: return <Text style={tw('font-primary')}>
+        case 5: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses sur l'ensemble de la formation, vous pourrez vous lancer à la recherche d'indices.
             {"\n\n"}
             Bon courage !
         </Text>;
 
-        case 98: return <Text style={tw('font-primary')}>
+        case 98: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Vous savez désormais spécifier la plausilité des textes. Vos réponses vont maintenant vous rapporter des points et faire avancer votre recherche de criminel.
             {"\n\n"}
             Le bouton avec le point d'interrogation en haut à droite vous permet d'accéder au rappel des consignes, et vous pourrez y relancer ce tutoriel si vous le souhaitez.
@@ -66,7 +66,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             Bon courage dans vos recherches !
         </Text>;
 
-        case 99: return <Text style={tw('font-primary')}>
+        case 99: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Vous avez fait un peu trop d'erreurs. Il est plus prudent de refaire l'exercice, sinon vous risquez de partir sur de mauvaises pistes.
             {"\n\n"}
             Du coup, recommençons..

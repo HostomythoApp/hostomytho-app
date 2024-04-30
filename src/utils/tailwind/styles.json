@@ -754,6 +754,11 @@
 			"width": "100%"
 		}
 	},
+	"w-1/2": {
+		"style": {
+			"width": "50%"
+		}
+	},
 	"min-w-20": {
 		"style": {
 			"minWidth": 80
@@ -954,6 +959,11 @@
 	"justify-evenly": {
 		"style": {
 			"justifyContent": "space-evenly"
+		}
+	},
+	"self-end": {
+		"style": {
+			"alignSelf": "flex-end"
 		}
 	},
 	"self-center": {
