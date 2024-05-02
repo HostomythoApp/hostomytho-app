@@ -86,3 +86,35 @@ export const openWikipediaPageForWord = (word: string) => {
         });
     });
 };
+
+export const rarityLevel = (rarity: number) => {
+  switch (rarity) {
+    case 1: return 'commune';
+    case 2:
+    case 3: return 'peu commune';
+    case 4:
+    case 5: return 'rare';
+    case 6:
+    case 7: return 'très rare';
+    case 8:
+    case 9:
+    case 10:
+    default: return 'commune';
+  }
+};
+
+export const getRarityColor = (rarity: number) => {
+  switch (rarity) {
+    case 1: return '#6b8e23';
+    case 2:
+    case 3: return '#3866C5';
+    case 4:
+    case 5: return '#5d06b9';
+    case 6:
+    case 7: return '#fd8f2d';
+    case 8:
+    case 9:
+    case 10:
+    default: return '#ccc';
+  }
+};

@@ -64,7 +64,7 @@ const ContentProfileScreen = (props: any) => {
                     <Text style={tw('text-lg mb-4 text-center text-white font-primary')}>Points: {user?.points}</Text>
 
                     <Text style={tw('text-xl mb-2 w-full text-white font-primary')}>
-                        Progression avant la prochaine récompense
+                        Progression avant le prochain objet d'apparence
                     </Text>
                     <View style={tw('bg-gray-300 h-4 rounded ')}>
                         <View
@@ -237,8 +237,8 @@ const ContentProfileScreen = (props: any) => {
                         style={tw(`flex-row items-center justify-center ${isMobile ? 'w-full mb-2' : 'w-[32%]'} bg-[darkcyan] py-2 rounded mx-2`)}
                         onPress={() => navigation.navigate('Referral')}
                     >
-                        <FontAwesome5 name='gift' size={24} color='white' />
-                        <Text style={tw('text-white ml-2 font-primary')}>Parrainer</Text>
+                        <FontAwesome5 name='meh-blank' size={24} color='white' />
+                        <Text style={tw('text-white ml-2 font-primary')}>Bouton étrange</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity

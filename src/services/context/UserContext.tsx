@@ -5,12 +5,13 @@ import { getUserById, updateUserCatchProbability, restartCatchProbability, updat
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import AchievementIcon from "components/AchievementIcon";
 import { getEquippedUserSkins, getRandomSkin } from "services/api/skins";
 import { Skin } from "models/Skin";
 import SkinImage from "components/SkinImage";
 import { completeTutorialForUser, getCompletedTutorials } from "services/api/games";
+import { getRarityColor, rarityLevel } from "utils/functions";
 
 interface UserContextProps {
   user: User | null;
@@ -144,13 +145,18 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, [user, fetchTutorialsCompleted]);
 
   const unlockSkinModal = (skin: Skin) => {
+    const rarityColor = getRarityColor(skin.rarity);
+
     modalContext.setContent(
-      <View style={tw('bg-white rounded-xl p-2 items-center')}>
-        <Text style={tw('text-center text-green-700 font-bold text-lg')}>Nouvelle apparence débloquée</Text>
+      <View style={tw('bg-white rounded-xl p-4 items-center')}>
+        <Text style={tw('text-center font-primary font-bold text-lg')}>Nouvelle apparence débloquée</Text>
         <View style={tw('border-b border-gray-400 mt-4 w-full')} />
-        <View style={tw('rounded-lg overflow-hidden h-16 mt-2')}>
+        <View style={[tw('rounded-lg overflow-hidden h-16 mt-2'), { borderColor: rarityColor, borderWidth: 2 }]}>
           <SkinImage skin={skin} />
         </View>
+        <Text style={[tw('text-center mt-2 font-primary'), { color: rarityColor }]}>
+          Rareté: {rarityLevel(skin.rarity)}
+        </Text>
       </View>
     );
     modalContext.showModal();
@@ -178,8 +184,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       <View style={tw('bg-white rounded-xl p-2')}>
         <Text style={tw('text-center text-green-600 font-bold text-lg font-primary')}>Points supplémentaires gagnés</Text>
         <View style={tw('border-b border-gray-400 my-4')} />
-        <Text style={tw('text-center font-primary')}>Vous avez déjà débloqué tous les skins disponibles. En récompense, vous gagnez 5 points supplémentaires !</Text>
-        {/* TODO dire que ça va le refaire tous les 100 points */}
+        <Text style={tw('text-center font-primary')}>Vous avez déjà débloqué tous les skins disponibles. En récompense, tous les 100 points, vous gagnez 5 points supplémentaires.</Text>
       </View>
     );
     modalContext.showModal();
@@ -229,43 +234,35 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }));
 
         let shouldDelaySkinModal = false;
-        let skinResponse: any;
-        
-        // Afficher les nouvelles réalisations immédiatement si elles existent
+
+        // Affiche les nouvelles réalisations si elles existent
         if (response.data.newAchievements && response.data.newAchievements.length > 0) {
           response.data.newAchievements.forEach((achievement: Achievement) => {
             unlockAchievementModal(achievement);
           });
+          shouldDelaySkinModal = true; // Retarde l'affichage de la modal des skins si des hauts faits sont affichés
         }
-        
+
         // Vérifiez si l'utilisateur a atteint un nouveau palier pour les skins
         const oldRewardTier = Math.floor(oldPoints / 100);
         const newRewardTier = Math.floor(newPoints / 100);
-        
+
         if (newRewardTier > oldRewardTier) {
-          try {
-            skinResponse = await getRandomSkin(user.id);
-        
-            if (skinResponse.allSkinsUnlocked) {
-              unlockPointsModal();
-              if (!isBonus) {
-                updateUserStats(5, 0, 0, true);
-              }
-            } else {
-              shouldDelaySkinModal = true; // Marquer pour un délai si la modale des skins doit s'afficher
+          const skinResponse = await getRandomSkin(user.id);
+
+          if (skinResponse.allSkinsUnlocked) {
+            unlockPointsModal();
+            if (!isBonus) {
+              updateUserStats(5, 0, 0, true);
             }
-          } catch (error) {
-            console.error("Error getting random skin:", error);
+          } else if (shouldDelaySkinModal) {
+            setTimeout(() => {
+              unlockSkinModal(skinResponse);
+            }, 6000);
+          } else {
+            unlockSkinModal(skinResponse);
           }
         }
-        
-        // Si un délai est nécessaire pour la modale des skins, affichez-la après 5 secondes
-        if (shouldDelaySkinModal && skinResponse && !skinResponse.allSkinsUnlocked) {
-          setTimeout(() => {
-            unlockSkinModal(skinResponse);
-          }, 6000);
-        }
-
       } catch (error) {
         console.error("Error updating user stats:", error);
       }

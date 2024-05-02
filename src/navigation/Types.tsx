@@ -36,6 +36,7 @@ export type RootStackParamList = {
     Modal: undefined;
     Objectifs: undefined;
     ReglesDuJeu: undefined;
+    GestionApparence: undefined;
     ProfilJoueur: { userId: number };
 };
 

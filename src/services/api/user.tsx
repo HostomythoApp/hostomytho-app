@@ -21,6 +21,7 @@ export const signUpUser = async (user: Partial<User>) => {
       notifications_enabled: true,
       consecutiveDaysPlayed: 1,
       coeffMulti: 1,
+      email: user.email && user.email.trim() !== '' ? user.email.trim() : null
     };
     return await api.post("/users/signup", { ...defaultValues, ...user });
   } catch (error: any) {
