@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, ImageBackground, Image } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { getUsersOrderedByPointsInMonthly } from 'services/api/user';
 import { User } from "models/User";
@@ -44,11 +44,15 @@ const RankingMonthScreen = ({ }) => {
                 item.id === currentUserId ? tw('bg-blue-300') :
                     index % 2 === 0 ? tw('bg-blue-100') : tw('bg-white'),
             ]}>
-            <TouchableOpacity
+            <TouchableOpacity style={tw('flex-row')}
                 onPress={() => navigation.navigate("ProfilJoueur", { userId: item.id })}
             ><Text style={tw('font-primary')}>
                     {item.ranking}. {item.username}
                 </Text>
+                {Array.from({ length: item.nb_first_monthly || 0 }).map((_, index) => (
+
+                    <Image source={require('images/ranking_1.png')} style={tw('w-5 h-6')} resizeMode="contain" />
+                ))}
             </TouchableOpacity>
             <Text style={tw('font-primary')}>{item.monthly_points} points</Text>
         </View>

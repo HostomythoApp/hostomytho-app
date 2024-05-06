@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Text, View, ScrollView, Dimensions, ImageBackground, Image } from 'react-native';
+import { TouchableOpacity, Text, View, Dimensions, Image } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
@@ -37,7 +37,8 @@ const ContentProfileScreen = (props: any) => {
     const pointsPercentage = (pointsForProgress / nextRewardPoints) * 100;
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
     const window = Dimensions.get('window');
-    const isMobile = window.width < 748;
+    const isMobile = window.width < 670;
+    const windowWidth = Dimensions.get('window').width;
 
     useEffect(() => {
         const fetchRanking = async () => {
@@ -59,8 +60,23 @@ const ContentProfileScreen = (props: any) => {
         <View style={[tw('w-full mt-4 px-2 max-w-5xl'), isMobile ? tw('pt-2') : tw('pt-6')]}>
             <View style={tw('flex-row justify-center')}>
                 <View style={[tw(''), isMobile ? tw('w-4/5') : tw('w-3/5')]}>
-                    <Text style={[tw('mb-6 text-center text-[whitesmoke] font-MochiyPopOne'), isMobile ? tw('text-3xl') : tw(' text-5xl leading-10 pt-8')]}>{user?.username}</Text>
-
+                    <View style={tw('flex-row flex-wrap mt-4 justify-center')}>
+                        {Array.from({ length: user?.nb_first_monthly || 0 }).map((_, index) => (
+                            <Image
+                                key={index}
+                                source={require('images/ranking_1.png')}
+                                style={{
+                                    width: windowWidth * 0.05,
+                                    height: windowWidth * 0.05,
+                                    maxWidth: 90,
+                                    minWidth: 50,
+                                    minHeight: 50
+                                }}
+                                resizeMode="contain"
+                            />
+                        ))}
+                    </View>
+                    <Text style={[tw('mb-6 text-center text-[whitesmoke] font-MochiyPopOne'), isMobile ? tw('text-3xl') : tw(' text-5xl leading-10 pt-4')]}>{user?.username}</Text>
                     <Text style={tw('text-lg mb-4 text-center text-white font-primary')}>Points: {user?.points}</Text>
 
                     <Text style={tw('text-xl mb-2 w-full text-white font-primary')}>

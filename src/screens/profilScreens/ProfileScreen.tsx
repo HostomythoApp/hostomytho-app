@@ -23,7 +23,7 @@ const ProfileScreen = (props: any) => {
     const { user, updateStorageUserFromAPI, equippedSkins, incrementTutorialProgress } = useUser();
 
     const window = Dimensions.get('window');
-    const isMobile = window.width < 748;
+    const isMobile = window.width < 670;
     const [viewMode, setViewMode] = useState<'profile' | 'skinsManagement'>('profile');
     const [userNeedsUpdate, setUserNeedsUpdate] = useState(true);
     const [isBossVisible, setIsBossVisible] = useState(false);

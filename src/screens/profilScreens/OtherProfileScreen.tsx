@@ -21,7 +21,7 @@ const OtherProfileScreen = (props: any) => {
     const { user } = useUser();
 
     const window = Dimensions.get('window');
-    const isMobile = window.width < 748;
+    const isMobile = window.width < 670;
     const [isLoading, setIsLoading] = useState(true);
     const navigation = useNavigation<RootStackNavigationProp<"PolitiqueDeConfidentialite">>();
     // @ts-ignore
@@ -31,6 +31,7 @@ const OtherProfileScreen = (props: any) => {
     const route = useRoute();
     // @ts-ignore
     const userId = route.params?.userId;
+    const windowWidth = Dimensions.get('window').width;
 
     useEffect(() => {
         if (userId) {
@@ -102,6 +103,22 @@ const OtherProfileScreen = (props: any) => {
                 <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center z-20")} style={[tw('w-3/5 h-full'), { marginright: '5%' }]}>
 
                     <View style={[tw('w-4/5')]}>
+                    <View style={tw('flex-row flex-wrap mt-4 justify-center')}>
+                        {Array.from({ length: dataUser?.nbFirstMonthly || 0 }).map((_, index) => (
+                            <Image
+                                key={index}
+                                source={require('images/ranking_1.png')}
+                                style={{
+                                    width: windowWidth * 0.05,
+                                    height: windowWidth * 0.05,
+                                    maxWidth: 90,
+                                    minWidth: 50,
+                                    minHeight: 50
+                                }}
+                                resizeMode="contain"
+                            />
+                        ))}
+                    </View>
                         <Text style={[tw('font-bold mb-6 text-center text-[whitesmoke] font-MochiyPopOne pt-4 '),
                         {
                             fontSize: responsiveTitle(64)

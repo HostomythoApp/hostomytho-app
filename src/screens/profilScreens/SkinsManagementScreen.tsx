@@ -13,7 +13,7 @@ const SkinsManagementScreen = (props: any) => {
     const tw = useTailwind();
     const { user, updateStorageUserFromAPI,  equippedSkins, setEquippedSkins } = useUser();
     const window = Dimensions.get('window');
-    const isMobile = window.width < 748;
+    const isMobile = window.width < 670;
     const skinTypes = ["visage", "lunettes", "chapeau", "veste", "cheveux", "stetho"];
     const [skins, setSkins] = useState<Skin[]>([]);
 
