@@ -68,7 +68,7 @@ const ContentProfileScreen = (props: any) => {
                                 style={{
                                     width: windowWidth * 0.05,
                                     height: windowWidth * 0.05,
-                                    maxWidth: 90,
+                                    maxWidth: 70,
                                     minWidth: 50,
                                     minHeight: 50
                                 }}
@@ -116,7 +116,7 @@ const ContentProfileScreen = (props: any) => {
                 </View>
             }
 
-            <View style={tw('flex-col')}>
+            <View style={tw('flex-col pb-12')}>
                 <View style={[tw('justify-between my-6 flex-wrap'), isMobile ? tw('flex-col mt-2') : tw('flex-row mt-8')]}>
                     <View style={[tw('mt-0'), isMobile ? tw('w-full mr-0 mb-4') : tw('w-2/4 mr-2')]}>
                         <Text style={tw('text-xl mb-2 pl-2 text-white font-primary')}>Classement général</Text>

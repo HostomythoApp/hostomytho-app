@@ -23,12 +23,22 @@ export const getMessageMenu = async (messageType: string) => {
   }
 };
 
-export const changeMessageMenu = async (messageMenu: MessageMenu) => {
+// export const changeMessageMenu = async (messageMenu: MessageMenu) => {
+//   try {
+//     const response = await api.put("/utils/messageMenu", messageMenu);
+//     return response.data;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
+
+export const updateMenuMessageActive = async (messageId: number, isActive: boolean) => {
   try {
-    const response = await api.put("/utils/messageMenu", messageMenu);
+    const response = await api.put(`/utils/updateMenuMessageActive/${messageId}`, { active: isActive });
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error('Failed to update menu message active status:', error);
     throw error;
   }
 };

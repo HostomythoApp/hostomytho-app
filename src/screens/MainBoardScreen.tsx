@@ -7,22 +7,19 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
 import { getMessageMenu } from "services/api/utils";
 import { MessageMenu } from 'models/MessageMenu';
-import { AntDesign } from '@expo/vector-icons';
-import { getCompletedTutorials } from "services/api/games";
 import IconNotification from "components/IconNotification";
 import { FontAwesome } from '@expo/vector-icons';
 import ModalBossExplanation from "components/modals/ModalBossExplanation ";
 import Loader from "components/Loader";
-import { getTopMonthlyWinners } from "services/api/user";
-import { MonthlyWinner } from "models/MonthlyWinner";
+import { getMessageReadByUserId, getTopMonthlyWinners, updateMessageReadByUserId } from "services/api/user";
 import { getTutorialContentForStep } from "tutorials/tutorialGeneral";
 import { responsiveFontSize } from "utils/functions";
 import CharacterPortrait from "components/CharacterPortrait";
 import { loadMonthlyWinners, saveMonthlyWinners } from "utils/storage";
 
-interface TutorialsCompleted {
-    [key: string]: boolean;
-}
+// interface TutorialsCompleted {
+//     [key: string]: boolean;
+// }
 
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
@@ -31,6 +28,7 @@ const MainBoardScreen = ({ }) => {
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
     const windowWidth = Dimensions.get('window').width;
     const [menuMessage, setMenuMessage] = useState<MessageMenu | null>(null);
+    const [menuMessageRead, setMenuMessageRead] = useState(false);
     const [messageExpanded, setMessageExpanded] = useState(false);
     const [isUserDataLoaded, setIsUserDataLoaded] = useState(false);
     const iconSize = windowWidth * 0.015;
@@ -83,6 +81,60 @@ const MainBoardScreen = ({ }) => {
         updateUserData();
     }, [user, userNeedsUpdate]);
 
+
+
+    useEffect(() => {
+        const messageType = authState.isAuthenticated ? 'home_connected' : 'home_not_connected';
+
+        const fetchMessage = async () => {
+            try {
+                const message = await getMessageMenu(messageType);
+                setMenuMessage(message);
+                if (user?.id) {
+                    const messageReadStatus = await getMessageReadByUserId(user.id);
+                    setMenuMessageRead(messageReadStatus.hasBeenRead);
+                } else {
+                    setMenuMessageRead(false);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchMessage();
+    }, [authState.isAuthenticated]);
+
+
+    useEffect(() => {
+        let timerId: any;
+
+        const animate = () => {
+            Animated.sequence([
+                Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 0.0, duration: 100, useNativeDriver: true })
+            ]).start(() => {
+                if (menuMessage && menuMessage.active) {
+                    timerId = setTimeout(animate, 2000);
+                }
+            });
+        };
+
+        if (menuMessage && menuMessage.active) {
+            timerId = setTimeout(animate, 500);
+        }
+
+        return () => clearTimeout(timerId);
+    }, [rotation, menuMessage]);
+
+
+    const loaderClose = useCallback(() => {
+        setIsLoading(false);
+    }, [setIsLoading]);
+
+    // *********** Gestion Tuto *******************
     // Gestion tuto général
     useEffect(() => {
         if (user && !userNeedsUpdate) {
@@ -101,44 +153,6 @@ const MainBoardScreen = ({ }) => {
         }
     }, [user, userNeedsUpdate]);
 
-    useEffect(() => {
-        const messageType = authState.isAuthenticated ? 'home_connected' : 'home_not_connected';
-
-        getMessageMenu(messageType)
-            .then((message) => {
-                setMenuMessage(message);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, [authState.isAuthenticated]);
-
-    const toggleMessage = () => {
-        setMessageExpanded(!messageExpanded);
-    }
-
-    useEffect(() => {
-        const animate = () => {
-            Animated.sequence([
-                Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
-                Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
-                Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
-                Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
-                Animated.timing(rotation, { toValue: 0.0, duration: 100, useNativeDriver: true })
-            ]).start(() => setTimeout(animate, 13000));
-        };
-
-        const timerId = setTimeout(animate, 13000);
-
-        return () => clearTimeout(timerId);
-    }, [rotation]);
-
-
-    const loaderClose = useCallback(() => {
-        setIsLoading(false);
-    }, [setIsLoading]);
-
-    // *********** Gestion Tuto *******************
     const showModal = (content: any) => {
         setModalContent(content);
         setIsModalVisible(true);
@@ -150,6 +164,18 @@ const MainBoardScreen = ({ }) => {
 
     // *****************************************************
 
+    const toggleMessage = async () => {
+        if (!messageExpanded && menuMessage?.active) {
+            setMessageExpanded(true);
+            if (user) {
+                await updateMessageReadByUserId(user?.id, true);
+            }
+            setMenuMessageRead(true);
+        } else {
+            setMessageExpanded(false);
+        }
+    };
+
     return (
         <View style={{ flex: 1 }}>
             {isLoading && <Loader />}
@@ -159,45 +185,50 @@ const MainBoardScreen = ({ }) => {
                 style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}
             >
                 <View style={tw("flex-1 items-center")}>
-                    {menuMessage && menuMessage.active &&
-                        <TouchableOpacity onPress={toggleMessage}
-                            style={[
-                                tw("absolute top-0 right-0 p-4 rounded-lg items-end z-30"),
-                                messageExpanded ? tw("w-[75%] h-auto max-w-4xl") : tw("w-[10%] h-[20%] min-w-20 min-h-20")
-                            ]}
-                        >
-                            {!messageExpanded ? (
-                                <Animated.View
-                                    style={[
-                                        { transform: [{ rotate: rotation.interpolate({ inputRange: [-1, 1], outputRange: ['-0.1rad', '0.1rad'] }) }] },
-                                        messageExpanded ? tw('w-[12%] h-[54%] max-h-40 max-w-40') : tw('w-full h-full')
-                                    ]}
-                                >
-                                    <Image resizeMode="contain" source={require('images/envelope.png')} style={tw("w-full h-full")} />
-                                </Animated.View>
-                            ) : (
-                                <View style={[tw("bg-white rounded-xl p-4 border border-gray-200 w-full"),
-                                {
-                                    position: 'relative',
-                                    // Ombres pour iOS
-                                    shadowColor: "#000",
-                                    shadowOffset: {
-                                        width: 0,
-                                        height: 2,
-                                    },
-                                    shadowOpacity: 0.45,
-                                    shadowRadius: 5,
-                                    // Ombre pour Android
-                                    elevation: 10,
-                                }]
-                                }>
-                                    <Text style={tw("text-black text-lg font-primary")}>{menuMessage.title}</Text>
-                                    <Text style={tw("text-black font-primary text-lg")}>{menuMessage.message}</Text>
-                                    <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>Cliquez sur le message pour le réduire</Text>
-                                </View>
-                            )}
-                        </TouchableOpacity>
+                    {
+                        menuMessage && menuMessage.active && (
+                            <TouchableOpacity onPress={toggleMessage}
+                                style={[
+                                    tw("absolute top-0 right-0 p-4 rounded-lg items-end z-30"),
+                                    messageExpanded ? tw("w-[85%] h-auto max-w-4xl") : tw("w-[10%] h-[20%] min-w-28 min-h-28")
+                                ]}
+                            >
+                                {!messageExpanded ? (
+                                    <Animated.View
+                                        style={[
+                                            {
+                                                transform: menuMessageRead === false || menuMessageRead === null ?
+                                                    [{ rotate: rotation.interpolate({ inputRange: [-1, 1], outputRange: ['-0.1rad', '0.1rad'] }) }] :
+                                                    [{ rotate: '0deg' }]
+                                            },
+                                            messageExpanded ? tw('w-[12%] h-[54%] max-h-40 max-w-40') : tw('w-full h-full')
+                                        ]}
+                                    >
+                                        <Image resizeMode="contain" source={require('images/envelope.png')} style={tw("w-full h-full")} />
+                                    </Animated.View>
+                                ) : (
+                                    <View style={[tw("bg-white rounded-xl p-4 border border-gray-200 w-full"),
+                                    {
+                                        position: 'relative',
+                                        shadowColor: "#000",
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
+                                        shadowOpacity: 0.45,
+                                        shadowRadius: 5,
+                                        elevation: 10,
+                                    }]
+                                    }>
+                                        <Text style={tw("text-black text-lg font-primary")}>{menuMessage.title}</Text>
+                                        <Text style={tw("text-black font-primary lg:text-lg")}>{menuMessage.message}</Text>
+                                        <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>Cliquez sur le message pour le réduire</Text>
+                                    </View>
+                                )}
+                            </TouchableOpacity>
+                        )
                     }
+
 
                     <View style={StyleSheet.absoluteFill}>
                         <View style={StyleSheet.absoluteFill}>
@@ -442,8 +473,8 @@ const MainBoardScreen = ({ }) => {
                                             position: 'absolute',
                                             bottom: -14,
                                             right: -5,
-                                            width: windowWidth * 0.03,
-                                            height: windowWidth * 0.03,
+                                            width: windowWidth * 0.035,
+                                            height: windowWidth * 0.035,
                                             resizeMode: 'contain',
                                         }} />
 

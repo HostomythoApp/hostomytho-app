@@ -29,6 +29,7 @@ interface UserContextProps {
   tutorialsCompleted: Record<string, boolean>;
   fetchTutorialsCompleted: () => Promise<void>;
   completeTutorial: (gameId: number, tutorialName: string) => Promise<void>;
+  resetTutorialsCompleted: () => void;
 }
 interface UserProviderProps {
   children: React.ReactNode;
@@ -137,6 +138,11 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       }
     }
   }, [user]);
+
+  const resetTutorialsCompleted = useCallback(() => {
+    setTutorialsCompleted({});
+  }, []);
+
 
   useEffect(() => {
     if (user) {
@@ -297,7 +303,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, incrementTutorialProgress, updateUserStats, equippedSkins, setEquippedSkins, unlockAchievementModal, tutorialsCompleted, fetchTutorialsCompleted, completeTutorial }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, incrementTutorialProgress, updateUserStats, equippedSkins, setEquippedSkins, unlockAchievementModal, tutorialsCompleted, fetchTutorialsCompleted, completeTutorial, resetTutorialsCompleted }}>
       {children}
     </UserContext.Provider>
   );

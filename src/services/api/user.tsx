@@ -21,6 +21,7 @@ export const signUpUser = async (user: Partial<User>) => {
       notifications_enabled: true,
       consecutiveDaysPlayed: 1,
       coeffMulti: 1,
+      message_read: false,
       email: user.email && user.email.trim() !== '' ? user.email.trim() : null
     };
     return await api.post("/users/signup", { ...defaultValues, ...user });
@@ -104,6 +105,27 @@ export const getTopMonthlyWinners = async (): Promise<any> => {
 export const getCoeffMultiByUserId = async (id: number): Promise<number> => {
   try {
     return await api.get(`/users/getCoeffMultiByUserId/${id}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getMessageReadByUserId = async (id: number): Promise<any> => {
+  try {
+    const response = await api.get(`/users/getMessageReadByUserId/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateMessageReadByUserId = async (id: number, readStatus: boolean) => {
+  try {
+    return await api.put(`/users/updateMessageReadByUserId/${id}`, {
+      readStatus,
+    });
   } catch (error) {
     console.error(error);
     throw error;

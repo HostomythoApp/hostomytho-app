@@ -8,15 +8,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LogoutButton = () => {
   const { setAuthState } = useAuth();
-  const { setUser } = useUser();
+  const { setUser, resetTutorialsCompleted } = useUser();
   const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
   const handleLogout = async () => {
     try {
       await AsyncStorage.clear();
       setUser(null);
+      resetTutorialsCompleted();
       setAuthState({ isAuthenticated: false, token: null, isLoading: false });
-        navigation.navigate("TableauDeBord");
+      navigation.navigate("TableauDeBord");
     } catch (error) {
       console.error('Erreur lors de la déconnexion :', error);
     }

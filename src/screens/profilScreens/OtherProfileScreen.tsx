@@ -111,7 +111,7 @@ const OtherProfileScreen = (props: any) => {
                                 style={{
                                     width: windowWidth * 0.05,
                                     height: windowWidth * 0.05,
-                                    maxWidth: 90,
+                                    maxWidth: 70,
                                     minWidth: 50,
                                     minHeight: 50
                                 }}

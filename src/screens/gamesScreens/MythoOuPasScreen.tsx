@@ -25,6 +25,7 @@ import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
 import WikiButton from "components/button/WikiButton";
 import RatingButton from "components/button/RatingButton";
+import { useAuth } from "services/context/AuthContext";
 
 const colors = [
   "bg-yellow-300",
@@ -35,6 +36,7 @@ const colors = [
 
 const MythoOuPasScreen = () => {
   const tw = useTailwind();
+  const { authState } = useAuth();
   const [isModalPlausibilityVisible, setIsModalPlausibilityVisible] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
@@ -63,6 +65,12 @@ const MythoOuPasScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
   const [wikiMode, setWikiMode] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setIsHelpModalVisible(true);
+    }
+  }, []);
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -608,7 +616,6 @@ const MythoOuPasScreen = () => {
             </View>
           </View>
 
-
           <View>
             <View style={tw("flex-1 mb-2")}>
               {text && renderText(text)}
@@ -852,12 +859,16 @@ const MythoOuPasScreen = () => {
             <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
               <View style={tw('p-4')}>
                 {getModalHelpContent(tw)}
-                <TouchableOpacity onPress={() => {
-                  launchTuto();
-                  setIsHelpModalVisible(false);
-                }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
-                  <Text style={tw('text-white font-bold text-center font-primary')}>Lancer le tutoriel</Text>
-                </TouchableOpacity>
+                {
+                  authState.isAuthenticated &&
+                  <TouchableOpacity onPress={() => {
+                    launchTuto();
+                    setIsHelpModalVisible(false);
+                  }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+                    <Text style={tw('text-white font-bold text-center font-primary')}>Lancer le tutoriel</Text>
+                  </TouchableOpacity>
+                }
+
               </View>
             </ScrollView>
           </View>
