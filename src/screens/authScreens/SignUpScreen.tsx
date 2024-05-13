@@ -166,7 +166,7 @@ const SignUpScreen = () => {
                     <View style={tw('mx-auto w-full max-w-[740px] px-4 pt-20 items-center')}>
                         <View style={{ ...tw('mb-2 p-8 m-4 items-center rounded-lg w-full'), backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
                             <Formik
-                                initialValues={{ username: '', password: '', password2: '', email: '', status: 'medecin', gender: 'homme' }}
+                                initialValues={{ username: '', password: '', password2: '', email: '', status: 'autre', gender: 'homme' }}
                                 validationSchema={SignUpSchema}
                                 onSubmit={(values) => {
                                     submit(values)
