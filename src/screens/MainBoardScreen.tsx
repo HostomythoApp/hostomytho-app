@@ -107,8 +107,15 @@ const MainBoardScreen = ({ }) => {
             Animated.sequence([
                 Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
                 Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 0.7, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: -0.7, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 0.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 0.0, duration: 100, useNativeDriver: true }),
                 Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
                 Animated.timing(rotation, { toValue: -1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 1.0, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: -0.7, duration: 100, useNativeDriver: true }),
+                Animated.timing(rotation, { toValue: 0.7, duration: 100, useNativeDriver: true }),
                 Animated.timing(rotation, { toValue: 0.0, duration: 100, useNativeDriver: true })
             ]).start(() => {
                 if (menuMessage && menuMessage.active) {
@@ -199,8 +206,18 @@ const MainBoardScreen = ({ }) => {
                                             messageExpanded ? tw('w-[12%] h-[54%] max-h-40 max-w-40') : tw('w-full h-full')
                                         ]}
                                     >
-                                        <Image resizeMode="contain" source={require('images/envelope.png')} style={tw("w-full h-full")} />
+
+                                        <Image
+                                            resizeMode="contain"
+                                            source={menuMessageRead === false || menuMessageRead === null ?
+                                                require('images/enveloppe_text.png') :
+                                                require('images/envelope.png')
+                                            }
+                                            style={tw("w-full h-full")}
+                                        />
+
                                     </Animated.View>
+
                                 ) : (
                                     <View style={[tw("bg-white rounded-xl p-4 border border-gray-200 w-full"),
                                     {
