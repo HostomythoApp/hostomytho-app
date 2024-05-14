@@ -91,7 +91,17 @@ const MythoTypoScreen = ({ }) => {
     try {
       let response;
       if (user) {
-        response = await getTextWithErrorValidatedNotPlayed(user.id);
+
+        const randomNumber = Math.floor(Math.random() * 100);
+
+        // 20% de chance d'avoir un test
+        if (randomNumber < 20) {
+          response = await getTextTestWithErrorValidated();
+        } else {
+          response = await getTextWithErrorValidatedNotPlayed(user.id);
+          // response = await getTextWithTokensById(114);
+        }
+
       } else {
         response = await getTextWithErrorValidated();
       }
@@ -235,7 +245,7 @@ const MythoTypoScreen = ({ }) => {
           }
         }
       } else {
-        updateUserStats(140, 1, 0);
+        updateUserStats(3, 1, 0);
         const userTypingErrorData = {
           // @ts-ignore
           user_id: user.id,
@@ -485,61 +495,61 @@ const MythoTypoScreen = ({ }) => {
                   elevation: 3
                 }
               ]}
-            onPress={onNextCard}
+              onPress={onNextCard}
             >
-            <Text style={tw("text-white text-lg font-primary")}
-            >Cas suivant</Text>
-            <MaterialIcons name="navigate-next" size={24} color={'white'} />
-          </TouchableOpacity>
+              <Text style={tw("text-white text-lg font-primary")}
+              >Cas suivant</Text>
+              <MaterialIcons name="navigate-next" size={24} color={'white'} />
+            </TouchableOpacity>
           </View>
         )}
 
-      <View style={tw('flex-col w-full bottom-0')}>
-        {showMessage &&
-          <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
-            <View>
-              <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
-            </View>
-            <TouchableOpacity
-              style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
-              onPress={() => goToNextSentence(false)}
-            >
-              <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
-            </TouchableOpacity>
-          </View>
-        }
-
-      </View>
-      <ModalDoctorsExplanation
-        isVisible={isModalVisible}
-        onClose={handleCloseModal}
-      >
-        {modalContent}
-      </ModalDoctorsExplanation>
-      <CustomModal
-        isVisible={isHelpModalVisible}
-        onClose={() => setIsHelpModalVisible(false)}
-      >
-        <View style={tw('flex-1')}>
-          <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
-            <View style={tw('p-4')}>
-              {getModalHelpContent(tw)}
-              <TouchableOpacity onPress={() => {
-                launchTuto();
-                setIsHelpModalVisible(false);
-              }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
-                <Text style={tw('text-white font-bold text-center font-primary')}>Lancer le tutoriel</Text>
+        <View style={tw('flex-col w-full bottom-0')}>
+          {showMessage &&
+            <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+              <View>
+                <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
+              </View>
+              <TouchableOpacity
+                style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+                onPress={() => goToNextSentence(false)}
+              >
+                <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
-        </View>
-      </CustomModal>
+          }
 
-      <SuccessModal
-        isVisible={successModalVisible}
-        onDismiss={handleDismissSuccessModal}
-      />
-    </View >
+        </View>
+        <ModalDoctorsExplanation
+          isVisible={isModalVisible}
+          onClose={handleCloseModal}
+        >
+          {modalContent}
+        </ModalDoctorsExplanation>
+        <CustomModal
+          isVisible={isHelpModalVisible}
+          onClose={() => setIsHelpModalVisible(false)}
+        >
+          <View style={tw('flex-1')}>
+            <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
+              <View style={tw('p-4')}>
+                {getModalHelpContent(tw)}
+                <TouchableOpacity onPress={() => {
+                  launchTuto();
+                  setIsHelpModalVisible(false);
+                }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+                  <Text style={tw('text-white font-bold text-center font-primary')}>Lancer le tutoriel</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+        </CustomModal>
+
+        <SuccessModal
+          isVisible={successModalVisible}
+          onDismiss={handleDismissSuccessModal}
+        />
+      </View >
     </ImageBackground >
   );
 };

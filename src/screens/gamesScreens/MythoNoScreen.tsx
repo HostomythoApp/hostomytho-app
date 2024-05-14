@@ -104,8 +104,8 @@ const MythoNoScreen = ({ }) => {
       let response;
       if (user) {
         const randomNumber = Math.floor(Math.random() * 100);
-        // 8% de chance d'avoir un test
-        if (randomNumber < 8) {
+        // 20% de chance d'avoir un test
+        if (randomNumber < 20) {
           response = await getTextTestNegation();
         } else {
           response = await getSmallTextWithTokensNotPlayed(user.id, 'plausibility');
