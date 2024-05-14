@@ -502,9 +502,14 @@ const MythoOuPasScreen = () => {
         <Text style={tw("text-lg mr-2")}>Contenu vide</Text>
       )}
       <TouchableOpacity onPress={() => removeErrorDetail(errorDetail.id)}>
-        <Entypo name="cross" size={24} color="red" />
-        <Text style={tw('font-primary font-extrabold text-red-500')}
-        >annuler la sélection</Text>
+        <View style={[tw('flex-row items-center'), {
+          backgroundColor: 'rgba(129, 83, 123, 0.4)',
+        }
+        ]}>
+          <Entypo name="cross" size={24} color="red" />
+          <Text style={tw('font-primary font-extrabold text-red-500')}
+          >annuler la sélection</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -715,6 +720,13 @@ const MythoOuPasScreen = () => {
               <TouchableOpacity
                 style={[
                   tw('bg-blue-500 rounded-full justify-center items-center flex-row p-1 mr-1'),
+                  {
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 3.84,
+                    elevation: 2,
+                  }
                 ]}
                 onPress={() => {
                   returnToChoicePlausibility();
@@ -729,6 +741,13 @@ const MythoOuPasScreen = () => {
                 <TouchableOpacity
                   style={[
                     tw('bg-blue-500 rounded-full justify-center items-center flex-row p-1'),
+                    {
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.2,
+                      shadowRadius: 3.84,
+                      elevation: 2,
+                    }
                   ]}
                   onPress={() => {
                     scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -746,7 +765,14 @@ const MythoOuPasScreen = () => {
               {isSelectionStarted &&
                 <TouchableOpacity
                   key={"add"}
-                  style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 mb-1 ${isSelectionStarted ? 'bg-blue-500' : 'bg-blue-50'}`)}
+                  style={[tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 mb-1 ${isSelectionStarted ? 'bg-blue-500' : 'bg-blue-50'}`),
+                  {
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 3.84,
+                    elevation: 2,
+                  }]}
                   onPress={() => {
                     addErrorDetail();
                   }}
@@ -760,7 +786,15 @@ const MythoOuPasScreen = () => {
               {!showMessage &&
                 <TouchableOpacity
                   key={"next"}
-                  style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 ${errorDetails.length > 0 ? 'bg-primary' : 'bg-green-200'}`)}
+                  style={[tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 ${errorDetails.length > 0 ? 'bg-primary' : 'bg-green-200'}`),
+                  {
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 3.84,
+                    elevation: 2,
+                  }
+                  ]}
                   disabled={errorDetails.length === 0}
                   onPress={onNextCard}
                 >

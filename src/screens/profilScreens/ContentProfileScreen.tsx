@@ -13,6 +13,7 @@ import { RootStackNavigationProp } from 'navigation/Types';
 import { Skin } from 'models/Skin';
 import skinImages from 'utils/skinImages';
 import { characterImagesMapping } from 'utils/characterImagesMapping';
+import WeirdButton from 'components/button/WeirdButton';
 
 interface Rank {
     id: number;
@@ -188,7 +189,6 @@ const ContentProfileScreen = (props: any) => {
 
                         <Text style={tw('text-xl mb-2 text-white font-primary')}>Statistiques</Text>
                         <View style={tw("flex-row flex-wrap")}>
-                            {/* Ne se met à jour que quand on joue à 1 jeu. A voir si j'améliore ça */}
                             <View style={tw(`w-[48%] max-w-[200px] flex justify-around p-2 mr-2 rounded-lg border-l-4 border-blue-500 bg-white mb-2`)}>
                                 <Text style={tw('font-primary text-black leading-7')}>Jours consécutifs joués :</Text>
                                 <Text style={tw('font-primary text-black leading-7 font-extrabold')}>{user?.consecutiveDaysPlayed}</Text>
@@ -240,23 +240,15 @@ const ContentProfileScreen = (props: any) => {
                     </View>
                 </View>
 
-                <View style={tw(`${isMobile ? 'flex-col' : 'flex-row'} justify-between items-center bg-white rounded-lg py-2 px-4 my-4`)}>
-                    <TouchableOpacity
-                        style={tw(`flex-row items-center justify-center ${isMobile ? 'w-full mb-2 mr-0' : 'w-[32%] mr-2'} bg-secondary py-2 rounded `)}
+                <View style={tw(`${isMobile ? 'flex-col' : 'flex-row'} justify-around items-center bg-white rounded-lg py-2 px-4 my-4`)}>
+                    {/* <TouchableOpacity
+                        style={tw(`flex-row items-center justify-center ${isMobile ? 'w-full mb-2 mr-0' : 'w-[32%] mr-2'} bg-[darkcyan] py-2 rounded `)}
                         onPress={() => navigation.navigate('Contacts')}
                     >
                         <FontAwesome5 name='user-friends' size={24} color='white' />
                         <Text style={tw('text-white ml-2 font-primary')}>Mes contacts</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={tw(`flex-row items-center justify-center ${isMobile ? 'w-full mb-2' : 'w-[32%]'} bg-[darkcyan] py-2 rounded mx-2`)}
-                        onPress={() => navigation.navigate('Referral')}
-                    >
-                        <FontAwesome5 name='meh-blank' size={24} color='white' />
-                        <Text style={tw('text-white ml-2 font-primary')}>Bouton étrange</Text>
-                    </TouchableOpacity>
-
+                    </TouchableOpacity> */}
+                    <WeirdButton />
                     <TouchableOpacity
                         style={tw(`flex-row items-center justify-center ${isMobile ? 'w-full ml-0' : 'w-[32%] ml-2'} bg-primary py-2 rounded`)}
                         onPress={() => navigation.navigate('ParametreProfil')}

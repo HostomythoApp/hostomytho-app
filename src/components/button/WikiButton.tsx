@@ -4,7 +4,7 @@ import { useTailwind } from 'tailwind-rn';
 import { FontAwesome } from '@expo/vector-icons';
 
 interface WikiButtonProps {
-  func: () => void;
+    func: () => void;
 }
 
 const WikiButton: React.FC<WikiButtonProps> = ({ func }) => {
@@ -15,7 +15,6 @@ const WikiButton: React.FC<WikiButtonProps> = ({ func }) => {
 
     const handleMouseEnter = (): void => {
         isHoveredRef.current = true;
-        
         hoverTimeout = setTimeout(() => {
             if (isHoveredRef.current) {
                 setShowTooltip(true);
@@ -53,6 +52,7 @@ const WikiButton: React.FC<WikiButtonProps> = ({ func }) => {
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.2,
                     shadowRadius: 4,
+                    elevation: 3
                 }]}
             >
                 {showTooltip && (

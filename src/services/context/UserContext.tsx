@@ -257,7 +257,15 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           const skinResponse = await getRandomSkin(user.id);
 
           if (skinResponse.allSkinsUnlocked) {
-            unlockPointsModal();
+            if (shouldDelaySkinModal) {
+              setTimeout(() => {
+                unlockPointsModal();
+              }, 6000);
+            } else {
+              unlockPointsModal();
+
+            }
+
             if (!isBonus) {
               updateUserStats(5, 0, 0, true);
             }

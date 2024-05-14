@@ -478,8 +478,7 @@ const MythoNoScreen = ({ }) => {
         <View style={[tw('flex-row items-center'), {
           backgroundColor: 'rgba(129, 83, 123, 0.4)',
         }
-        ]}
-        >
+        ]}>
           <Entypo name="cross" size={24} color="red" />
           <Text style={tw('font-primary font-extrabold text-red-500')}
           >annuler la sélection</Text>
@@ -579,7 +578,15 @@ const MythoNoScreen = ({ }) => {
 
           {isSelectionStarted && !tutorialFailed && (
             <TouchableOpacity
-              style={tw(`py-2 px-4 rounded-lg bg-blue-500 flex-row items-center justify-center mb-1 w-full`)}
+              style={[tw(`py-2 px-4 rounded-lg bg-blue-500 flex-row items-center justify-center mb-1 w-full`),
+              {
+                shadowColor: "#000",
+                shadowOffset: { width: 1, height: 3 },
+                shadowOpacity: 0.35,
+                shadowRadius: 3.84,
+                elevation: 3,
+              }
+              ]}
               onPress={addSentenceSpecification}
             >
               <MaterialIcons name="add" size={22} color="white" />
@@ -592,7 +599,14 @@ const MythoNoScreen = ({ }) => {
               disabled={isTutorial && (isFirstClickValidate || tutorialFailed)}
               style={[
                 tw("py-2 px-4 rounded-lg flex-row items-center justify-center w-full"),
-                (isTutorial && (isFirstClickValidate || tutorialFailed)) ? tw("bg-green-200") : tw("bg-primary")
+                (isTutorial && (isFirstClickValidate || tutorialFailed)) ? tw("bg-green-200") : tw("bg-primary"),
+                {
+                  shadowColor: "#000",
+                  shadowOffset: { width: 1, height: 3 },
+                  shadowOpacity: 0.35,
+                  shadowRadius: 3.84,
+                  elevation: 3,
+                }
               ]}
               onPress={onNextCard}
             >
@@ -607,6 +621,13 @@ const MythoNoScreen = ({ }) => {
           <TouchableOpacity
             style={[
               tw('absolute bottom-3 left-4 w-9 h-9 bg-blue-500 rounded-full justify-center items-center'),
+              {
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 2,
+              }
             ]}
             onPress={() => {
               scrollViewRef.current?.scrollToEnd({ animated: true });

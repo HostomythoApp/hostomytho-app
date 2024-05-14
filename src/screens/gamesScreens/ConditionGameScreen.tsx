@@ -299,7 +299,14 @@ const ConditionGameScreen = ({ }) => {
 
           {isSelectionStarted &&
             <TouchableOpacity
-              style={tw(`py-2 px-4 rounded-lg bg-blue-500 flex-row items-center justify-center mb-1 w-full`)}
+              style={[tw(`py-2 px-4 rounded-lg bg-blue-500 flex-row items-center justify-center mb-1 w-full`),          {
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 2,
+              }]}
+              
               onPress={addSentenceSpecification}
             >
               <MaterialIcons name="add" size={22} color="white" />

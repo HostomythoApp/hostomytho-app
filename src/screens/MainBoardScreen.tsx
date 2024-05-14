@@ -17,10 +17,6 @@ import { responsiveFontSize } from "utils/functions";
 import CharacterPortrait from "components/CharacterPortrait";
 import { loadMonthlyWinners, saveMonthlyWinners } from "utils/storage";
 
-// interface TutorialsCompleted {
-//     [key: string]: boolean;
-// }
-
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
     const { authState } = useAuth();
@@ -80,7 +76,6 @@ const MainBoardScreen = ({ }) => {
 
         updateUserData();
     }, [user, userNeedsUpdate]);
-
 
 
     useEffect(() => {

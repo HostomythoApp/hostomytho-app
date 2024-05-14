@@ -695,7 +695,14 @@ const MythoOuPasFullTextScreen = () => {
               {isSelectionStarted &&
                 <TouchableOpacity
                   key={"add"}
-                  style={tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 mb-1 ${isSelectionStarted ? 'bg-blue-500' : 'bg-blue-50'}`)}
+                  style={[tw(`px-2 items-center flex-row justify-center rounded-full h-12 mx-2 mb-1 ${isSelectionStarted ? 'bg-blue-500' : 'bg-blue-50'}`),
+                  {
+                    shadowColor: "#000",
+                    shadowOffset: { width: 1, height: 3 },
+                    shadowOpacity: 0.35,
+                    shadowRadius: 3.84,
+                    elevation: 3,
+                  }]}
                   onPress={() => {
                     addErrorDetail();
                   }}

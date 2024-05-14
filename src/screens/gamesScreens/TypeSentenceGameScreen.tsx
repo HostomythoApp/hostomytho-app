@@ -46,6 +46,7 @@ const TypeSentenceGameScreen = ({ }) => {
   }
 
   useEffect(() => {
+    // @ts-ignore
     const shuffledSentences = shuffleArray(data.sentences);
     setSentences(shuffledSentences.slice(0, 10).map((sentence) => {
 
