@@ -224,7 +224,6 @@ const MythoNoScreen = ({ }) => {
     }
 
     setLoading(true);
-    // TODO Il faudrait mettre le is_negation_spec_test dans le checkUserSelection, pour que ce ne soit pas visible dans le console.log
     if (text?.is_negation_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
       if (!checkResult.isValid) {
@@ -243,7 +242,6 @@ const MythoNoScreen = ({ }) => {
           messageHeader = "Oh non, il n'y avait rien à trouver ici";
         }
 
-        if (user) setTimeout(() => updateUserStats(0, 0, -1), 100);
         setMessageContent(`${messageHeader}\n${correctSpecification}`);
         if (!isInvisibleTest) {
           setShowMessage(true);
@@ -252,23 +250,27 @@ const MythoNoScreen = ({ }) => {
         }
         setLoading(false);
         setSelectionStarted(false);
+
+        if (user) setTimeout(() => updateUserStats(0, 0, -1), 100);
         return;
       } else {
+        const additionalPoints = checkResult.testSpecifications.length;
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5, 1, 2), 100);
+          if (user) setTimeout(() => updateUserStats(5 + additionalPoints, 1, 2), 100);
         }
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       if (!isTutorial) {
-        if (user) setTimeout(() => updateUserStats(5, 1, 0), 100);
-        // Création des specifications dans la bdd
-        for (let userSentenceSpecification of userSentenceSpecifications) {
-          const { id, ...rest } = userSentenceSpecification;
-          await createUserSentenceSpecification(rest);
-        }
+        const additionalPoints = userSentenceSpecifications.length; 
+        if (user) setTimeout(() => updateUserStats(5 + additionalPoints, 1, 0), 100);
       }
+    }
+
+    for (let userSentenceSpecification of userSentenceSpecifications) {
+      const { id, ...rest } = userSentenceSpecification;
+      await createUserSentenceSpecification(rest);
     }
     goToNextSentence();
   };

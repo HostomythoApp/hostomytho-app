@@ -78,7 +78,14 @@ const ModalDoctorsExplanation = ({ isVisible, onClose, children }: { isVisible: 
                         </View>
                         <TouchableOpacity
                             onPress={onClose}
-                            style={tw('bg-secondary py-2 px-4 rounded self-center mt-4')}
+                            style={[tw('bg-secondary py-2 px-4 rounded self-center mt-4'),
+                            {
+                                shadowColor: 'black',
+                                shadowOffset: { width: 0, height: 3 },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 3,
+                                elevation: 3
+                            }]}
                         >
                             <Text style={tw('text-white font-bold text-center font-primary')}>J'ai compris</Text>
                         </TouchableOpacity>

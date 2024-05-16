@@ -11,7 +11,6 @@ import { useTailwind } from "tailwind-rn";
 import data from "data/fakeUserData.js";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { TemporalEntity } from "models/TemporalEntity";
-// TODO a changer le type WORD
 // @ts-ignore
 import { Word } from "models/Word";
 import { useUser } from 'services/context/UserContext';

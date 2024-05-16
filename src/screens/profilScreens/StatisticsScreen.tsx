@@ -5,15 +5,6 @@ import { useUser } from "services/context/UserContext";
 import { useTailwind } from "tailwind-rn/dist";
 import StatBox from "components/StatBox";
 
-const SectionHeader = ({ title }: { title: string }) => {
-  const tw = useTailwind();
-  return (
-    <View style={tw('w-full')}>
-      <Text style={tw('font-primary text-2xl text-white font-bold mt-4 mb-2 text-center self-center')}>{title}</Text>
-    </View>
-  );
-};
-
 const StatisticsScreen = ({ }) => {
   const tw = useTailwind();
   const { user } = useUser();
@@ -28,7 +19,8 @@ const StatisticsScreen = ({ }) => {
           <CustomHeaderEmpty title="Statistiques" backgroundColor="bg-whiteTransparent" />
           <View style={tw('w-full flex justify-center pt-20')}>
             <View style={tw('w-auto m-auto max-w-6xl')}>
-              <SectionHeader title="Statistiques personnelles" />
+
+              <Text style={tw('font-primary text-2xl text-white font-bold mt-4 mb-2 text-center ')}>Statistiques personnelles</Text>
               <View style={tw('justify-center flex-row rounded-xl p-4 pt-0 flex-wrap')}>
                 <StatBox title="Jours consécutifs joués :" value={user?.consecutiveDaysPlayed} color="border-l-4 border-blue-500" />
                 <StatBox title="Fiabilité :" value={`${user?.trust_index} %`} color="border-l-4 border-green-500" />

@@ -150,7 +150,14 @@ const ModalBossExplanation = ({ isVisible, onClose, children, tutorial_progress 
                         </View>
                         <TouchableOpacity
                             onPress={handleModalClick}
-                            style={tw('bg-primary py-2 px-4 rounded self-center mt-4')}
+                            style={[tw('bg-primary py-2 px-4 rounded self-center mt-4'),
+                            {
+                                shadowColor: 'black',
+                                shadowOffset: { width: 0, height: 3 },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 3,
+                                elevation: 3
+                            }]}
                         >
                             <Text style={tw('text-white font-bold text-center font-primary')}>J'ai compris</Text>
                         </TouchableOpacity>

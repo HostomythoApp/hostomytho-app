@@ -70,7 +70,7 @@ const RankingScreen = ({ }) => {
                     <View style={tw("flex-1 p-4 mx-auto min-w-[540px] pt-20 justify-center")}>
                         <TouchableOpacity style={tw(`flex-row items-center justify-center w-1/2 mb-5 bg-secondary py-2 rounded self-end `)}
                             onPress={() => navigation.navigate('ClassementMensuel')}>
-                            <Text style={tw('text-center font-primary text-white mr-2')}>Voir le classement mensuel</Text>
+                            <Text style={tw('font-primary text-white mr-2')}>Voir le classement mensuel</Text>
                             <MaterialCommunityIcons name="calendar-month" size={24} color="white" />
                         </TouchableOpacity>
 

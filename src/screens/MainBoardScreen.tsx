@@ -136,7 +136,7 @@ const MainBoardScreen = ({ }) => {
                 Animated.timing(rotation, { toValue: 0.0, duration: 100, useNativeDriver: true })
             ]).start(() => {
                 if (menuMessage && menuMessage.active) {
-                    timerId = setTimeout(animate, 2000);
+                    timerId = setTimeout(animate, 3000);
                 }
             });
         };
@@ -275,7 +275,6 @@ const MainBoardScreen = ({ }) => {
                                 <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
                                     style={{
                                         position: 'absolute',
-                                        // TODO vérifier si écran horizontal, et si c'est le cas, adapter
                                         top: windowWidth > 748 ? '54%' : '54%',
                                         left: windowWidth > 748 ? '21%' : '21%',
                                     }}>
@@ -521,16 +520,12 @@ const MainBoardScreen = ({ }) => {
                                     </View>
 
 
-                                    <View style={[tw('font-secondary absolute text-center'),
-                                    {
-                                        bottom: '0',
-                                        width: '100%',
-                                    }]}>
+                                    <View style={tw('font-secondary absolute text-center self-end bottom-0 w-full')}>
                                         <TouchableOpacity onPress={() => navigation.navigate('ClassementMensuel')}>
                                             <Text style={{
-                                                ...tw('text-blue-500 mt-2 text-center font-primary'),
+                                                ...tw('text-[#5583CB] mt-2 text-center font-primary'),
                                                 fontSize: responsiveFontSize(10),
-                                            }}>Voir le classement mensuel en cours</Text>
+                                            }}>Classement mensuel en cours</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>

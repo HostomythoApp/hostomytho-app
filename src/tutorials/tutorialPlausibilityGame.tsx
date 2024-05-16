@@ -27,15 +27,16 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
 
         case 2: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Si vous pensez qu'un texte contient des erreurs, vous pouvez spécifier où elles sont, quel que soit leur type : erreur grammaticale, de cohérence, un passage biaisé ou offensant, ...
-            {"\n"} Pour ce faire, sélectionnez la plausibilité comme prédédemment, cliquez sur
-            <View
+            {"\n"} Pour ce faire, sélectionnez la plausibilité comme prédédemment, cliquez sur&nbsp;
+            {/* <View
                 style={[
                     tw("px-1 py-1 mx-1 rounded-lg bg-orange-200 opacity-100"),
                 ]}
-            >
-                <Text style={tw("font-semibold text-orange-500 text-sm")}
-                >Source du doute</Text>
-            </View>puis cliquez sur les mots qui composent cette erreur.
+            > */}
+                <Text style={tw("font-semibold text-orange-500 text-sm bg-orange-200  px-1 py-1 mx-1 rounded-lg")}
+                > Source du doute </Text>&nbsp;
+            {/* </View> */}
+            puis cliquez sur les mots qui composent cette erreur.
             {"\n\n"}
             Vous n'êtes pas obligés de le faire, mais cela vous fera gagner plus de points.
 
@@ -43,7 +44,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
 
         case 3: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Certains textes contiennent des mots techniques compliqués, mais pas d'inquiétude, de nombreuses erreurs sont identifiables sans compétences en médecine particulière.
-            Si toutefois vous souhaitez avoir la définition d'un mot, cliquez sur le bouton W en haut à gauche, puis sur le mot dont vous souhaitez la définition. Cela vous dirigera vers une page Wikipédia associée.
+            Si toutefois vous souhaitez avoir la définition d'un mot, cliquez sur le bouton "W" en haut à gauche, puis sur le mot dont vous souhaitez la définition. Cela vous dirigera vers une page Wikipédia associée.
             {"\n\n"}
             Essayez de traiter ce texte.
         </Text>;

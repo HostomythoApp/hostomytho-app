@@ -30,6 +30,8 @@ const AboutScreen = ({ }) => {
                 {"\n\n"}
                 Avant de jouer, lisez la <TouchableOpacity onPress={() => navigation.navigate('PolitiqueDeConfidentialite')}><Text style={{ color: 'blue' }}>charte d'HostoMytho</Text>
                 </TouchableOpacity>.
+                {"\n\n"}
+                L'application est disponible sur iOS, Android, et également accessible via le web.
               </Text>
 
               <Text style={tw('text-3xl font-bold mt-6 mb-2 font-primary')}>

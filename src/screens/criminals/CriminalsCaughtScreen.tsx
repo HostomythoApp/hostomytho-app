@@ -40,7 +40,7 @@ const CriminalsCaughtScreen = () => {
 
     const NoCriminalsView = () => (
         <View style={tw('flex-1 justify-center items-center p-6')}>
-            <Text style={tw('text-3xl text-white text-center mb-4 font-primary')}>
+            <Text style={tw('text-2xl text-white text-center mb-4 font-primary')}>
                 Vous n'avez pas encore attrapé de criminel
             </Text>
             <View style={tw('w-80')}>
@@ -51,7 +51,7 @@ const CriminalsCaughtScreen = () => {
 
     const NoConnectedView = () => (
         <View style={tw('flex-1 justify-center items-center p-6')}>
-            <Text style={tw('text-3xl text-white text-center mb-4 font-primary')}>
+            <Text style={tw('text-2xl text-white text-center mb-4 font-primary')}>
                 Vous n'avez pas encore attrapé de criminel
             </Text>
             <View style={tw('w-80')}>

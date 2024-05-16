@@ -237,7 +237,7 @@ const MythoOuPasScreen = () => {
       console.error("Aucun texte à traiter.");
       return;
     }
-
+    const annotationsCount = errorDetails.length;
     if (text?.is_plausibility_test) {
       const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails, userRateSelected);
       const noErrorSpecified = errorDetails.length === 0;
@@ -274,7 +274,6 @@ const MythoOuPasScreen = () => {
           if (!currentText) return currentText;
           return updateTokensColor(currentText, allPositions);
         });
-        // TODO a vérifier le responsive et tous les cas 
         if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           <Text>
             {plausibilityDescription(checkResult.correctPlausibility)}
@@ -293,7 +292,7 @@ const MythoOuPasScreen = () => {
               </Text>
             </View>
           );
-          if (!isTutorial) animationGainPoints(10, 1, 1);
+          if (!isTutorial) animationGainPoints(10 + annotationsCount, 1, 1);
         } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
           messageHeader = (
             <View>
@@ -327,7 +326,7 @@ const MythoOuPasScreen = () => {
           );
           if (!isTutorial) animationGainPoints(10, 1, 1);
         } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          if (!isTutorial) animationGainPoints(14, 1, 2);
+          if (!isTutorial) animationGainPoints(14 + annotationsCount, 1, 2);
           goToNextSentence(true);
           return;
         }
@@ -361,7 +360,7 @@ const MythoOuPasScreen = () => {
       }
 
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      animationGainPoints(10, 1, 0);
+      animationGainPoints(10 + annotationsCount, 1, 0);
     }
 
     goToNextSentence();
@@ -593,7 +592,6 @@ const MythoOuPasScreen = () => {
     if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
 
     setTimeout(() => {
-      // TODO augmenter trustEarned seulement quand la question était un test
       updateUserStats(pointsEarned, catchProbability, trustEarned);
     }, 100);
   }
@@ -708,7 +706,6 @@ const MythoOuPasScreen = () => {
                 onNextCard();
               }}
             >
-              {/* TODO Peut-être mettre shadow sur bouton */}
               <Text style={tw("text-green-700 font-semibold")}>Aller au texte suivant</Text>
             </TouchableOpacity>
           </View>

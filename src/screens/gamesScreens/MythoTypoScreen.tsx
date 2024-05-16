@@ -438,7 +438,7 @@ const MythoTypoScreen = ({ }) => {
           </View>
           {
             isTutorial &&
-            <View style={tw('mx-4 p-4 bg-white rounded-lg  w-72')}>
+            <View style={tw('mx-4 p-4 bg-white rounded-lg w-72 mb-2')}>
               <View style={tw('flex-row justify-between items-center mb-2')}>
                 <Text style={tw('font-primary text-base text-gray-600')}>
                   Texte :
