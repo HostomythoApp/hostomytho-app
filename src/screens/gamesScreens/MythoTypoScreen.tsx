@@ -232,13 +232,17 @@ const MythoTypoScreen = ({ }) => {
           }
           goToNextSentence(isUserCorrect);
         } else {
-
-
-          if (isInvisibleTest) {
-            updateUserStats(3, 1, 2);
-            goToNextSentence(false);
+          if (!isTutorial) {
+            if (isInvisibleTest) {
+              updateUserStats(3, 1, 2);
+              goToNextSentence(false);
+            } else {
+              updateUserStats(0, 0, -1);
+              const messageCorrection = getCorrectionMessage(errorTypeData.id);
+              setShowMessage(true);
+              setMessageContent(messageCorrection);
+            }
           } else {
-            updateUserStats(0, 0, -1);
             const messageCorrection = getCorrectionMessage(errorTypeData.id);
             setShowMessage(true);
             setMessageContent(messageCorrection);

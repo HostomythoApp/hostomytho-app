@@ -42,6 +42,7 @@ const MainBoardScreen = ({ }) => {
 
     useEffect(() => {
         const fetchMonthlyWinners = async () => {
+            setIsLoading(true);
             let winners = await loadMonthlyWinners();
             if (!winners) {
                 try {
@@ -50,12 +51,16 @@ const MainBoardScreen = ({ }) => {
                     saveMonthlyWinners(winners);
                 } catch (error) {
                     console.error('Erreur lors de la récupération des gagnants mensuels', error);
+                    setIsLoading(false);
+                    return;
                 }
             }
             setMonthlyWinners(winners);
+            setIsLoading(false); 
         };
         fetchMonthlyWinners();
     }, []);
+    
 
     const updateOrientation = () => {
         const { width, height } = Dimensions.get('screen');
@@ -67,10 +72,10 @@ const MainBoardScreen = ({ }) => {
     };
 
     useEffect(() => {
-        updateOrientation(); // Vérifiez l'orientation au démarrage
-        const subscription = Dimensions.addEventListener('change', updateOrientation); // Écoutez les changements d'orientation
+        updateOrientation();
+        const subscription = Dimensions.addEventListener('change', updateOrientation);
 
-        return () => subscription.remove(); // Nettoyez l'écouteur lors du démontage
+        return () => subscription.remove(); // Nettoye l'écouteur lors du démontage
     }, []);
 
     useEffect(() => {
@@ -106,7 +111,8 @@ const MainBoardScreen = ({ }) => {
                     const messageReadStatus = await getMessageReadByUserId(user.id);
                     setMenuMessageRead(messageReadStatus.hasBeenRead);
                 } else {
-                    setMenuMessageRead(false);
+                    setMessageExpanded(true);
+                    setMenuMessageRead(true);
                 }
             } catch (error) {
                 console.error(error);
@@ -200,7 +206,7 @@ const MainBoardScreen = ({ }) => {
             {isLoading && <Loader />}
             <ImageBackground
                 source={require('images/bg_desk_smaller.jpg')}
-                onLoadEnd={loaderClose}
+                // onLoadEnd={loaderClose}
                 style={[tw('flex-1 relative'), StyleSheet.absoluteFill]}
             >
 
@@ -279,7 +285,7 @@ const MainBoardScreen = ({ }) => {
                                         left: windowWidth > 748 ? '21%' : '21%',
                                     }}>
                                     <Image source={require('images/polaroid_inconnu_shadow.png')}
-                                        onLoadEnd={loaderClose}
+                                        // onLoadEnd={loaderClose}
                                         style={{
                                             width: windowWidth * 0.1, height: windowWidth * 0.1, minWidth: 70, minHeight: 70,
                                         }}
@@ -300,7 +306,7 @@ const MainBoardScreen = ({ }) => {
                                         left: windowWidth > 748 ? '46%' : '46%',
                                     }}>
                                     <Image source={require('images/ranking.png')}
-                                        onLoadEnd={loaderClose}
+                                        // onLoadEnd={loaderClose}
                                         style={[{
                                             width: windowWidth * 0.16, height: windowWidth * 0.16, minWidth: 70, minHeight: 70,
                                             shadowColor: 'black',
