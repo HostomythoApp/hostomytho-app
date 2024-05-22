@@ -1997,6 +1997,13 @@
 		},
 		"media": "(min-width: 1024px)"
 	},
+	"lg:text-2xl": {
+		"style": {
+			"fontSize": 24,
+			"lineHeight": 32
+		},
+		"media": "(min-width: 1024px)"
+	},
 	"xl:mt-4": {
 		"style": {
 			"marginTop": 16

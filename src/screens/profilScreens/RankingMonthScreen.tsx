@@ -68,11 +68,12 @@ const RankingMonthScreen = ({ }) => {
                 <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                     <CustomHeaderEmpty title="Classement du mois en cours" backgroundColor="bg-whiteTransparent" />
                     <View style={tw("flex-1 p-4 mx-auto min-w-[540px] pt-20 justify-center")}>
-                        <TouchableOpacity style={tw(`flex-row items-center justify-center w-1/2 mb-5 bg-secondary py-2 rounded self-end `)}
+                        <TouchableOpacity style={tw(`flex-row items-center px-4  w-1/2 mb-5 bg-secondary py-2 rounded self-end`)}
                             onPress={() => navigation.navigate('Classement')}>
                             <Text style={tw('font-primary text-white mr-2')}>Voir le classement général</Text>
                             <FontAwesome5 name="medal" size={24} color="white" />
                         </TouchableOpacity>
+
                         {users.map((item, index) => renderItem({ item, index }))}
                         <View style={tw('flex-row mt-2 justify-between')}>
                             {page > 1 ? (

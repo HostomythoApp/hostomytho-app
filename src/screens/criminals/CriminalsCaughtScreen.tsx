@@ -40,7 +40,7 @@ const CriminalsCaughtScreen = () => {
 
     const NoCriminalsView = () => (
         <View style={tw('flex-1 justify-center items-center p-6')}>
-            <Text style={tw('text-2xl text-white text-center mb-4 font-primary')}>
+            <Text style={tw('text-xl lg:text-2xl text-white text-center mb-4 font-primary')}>
                 Vous n'avez pas encore attrapé de criminel
             </Text>
             <View style={tw('w-80')}>
@@ -51,7 +51,7 @@ const CriminalsCaughtScreen = () => {
 
     const NoConnectedView = () => (
         <View style={tw('flex-1 justify-center items-center p-6')}>
-            <Text style={tw('text-2xl text-white text-center mb-4 font-primary')}>
+            <Text style={tw('text-xl lg:text-2xl text-white text-center mb-4 font-primary')}>
                 Vous n'avez pas encore attrapé de criminel
             </Text>
             <View style={tw('w-80')}>
@@ -63,9 +63,9 @@ const CriminalsCaughtScreen = () => {
     );
 
     const styles = StyleSheet.create({
-        container: { flex: 1, paddingTop: 96 },
+        container: { flex: 1, },
         // @ts-ignore
-        child: { width, justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center', padding: 48 },
+        child: { width, justifyItems: 'center', alignItems: 'center', padding: 48 },
         pagination: { position: 'absolute', top: 90 },
         paginationItem: { height: 36, width: 36 }
     });
@@ -75,9 +75,11 @@ const CriminalsCaughtScreen = () => {
             <ImageBackground source={require('images/bg_office.jpg')} style={tw('flex-1')} resizeMode="cover">
             </ImageBackground>
             <SafeAreaView style={[tw('flex-1'), StyleSheet.absoluteFillObject]}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={tw('flex-grow justify-center items-center')}
+                >
                     <CustomHeaderEmpty title="Criminels arrêtés" backgroundColor="bg-whiteTransparent" backToMain={true} />
-                    <View style={styles.container}>
+                    <View style={tw('flex-1 pt-12 justify-center items-center h-28')}
+                    >
                         {
                             !user ? (
                                 <NoConnectedView />
