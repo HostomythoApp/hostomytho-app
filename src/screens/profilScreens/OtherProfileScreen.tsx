@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { TouchableOpacity, Text, View, ScrollView, Dimensions, ImageBackground, Image } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
-import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
 import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
 import { Skin } from 'models/Skin';
@@ -12,13 +11,12 @@ import { characterImagesMapping } from 'utils/characterImagesMapping';
 import Loader from 'components/Loader';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
-import { responsiveTitle, responsiveFontSize } from "utils/functions";
+import { responsiveTitle } from "utils/functions";
 import { getUserDetailsById } from "services/api/user";
 import { getEquippedUserSkins } from 'services/api/skins';
 
 const OtherProfileScreen = (props: any) => {
     const tw = useTailwind();
-    const { user } = useUser();
 
     const window = Dimensions.get('window');
     const isMobile = window.width < 670;
@@ -148,4 +146,4 @@ const OtherProfileScreen = (props: any) => {
     );
 };
 
-export default withAuth(OtherProfileScreen);
+export default OtherProfileScreen;

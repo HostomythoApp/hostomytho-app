@@ -58,7 +58,7 @@ const ContentProfileScreen = (props: any) => {
     }, []);
 
     return (
-        <View style={[tw('w-full mt-4 px-2 max-w-5xl'), isMobile ? tw('pt-2') : tw('pt-6')]}>
+        <View style={[tw('w-full mt-4 px-2 max-w-5xl pb-10'), isMobile ? tw('pt-2') : tw('pt-6')]}>
             <View style={tw('flex-row justify-center')}>
                 <View style={[tw(''), isMobile ? tw('w-4/5') : tw('w-3/5')]}>
                     <View style={tw('flex-row flex-wrap mt-4 justify-center')}>

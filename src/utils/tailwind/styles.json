@@ -1656,6 +1656,11 @@
 			"paddingBottom": 0
 		}
 	},
+	"pb-10": {
+		"style": {
+			"paddingBottom": 40
+		}
+	},
 	"pb-12": {
 		"style": {
 			"paddingBottom": 48
