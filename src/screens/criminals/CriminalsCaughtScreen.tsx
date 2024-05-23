@@ -66,20 +66,17 @@ const CriminalsCaughtScreen = () => {
         container: { flex: 1, },
         // @ts-ignore
         child: { width, justifyItems: 'center', alignItems: 'center', padding: 48 },
-        pagination: { position: 'absolute', top: 90 },
-        paginationItem: { height: 36, width: 36 }
+        pagination: { position: 'absolute', top: 80 },
+        paginationItem: { height: 32, width: 32 }
     });
-
     return (
         <View style={tw('flex-1')}>
             <ImageBackground source={require('images/bg_office.jpg')} style={tw('flex-1')} resizeMode="cover">
             </ImageBackground>
             <SafeAreaView style={[tw('flex-1'), StyleSheet.absoluteFillObject]}>
-                <ScrollView contentContainerStyle={tw('flex-grow justify-center items-center')}
-                >
+                <ScrollView contentContainerStyle={tw((!user || isEmptyCriminalsList ? 'flex-grow justify-center' : ''))}>
                     <CustomHeaderEmpty title="Criminels arrêtés" backgroundColor="bg-whiteTransparent" backToMain={true} />
-                    <View style={tw('flex-1 pt-12 justify-center items-center h-28')}
-                    >
+                    <View style={tw(`flex-1 ${!user || isEmptyCriminalsList ? 'pt-20 justify-center items-center' : 'pt-20'} `)}>
                         {
                             !user ? (
                                 <NoConnectedView />
@@ -98,10 +95,9 @@ const CriminalsCaughtScreen = () => {
                                     renderItem={({ item }) => (
                                         <View style={[styles.child]} >
                                             <Image
-                                            // TODO Réduire la taille en mobile
                                                 // @ts-ignore
                                                 source={suspectsImagesMapping[item.imageId]}
-                                                style={tw('w-64 h-64 rounded-md')}
+                                                style={tw(' w-44 h-44 lg:w-64 lg:h-64 rounded-md')}
                                                 resizeMode="contain"
                                             />
                                             <View style={tw('bg-black bg-opacity-50 p-2 rounded')}>

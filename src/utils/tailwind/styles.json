@@ -764,6 +764,11 @@
 			"width": "100%"
 		}
 	},
+	"w-44": {
+		"style": {
+			"width": 176
+		}
+	},
 	"min-w-28": {
 		"style": {
 			"minWidth": 112
@@ -1992,6 +1997,18 @@
 	"lg:mt-4": {
 		"style": {
 			"marginTop": 16
+		},
+		"media": "(min-width: 1024px)"
+	},
+	"lg:h-64": {
+		"style": {
+			"height": 256
+		},
+		"media": "(min-width: 1024px)"
+	},
+	"lg:w-64": {
+		"style": {
+			"width": 256
 		},
 		"media": "(min-width: 1024px)"
 	},
