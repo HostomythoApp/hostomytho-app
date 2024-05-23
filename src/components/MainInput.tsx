@@ -36,6 +36,7 @@ const MainInput = ({
       onChangeText={setter}
       value={value}
       keyboardType="default"
+      keyboardDismissMode='interactive'
     />
   );
 };

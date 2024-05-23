@@ -1990,17 +1990,17 @@
 		},
 		"media": "(min-width: 1024px)"
 	},
-	"lg:text-lg": {
-		"style": {
-			"fontSize": 18,
-			"lineHeight": 28
-		},
-		"media": "(min-width: 1024px)"
-	},
 	"lg:text-2xl": {
 		"style": {
 			"fontSize": 24,
 			"lineHeight": 32
+		},
+		"media": "(min-width: 1024px)"
+	},
+	"lg:text-lg": {
+		"style": {
+			"fontSize": 18,
+			"lineHeight": 28
 		},
 		"media": "(min-width: 1024px)"
 	},

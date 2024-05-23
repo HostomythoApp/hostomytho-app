@@ -6,8 +6,10 @@
   "build": {
     "development": {
       "node": "18.18.0",
-      "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
     },
     "preview": {
       "distribution": "internal"

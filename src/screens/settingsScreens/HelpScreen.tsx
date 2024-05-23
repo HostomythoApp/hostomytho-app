@@ -5,6 +5,7 @@ import { View, Text, ScrollView, ImageBackground, TextInput } from 'react-native
 import { createMessageContact } from "services/api/messages";
 import { useTailwind } from 'tailwind-rn';
 import { useUser } from 'services/context/UserContext';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const HelpScreen = () => {
   const tw = useTailwind();
@@ -67,31 +68,35 @@ const HelpScreen = () => {
             <Text style={tw('text-xl font-bold mt-4 mb-4 font-primary text-center')}>
               Formulaire de contact
             </Text>
-            <View style={tw('w-10/12')}
-            >
-              <TextInput
-                style={tw('border-b border-gray-400 py-2 mt-4 font-primary')}
-                placeholder="Email (obligatoire si vous souhaitez être contacté en retour)"
-                value={email}
-                onChangeText={setEmail}
-              />
-              {emailError && <Text style={tw("text-red-500 font-primary")}>Veuillez remplir ce champ.</Text>}
-              <TextInput
-                style={tw('border-b border-gray-400 py-2 mt-4 font-primary')}
-                placeholder="Objet"
-                value={subject}
-                onChangeText={setSubject}
-              />
-              {subjectError && <Text style={tw("text-red-500 font-primary")}>Veuillez remplir ce champ.</Text>}
-              <TextInput
-                style={tw('border-b border-gray-400 py-2 mt-4 font-primary h-24')}
-                placeholder="Votre message"
-                value={message}
-                onChangeText={setMessage}
-                multiline
-              />
-              {messageError && <Text style={tw("text-red-500 font-primary")}>Veuillez remplir ce champ.</Text>}
-            </View>
+            <KeyboardAwareScrollView>
+              <View style={tw('w-10/12')}>
+
+                <TextInput
+                  style={tw('border-b border-gray-400 py-2 mt-4 font-primary')}
+                  placeholder="Email (obligatoire seulement si vous souhaitez être contacté en retour)"
+                  value={email}
+                  onChangeText={setEmail}
+                />
+                {emailError && <Text style={tw("text-red-500 font-primary")}>Veuillez remplir ce champ.</Text>}
+                <TextInput
+                  style={tw('border-b border-gray-400 py-2 mt-4 font-primary')}
+                  placeholder="Objet"
+                  value={subject}
+                  onChangeText={setSubject}
+                />
+                {subjectError && <Text style={tw("text-red-500 font-primary")}>Veuillez remplir ce champ.</Text>}
+                <TextInput
+                  style={tw('border-b border-gray-400 py-2 mt-4 font-primary h-24')}
+                  placeholder="Votre message"
+                  value={message}
+                  onChangeText={setMessage}
+                  multiline
+                />
+                {messageError && <Text style={tw("text-red-500 font-primary")}>Veuillez remplir ce champ.</Text>}
+              </View>
+            </KeyboardAwareScrollView>
+
+
             <FunctionButton text={"Envoyer"} func={submitContactForm} />
             <Text>
               {feedbackMessage && (

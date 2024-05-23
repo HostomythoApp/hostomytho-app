@@ -56,11 +56,11 @@ const MainBoardScreen = ({ }) => {
                 }
             }
             setMonthlyWinners(winners);
-            setIsLoading(false); 
+            setIsLoading(false);
         };
         fetchMonthlyWinners();
     }, []);
-    
+
 
     const updateOrientation = () => {
         const { width, height } = Dimensions.get('screen');
@@ -99,29 +99,32 @@ const MainBoardScreen = ({ }) => {
         updateUserData();
     }, [user, userNeedsUpdate]);
 
-
     useEffect(() => {
         const messageType = authState.isAuthenticated ? 'home_connected' : 'home_not_connected';
-
+    
         const fetchMessage = async () => {
             try {
                 const message = await getMessageMenu(messageType);
                 setMenuMessage(message);
+    
+                // Définir si le message est lu ou non
                 if (user?.id) {
                     const messageReadStatus = await getMessageReadByUserId(user.id);
                     setMenuMessageRead(messageReadStatus.hasBeenRead);
                 } else {
-                    setMessageExpanded(true);
-                    setMenuMessageRead(true);
+                    setMenuMessageRead(false);
                 }
+    
+                // Définir messageExpanded en fonction du statut de connexion
+                setMessageExpanded(!authState.isAuthenticated); // Message expanded si non connecté
             } catch (error) {
                 console.error(error);
             }
         };
-
+    
         fetchMessage();
-    }, [authState.isAuthenticated]);
-
+    }, [authState.isAuthenticated, user?.id, setMessageExpanded]);
+    
 
     useEffect(() => {
         let timerId: any;
@@ -198,6 +201,7 @@ const MainBoardScreen = ({ }) => {
             setMenuMessageRead(true);
         } else {
             setMessageExpanded(false);
+            setMenuMessageRead(true);
         }
     };
 
@@ -217,7 +221,6 @@ const MainBoardScreen = ({ }) => {
                         </Text>
                     </View>
                 ) : (
-
 
                     <View style={tw("flex-1 items-center")}>
                         {
@@ -252,7 +255,7 @@ const MainBoardScreen = ({ }) => {
                                         </Animated.View>
 
                                     ) : (
-                                        <View style={[tw("bg-white rounded-xl p-4 border border-gray-200 w-full"),
+                                        <View style={[tw("bg-white rounded-xl p-4 border border-gray-200 w-full justify-center"),
                                         {
                                             position: 'relative',
                                             shadowColor: "#000",

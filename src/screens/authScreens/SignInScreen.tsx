@@ -10,6 +10,7 @@ import { useUser } from "services/context/UserContext";
 import { RootStackNavigationProp } from "navigation/Types";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { Dimensions } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const LoginScreen = () => {
     const tw = useTailwind();
@@ -60,39 +61,41 @@ const LoginScreen = () => {
                     <CustomHeaderEmpty title="Connexion" backgroundColor="bg-whiteTransparent" />
 
                     <View style={tw('mx-auto w-full max-w-[740px] pt-20 items-center')}>
-                        <View style={{ ...tw('mb-2 p-8 m-4 items-center rounded-lg w-full'), backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
+                        <KeyboardAwareScrollView>
+                            <View style={{ ...tw('mb-2 p-8 m-4 items-center rounded-lg w-full'), backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
 
-                            <MainInput
-                                text={"Pseudo ou adresse email"}
-                                value={username}
-                                setter={setUsername}
-                                hide={false}
-                                onSubmitEditing={submit}
-                                isError={usernameError}
-                                width={inputWidth}
-                                maxWidth={600}
-                            />
-                            {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
-                            <MainInput
-                                text={"Mot de passe"}
-                                value={password}
-                                setter={setPassword}
-                                hide={true}
-                                onSubmitEditing={submit}
-                                isError={passwordError}
-                                width={inputWidth}
-                                maxWidth={600}
-                            />
-                            {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                                <MainInput
+                                    text={"Pseudo ou adresse email"}
+                                    value={username}
+                                    setter={setUsername}
+                                    hide={false}
+                                    onSubmitEditing={submit}
+                                    isError={usernameError}
+                                    width={inputWidth}
+                                    maxWidth={600}
+                                />
+                                {usernameError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
+                                <MainInput
+                                    text={"Mot de passe"}
+                                    value={password}
+                                    setter={setPassword}
+                                    hide={true}
+                                    onSubmitEditing={submit}
+                                    isError={passwordError}
+                                    width={inputWidth}
+                                    maxWidth={600}
+                                />
+                                {passwordError && <Text style={tw("text-red-500")}>Veuillez remplir ce champ.</Text>}
 
-                            <Text>
-                                {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
-                            </Text>
-                            <FunctionButton text={"Connexion"} func={submit} width={inputWidth} />
-                            <TouchableOpacity onPress={() => navigation.navigate("MotDePasseOublie")}>
-                                <Text style={tw("text-blue-500 mt-2 font-primary")}>Mot de passe oublié ?</Text>
-                            </TouchableOpacity>
-                        </View>
+                                <Text>
+                                    {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
+                                </Text>
+                                <FunctionButton text={"Connexion"} func={submit} width={inputWidth} />
+                                <TouchableOpacity onPress={() => navigation.navigate("MotDePasseOublie")}>
+                                    <Text style={tw("text-blue-500 mt-2 font-primary")}>Mot de passe oublié ?</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </KeyboardAwareScrollView>
                     </View>
                 </ScrollView>
             </View>
