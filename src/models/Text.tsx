@@ -9,7 +9,8 @@ export interface Text {
   is_condition_specification_test?: boolean,
   is_negation_specification_test?: boolean,
   is_plausibility_test?: boolean,
-  includeSentences?: boolean
+  includeSentences?: boolean,
+  reason_for_rate: string;
 }
 
 // TODO ajouter le model ErrorDetail
