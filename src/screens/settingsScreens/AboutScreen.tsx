@@ -31,7 +31,10 @@ const AboutScreen = ({ }) => {
                 Avant de jouer, lisez la <TouchableOpacity onPress={() => navigation.navigate('PolitiqueDeConfidentialite')}><Text style={{ color: 'blue' }}>charte d'HostoMytho</Text>
                 </TouchableOpacity>.
                 {"\n\n"}
-                L'application est disponible sur iOS, Android, et également accessible via le web.
+                L'application est disponible sur les différents stores, et sur le web à l'adresse <Text style={{ color: 'blue' }}
+                  onPress={() => Linking.openURL('https://hostomytho.atilf.fr')}>
+                  https://hostomytho.atilf.fr
+                </Text>
               </Text>
 
               <Text style={tw('text-3xl font-bold mt-6 mb-2 font-primary')}>
@@ -102,10 +105,10 @@ const AboutScreen = ({ }) => {
               </View>
 
               <Text style={tw('font-primary text-lg mt-2')}>
-                Merci à l'            
+                Merci à l'
                 <Text style={{ color: 'blue' }}
                   onPress={() => Linking.openURL('https://www.atilf.fr/')}>
-                   ATILF
+                  ATILF
                 </Text> pour l'hébergement de cette application.
               </Text>
 

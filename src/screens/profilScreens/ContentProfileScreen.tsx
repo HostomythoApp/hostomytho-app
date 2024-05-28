@@ -250,13 +250,15 @@ const ContentProfileScreen = (props: any) => {
                     </TouchableOpacity> */}
                     <WeirdButton />
                     <TouchableOpacity
-                        style={tw(`flex-row items-center justify-center ${isMobile ? 'w-full ml-0' : 'w-[32%] ml-2'} bg-primary py-2 rounded`)}
+                        style={tw(`flex-row items-center justify-center ${isMobile ? 'ml-0 mt-2' : 'ml-2'} bg-primary w-[32%] py-2 rounded`)}
                         onPress={() => navigation.navigate('ParametreProfil')}
                     >
                         <FontAwesome5 name='cog' size={24} color='white' />
                         <Text style={tw('text-white ml-2 font-primary')}>Paramètres du compte</Text>
                     </TouchableOpacity>
                 </View>
+                <View style={tw(' h-20')}
+                ></View>
 
             </View>
         </View >

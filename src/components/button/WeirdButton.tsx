@@ -17,7 +17,7 @@ const WeirdButton = () => {
     };
 
     return (
-        <Animated.View style={[tw('w-[32%] py-2  bg-secondary rounded mx-2 '), { transform: [{ scaleY }] }]}>
+        <Animated.View style={[tw('w-[32%] py-2 bg-secondary rounded mx-2'), { transform: [{ scaleY }] }]}>
             <TouchableOpacity
                 style={tw(`flex-row items-center justify-center `)}
                 onPress={onPressHandler}
