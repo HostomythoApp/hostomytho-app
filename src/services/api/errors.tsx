@@ -3,6 +3,22 @@ import api from "./index";
 import { UserErrorDetail } from "models/UserErrorDetail";
 import { UserTypingErrors } from "models/UserTypingErrors";
 
+export const sendResponse = async (data: {
+  userErrorDetailId: number;
+  selectedErrorType: number;
+  isTutorial: boolean;
+  isInvisibleTest: boolean;
+  userId: number;
+}): Promise<any> => {
+  try {
+    const response = await api.post("/errors/sendResponse", data);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de la réponse :", error);
+    throw error;
+  }
+};
+
 export const getTypesError = async (): Promise<ErrorType[] | any> => {
   try {
     const response = await api.get("/errors/getTypesError");

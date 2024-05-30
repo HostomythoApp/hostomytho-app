@@ -5,7 +5,7 @@ import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
 import { getTextTestWithErrorValidated, getTextWithErrorValidated, getTextWithErrorValidatedById, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
-import { createUserTypingError, getTypeByErrorId, getTypesError, isErrorTest } from "services/api/errors";
+import { createUserTypingError, getTypeByErrorId, getTypesError, isErrorTest, sendResponse } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { MaterialIcons } from '@expo/vector-icons';
 import InfoText from "components/InfoText";
@@ -18,12 +18,13 @@ import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
 import WikiButton from "components/button/WikiButton";
+import { Achievement } from "models/Achievement";
 
 const MythoTypoScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithError>();
   const [errorTypes, setErrorTypes] = useState<ErrorType[]>([]);
-  const { user, completeTutorial } = useUser();
+  const { user, completeTutorial, setUser, unlockAchievementModal, unlockSkinModal } = useUser();
   const [selectedErrorType, setSelectedErrorType] = useState<number>(0);
   const { updateUserStats } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
@@ -215,50 +216,50 @@ const MythoTypoScreen = ({ }) => {
   // *****************************************************
 
   const onNextCard = async () => {
+  
     if (!text) {
       console.error("Aucune erreur à traiter.");
       return;
     }
-
+  
     try {
-      const isTestResult = await isErrorTest(text.idUserErrorDetail);
-      if (isTestResult.isTest) {
-        const errorTypeData = await getTypeByErrorId(text.idUserErrorDetail);
-        const isUserCorrect = selectedErrorType === errorTypeData.id;
-
-        if (isUserCorrect) {
-          if (!isTutorial) {
-            updateUserStats(3, 1, 2);
-          }
-          goToNextSentence(isUserCorrect);
-        } else {
-          if (!isTutorial) {
-            if (isInvisibleTest) {
-              updateUserStats(3, 1, 2);
-              goToNextSentence(false);
-            } else {
-              updateUserStats(0, 0, -1);
-              const messageCorrection = getCorrectionMessage(errorTypeData.id);
-              setShowMessage(true);
-              setMessageContent(messageCorrection);
-            }
-          } else {
-            const messageCorrection = getCorrectionMessage(errorTypeData.id);
-            setShowMessage(true);
-            setMessageContent(messageCorrection);
-          }
+      const result = await sendResponse({
+        userErrorDetailId: text.idUserErrorDetail,
+        selectedErrorType,
+        isTutorial,
+        isInvisibleTest,
+        userId: 27,
+      });
+  
+      if (result.success) {
++        // @ts-ignore
+        setUser((prevUser: any) => ({
+          ...prevUser,
+          points: result.newPoints,
+          catch_probability: result.newCatchProbability,
+          trust_index: result.newTrustIndex,
+          coeffMulti: result.newCoeffMulti
+        }));
+  
+        // Affiche les nouvelles réalisations si elles existent
+        if (result.newAchievements && result.newAchievements.length > 0) {
+          result.newAchievements.forEach((achievement: Achievement) => {
+            unlockAchievementModal(achievement);
+          });
         }
-      } else {
-        updateUserStats(3, 1, 0);
-        const userTypingErrorData = {
-          // @ts-ignore
-          user_id: user.id,
-          user_error_details_id: text.idUserErrorDetail,
-          error_type_id: selectedErrorType,
-        };
-        // TODO augmenter poids erreur concernée
-        await createUserTypingError(userTypingErrorData);
+  
+        // Gérer les modals de skins si nécessaire
+        if (result.showSkinModal) {
+          unlockSkinModal(result.skinData);
+        }
+  
         goToNextSentence(true);
+      } else {
+        if (result.showMessage) {
+          setShowMessage(true);
+          setMessageContent(result.message);
+        }
+        goToNextSentence(false);
       }
     } catch (error) {
       console.error("Erreur lors de la vérification de l'erreur suivante :", error);
