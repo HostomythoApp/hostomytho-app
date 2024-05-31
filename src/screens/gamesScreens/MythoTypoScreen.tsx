@@ -94,9 +94,11 @@ const MythoTypoScreen = ({ }) => {
       if (user) {
 
         const randomNumber = Math.floor(Math.random() * 100);
+        console.log(randomNumber);
 
         // 20% de chance d'avoir un test
-        if (randomNumber < 20) {
+        // TODO remettre 20%
+        if (randomNumber < 100) {
           response = await getTextTestWithErrorValidated();
         } else {
           response = await getTextWithErrorValidatedNotPlayed(user.id);
@@ -216,53 +218,50 @@ const MythoTypoScreen = ({ }) => {
   // *****************************************************
 
   const onNextCard = async () => {
-  
     if (!text) {
       console.error("Aucune erreur à traiter.");
       return;
     }
-  
-    try {
-      const result = await sendResponse({
-        userErrorDetailId: text.idUserErrorDetail,
-        selectedErrorType,
-        isTutorial,
-        isInvisibleTest,
-        userId: 27,
-      });
-  
-      if (result.success) {
-+        // @ts-ignore
-        setUser((prevUser: any) => ({
-          ...prevUser,
-          points: result.newPoints,
-          catch_probability: result.newCatchProbability,
-          trust_index: result.newTrustIndex,
-          coeffMulti: result.newCoeffMulti
-        }));
-  
-        // Affiche les nouvelles réalisations si elles existent
-        if (result.newAchievements && result.newAchievements.length > 0) {
-          result.newAchievements.forEach((achievement: Achievement) => {
-            unlockAchievementModal(achievement);
-          });
+    if (user) {
+      try {
+        const result = await sendResponse({
+          userErrorDetailId: text.idUserErrorDetail,
+          selectedErrorType,
+          userId: user.id,
+        });
+
+        if (result.success) {
+          // TODO gérer la nouvelle réponse et le gain de skin, et le test caché.
+          // @ts-ignore
+          setUser((prevUser: any) => ({
+            ...prevUser,
+            points: result.newPoints,
+            catch_probability: result.newCatchProbability,
+            trust_index: result.newTrustIndex,
+            coeffMulti: result.newCoeffMulti
+          }));
+
+          if (result.newAchievements && result.newAchievements.length > 0) {
+            result.newAchievements.forEach((achievement: Achievement) => {
+              unlockAchievementModal(achievement);
+            });
+          }
+
+          if (result.showSkinModal) {
+            unlockSkinModal(result.skinData);
+          }
+
+          goToNextSentence(true);
+        } else {
+          if (result.showMessage) {
+            setShowMessage(true);
+            setMessageContent(result.message);
+          }
+          goToNextSentence(false);
         }
-  
-        // Gérer les modals de skins si nécessaire
-        if (result.showSkinModal) {
-          unlockSkinModal(result.skinData);
-        }
-  
-        goToNextSentence(true);
-      } else {
-        if (result.showMessage) {
-          setShowMessage(true);
-          setMessageContent(result.message);
-        }
-        goToNextSentence(false);
+      } catch (error) {
+        console.error("Erreur lors de la vérification de l'erreur suivante :", error);
       }
-    } catch (error) {
-      console.error("Erreur lors de la vérification de l'erreur suivante :", error);
     }
   };
 

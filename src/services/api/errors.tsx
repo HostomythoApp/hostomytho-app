@@ -6,8 +6,6 @@ import { UserTypingErrors } from "models/UserTypingErrors";
 export const sendResponse = async (data: {
   userErrorDetailId: number;
   selectedErrorType: number;
-  isTutorial: boolean;
-  isInvisibleTest: boolean;
   userId: number;
 }): Promise<any> => {
   try {
