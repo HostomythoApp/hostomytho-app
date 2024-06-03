@@ -5,7 +5,7 @@ import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
 import { getTextTestWithErrorValidated, getTextWithErrorValidated, getTextWithErrorValidatedById, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
-import { createUserTypingError, getTypeByErrorId, getTypesError, isErrorTest, sendResponse } from "services/api/errors";
+import { getTypesError, sendResponse } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { MaterialIcons } from '@expo/vector-icons';
 import InfoText from "components/InfoText";
@@ -13,7 +13,7 @@ import CustomModal from "components/modals/CustomModal";
 import { getModalHelpContent, getTutorialContentForStep } from "tutorials/tutorialErrorTypeGame";
 import HelpButton from "components/button/HelpButton";
 import NextButton from "components/button/NextButton";
-import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
+import { isTutorialCompleted } from "services/api/games";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
@@ -94,11 +94,9 @@ const MythoTypoScreen = ({ }) => {
       if (user) {
 
         const randomNumber = Math.floor(Math.random() * 100);
-        console.log(randomNumber);
 
         // 20% de chance d'avoir un test
-        // TODO remettre 20%
-        if (randomNumber < 100) {
+        if (randomNumber < 20) {
           response = await getTextTestWithErrorValidated();
         } else {
           response = await getTextWithErrorValidatedNotPlayed(user.id);
@@ -231,7 +229,7 @@ const MythoTypoScreen = ({ }) => {
         });
 
         if (result.success) {
-          // TODO gérer la nouvelle réponse et le gain de skin, et le test caché.
+          // TODO et le gain de skin,
           // @ts-ignore
           setUser((prevUser: any) => ({
             ...prevUser,
@@ -253,11 +251,11 @@ const MythoTypoScreen = ({ }) => {
 
           goToNextSentence(true);
         } else {
-          if (result.showMessage) {
-            setShowMessage(true);
-            setMessageContent(result.message);
+          setShowMessage(true);
+          setMessageContent(result.message);
+          if (isInvisibleTest) {
+            goToNextSentence(false);
           }
-          goToNextSentence(false);
         }
       } catch (error) {
         console.error("Erreur lors de la vérification de l'erreur suivante :", error);
