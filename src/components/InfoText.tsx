@@ -2,7 +2,7 @@ import { TestPlausibilityError } from 'models/TestPlausibilityError';
 import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { getTestPlausibilityErrorByTextId } from 'services/api/plausibility';
-import { getTestSpecificationsByTextId } from 'services/api/testSpecifications';
+// import { getTestSpecificationsByTextId } from 'services/api/testSpecifications';
 import { useTailwind } from "tailwind-rn";
 
 interface InfoTextProps {
@@ -22,7 +22,7 @@ interface TestSpecification {
 
 const InfoText: React.FC<InfoTextProps> = ({ num, origin, test_plausibility, is_plausibility_test, is_negation_test, textId, idUserErrorDetail, vote_weight }) => {
     const [isInfoVisible, setInfoVisible] = useState(false);
-    const [testSpecifications, setTestSpecifications] = useState<TestSpecification[]>([]);
+    // const [testSpecifications, setTestSpecifications] = useState<TestSpecification[]>([]);
     const [testPlausibilityError, setTestPlausibilityError] = useState<TestPlausibilityError[]>([]);
     const tw = useTailwind();
 
@@ -30,8 +30,8 @@ const InfoText: React.FC<InfoTextProps> = ({ num, origin, test_plausibility, is_
         const fetchSpecifications = async () => {
             if (is_negation_test) {
                 try {
-                    const specifications = await getTestSpecificationsByTextId(textId, 'negation');
-                    setTestSpecifications(specifications);
+                    // const specifications = await getTestSpecificationsByTextId(textId, 'negation');
+                    // setTestSpecifications(specifications);
                 } catch (error) {
                     console.error(error);
                 }
@@ -86,14 +86,14 @@ const InfoText: React.FC<InfoTextProps> = ({ num, origin, test_plausibility, is_
                     {is_negation_test && (
                         <>
                             <Text style={tw('mb-1 text-sm')}>C'est un test de négation</Text>
-                            {testSpecifications.length > 0 && (
+                            {/* {testSpecifications.length > 0 && (
                                 <>
                                     <Text style={tw('mb-1 text-sm')}>Les négations à trouver sont:</Text>
                                     {testSpecifications.map((spec, index) => (
                                         <Text key={index} style={tw('ml-2 mb-1 text-sm')}>- {spec.content}</Text>
                                     ))}
                                 </>
-                            )}
+                            )} */}
                         </>
                     )}
                 </View>

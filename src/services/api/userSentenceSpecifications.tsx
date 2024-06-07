@@ -1,6 +1,20 @@
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import api from "./index";
 
+export const sendResponse = async (data: {
+  textId: number;
+  userSentenceSpecifications: UserSentenceSpecification[];
+  userId: number;
+}): Promise<any> => {
+  try {
+    const response = await api.post("/userSentenceSpecifications/sendResponse", data);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de la réponse :", error);
+    throw error;
+  }
+};
+
 export const getNumberSpecifications = async (): Promise<number> => {
   try {
     return await api.get(`/userSentenceSpecifications/getNumberSpecifications`);

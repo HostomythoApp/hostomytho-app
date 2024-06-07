@@ -37,7 +37,6 @@ const TemporalEntityScreen = ({ }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
-  const { updateUserStats } = useUser();
 
   function shuffleArray(array: any) {
     const newArr = [...array];

@@ -19,7 +19,7 @@ export interface Criminal {
 
 const InvestigationScreen = () => {
     const tw = useTailwind();
-    const { user, incrementCatchProbability, resetCatchProbability, updateUserStats, unlockAchievementModal } = useUser();
+    const { user, incrementCatchProbability, resetCatchProbability, unlockAchievementModal } = useUser();
     const [investigationProgress, setInvestigationProgress] = useState<number>(0);
     const [resultModalVisible, setResultModalVisible] = useState(false);
     const [arrestSuccess, setArrestSuccess] = useState<boolean | null>(null);
@@ -58,7 +58,8 @@ const InvestigationScreen = () => {
                     setArrestDescription(catchResult.catchEntry.descriptionArrest);
                     if (catchResult.catchEntry.allCriminalsCaught) {
                         setArrestDescription("Tous les criminels ont été arrêtés. Vous gagnez 5 points supplémentaires.");
-                        updateUserStats(5, 0, 0);
+                        // TODO à faire
+                        // updateUserStats(5, 0, 0);
                     }
                 } else {
                     console.error('Failed to catch the criminal:', catchResult.error);

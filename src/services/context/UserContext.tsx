@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTailwind } from "tailwind-rn";
-import { getUserById, updateUserCatchProbability, restartCatchProbability, updateUserStatsApi, updateTutorialProgress } from "services/api/user";
+import { getUserById, updateUserCatchProbability, restartCatchProbability, updateTutorialProgress } from "services/api/user";
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
@@ -22,7 +22,6 @@ interface UserContextProps {
   resetCatchProbability: (userId: number) => Promise<void>;
   incrementTutorialProgress: () => void;
   resetUserState: () => void;
-  updateUserStats: (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number) => void;
   equippedSkins: Skin[];
   setEquippedSkins: React.Dispatch<React.SetStateAction<Skin[]>>;
   unlockAchievementModal: (achievement: Achievement) => Promise<void>;
@@ -31,6 +30,7 @@ interface UserContextProps {
   completeTutorial: (gameId: number, tutorialName: string) => Promise<void>;
   resetTutorialsCompleted: () => void;
   unlockSkinModal: (skin: Skin) => void;
+  displayAchievements: (newAchievements: any, showSkinModal: boolean, skinData: any) => void;
 }
 interface UserProviderProps {
   children: React.ReactNode;
@@ -212,76 +212,33 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUserStats = async (pointsToAdd: number, percentageToAdd: number, trustIndexIncrement: number, isBonus: boolean = false) => {
+  const displayAchievements = async (newAchievements: any, showSkinModal: boolean, skinData: any) => {
 
-    if (user) {
-      const oldPoints = user.points;
-
-      try {
-        let coeffTrustIndex = user.trust_index / 80;
-        coeffTrustIndex = Math.max(coeffTrustIndex, 0);
-        const additionalPoints = Math.round(pointsToAdd * coeffTrustIndex * user.coeffMulti);
-        user.points += additionalPoints;
-
-        const response = await updateUserStatsApi(user.id, percentageToAdd, additionalPoints, trustIndexIncrement);
-        const newPoints = response.data.newPoints;
-        const newCatchProbability = response.data.newCatchProbability;
-        const newTrustIndex = response.data.newTrustIndex;
-        const newCoeffMulti = response.data.newCoeffMulti;
-
-        // Mettre à jour l'état de l'utilisateur
-        setUser((prevUser: any) => ({
-          ...prevUser,
-          points: newPoints,
-          catch_probability: newCatchProbability,
-          trust_index: newTrustIndex,
-          coeffMulti: newCoeffMulti
-        }));
-
-        let shouldDelaySkinModal = false;
-
-        // Affiche les nouvelles réalisations si elles existent
-        if (response.data.newAchievements && response.data.newAchievements.length > 0) {
-          response.data.newAchievements.forEach((achievement: Achievement) => {
-            unlockAchievementModal(achievement);
-          });
-          shouldDelaySkinModal = true; // Retarde l'affichage de la modal des skins si des hauts faits sont affichés
+    let shouldDelaySkinModal = false;
+    if (newAchievements && newAchievements.length > 0) {
+      newAchievements.forEach((achievement: Achievement) => {
+        unlockAchievementModal(achievement);
+      });
+      shouldDelaySkinModal = true; // Retarde l'affichage de la modal des skins si des hauts faits sont affichés
+    }
+    if (showSkinModal) {
+      if (skinData.allSkinsUnlocked) {
+        if (shouldDelaySkinModal) {
+          setTimeout(() => {
+            unlockPointsModal();
+          }, 6000);
+        } else {
+          unlockPointsModal();
         }
-
-        // Vérifiez si l'utilisateur a atteint un nouveau palier pour les skins
-        const oldRewardTier = Math.floor(oldPoints / 100);
-        const newRewardTier = Math.floor(newPoints / 100);
-
-        if (newRewardTier > oldRewardTier) {
-          const skinResponse = await getRandomSkin(user.id);
-
-          if (skinResponse.allSkinsUnlocked) {
-            if (shouldDelaySkinModal) {
-              setTimeout(() => {
-                unlockPointsModal();
-              }, 6000);
-            } else {
-              unlockPointsModal();
-
-            }
-
-            if (!isBonus) {
-              updateUserStats(5, 0, 0, true);
-            }
-          } else if (shouldDelaySkinModal) {
-            setTimeout(() => {
-              unlockSkinModal(skinResponse);
-            }, 6000);
-          } else {
-            unlockSkinModal(skinResponse);
-          }
-        }
-      } catch (error) {
-        console.error("Error updating user stats:", error);
+      } else if (shouldDelaySkinModal) {
+        setTimeout(() => {
+          unlockSkinModal(skinData);
+        }, 6000);
+      } else {
+        unlockSkinModal(skinData);
       }
     }
   };
-
 
   const resetCatchProbability = async () => {
     if (user) {
@@ -310,7 +267,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, incrementTutorialProgress, updateUserStats, unlockSkinModal, equippedSkins, setEquippedSkins, unlockAchievementModal, tutorialsCompleted, fetchTutorialsCompleted, completeTutorial, resetTutorialsCompleted }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, incrementTutorialProgress, unlockSkinModal, equippedSkins, setEquippedSkins, unlockAchievementModal, tutorialsCompleted, fetchTutorialsCompleted, completeTutorial, resetTutorialsCompleted, displayAchievements }}>
       {children}
     </UserContext.Provider>
   );

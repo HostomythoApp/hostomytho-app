@@ -32,7 +32,7 @@ const MythoNoFullTextScreen = ({ }) => {
   const [text, setText] = useState<TextWithTokens>();
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
-  const { updateUserStats } = useUser();
+  // const { updateUserStats } = useUser();
   const [isSelectionStarted, setSelectionStarted] = useState(false);
   const [nextId, setNextId] = useState(0);
   const { user } = useUser();
@@ -220,7 +220,6 @@ const MythoNoFullTextScreen = ({ }) => {
     setLoading(true);
     const addLengthPoints: number = text.length / 60;
 
-    // TODO Il faudrait mettre le is_negation_spec_test dans le checkUserSelection, pour que ce ne soit pas visible dans le console.log
     if (text?.is_negation_specification_test) {
       const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
       if (!checkResult.isValid) {
@@ -239,7 +238,7 @@ const MythoNoFullTextScreen = ({ }) => {
           messageHeader = "Oh non, il n'y avait rien à trouver ici";
         }
 
-        if (user) setTimeout(() => updateUserStats(0, 0, -1), 100);
+        // if (user) setTimeout(() => updateUserStats(0, 0, -1), 100);
         setMessageContent(`${messageHeader}\n${correctSpecification}`);
         if (!isInvisibleTest) {
           setShowMessage(true);
@@ -252,13 +251,13 @@ const MythoNoFullTextScreen = ({ }) => {
       } else {
         scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
         if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 2, 2), 100);
+          // if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 2, 2), 100);
         }
       }
     } else {
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
       if (!isTutorial) {
-        if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 2, 0), 100);
+        // if (user) setTimeout(() => updateUserStats(5 + addLengthPoints, 2, 0), 100);
         // Création des specifications dans la bdd
         for (let userSentenceSpecification of userSentenceSpecifications) {
           const { id, ...rest } = userSentenceSpecification;

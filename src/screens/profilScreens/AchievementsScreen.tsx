@@ -22,7 +22,6 @@ const AchievementsScreen = () => {
 
                 const userId = user.id;
                 const achievementsData = await getAchievementsWithUserStatus(userId);
-                console.log(achievementsData);
 
                 setAllAchievements(achievementsData);
                 setIsLoading(false);

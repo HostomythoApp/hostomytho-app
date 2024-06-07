@@ -32,7 +32,6 @@ const TypeSentenceGameScreen = ({ }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [temporalEntities, setTemporalEntities] = useState<TemporalEntity[]>([]);
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
-  const { updateUserStats } = useUser();
   const [startWordIndex, setStartWordIndex] = useState<number | null>(null);
   const [endWordIndex, setEndWordIndex] = useState<number | null>(null);
 
@@ -179,7 +178,6 @@ const TypeSentenceGameScreen = ({ }) => {
       setCurrentIndex(currentIndex + 1);
       setSelectedButton(null);
       setTemporalEntities([]);
-      // updateUserStats(5, 1);
     }
   };
 

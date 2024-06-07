@@ -18,7 +18,6 @@ const TemporalLinkGameScreen = () => {
   const [entitiesWithColors, setEntitiesWithColors] = useState<(TemporalEntity & { color: string })[]>([]);
   const upperEntities = entitiesWithColors.slice(0, Math.ceil(entitiesWithColors.length / 2));
   const lowerEntities = entitiesWithColors.slice(Math.ceil(entitiesWithColors.length / 2));
-  const { updateUserStats } = useUser();
 
   useEffect(() => {
     const entitiesWithAssignedColors = data.sentences[3].temporalEntities.map((entity, index) => ({

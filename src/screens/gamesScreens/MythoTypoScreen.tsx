@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { ErrorType } from "models/ErrorType";
@@ -24,9 +24,8 @@ const MythoTypoScreen = ({ }) => {
   const tw = useTailwind();
   const [text, setText] = useState<TextWithError>();
   const [errorTypes, setErrorTypes] = useState<ErrorType[]>([]);
-  const { user, completeTutorial, setUser, unlockAchievementModal, unlockSkinModal } = useUser();
+  const { user, completeTutorial, setUser, displayAchievements } = useUser();
   const [selectedErrorType, setSelectedErrorType] = useState<number>(0);
-  const { updateUserStats } = useUser();
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const window = Dimensions.get('window');
@@ -239,22 +238,15 @@ const MythoTypoScreen = ({ }) => {
             coeffMulti: result.newCoeffMulti
           }));
 
-          if (result.newAchievements && result.newAchievements.length > 0) {
-            result.newAchievements.forEach((achievement: Achievement) => {
-              unlockAchievementModal(achievement);
-            });
-          }
-
-          if (result.showSkinModal) {
-            unlockSkinModal(result.skinData);
-          }
+          displayAchievements(result.newAchievements, result.showSkinModal, result.skinData); 
 
           goToNextSentence(true);
         } else {
-          setShowMessage(true);
-          setMessageContent(result.message);
           if (isInvisibleTest) {
             goToNextSentence(false);
+          } else {
+            setShowMessage(true);
+            setMessageContent(result.message);
           }
         }
       } catch (error) {

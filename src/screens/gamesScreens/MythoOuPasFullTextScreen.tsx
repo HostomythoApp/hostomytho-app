@@ -44,7 +44,7 @@ const MythoOuPasFullTextScreen = () => {
   const [nextId, setNextId] = useState(0);
   const [colorIndex, setColorIndex] = useState(0);
   const window = Dimensions.get('window');
-  const { user, updateUserStats } = useUser();
+  const { user } = useUser();
   const [text, setText] = useState<TextWithTokens>();
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
   const [messageContent, setMessageContent] = useState<JSX.Element>(<></>);
@@ -539,7 +539,6 @@ const MythoOuPasFullTextScreen = () => {
 
     setTimeout(() => {
       const addLengthPoints: number = text && typeof text.length === 'number' ? text.length / 60 : 0;
-      updateUserStats(pointsEarned + addLengthPoints, catchProbability, trustEarned);
     }, 100);
   }
 

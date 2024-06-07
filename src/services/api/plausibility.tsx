@@ -1,6 +1,22 @@
 import { TestPlausibilityError } from "models/TestPlausibilityError";
 import api from "./index";
+import { UserErrorDetail } from "models/UserErrorDetail";
 
+
+export const sendResponse = async (data: {
+  textId: number,
+  userErrorDetails: UserErrorDetail[],
+  userRateSelected: number,
+  userId: number,
+}): Promise<any> => {
+  try {
+    const response = await api.post("/plausibility/sendResponse", data);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de la réponse :", error);
+    throw error;
+  }
+};
 
 export const getTestPlausibilityErrorByTextId = async (textId: number): Promise<TestPlausibilityError[]> => {
   try {

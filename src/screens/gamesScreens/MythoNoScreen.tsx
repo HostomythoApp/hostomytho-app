@@ -1,20 +1,19 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking, BackHandler } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextTestNegation, getTextWithTokensById, getSmallTextWithTokensNotPlayed, getSmallTextWithTokens } from "services/api/texts";
-import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
+import { getTextTestNegation, getTextWithTokensById, getSmallTextWithTokensNotPlayed } from "services/api/texts";
+import { sendResponse } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
-import { checkUserSelection } from 'utils/gameFunctions';
 import InfoText from "components/InfoText";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { getModalHelpContent, getTutorialContentForStep } from "tutorials/tutorialNegationGame";
 import HelpButton from "components/button/HelpButton";
 import CustomModal from "components/modals/CustomModal";
-import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
+import { isTutorialCompleted } from "services/api/games";
 import NextButton from "components/button/NextButton";
 import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
@@ -32,10 +31,9 @@ const MythoNoScreen = ({ }) => {
   const [text, setText] = useState<TextWithTokens>();
   const [userSentenceSpecifications, setUserSentenceSpecifications] = useState<UserSentenceSpecification[]>([]);
   const [colorIndex, setColorIndex] = useState(0);
-  const { updateUserStats } = useUser();
   const [isSelectionStarted, setSelectionStarted] = useState(false);
   const [nextId, setNextId] = useState(0);
-  const { user, completeTutorial } = useUser();
+  const { user, completeTutorial, setUser, displayAchievements } = useUser();
   const scrollViewRef = useRef<ScrollView | null>(null);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -55,6 +53,7 @@ const MythoNoScreen = ({ }) => {
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
   const [wikiMode, setWikiMode] = useState(false);
+  const [isButtonNextVisible, setIsButtonNextVisible] = useState(true);
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -104,11 +103,16 @@ const MythoNoScreen = ({ }) => {
       let response;
       if (user) {
         const randomNumber = Math.floor(Math.random() * 100);
+
         // 20% de chance d'avoir un test
         if (randomNumber < 20) {
           response = await getTextTestNegation();
+          // response = await getTextWithTokensById(105);
         } else {
           response = await getSmallTextWithTokensNotPlayed(user.id, 'plausibility');
+          // response = await getTextWithTokensById(105);
+          // Erreur avec 389 aussi
+
         }
       } else {
         // Si l'utilisateur n'est pas connecté, récupérer un texte de test par défaut
@@ -216,63 +220,61 @@ const MythoNoScreen = ({ }) => {
 
   // *****************************************************
 
-
   const onNextCard = async () => {
+
     if (!text) {
-      console.error("Aucune erreur à traiter.");
+      console.error("Aucune spécification à traiter.");
       return;
     }
 
     setLoading(true);
-    if (text?.is_negation_specification_test) {
-      const checkResult = await checkUserSelection(text.id, userSentenceSpecifications, 'negation');
-      if (!checkResult.isValid) {
-        const correctSpecification = checkResult.testSpecifications.map(spec => `• ${spec.content}`).join('\n');
-        const allPositions = checkResult.testSpecifications.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
-
-        setText(currentText => {
-          if (!currentText) return currentText;
-          return updateTokensColor(currentText, allPositions);
+    if (user) {
+      setIsButtonNextVisible(false);
+      try {
+        const result = await sendResponse({
+          textId: text.id,
+          userSentenceSpecifications,
+          userId: user.id,
         });
 
-        let messageHeader;
-        if (checkResult.testSpecifications.length > 0) {
-          messageHeader = "Oups, raté! Voilà les négations qu'il fallait trouver :";
-        } else {
-          messageHeader = "Oh non, il n'y avait rien à trouver ici";
-        }
+        if (result.success) {
+          // @ts-ignore
+          setUser((prevUser: any) => ({
+            ...prevUser,
+            points: result.newPoints,
+            catch_probability: result.newCatchProbability,
+            trust_index: result.newTrustIndex,
+            coeffMulti: result.newCoeffMulti,
+          }));
 
-        setMessageContent(`${messageHeader}\n${correctSpecification}`);
-        if (!isInvisibleTest) {
-          setShowMessage(true);
+          displayAchievements(result.newAchievements, result.showSkinModal, result.skinData);
+
+          goToNextSentence();
         } else {
-          goToNextSentence(false);
+          if (isInvisibleTest) {
+            goToNextSentence(false);
+          } else {
+            setShowMessage(true);
+            setMessageContent(result.message);
+            const allPositions = Array.from(new Set(result.correctPositions.flat()));
+            setText(currentText => {
+              if (!currentText) return currentText;
+              // @ts-ignore
+              return updateTokensColor(currentText, allPositions);
+            });
+          }
+
         }
+      } catch (error) {
+        console.error("Erreur lors de la vérification de la spécification suivante :", error);
+      } finally {
         setLoading(false);
         setSelectionStarted(false);
-
-        if (user) setTimeout(() => updateUserStats(0, 0, -1), 100);
-        return;
-      } else {
-        const additionalPoints = checkResult.testSpecifications.length;
-        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-        if (!isTutorial) {
-          if (user) setTimeout(() => updateUserStats(5 + additionalPoints, 1, 2), 100);
-        }
-      }
-    } else {
-      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      if (!isTutorial) {
-        const additionalPoints = userSentenceSpecifications.length; 
-        if (user) setTimeout(() => updateUserStats(5 + additionalPoints, 1, 0), 100);
+        setTimeout(() => {
+          setIsButtonNextVisible(true);
+        }, 2000);
       }
     }
-
-    for (let userSentenceSpecification of userSentenceSpecifications) {
-      const { id, ...rest } = userSentenceSpecification;
-      await createUserSentenceSpecification(rest);
-    }
-    goToNextSentence();
   };
 
   const goToNextSentence = async (isCorrect = true) => {
@@ -596,7 +598,8 @@ const MythoNoScreen = ({ }) => {
             </TouchableOpacity>
           )}
 
-          {!showMessage &&
+
+          {!showMessage && isButtonNextVisible &&
             <TouchableOpacity
               disabled={isTutorial && (isFirstClickValidate || tutorialFailed)}
               style={[
@@ -618,6 +621,8 @@ const MythoNoScreen = ({ }) => {
               </View>
             </TouchableOpacity>
           }
+
+
         </View>
         {userSentenceSpecifications.length > 0 && (
           <TouchableOpacity
