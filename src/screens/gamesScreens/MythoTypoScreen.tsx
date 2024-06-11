@@ -228,7 +228,6 @@ const MythoTypoScreen = ({ }) => {
         });
 
         if (result.success) {
-          // TODO et le gain de skin,
           // @ts-ignore
           setUser((prevUser: any) => ({
             ...prevUser,
@@ -239,7 +238,6 @@ const MythoTypoScreen = ({ }) => {
           }));
 
           displayAchievements(result.newAchievements, result.showSkinModal, result.skinData); 
-
           goToNextSentence(true);
         } else {
           if (isInvisibleTest) {

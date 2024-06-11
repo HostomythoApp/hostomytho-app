@@ -288,12 +288,11 @@ const MythoOuPasScreen = () => {
             </View>
           );
 
-          setMessageContent(messageHeader);
-
-          if (!isInvisibleTest) {
-            setShowMessage(true);
-          } else {
+          if (isInvisibleTest) {
             goToNextSentence(false);
+          } else {
+          setMessageContent(messageHeader);
+          setShowMessage(true);
           }
         }
       } catch (error) {
