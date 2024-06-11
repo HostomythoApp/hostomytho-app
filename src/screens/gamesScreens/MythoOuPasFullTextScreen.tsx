@@ -7,7 +7,7 @@ import { Token } from "models/Token";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
-import { createUserTextRating, getTextTestPlausibility, getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
+import { getTextTestPlausibility, getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
@@ -19,7 +19,6 @@ import HelpButton from "components/button/HelpButton";
 import NextButton from "components/button/NextButton";
 import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
-import { createUserErrorDetail } from "services/api/errors";
 import { UserErrorDetail } from "models/UserErrorDetail";
 import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
@@ -304,12 +303,11 @@ const MythoOuPasFullTextScreen = () => {
         sentence_positions: "full",
         vote_weight: user?.status === 'medecin' ? user?.trust_index + 30 : user?.trust_index,
       };
-      await createUserTextRating(userTextRating);
+      // await createUserTextRating(userTextRating);
 
 
       for (let errorDetail of errorDetails) {
         const { id, ...rest } = errorDetail;
-        await createUserErrorDetail(rest);
       }
 
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });

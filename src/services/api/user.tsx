@@ -172,17 +172,6 @@ export const updateTutorialProgress = async (id: number) => {
   }
 };
 
-export const updateTrustIndex = async (id: number, trust_index: number) => {
-  try {
-    return await api.put(`/users/${id}/trustIndex`, {
-      trust_index,
-    });
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
 export const updateUserEmail = async (id: number, email: string) => {
   try {
     return await api.put(`/users/${id}/updateUserEmail`, {

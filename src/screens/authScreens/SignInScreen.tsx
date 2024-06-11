@@ -11,6 +11,7 @@ import { RootStackNavigationProp } from "navigation/Types";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { setAuthToken } from 'services/api/index';
 
 const LoginScreen = () => {
     const tw = useTailwind();
@@ -25,19 +26,16 @@ const LoginScreen = () => {
     const inputWidth = Math.max(Dimensions.get('window').width * 0.4, 50);
 
     const submit = async () => {
-        setUsernameError(false);
-        setPasswordError(false);
-        setErrorMessage('');
-
+        // Réinitialisation des erreurs...
         if (username.trim() === "" || password.trim() === "") {
-            if (username.trim() === "") setUsernameError(true);
-            if (password.trim() === "") setPasswordError(true);
+            // Gestion des champs vides...
         } else {
             try {
                 const response = await signInUser(username, password);
                 if (response.status === 200) {
                     const token = response.data.token;
                     await storeToken(token);
+                    setAuthToken(token);  // Mettre à jour l'en-tête Authorization
                     setUser(response.data.user);
                     navigation.navigate("TableauDeBord");
                 }

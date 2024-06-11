@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setAuthToken } from "services/api";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -52,6 +53,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const storeToken = async (token: string) => {
     try {
       await AsyncStorage.setItem("@auth_token", token);
+      setAuthToken(token);
       setAuthState((prevState) => ({
         ...prevState,
         isAuthenticated: true,
@@ -63,6 +65,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setAuthState((prevState) => ({ ...prevState, isLoading: false }));
     }
   };
+  
+  const getToken = async () => {
+    try {
+        return await AsyncStorage.getItem("@auth_token");
+    } catch (error) {
+        console.error("Error getting the token:", error);
+    }
+};
 
   const removeToken = async () => {
     try {

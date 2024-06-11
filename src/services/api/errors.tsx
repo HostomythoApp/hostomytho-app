@@ -1,6 +1,5 @@
 import { ErrorType } from "models/ErrorType";
 import api from "./index";
-import { UserErrorDetail } from "models/UserErrorDetail";
 
 export const sendResponse = async (data: {
   userErrorDetailId: number;
@@ -27,12 +26,12 @@ export const getTypesError = async (): Promise<ErrorType[] | any> => {
 };
 
 
-export const createUserErrorDetail = async (userErrorDetail: Partial<UserErrorDetail>) => {
-  try {
-    const response = await api.post("/texts/createUserErrorDetail", userErrorDetail);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+// export const createUserErrorDetail = async (userErrorDetail: Partial<UserErrorDetail>) => {
+//   try {
+//     const response = await api.post("/texts/createUserErrorDetail", userErrorDetail);
+//     return response.data;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };

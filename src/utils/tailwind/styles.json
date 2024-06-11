@@ -986,11 +986,6 @@
 			"overflow": "hidden"
 		}
 	},
-	"text-wrap": {
-		"style": {
-			"textWrap": "wrap"
-		}
-	},
 	"rounded": {
 		"style": {
 			"borderTopLeftRadius": 4,

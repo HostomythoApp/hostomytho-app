@@ -28,15 +28,15 @@ export const getTestPlausibilityErrorByTextId = async (textId: number): Promise<
   }
 };
 
-export const getCorrectPlausibilityByTextId = async (textId: number): Promise<number> => {
-  try {
-    const response = await api.get(`/plausibility/correctPlausibility/${textId}`);
-    return response.data.test_plausibility;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+// export const getCorrectPlausibilityByTextId = async (textId: number): Promise<number> => {
+//   try {
+//     const response = await api.get(`/plausibility/correctPlausibility/${textId}`);
+//     return response.data.test_plausibility;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
 
 export const getReasonForRateByTextId = async (textId: number): Promise<string> => {
   try {

@@ -3,7 +3,6 @@ import { TestPlausibilityError } from "models/TestPlausibilityError";
 import { TestSpecification } from "models/TestSpecification";
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { getTestSpecificationsByTextId } from "services/api/testSpecifications";
-import { getTestPlausibilityErrorByTextId, getCorrectPlausibilityByTextId, getReasonForRateByTextId } from "services/api/plausibility";
 
 export const checkUserSelection = async (
     textId: number,
@@ -59,71 +58,64 @@ export const checkUserSelection = async (
 
 
 export const checkUserSelectionPlausibility = async (
-    textId: number,
-    userErrorDetails: ErrorDetail[],
-    userRateSelected: number,
-    errorMargin: number = 10,
-    plausibilityMargin: number = 25,
-    tokenErrorMargin: number = 10,
-): Promise<{
-    isValid: boolean,
-    testPlausibilityError: TestPlausibilityError[],
-    correctPlausibility?: number,
-    testPlausibilityPassed?: boolean,
-    isErrorDetailsCorrect?: boolean,
-    reasonForRate?: string
-}> => {
-    try {
-        const testPlausibilityError = await getTestPlausibilityErrorByTextId(textId);
-        const textPlausibility = await getCorrectPlausibilityByTextId(textId);
-        const reasonForRateText = await getReasonForRateByTextId(textId);
-        const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
+    // textId: number,
+    // userErrorDetails: ErrorDetail[],
+    // userRateSelected: number,
+    // errorMargin: number = 10,
+    // plausibilityMargin: number = 25,
+    // tokenErrorMargin: number = 10,
+): Promise<any> => {
+    // try {
+    //     const testPlausibilityError = await getTestPlausibilityErrorByTextId(textId);
+    //     const textPlausibility = await getCorrectPlausibilityByTextId(textId);
+    //     const reasonForRateText = await getReasonForRateByTextId(textId);
+    //     const isPlausibilityCorrect = Math.abs(userRateSelected - textPlausibility) <= plausibilityMargin;
 
-        // Cas 1: L'utilisateur n'a pas spécifié d'erreurs
-        if (userErrorDetails.length === 0) {
-            return {
-                isValid: isPlausibilityCorrect,
-                testPlausibilityError: [],
-                correctPlausibility: textPlausibility,
-                testPlausibilityPassed: isPlausibilityCorrect,
-                reasonForRate: reasonForRateText,
-            };
-        }
+    //     // Cas 1: L'utilisateur n'a pas spécifié d'erreurs
+    //     if (userErrorDetails.length === 0) {
+    //         return {
+    //             isValid: isPlausibilityCorrect,
+    //             testPlausibilityError: [],
+    //             correctPlausibility: textPlausibility,
+    //             testPlausibilityPassed: isPlausibilityCorrect,
+    //             reasonForRate: reasonForRateText,
+    //         };
+    //     }
 
-        // Cas 2: Le texte a une correction de plausibilité mais pas d'erreurs de correction
-        if (testPlausibilityError.length === 0) {
-            return {
-                isValid: isPlausibilityCorrect,
-                testPlausibilityError: [],
-                correctPlausibility: textPlausibility,
-                testPlausibilityPassed: isPlausibilityCorrect,
-                reasonForRate: reasonForRateText,
-            };
-        }
+    //     // Cas 2: Le texte a une correction de plausibilité mais pas d'erreurs de correction
+    //     if (testPlausibilityError.length === 0) {
+    //         return {
+    //             isValid: isPlausibilityCorrect,
+    //             testPlausibilityError: [],
+    //             correctPlausibility: textPlausibility,
+    //             testPlausibilityPassed: isPlausibilityCorrect,
+    //             reasonForRate: reasonForRateText,
+    //         };
+    //     }
 
-        // Cas 3: L'utilisateur a spécifié des erreurs
-        const isErrorDetailsCorrect = areUserErrorsCorrect(userErrorDetails, testPlausibilityError);
+    //     // Cas 3: L'utilisateur a spécifié des erreurs
+    //     const isErrorDetailsCorrect = areUserErrorsCorrect(userErrorDetails, testPlausibilityError);
 
-        const testPlausibilityPassed = isErrorDetailsCorrect && isPlausibilityCorrect;
+    //     const testPlausibilityPassed = isErrorDetailsCorrect && isPlausibilityCorrect;
 
-        return {
-            isValid: isPlausibilityCorrect && isErrorDetailsCorrect,
-            testPlausibilityError,
-            correctPlausibility: textPlausibility,
-            testPlausibilityPassed: isPlausibilityCorrect,
-            isErrorDetailsCorrect,
-            reasonForRate: reasonForRateText,
-        };
+    //     return {
+    //         isValid: isPlausibilityCorrect && isErrorDetailsCorrect,
+    //         testPlausibilityError,
+    //         correctPlausibility: textPlausibility,
+    //         testPlausibilityPassed: isPlausibilityCorrect,
+    //         isErrorDetailsCorrect,
+    //         reasonForRate: reasonForRateText,
+    //     };
 
 
-    } catch (error) {
-        console.error(error);
-        console.log('Une erreur est survenue lors de la vérification de votre sélection.');
-        return {
-            isValid: false,
-            testPlausibilityError: [],
-        };
-    }
+    // } catch (error) {
+    //     console.error(error);
+    //     console.log('Une erreur est survenue lors de la vérification de votre sélection.');
+    //     return {
+    //         isValid: false,
+    //         testPlausibilityError: [],
+    //     };
+    // }
 };
 
 const areUserErrorsCorrect = (
