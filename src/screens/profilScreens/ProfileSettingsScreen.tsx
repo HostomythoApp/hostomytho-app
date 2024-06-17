@@ -77,7 +77,7 @@ const ProfileSettingsScreen = (props: any) => {
         >
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
 
-                <CustomHeaderEmpty title="Paramètre du profil" backgroundColor="bg-whiteTransparent" />
+                <CustomHeaderEmpty title="Paramètres du compte" backgroundColor="bg-whiteTransparent" />
                 <View style={tw('mx-auto min-w-[540px] pt-20 items-center')}>
 
                     <View style={tw('bg-white mb-2 p-6 rounded-lg w-full')}>

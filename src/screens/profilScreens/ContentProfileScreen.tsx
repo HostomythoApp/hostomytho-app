@@ -240,14 +240,14 @@ const ContentProfileScreen = (props: any) => {
                     </View>
                 </View>
 
-                <View style={tw(`${isMobile ? 'flex-col' : 'flex-row'} justify-around items-center bg-white rounded-lg py-2 px-4 my-4`)}>
+                <View style={tw(`${isMobile ? 'flex-col' : 'flex-row'} justify-around items-center bg-transparent rounded-lg py-2 px-4 my-4 h-32`)}>
                     {/* <TouchableOpacity
                         style={tw(`flex-row items-center justify-center ${isMobile ? 'w-full mb-2 mr-0' : 'w-[32%] mr-2'} bg-[darkcyan] py-2 rounded `)}
                         onPress={() => navigation.navigate('Contacts')}
                     >
                         <FontAwesome5 name='user-friends' size={24} color='white' />
                         <Text style={tw('text-white ml-2 font-primary')}>Mes contacts</Text>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
                     <WeirdButton />
                     <TouchableOpacity
                         style={tw(`flex-row items-center justify-center ${isMobile ? 'ml-0 mt-2' : 'ml-2'} bg-primary w-[32%] py-2 rounded`)}
@@ -255,7 +255,7 @@ const ContentProfileScreen = (props: any) => {
                     >
                         <FontAwesome5 name='cog' size={24} color='white' />
                         <Text style={tw('text-white ml-2 font-primary')}>Paramètres du compte</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 <View style={tw(' h-20')}
                 ></View>

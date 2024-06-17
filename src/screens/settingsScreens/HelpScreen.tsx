@@ -68,8 +68,8 @@ const HelpScreen = () => {
             <Text style={tw('text-xl font-bold mt-4 mb-4 font-primary text-center')}>
               Formulaire de contact
             </Text>
-            <KeyboardAwareScrollView>
-              <View style={tw('w-10/12')}>
+            <KeyboardAwareScrollView style={tw('w-10/12')}>
+              <View>
 
                 <TextInput
                   style={tw('border-b border-gray-400 py-2 mt-4 font-primary')}

@@ -7,6 +7,7 @@ export const sendResponse = async (data: {
   textId: number,
   userErrorDetails: UserErrorDetail[],
   userRateSelected: number,
+  sentencePositions: any,
   userId: number,
 }): Promise<any> => {
   try {

@@ -24,8 +24,10 @@ const SettingsScreen = ({ }) => {
                                 <PrimaryButton title="Politique de confidentialité" destination="PolitiqueDeConfidentialite" />
 
                                 {authState.isAuthenticated &&
+
                                     <View>
-                                        <LogoutButton />
+                                        <PrimaryButton title="Paramètres du compte" destination="ParametreProfil" />
+                                        {/* <LogoutButton /> */}
                                     </View>
                                 }
                             </View>

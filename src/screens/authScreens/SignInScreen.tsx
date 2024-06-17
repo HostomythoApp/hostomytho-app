@@ -26,16 +26,14 @@ const LoginScreen = () => {
     const inputWidth = Math.max(Dimensions.get('window').width * 0.4, 50);
 
     const submit = async () => {
-        // Réinitialisation des erreurs...
         if (username.trim() === "" || password.trim() === "") {
-            // Gestion des champs vides...
         } else {
             try {
                 const response = await signInUser(username, password);
                 if (response.status === 200) {
                     const token = response.data.token;
                     await storeToken(token);
-                    setAuthToken(token);  // Mettre à jour l'en-tête Authorization
+                    setAuthToken(token);
                     setUser(response.data.user);
                     navigation.navigate("TableauDeBord");
                 }

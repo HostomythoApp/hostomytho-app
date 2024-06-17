@@ -243,6 +243,7 @@ const MythoOuPasScreen = () => {
           textId: text.id,
           userErrorDetails: errorDetails,
           userRateSelected: userRateSelected,
+          sentencePositions: text.sentence_positions,
           userId: user.id,
         });
 
@@ -291,8 +292,8 @@ const MythoOuPasScreen = () => {
           if (isInvisibleTest) {
             goToNextSentence(false);
           } else {
-          setMessageContent(messageHeader);
-          setShowMessage(true);
+            setMessageContent(messageHeader);
+            setShowMessage(true);
           }
         }
       } catch (error) {

@@ -110,15 +110,16 @@ const ChangePasswordScreen = () => {
                             </Text>
                             <View style={tw('flex-row content-around')}
                             >
-                                <FunctionButton text={"Valider"} func={submit} width={250} />
                                 <TouchableOpacity
                                     // @ts-ignore
                                     onPress={() => navigation.navigate("ParametreProfil")}
-                                    style={tw(` bg-secondary rounded ml-2 py-2 px-12 my-2 font-medium w-[250px]`)}
+                                    style={tw(` bg-secondary rounded mr-2 py-2 px-12 my-2 font-medium w-[250px]`)}
                                 >
                                     <Text style={tw('text-white text-center text-lg font-primary')}
                                     >Retour</Text>
                                 </TouchableOpacity>
+                                <FunctionButton text={"Valider"} func={submit} width={250} />
+
                             </View>
                         </View>
                     </View>

@@ -42,21 +42,21 @@ const AboutScreen = ({ }) => {
               </Text>
               <Text style={tw('font-primary text-lg')}>
                 <Text style={{ color: 'blue' }}
+                  onPress={() => Linking.openURL('https://www.linkedin.com/in/bertrand-remy-b3456674/')}>
+                  Bertrand Remy
+                </Text> : (Équipe Sémagramme, LORIA) conception et développement du jeu
+                {"\n"}
+
+                <Text style={{ color: 'blue' }}
                   onPress={() => Linking.openURL('https://members.loria.fr/KFort/')}>
                   Karën Fort
-                </Text> : (Équipe Sémagramme, LORIA) conception et animation du jeu
+                </Text> : (Équipe Sémagramme, LORIA) conception du jeu
                 {"\n"}
 
                 <Text style={{ color: 'blue' }}
                   onPress={() => Linking.openURL('https://members.loria.fr/BGuillaume/')}>
                   Bruno Guillaume
-                </Text> : (Équipe Sémagramme, LORIA) conception et animation du jeu
-                {"\n"}
-
-                <Text style={{ color: 'blue' }}
-                  onPress={() => Linking.openURL('https://www.linkedin.com/in/bertrand-remy-b3456674/')}>
-                  Bertrand Remy
-                </Text> : (Équipe Sémagramme, LORIA) conception et développement du jeu
+                </Text> : (Équipe Sémagramme, LORIA) conception du jeu
                 {"\n"}
 
                 <Text style={{ color: 'blue' }}

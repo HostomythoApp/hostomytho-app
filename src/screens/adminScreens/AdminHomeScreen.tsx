@@ -54,7 +54,7 @@ const AdminHomeScreen = () => {
 
         <View style={tw('border-t border-gray-200 pt-4 mt-4')}>
           <AdminLink title="Gérer les modérateurs" destination="ManageModerators" icon="security" />
-          <AdminLink title="Accès à la base de données" destination="AccessDatabase" icon="storage" />
+          {/* <AdminLink title="Accès à la base de données" destination="AccessDatabase" icon="storage" /> */}
         </View>
       </View>
     </View>
