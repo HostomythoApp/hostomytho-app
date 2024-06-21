@@ -118,20 +118,20 @@ export const checkUserSelectionPlausibility = async (
     // }
 };
 
-const areUserErrorsCorrect = (
-    userErrorDetails: ErrorDetail[],
-    testPlausibilityError: TestPlausibilityError[]
-): boolean => {
-    // Convertir toutes les positions des erreurs de la base de données en un seul tableau
-    const allTestErrorPositions = testPlausibilityError.flatMap(spec =>
-        spec.word_positions.split(',').map(pos => parseInt(pos))
-    );
+// const areUserErrorsCorrect = (
+//     userErrorDetails: ErrorDetail[],
+//     testPlausibilityError: TestPlausibilityError[]
+// ): boolean => {
+//     // Convertir toutes les positions des erreurs de la base de données en un seul tableau
+//     const allTestErrorPositions = testPlausibilityError.flatMap(spec =>
+//         spec.word_positions.split(',').map(pos => parseInt(pos))
+//     );
 
-    // Vérifier si au moins une position des erreurs sélectionnées par l'utilisateur
-    // correspond à une position dans les erreurs de la base de données
-    return userErrorDetails.some(errorDetail => {
-        const userWordPositions = errorDetail.word_positions.split(',').map(pos => parseInt(pos));
+//     // Vérifier si au moins une position des erreurs sélectionnées par l'utilisateur
+//     // correspond à une position dans les erreurs de la base de données
+//     return userErrorDetails.some(errorDetail => {
+//         const userWordPositions = errorDetail.word_positions.split(',').map(pos => parseInt(pos));
  
-        return userWordPositions.some(userPos => allTestErrorPositions.includes(userPos));
-    });
-};
+//         return userWordPositions.some(userPos => allTestErrorPositions.includes(userPos));
+//     });
+// };

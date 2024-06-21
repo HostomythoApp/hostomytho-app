@@ -18,6 +18,10 @@ import ExportDataSreen from "screens/adminScreens/ExportDataSreen";
 import ManageTextsScreen from "screens/adminScreens/ManageTextsScreen";
 import ManageUsersSreen from "screens/adminScreens/ManageUsersSreen";
 import AdminStatisticsScreen from "screens/adminScreens/AdminStatisticsScreen";
+import UsersStatisticsScreen from "screens/adminScreens/statisticsScreens/UsersStatisticsScreen";
+import TextRatingStatisticsScreen from "screens/adminScreens/statisticsScreens/TextRatingStatisticsScreen";
+import UserTypingErrorsStatisticsScreen from "screens/adminScreens/statisticsScreens/UserTypingErrorsStatisticsScreen";
+import UserSentenceSpecificationsStatisticsScreen from "screens/adminScreens/statisticsScreens/UserSentenceSpecificationsStatisticsScreen";
 import UserMessagingScreen from "screens/adminScreens/UserMessagingScreen";
 import HypothesisGameScreen from "screens/gamesScreens/HypothesisGameScreen";
 import MythoTypoScreen from "screens/gamesScreens/MythoTypoScreen";
@@ -117,7 +121,6 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="Classement" component={RankingScreen} />
               <Stack.Screen name="ClassementMensuel" component={RankingMonthScreen} />
               <Stack.Screen name="Statistiques" component={StatisticsScreen} />
-              <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
               <Stack.Screen name="ProfilJoueur" component={OtherProfileScreen} />
 
               {/* Auth */}
@@ -127,8 +130,6 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="NouveauMotDePasse" component={ResetPasswordScreen} />
               <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
 
-              
-
               {/* Params */}
               <Stack.Screen name="Parametres" component={SettingsScreen} />
               <Stack.Screen name="Notif" component={NotifScreen} />
@@ -137,6 +138,8 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="PolitiqueDeConfidentialite" component={PrivacyPolicyScreen} />
               <Stack.Screen name="ReglesDuJeu" component={GameRulesScreen} />
               <Stack.Screen name="APropos" component={AboutScreen} />
+
+              {/* Admin */}
 
               {/* Part admin */}
               <Stack.Screen name="Admin"
@@ -148,13 +151,18 @@ const StackNavigator = ({ }) => {
                 {(props) => <AdminNavigator {...props} />}
               </Stack.Screen>
 
+              <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
+              <Stack.Screen name="UserStatistics" component={UsersStatisticsScreen} />
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
               <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
               <Stack.Screen name="EditRewards" component={EditRewardsSreen} />
               <Stack.Screen name="ExportData" component={ExportDataSreen} />
-
+              <Stack.Screen name="TextRatingStatistics" component={TextRatingStatisticsScreen} />
+              <Stack.Screen name="UserSentenceSpecificationsStatistics" component={UserSentenceSpecificationsStatisticsScreen} />
+              <Stack.Screen name="UserTypingErrorsStatistics" component={UserTypingErrorsStatisticsScreen} />
+              
             </Stack.Group>
 
           </Stack.Navigator>

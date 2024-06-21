@@ -38,6 +38,11 @@ export type RootStackParamList = {
     ReglesDuJeu: undefined;
     GestionApparence: undefined;
     ProfilJoueur: { userId: number };
+    UserStatistics: undefined;
+    TextRatingStatistics: undefined;
+    UserTypingErrorsStatistics: undefined;
+    UserSentenceSpecificationsStatistics: undefined;
+
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<
