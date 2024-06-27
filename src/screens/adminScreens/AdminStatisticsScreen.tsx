@@ -20,8 +20,7 @@ const AdminStatisticsScreen = ({ }) => {
           <Text style={tw('text-lg text-blue-800 ml-2')}>Statistiques des utilisateurs</Text>
         </TouchableOpacity>
 
-        {/* TODO a faire */}
-        <TouchableOpacity style={tw('flex-row items-center p-3 mb-2 bg-blue-200 rounded')} onPress={() => navigation.navigate("TextRatingStatistics")}>
+        <TouchableOpacity style={tw('flex-row items-center p-3 mb-2 bg-blue-200 rounded')} onPress={() => navigation.navigate("GamesStatistics")}>
           <Text style={tw('text-lg text-blue-800 ml-2')}>Statistiques des jeux</Text>
         </TouchableOpacity>
 

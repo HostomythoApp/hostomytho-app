@@ -66,7 +66,7 @@ const TextRatingStatisticsScreen = ({ }) => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="count" fill="#8884d8" name="Création de comptes" />
+              <Bar dataKey="count" fill="#8884d8" name="Notations" />
             </BarChart>
 
 
@@ -97,7 +97,7 @@ const TextRatingStatisticsScreen = ({ }) => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="count" fill="#8884d8" name="Création de comptes" />
+              <Bar dataKey="count" fill="#8884d8" name="Erreurs spécifiées" />
             </BarChart>
 
           </View>

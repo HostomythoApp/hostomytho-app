@@ -22,6 +22,7 @@ import UsersStatisticsScreen from "screens/adminScreens/statisticsScreens/UsersS
 import TextRatingStatisticsScreen from "screens/adminScreens/statisticsScreens/TextRatingStatisticsScreen";
 import UserTypingErrorsStatisticsScreen from "screens/adminScreens/statisticsScreens/UserTypingErrorsStatisticsScreen";
 import UserSentenceSpecificationsStatisticsScreen from "screens/adminScreens/statisticsScreens/UserSentenceSpecificationsStatisticsScreen";
+import GamesStatisticsScreen from "screens/adminScreens/statisticsScreens/GamesStatisticsScreen";
 import UserMessagingScreen from "screens/adminScreens/UserMessagingScreen";
 import HypothesisGameScreen from "screens/gamesScreens/HypothesisGameScreen";
 import MythoTypoScreen from "screens/gamesScreens/MythoTypoScreen";
@@ -150,7 +151,6 @@ const StackNavigator = ({ }) => {
                 {/* @ts-ignore */}
                 {(props) => <AdminNavigator {...props} />}
               </Stack.Screen>
-
               <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
               <Stack.Screen name="UserStatistics" component={UsersStatisticsScreen} />
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
@@ -162,7 +162,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="TextRatingStatistics" component={TextRatingStatisticsScreen} />
               <Stack.Screen name="UserSentenceSpecificationsStatistics" component={UserSentenceSpecificationsStatisticsScreen} />
               <Stack.Screen name="UserTypingErrorsStatistics" component={UserTypingErrorsStatisticsScreen} />
-              
+              <Stack.Screen name="GamesStatistics" component={GamesStatisticsScreen} />
             </Stack.Group>
 
           </Stack.Navigator>

@@ -34,7 +34,7 @@ const UserTypingErrorsStatisticsScreen = ({ }) => {
         <CustomHeaderEmpty title="Statistiques de MythoTypo" backgroundColor="bg-whiteTransparent" />
         <View style={tw('mx-auto pt-20 items-center')}>
           <View style={tw('mb-2 p-6 rounded-lg')}>
-            <Text style={tw('text-lg mb-4')}>Nombre total de typages d'erreur</Text>
+            <Text style={tw('text-lg mb-4')}>Nombre total de typages d'erreurs</Text>
             <LineChart
               width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
               height={400}
@@ -46,10 +46,10 @@ const UserTypingErrorsStatisticsScreen = ({ }) => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="cumulativeCount" stroke="#82ca9d" name="Comptes au total" isAnimationActive={false} />
+              <Line type="monotone" dataKey="cumulativeCount" stroke="#82ca9d" name="Typages d'erreurs" isAnimationActive={false} />
             </LineChart>
 
-            <Text style={tw('text-lg mt-12 mb-4')}>Nombre de typages d'erreur par semaine</Text>
+            <Text style={tw('text-lg mt-12 mb-4')}>Nombre de typages d'erreurs par semaine</Text>
             <BarChart
               width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
               height={400}
@@ -61,7 +61,7 @@ const UserTypingErrorsStatisticsScreen = ({ }) => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="count" fill="#8884d8" name="Création de comptes" />
+              <Bar dataKey="count" fill="#8884d8" name="Typages d'erreurs" />
             </BarChart>
 
           </View>

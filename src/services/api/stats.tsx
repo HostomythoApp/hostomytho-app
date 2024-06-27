@@ -21,6 +21,17 @@ export const getCumulativeUserRegistrations = async (): Promise<any[]> => {
     }
 };
 
+// ****************** Games ******************
+export const getCumulativeAnnotationsGames = async (): Promise<any[]> => {
+    try {
+        const response = await api.get('/stats/getCumulativeAnnotationsGames');
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 // ****************** Text Rating ******************
 export const getRatingPlausibilityDate = async (): Promise<any[]> => {
     try {
