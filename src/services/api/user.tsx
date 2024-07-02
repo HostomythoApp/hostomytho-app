@@ -141,17 +141,6 @@ export const getUserDetailsById = async (id: number): Promise<any> => {
   }
 };
 
-export const updateUserPoints = async (id: number, points: number) => {
-  try {
-    return await api.put(`/users/${id}/points`, {
-      points,
-    });
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
 export const updateUserCatchProbability = async (id: number, catch_probability: number) => {
   try {
     return await api.put(`/users/${id}/catchProbability`, {

@@ -13,8 +13,8 @@ import MythoOuPasScreen from "screens/gamesScreens/MythoOuPasScreen";
 import MythoOuPasFullTextScreen from "screens/gamesScreens/MythoOuPasFullTextScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
-import EditRewardsSreen from "screens/adminScreens/EditRewardsSreen";
-import ExportDataSreen from "screens/adminScreens/ExportDataSreen";
+import EditRewardsScreen from "screens/adminScreens/EditRewardsScreen";
+import ExportDataScreen from "screens/adminScreens/ExportDataScreen";
 import ManageTextsScreen from "screens/adminScreens/ManageTextsScreen";
 import ManageUsersSreen from "screens/adminScreens/ManageUsersSreen";
 import AdminStatisticsScreen from "screens/adminScreens/AdminStatisticsScreen";
@@ -157,8 +157,8 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
               <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
-              <Stack.Screen name="EditRewards" component={EditRewardsSreen} />
-              <Stack.Screen name="ExportData" component={ExportDataSreen} />
+              <Stack.Screen name="EditRewards" component={EditRewardsScreen} />
+              <Stack.Screen name="ExportData" component={ExportDataScreen} />
               <Stack.Screen name="TextRatingStatistics" component={TextRatingStatisticsScreen} />
               <Stack.Screen name="UserSentenceSpecificationsStatistics" component={UserSentenceSpecificationsStatisticsScreen} />
               <Stack.Screen name="UserTypingErrorsStatistics" component={UserTypingErrorsStatisticsScreen} />

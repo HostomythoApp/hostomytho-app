@@ -454,6 +454,11 @@
 			"display": "flex"
 		}
 	},
+	"table": {
+		"style": {
+			"display": "table"
+		}
+	},
 	"hidden": {
 		"style": {
 			"display": "none"

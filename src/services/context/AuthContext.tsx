@@ -13,7 +13,6 @@ interface AuthContextProps {
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>;
   storeToken: (token: string) => Promise<void>;
   removeToken: () => Promise<void>;
-  logout: () => Promise<void>;
   resetAuthState: any;
 }
 
@@ -89,18 +88,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const logout = async () => {
-    // // Marche pas, je sais pas pourquoi
-    // try {
-    //   AsyncStorage.clear();
-    //   setUser(null);
-    //   resetUserState();
-    //   resetAuthState();
-    // } catch (error) {
-    //   console.error('Erreur lors de la déconnexion :', error);
-    // }
-  };
-
   const resetAuthState = () => {
     setAuthState(initialAuthState);
   };
@@ -116,7 +103,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setAuthState,
         storeToken,
         removeToken,
-        logout,
         resetAuthState
       }}
     >

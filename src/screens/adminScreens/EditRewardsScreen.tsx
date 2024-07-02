@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
 
-const EditRewardsSreen = ({}) => {
+const EditRewardsScreen = ({}) => {
   const tw = useTailwind();
 
   return (
@@ -10,4 +10,4 @@ const EditRewardsSreen = ({}) => {
   );
 };
 
-export default EditRewardsSreen;
+export default EditRewardsScreen;

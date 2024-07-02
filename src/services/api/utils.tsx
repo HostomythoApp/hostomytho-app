@@ -1,5 +1,33 @@
-import { MessageMenu } from "models/MessageMenu";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "./index";
+
+export const dumpTable = async (tableNames: string[]) => {
+  const token = await AsyncStorage.getItem("@auth_token");
+
+  try {
+    const response = await api.post('/utils/dump/tables', {
+      tables: tableNames
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      responseType: 'blob'
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `selected_tables_dump.json`);
+    document.body.appendChild(link);
+    link.click();
+    if (link.parentNode) {
+      link.parentNode.removeChild(link);
+    }
+  } catch (error) {
+    console.error("Erreur d'autorisation:", error);
+    alert("Erreur d'autorisation:");
+  }
+};
 
 export const requestReset = async (email: string) => {
   try {
@@ -10,8 +38,6 @@ export const requestReset = async (email: string) => {
     throw error;
   }
 };
-
-
 
 export const getMessageMenu = async (messageType: string) => {
   try {

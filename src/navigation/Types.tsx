@@ -42,7 +42,7 @@ export type RootStackParamList = {
     TextRatingStatistics: undefined;
     UserTypingErrorsStatistics: undefined;
     UserSentenceSpecificationsStatistics: undefined;
-
+    GamesStatistics: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<
