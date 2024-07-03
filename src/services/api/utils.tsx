@@ -39,6 +39,17 @@ export const requestReset = async (email: string) => {
   }
 };
 
+export const refreshToken = async (refreshToken: string) => {
+  console.log("refreshToken");
+  try {
+    const response = await api.post("/utils/refreshToken", { refreshToken });
+    return response.data;
+  } catch (error) {
+    console.error("Failed to refresh token:", error);
+    throw error;
+  }
+};
+
 export const getMessageMenu = async (messageType: string) => {
   try {
     const response = await api.get(`/utils/messageMenu?messageType=${messageType}`);

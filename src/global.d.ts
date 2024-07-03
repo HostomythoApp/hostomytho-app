@@ -32,3 +32,9 @@ declare module 'images/*' {
   declare module "@env" {
     export const API_URL: string;
 }
+
+declare module 'react-native-crypto-js' {
+  var AES: any;
+  var SHA256: any;
+  export { AES, SHA256 };
+}

@@ -11,7 +11,8 @@ import { RootStackNavigationProp } from "navigation/Types";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { setAuthToken } from 'services/api/index';
+import { storeRefreshToken } from "utils/tokenUtils";
+import { setAuthToken } from "services/api";
 
 const LoginScreen = () => {
     const tw = useTailwind();
@@ -27,20 +28,27 @@ const LoginScreen = () => {
 
     const submit = async () => {
         if (username.trim() === "" || password.trim() === "") {
+            setErrorMessage("Veuillez remplir tous les champs");
         } else {
             try {
                 const response = await signInUser(username, password);
                 if (response.status === 200) {
-                    const token = response.data.token;
-                    await storeToken(token);
-                    setAuthToken(token);
-                    setUser(response.data.user);
+                    const { accessToken, refreshToken, user } = response.data;
+                    await storeToken(accessToken);       // Stocker le accessToken
+                    console.log("store token "+ accessToken);
+                    
+                    await storeRefreshToken(refreshToken); // Stocker le refreshToken
+                    console.log("storeRefreshToken  "+ refreshToken);
+
+                    setAuthToken(accessToken);         
+                    setUser(user);                    
                     navigation.navigate("TableauDeBord");
                 }
             } catch (error: any) {
-                if (error.response.status === 401) {
+                const status = error.response ? error.response.status : 500;
+                if (status === 401) {
                     setErrorMessage("Mot de passe incorrect");
-                } else if (error.response.status === 404) {
+                } else if (status === 404) {
                     setErrorMessage("L'utilisateur n'existe pas");
                 } else {
                     setErrorMessage("Problème de connexion");

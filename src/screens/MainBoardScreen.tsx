@@ -5,7 +5,7 @@ import { useAuth } from "services/context/AuthContext";
 import { useUser } from "services/context/UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
-import { getMessageMenu } from "services/api/utils";
+import { getMessageMenu, refreshToken } from "services/api/utils";
 import { MessageMenu } from 'models/MessageMenu';
 import IconNotification from "components/IconNotification";
 import { FontAwesome } from '@expo/vector-icons';
@@ -16,6 +16,8 @@ import { getTutorialContentForStep } from "tutorials/tutorialGeneral";
 import { responsiveFontSize } from "utils/functions";
 import CharacterPortrait from "components/CharacterPortrait";
 import { loadMonthlyWinners, saveMonthlyWinners } from "utils/storage";
+import { getAuthToken, getRefreshToken, tokenIsExpired } from "utils/tokenUtils";
+import { setAuthToken } from "services/api";
 
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
@@ -39,6 +41,29 @@ const MainBoardScreen = ({ }) => {
     const [monthlyWinners, setMonthlyWinners] = useState<any>([]);
     const rotation = useRef(new Animated.Value(0)).current;
     const [orientation, setOrientation] = useState('portrait');
+    const { renewAccessToken } = useAuth();
+
+    useEffect(() => {
+        const initializeAuth = async () => {
+            console.log("MainBoardScreen init");
+            const refreshTokenValue = await getRefreshToken();
+            console.log("Refresh token retrieved:", refreshTokenValue);
+    
+            if (refreshTokenValue) {
+                const currentToken = await getAuthToken();
+                console.log("Current access token:", currentToken);
+                if (tokenIsExpired(currentToken)) {
+                    const newTokenData = await refreshToken(refreshTokenValue);
+                    if (newTokenData && newTokenData.accessToken) {
+                        setAuthToken(newTokenData.accessToken);
+                        console.log("New access token set:", newTokenData.accessToken);
+                    }
+                }
+            }
+        };
+        initializeAuth();
+    }, []);
+    
 
     useEffect(() => {
         const fetchMonthlyWinners = async () => {

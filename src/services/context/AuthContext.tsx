@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { refreshToken } from "services/api/utils";
 import { setAuthToken } from "services/api";
 
 interface AuthState {
@@ -8,12 +9,17 @@ interface AuthState {
   isLoading: boolean;
 }
 
+
 interface AuthContextProps {
   authState: AuthState;
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>;
   storeToken: (token: string) => Promise<void>;
   removeToken: () => Promise<void>;
   resetAuthState: any;
+  renewAccessToken: (token: string) => Promise<string>;
+  storeRefreshToken: (token: string) => Promise<void>;
+  getRefreshToken: () => Promise<string>;
+  removeRefreshToken: () => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -29,6 +35,8 @@ const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
+
+
 
   const checkToken = async () => {
     try {
@@ -49,6 +57,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+
+  
   const storeToken = async (token: string) => {
     try {
       await AsyncStorage.setItem("@auth_token", token);
@@ -64,14 +74,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setAuthState((prevState) => ({ ...prevState, isLoading: false }));
     }
   };
-  
+
   const getToken = async () => {
     try {
-        return await AsyncStorage.getItem("@auth_token");
+      return await AsyncStorage.getItem("@auth_token");
     } catch (error) {
-        console.error("Error getting the token:", error);
+      console.error("Error getting the token:", error);
     }
-};
+  };
 
   const removeToken = async () => {
     try {
@@ -88,13 +98,32 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  const renewAccessToken = async (token: string): Promise<string | null> => {
+    console.log("renewAccessToken");
+    try {
+      const response = await refreshToken(token);
+      if (response && response.accessToken) {
+        await storeToken(response.accessToken);
+        console.log("Stored token: " + response.accessToken);
+        return response.accessToken;
+      }
+      throw new Error("Access token is missing in the response");
+    } catch (error) {
+      console.error("Error renewing access token:", error);
+      await removeToken();
+      return null;
+    }
+  };
+
   const resetAuthState = () => {
     setAuthState(initialAuthState);
   };
 
-  useEffect(() => {
-    checkToken();
-  }, []);
+
 
   return (
     <AuthContext.Provider
@@ -103,7 +132,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setAuthState,
         storeToken,
         removeToken,
-        resetAuthState
+        resetAuthState,
+        renewAccessToken,
       }}
     >
       {children}
