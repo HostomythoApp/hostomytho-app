@@ -232,22 +232,23 @@ const MythoOuPasScreen = () => {
 
 
   const onNextCard = async () => {
+
     if (!text) {
       console.error("Aucun texte à traiter.");
       return;
     }
+    const userId = user?.id ?? 0;
+    try {
+      const result = await sendResponse({
+        textId: text.id,
+        userErrorDetails: errorDetails,
+        userRateSelected: userRateSelected,
+        sentencePositions: text.sentence_positions,
+        userId: userId,
+      });
 
-    if (user) {
-      try {
-        const result = await sendResponse({
-          textId: text.id,
-          userErrorDetails: errorDetails,
-          userRateSelected: userRateSelected,
-          sentencePositions: text.sentence_positions,
-          userId: user.id,
-        });
-
-        if (result.success) {
+      if (result.success) {
+        if (userId > 0) {
           // @ts-ignore
           setUser(prevUser => ({
             ...prevUser,
@@ -256,60 +257,65 @@ const MythoOuPasScreen = () => {
             trust_index: result.newTrustIndex,
             coeffMulti: result.newCoeffMulti
           }));
-
           displayAchievements(result.newAchievements, result.showSkinModal, result.skinData);
-          goToNextSentence(true);
-        } else {
-          const allPositions: any = Array.from(new Set(result.correctPositions.flat()));
-          setText(currentText => {
-            if (!currentText) return currentText;
-            return updateTokensColor(currentText, allPositions);
-          });
+        }
+        goToNextSentence(true);
+      } else {
+        const allPositions: any = Array.from(new Set(result.correctPositions.flat()));
+        setText(currentText => {
+          if (!currentText) return currentText;
+          return updateTokensColor(currentText, allPositions);
+        });
 
-          let plausibilityDescription;
-          if (result.correctPlausibility !== null) {
-            const plausibilityConfig = plausibilityConfigs.find(config => result.correctPlausibility <= config.maxThreshold) || plausibilityConfigs[plausibilityConfigs.length - 1];
-            plausibilityDescription = (
-              <View style={tw('flex-row items-center')}>
-                <Text style={tw('text-[#B22222] font-primary text-lg')}>
-                  {`Hmm ce texte était plutôt ${plausibilityConfig.description}`}
-                </Text>
-                {/* @ts-ignore */}
-                <PlausibilityButton config={plausibilityConfig.buttonConfig} />
-              </View>
-            );
-          }
-
-          let messageHeader = (
-            <View>
-              {plausibilityDescription}
+        let plausibilityDescription;
+        if (result.correctPlausibility !== null) {
+          const plausibilityConfig = plausibilityConfigs.find(config => result.correctPlausibility <= config.maxThreshold) || plausibilityConfigs[plausibilityConfigs.length - 1];
+          plausibilityDescription = (
+            <View style={tw('flex-row items-center')}>
               <Text style={tw('text-[#B22222] font-primary text-lg')}>
-                {result.message}
+                {`Hmm ce texte était plutôt ${plausibilityConfig.description}`}
               </Text>
+              {/* @ts-ignore */}
+              <PlausibilityButton config={plausibilityConfig.buttonConfig} />
             </View>
           );
+        }
 
-          if (isInvisibleTest) {
+        let messageHeader = (
+          <View>
+            {plausibilityDescription}
+            <Text style={tw('text-[#B22222] font-primary text-lg')}>
+              {result.message}
+            </Text>
+          </View>
+        );
+
+        if (isInvisibleTest) {
+          if (userId > 0) {
             goToNextSentence(false);
           } else {
-            setMessageContent(messageHeader);
-            setShowMessage(true);
+            goToNextSentence(true);
           }
+        } else {
+          setMessageContent(messageHeader);
+          setShowMessage(true);
         }
-      } catch (error) {
-        console.error("Erreur lors de la vérification de l'erreur suivante :", error);
-      } finally {
-        setSelectionStarted(false);
       }
+    } catch (error) {
+      console.error("Erreur lors de la vérification de l'erreur suivante :", error);
+    } finally {
+      setSelectionStarted(false);
     }
   };
 
 
   const goToNextSentence = async (isCorrect = true) => {
+    if (isCorrect) {
+      setSuccessModalVisible(true);
+    }
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
       if (isCorrect) {
-        setSuccessModalVisible(true);
         setCorrectAnswers(correctAnswers + 1);
       }
     }
@@ -548,7 +554,8 @@ const MythoOuPasScreen = () => {
           <View style={tw('flex-row justify-between z-40')}>
             <WikiButton func={() => toggleWikiMode()} />
             <View style={tw('flex-row')}>
-              <NextButton func={goToNextSentence} isDisabled={isTutorial} />
+              {/* <NextButton func={goToNextSentence} isDisabled={isTutorial} /> */}
+              <NextButton func={() => goToNextSentence(false)} isDisabled={isTutorial} />
               <HelpButton onHelpPress={showHelpModal} />
             </View>
           </View>

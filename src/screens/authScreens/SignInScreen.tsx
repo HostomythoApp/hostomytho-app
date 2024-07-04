@@ -11,8 +11,8 @@ import { RootStackNavigationProp } from "navigation/Types";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { storeRefreshToken } from "utils/tokenUtils";
 import { setAuthToken } from "services/api";
+import { storeRefreshToken } from "utils/tokenUtils";
 
 const LoginScreen = () => {
     const tw = useTailwind();
@@ -33,15 +33,19 @@ const LoginScreen = () => {
             try {
                 const response = await signInUser(username, password);
                 if (response.status === 200) {
-                    const { accessToken, refreshToken, user } = response.data;
-                    await storeToken(accessToken);       // Stocker le accessToken
-                    console.log("store token "+ accessToken);
-                    
-                    await storeRefreshToken(refreshToken); // Stocker le refreshToken
-                    console.log("storeRefreshToken  "+ refreshToken);
 
-                    setAuthToken(accessToken);         
-                    setUser(user);                    
+                    const token = response.data.token;
+                    await storeToken(token);
+                    setAuthToken(token);
+                    setUser(response.data.user);
+
+                    // TODO Logique de refreshtoken a revoir
+                    // const { accessToken, refreshToken, user } = response.data;
+                    // await storeToken(accessToken);    
+                    // await storeRefreshToken(refreshToken); 
+                    // setAuthToken(accessToken);         
+                    // setUser(user);                
+                        
                     navigation.navigate("TableauDeBord");
                 }
             } catch (error: any) {

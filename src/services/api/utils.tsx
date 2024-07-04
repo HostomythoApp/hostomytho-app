@@ -40,7 +40,6 @@ export const requestReset = async (email: string) => {
 };
 
 export const refreshToken = async (refreshToken: string) => {
-  console.log("refreshToken");
   try {
     const response = await api.post("/utils/refreshToken", { refreshToken });
     return response.data;

@@ -43,27 +43,23 @@ const MainBoardScreen = ({ }) => {
     const [orientation, setOrientation] = useState('portrait');
     const { renewAccessToken } = useAuth();
 
-    useEffect(() => {
-        const initializeAuth = async () => {
-            console.log("MainBoardScreen init");
-            const refreshTokenValue = await getRefreshToken();
-            console.log("Refresh token retrieved:", refreshTokenValue);
-    
-            if (refreshTokenValue) {
-                const currentToken = await getAuthToken();
-                console.log("Current access token:", currentToken);
-                if (tokenIsExpired(currentToken)) {
-                    const newTokenData = await refreshToken(refreshTokenValue);
-                    if (newTokenData && newTokenData.accessToken) {
-                        setAuthToken(newTokenData.accessToken);
-                        console.log("New access token set:", newTokenData.accessToken);
-                    }
-                }
-            }
-        };
-        initializeAuth();
-    }, []);
-    
+    // TODO refresh TOKEN a revoir
+    // useEffect(() => {
+    //     const initializeAuth = async () => {
+    //         const refreshTokenValue = await getRefreshToken();
+    //         if (refreshTokenValue) {
+    //             const currentToken = await getAuthToken();
+    //             if (tokenIsExpired(currentToken)) {
+    //                 const newTokenData = await refreshToken(refreshTokenValue);
+    //                 if (newTokenData && newTokenData.accessToken) {
+    //                     setAuthToken(newTokenData.accessToken);
+    //                 }
+    //             }
+    //         }
+    //     };
+    //     initializeAuth();
+    // }, []);
+
 
     useEffect(() => {
         const fetchMonthlyWinners = async () => {
@@ -126,12 +122,12 @@ const MainBoardScreen = ({ }) => {
 
     useEffect(() => {
         const messageType = authState.isAuthenticated ? 'home_connected' : 'home_not_connected';
-    
+
         const fetchMessage = async () => {
             try {
                 const message = await getMessageMenu(messageType);
                 setMenuMessage(message);
-    
+
                 // Définir si le message est lu ou non
                 if (user?.id) {
                     const messageReadStatus = await getMessageReadByUserId(user.id);
@@ -139,17 +135,17 @@ const MainBoardScreen = ({ }) => {
                 } else {
                     setMenuMessageRead(false);
                 }
-    
+
                 // Définir messageExpanded en fonction du statut de connexion
                 setMessageExpanded(!authState.isAuthenticated); // Message expanded si non connecté
             } catch (error) {
                 console.error(error);
             }
         };
-    
+
         fetchMessage();
     }, [authState.isAuthenticated, user?.id, setMessageExpanded]);
-    
+
 
     useEffect(() => {
         let timerId: any;

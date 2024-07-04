@@ -9,7 +9,6 @@ import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
 import { getTextTestPlausibility, getTextWithTokensByGameType, getTextWithTokensById, getTextWithTokensNotPlayed } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
-import { checkUserSelectionPlausibility } from "utils/gameFunctions";
 import InfoText from 'components/InfoText';
 import { ButtonConfig } from "interfaces/ButtonConfig";
 import { plausibilityConfigs } from "utils/plausibilityConfigs";
@@ -207,114 +206,117 @@ const MythoOuPasFullTextScreen = () => {
 
   const onNextCard = async () => {
 
-    if (!text) {
-      console.error("Aucun texte à traiter.");
-      return;
-    }
+    // if (!text) {
+    //   console.error("Aucun texte à traiter.");
+    //   return;
+    // }
 
-    if (text?.is_plausibility_test) {
-      const checkResult = await checkUserSelectionPlausibility(text.id, errorDetails, userRateSelected);
-      const noErrorSpecified = errorDetails.length === 0;
-      const noErrorInDatabase = !checkResult.testPlausibilityError || checkResult.testPlausibilityError.length === 0;
+    // if (text?.is_plausibility_test) {
+    //   // @ts-ignore
+    //   const checkResult;
+    //   const noErrorSpecified = errorDetails.length === 0;
+    //   const noErrorInDatabase = !checkResult.testPlausibilityError || checkResult.testPlausibilityError.length === 0;
 
-      let messageHeader: JSX.Element = <></>;
+    //   let messageHeader: JSX.Element = <></>;
 
-      if (noErrorSpecified || noErrorInDatabase) {
-        if (checkResult.testPlausibilityPassed) {
-          if (!isTutorial) animationGainPoints(7, 1, 1);
-          goToNextSentence(true);
-          return;
-        } else {
-          if (!isTutorial) animationGainPoints(0, -1, -1);
-          messageHeader = (
-            <View style={tw('flex-row items-center')}>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Hmm ce texte était plutôt </Text>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}>{getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
-            </View>
-          );
-        }
-      } else {
-        const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
+    //   if (noErrorSpecified || noErrorInDatabase) {
+    //     if (checkResult.testPlausibilityPassed) {
+    //       if (!isTutorial) animationGainPoints(7, 1, 1);
+    //       goToNextSentence(true);
+    //       return;
+    //     } else {
+    //       if (!isTutorial) animationGainPoints(0, -1, -1);
+    //       messageHeader = (
+    //         <View style={tw('flex-row items-center')}>
+    //           <Text style={tw('text-[#B22222] font-primary text-lg')}
+    //           >Hmm ce texte était plutôt </Text>
+    //           <Text style={tw('text-[#B22222] font-primary text-lg')}>{getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+    //           <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+    //         </View>
+    //       );
+    //     }
+    //   } else {
+    //     // @ts-ignore
+    //     const correctSpecification = checkResult.testPlausibilityError.map(spec => `• ${spec.content}`).join('\n');
 
-        const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
-        setText(currentText => {
-          if (!currentText) return currentText;
-          return updateTokensColor(currentText, allPositions);
-        });
+    //     // @ts-ignore
+    //     const allPositions = checkResult.testPlausibilityError.flatMap(spec => spec.word_positions.split(', ').map(pos => parseInt(pos)));
+    //     setText(currentText => {
+    //       if (!currentText) return currentText;
+    //       return updateTokensColor(currentText, allPositions);
+    //     });
 
-        if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
-          <Text>
-            {plausibilityDescription(checkResult.correctPlausibility)}
-          </Text>;
-          messageHeader = (
-            <View style={tw('flex-row items-center')}>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Vous avez bien identifié les zones de doute, mais le texte était plutôt {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-              <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
-            </View>
-          );
-          if (!isTutorial) animationGainPoints(7, 0, 1);
-        } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
-          messageHeader = (
-            <View>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
-              <View style={tw('flex-row items-center')}>
-                <Text style={tw('text-[#B22222] font-primary text-lg')}>Et le texte était {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
-                <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
-              </View>
-            </View>
-          );
-          if (!isTutorial) animationGainPoints(0, -1, -1);
-        } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          messageHeader = (
-            <View>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}
-              >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
-              <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
-            </View>
-          );
-          if (!isTutorial) animationGainPoints(7, 0, 1);
-        } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
-          if (!isTutorial) animationGainPoints(12, 2, 2);
-          goToNextSentence(true);
-          return;
-        }
-      }
+    //     if (checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
+    //       <Text>
+    //         {plausibilityDescription(checkResult.correctPlausibility)}
+    //       </Text>;
+    //       messageHeader = (
+    //         <View style={tw('flex-row items-center')}>
+    //           <Text style={tw('text-[#B22222] font-primary text-lg')}
+    //           >Vous avez bien identifié les zones de doute, mais le texte était plutôt {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+    //           <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+    //         </View>
+    //       );
+    //       if (!isTutorial) animationGainPoints(7, 0, 1);
+    //     } else if (!checkResult.isErrorDetailsCorrect && !checkResult.testPlausibilityPassed) {
+    //       messageHeader = (
+    //         <View>
+    //           <Text style={tw('text-[#B22222] font-primary text-lg')}
+    //           >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
+    //           <View style={tw('flex-row items-center')}>
+    //             <Text style={tw('text-[#B22222] font-primary text-lg')}>Et le texte était {getPlausibilityConfig(checkResult.correctPlausibility).description}</Text>
+    //             <PlausibilityButton config={getPlausibilityConfig(checkResult.correctPlausibility).buttonConfig as ButtonConfig} />
+    //           </View>
+    //         </View>
+    //       );
+    //       if (!isTutorial) animationGainPoints(0, -1, -1);
+    //     } else if (!checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
+    //       messageHeader = (
+    //         <View>
+    //           <Text style={tw('text-[#B22222] font-primary text-lg')}
+    //           >Oups, raté! Voilà les erreurs qu'il fallait trouver: {'\n'}{correctSpecification}. {'\n'}</Text>
+    //           <Text style={tw('text-[#B22222] font-primary text-lg')}>Par contre, vous avez trouvé la bonne plausibilité!</Text>
+    //         </View>
+    //       );
+    //       if (!isTutorial) animationGainPoints(7, 0, 1);
+    //     } else if (checkResult.isErrorDetailsCorrect && checkResult.testPlausibilityPassed) {
+    //       if (!isTutorial) animationGainPoints(12, 2, 2);
+    //       goToNextSentence(true);
+    //       return;
+    //     }
+    //   }
 
-      if (!checkResult.isValid) {
-        setMessageContent(messageHeader);
-        if (!isInvisibleTest) {
-          setShowMessage(true);
-        } else {
-          goToNextSentence(false);
-        }
-        setSelectionStarted(false);
-      }
-      return;
-    } else {
-      const userTextRating = {
-        // @ts-ignore
-        user_id: user.id,
-        text_id: text.id,
-        plausibility: userRateSelected,
-        sentence_positions: "full",
-        vote_weight: user?.status === 'medecin' ? user?.trust_index + 30 : user?.trust_index,
-      };
-      // await createUserTextRating(userTextRating);
+    //   if (!checkResult.isValid) {
+    //     setMessageContent(messageHeader);
+    //     if (!isInvisibleTest) {
+    //       setShowMessage(true);
+    //     } else {
+    //       goToNextSentence(false);
+    //     }
+    //     setSelectionStarted(false);
+    //   }
+    //   return;
+    // } else {
+    //   const userTextRating = {
+    //     // @ts-ignore
+    //     user_id: user.id,
+    //     text_id: text.id,
+    //     plausibility: userRateSelected,
+    //     sentence_positions: "full",
+    //     vote_weight: user?.status === 'medecin' ? user?.trust_index + 30 : user?.trust_index,
+    //   };
+    //   // await createUserTextRating(userTextRating);
 
 
-      for (let errorDetail of errorDetails) {
-        const { id, ...rest } = errorDetail;
-      }
+    //   for (let errorDetail of errorDetails) {
+    //     const { id, ...rest } = errorDetail;
+    //   }
 
-      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      animationGainPoints(10, 0, 0);
-    }
+    //   scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    //   animationGainPoints(10, 0, 0);
+    // }
 
-    goToNextSentence();
+    // goToNextSentence();
   };
 
 

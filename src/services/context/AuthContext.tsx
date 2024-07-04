@@ -17,7 +17,6 @@ interface AuthContextProps {
   removeToken: () => Promise<void>;
   resetAuthState: any;
   renewAccessToken: (token: string) => Promise<string>;
-  storeRefreshToken: (token: string) => Promise<void>;
   getRefreshToken: () => Promise<string>;
   removeRefreshToken: () => Promise<void>;
 }
@@ -103,12 +102,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const renewAccessToken = async (token: string): Promise<string | null> => {
-    console.log("renewAccessToken");
     try {
       const response = await refreshToken(token);
       if (response && response.accessToken) {
         await storeToken(response.accessToken);
-        console.log("Stored token: " + response.accessToken);
         return response.accessToken;
       }
       throw new Error("Access token is missing in the response");
