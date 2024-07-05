@@ -142,21 +142,18 @@ const SignUpScreen = () => {
         return { gender, color_skin };
     };
 
-
     const generatePseudo = (setFieldValue: any) => {
-        const genderType = gender === 'homme' ? 'male' : 'female';
+        const genderType = Math.random() < 0.5 ? 'male' : 'female';
         const name = (genderType === 'male')
             ? detectiveNamesMale[Math.floor(Math.random() * detectiveNamesMale.length)]
             : detectiveNamesFemale[Math.floor(Math.random() * detectiveNamesFemale.length)];
-
         const keyword = (genderType === 'male')
             ? keywordsMale[Math.floor(Math.random() * keywordsMale.length)]
             : keywordsFemale[Math.floor(Math.random() * keywordsFemale.length)];
-
-        setUsername(`${name} ${keyword}`);
-        setFieldValue('username', `${name} ${keyword}`);
+        const username = `${name} ${keyword}`;
+        setUsername(username);
+        setFieldValue('username', username);
     }
-
 
     return (
         <ImageBackground source={require('images/bg_office.jpg')} style={tw('absolute bottom-0 left-0 w-full h-full')}>

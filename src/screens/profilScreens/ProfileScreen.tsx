@@ -103,23 +103,22 @@ const ProfileScreen = (props: any) => {
                 <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' backToMain={true} />
             )}
 
-
-            <TouchableOpacity onPress={() => navigation.navigate("ParametreProfil")}
-                style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100, zIndex: 90 }}>
-                <View style={{
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    borderTopLeftRadius: 30,
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <Image source={require('images/settings1.png')} resizeMode="contain"
-                        style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
-                </View>
-            </TouchableOpacity>
-
-
+            {user && user.tutorial_progress > 5 && (
+                <TouchableOpacity onPress={() => navigation.navigate("ParametreProfil")}
+                    style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100, zIndex: 90 }}>
+                    <View style={{
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        borderTopLeftRadius: 30,
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <Image source={require('images/settings1.png')} resizeMode="contain"
+                            style={{ width: windowWidth * 0.05, height: windowWidth * 0.1, minWidth: 50, minHeight: 100 }} />
+                    </View>
+                </TouchableOpacity>
+            )}
             <View style={tw('flex-1 flex-row items-start justify-start relative')}>
                 {!isMobile &&
                     <View style={tw('w-1/4 h-3/4 mb-10 ml-0 mr-auto mt-auto items-end justify-center')}>
