@@ -259,7 +259,7 @@ const MythoOuPasScreen = () => {
           }));
           displayAchievements(result.newAchievements, result.showSkinModal, result.skinData);
         }
-        goToNextSentence(true);
+        goToNextSentence(true, true);
       } else {
         const allPositions: any = Array.from(new Set(result.correctPositions.flat()));
         setText(currentText => {
@@ -309,8 +309,8 @@ const MythoOuPasScreen = () => {
   };
 
 
-  const goToNextSentence = async (isCorrect = true) => {
-    if (isCorrect) {
+  const goToNextSentence = async (isCorrect = true, showSuccessModal = false) => {
+    if (showSuccessModal && isCorrect) {
       setSuccessModalVisible(true);
     }
     if (isTutorial) {
@@ -554,8 +554,7 @@ const MythoOuPasScreen = () => {
           <View style={tw('flex-row justify-between z-40')}>
             <WikiButton func={() => toggleWikiMode()} />
             <View style={tw('flex-row')}>
-              {/* <NextButton func={goToNextSentence} isDisabled={isTutorial} /> */}
-              <NextButton func={() => goToNextSentence(false)} isDisabled={isTutorial} />
+              <NextButton func={() => goToNextSentence(true)} isDisabled={isTutorial} />
               <HelpButton onHelpPress={showHelpModal} />
             </View>
           </View>
