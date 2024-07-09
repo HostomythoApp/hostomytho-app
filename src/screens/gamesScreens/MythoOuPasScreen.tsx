@@ -7,7 +7,7 @@ import { Token } from "models/Token";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
-import { getSmallTextWithTokensNotPlayed, getTextTestPlausibility, getTextWithTokensById } from "services/api/texts";
+import { getPlausibilityText, getSmallTextWithTokensNotPlayed, getTextTestPlausibility, getTextWithTokensById } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import InfoText from 'components/InfoText';
 import { plausibilityConfigs } from "utils/plausibilityConfigs";
@@ -49,6 +49,7 @@ const MythoOuPasScreen = () => {
   const [text, setText] = useState<TextWithTokens>();
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
   const [messageContent, setMessageContent] = useState<JSX.Element>(<></>);
+  const [isComparaison, setIsComparaison] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [userRateSelected, setUserRateSelected] = useState(100);
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
@@ -117,16 +118,7 @@ const MythoOuPasScreen = () => {
     try {
       let response;
       if (user) {
-        const randomNumber = Math.floor(Math.random() * 100);
-        // 20% de chance d'avoir un test
-        if (randomNumber < 20) {
-          response = await getTextTestPlausibility();
-          // response = await getTextWithTokensById(145);
-        } else {
-          response = await getSmallTextWithTokensNotPlayed(user.id, 'plausibility');
-          // response = await getTextWithTokensById(114);
-
-        }
+        response = await getPlausibilityText();
       } else {
         // Si l'utilisateur n'est pas connecté, récupérer un texte de test par défaut
         response = await getTextTestPlausibility();
@@ -232,7 +224,6 @@ const MythoOuPasScreen = () => {
 
 
   const onNextCard = async () => {
-
     if (!text) {
       console.error("Aucun texte à traiter.");
       return;
@@ -247,20 +238,24 @@ const MythoOuPasScreen = () => {
         userId: userId,
       });
 
+      // @ts-ignore
+      setUser(prevUser => ({
+        ...prevUser,
+        points: result.newPoints,
+        catch_probability: result.newCatchProbability,
+        trust_index: result.newTrustIndex,
+
+        coeffMulti: result.newCoeffMulti
+      }));
+
       if (result.success) {
         if (userId > 0) {
-          // @ts-ignore
-          setUser(prevUser => ({
-            ...prevUser,
-            points: result.newPoints,
-            catch_probability: result.newCatchProbability,
-            trust_index: result.newTrustIndex,
-            coeffMulti: result.newCoeffMulti
-          }));
+
           displayAchievements(result.newAchievements, result.showSkinModal, result.skinData);
         }
         goToNextSentence(true, true);
       } else {
+
         const allPositions: any = Array.from(new Set(result.correctPositions.flat()));
         setText(currentText => {
           if (!currentText) return currentText;
@@ -281,16 +276,30 @@ const MythoOuPasScreen = () => {
           );
         }
 
+        const plausibilityConfig = result.averagePlausibility ? getPlausibilityConfig(result.averagePlausibility) : null;
+        setIsComparaison(!!plausibilityConfig);
         let messageHeader = (
           <View>
             {plausibilityDescription}
-            <Text style={tw('text-[#B22222] font-primary text-lg')}>
+            <Text style={tw(`text-${plausibilityConfig ? 'blue-800' : '[#B22222]'} font-primary text-lg`)}>
               {result.message}
+              {plausibilityConfig ? (
+                <Text style={tw('text-lg text-center mb-2 ml-1')}
+                >
+                  En moyenne, ils ont choisi "{plausibilityConfig.description}"
+                  {/* @ts-ignore */}
+                  <PlausibilityButton config={plausibilityConfig.buttonConfig} />
+                </Text>
+              ) : (
+                <Text style={tw(`text-[#B22222] ${isComparaison ? 'blue-800' : 'red-500'} font-primary text-lg`)}>
+                  {result.message}
+                </Text>
+              )}
             </Text>
           </View>
         );
 
-        if (isInvisibleTest) {
+        if (isInvisibleTest && !plausibilityConfig) {
           if (userId > 0) {
             goToNextSentence(false);
           } else {
@@ -330,7 +339,7 @@ const MythoOuPasScreen = () => {
     if (isTutorial) {
       nextTutorialStep();
     } else {
-      if (isCorrect) {
+      if (isCorrect || isComparaison) {
         setIsInvisibleTest(false);
         fetchNewText();
       } else {
@@ -515,13 +524,13 @@ const MythoOuPasScreen = () => {
   };
 
 
-  const plausibilityDescription = (value: any) => {
-    if (value === 0) return "très peu plausible";
-    if (value <= 25.00) return "peu plausible";
-    if (value <= 50.00) return "moyennement plausible";
-    if (value <= 75.00) return "assez plausible ";
-    return "complètement plausible";
-  };
+  // const plausibilityDescription = (value: any) => {
+  //   if (value === 0) return "très peu plausible";
+  //   if (value <= 25.00) return "peu plausible";
+  //   if (value <= 50.00) return "moyennement plausible";
+  //   if (value <= 75.00) return "assez plausible ";
+  //   return "complètement plausible";
+  // };
 
   const getPlausibilityConfig = (plausibility?: number) => {
     if (plausibility === undefined) {
@@ -531,10 +540,10 @@ const MythoOuPasScreen = () => {
   };
 
 
-  const animationGainPoints = (pointsEarned: number, catchProbability: number, trustEarned: number) => {
-    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-    if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
-  }
+  // const animationGainPoints = (pointsEarned: number, catchProbability: number, trustEarned: number) => {
+  //   scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+  //   if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
+  // }
 
 
   return (
@@ -802,13 +811,14 @@ const MythoOuPasScreen = () => {
         )}
         {showMessage &&
           <View style={tw(' flex-col w-full bottom-0')} >
-            <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
+            <View style={tw(`bg-${isComparaison ? 'blue-100' : 'red-200'} p-2 rounded-lg w-full flex-row justify-between items-center`)}>
+
               <View style={tw(' w-5/6')}
               >
                 {messageContent}
               </View>
               <TouchableOpacity
-                style={tw("bg-red-500 px-4 rounded-lg h-8 my-1 flex-row items-center")}
+                style={tw(`bg-${isComparaison ? 'blue-500' : 'red-500'} px-4 rounded-lg h-8 my-1 flex-row items-center`)}
                 onPress={() => goToNextSentence(false)}
               >
                 <Text style={tw("text-white font-primary text-lg")}>Continuer</Text>

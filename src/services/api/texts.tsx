@@ -210,6 +210,17 @@ export const getTextById = async (id: number): Promise<Text[]> => {
   }
 };
 
+
+export const getPlausibilityText = async (): Promise<TextWithTokens> => {
+  try {
+    const response = await api.get(`/plausibility/getText`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const getTextsByTheme = async (theme: string): Promise<Text[]> => {
   try {
     const response = await api.get(`/texts/theme/${theme}`);
