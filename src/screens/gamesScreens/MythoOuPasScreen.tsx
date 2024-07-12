@@ -64,6 +64,7 @@ const MythoOuPasScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
   const [wikiMode, setWikiMode] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
 
   useEffect(() => {
     if (!user) {
@@ -124,6 +125,7 @@ const MythoOuPasScreen = () => {
         response = await getTextTestPlausibility();
       }
       setText(response);
+      setStartTime(Date.now());
     } catch (error) {
       console.error("Erreur lors de la récupération du nouveau texte :", error);
     }
@@ -133,6 +135,7 @@ const MythoOuPasScreen = () => {
     try {
       const response = await getTextTestPlausibility();
       setText(response);
+      setStartTime(Date.now());
     } catch (error) {
       console.error("Erreur lors de la récupération du texte de test.", error);
     }
@@ -215,6 +218,7 @@ const MythoOuPasScreen = () => {
     setCorrectAnswers(0);
     setQuestionsAsked(1);
     setTutorialFailed(false);
+    setIsInvisibleTest(false);
   };
 
   const showHelpModal = () => {
@@ -228,29 +232,38 @@ const MythoOuPasScreen = () => {
       console.error("Aucun texte à traiter.");
       return;
     }
-    const userId = user?.id ?? 0;
     try {
+      const userId = user?.id ?? 0;
+      const endTime = Date.now();
+      let responseTime: number;
+      if (isTutorial) {
+        responseTime = 10;
+      } else {
+        responseTime = (endTime - startTime) / 1000; // Temps en secondes
+      }
+
       const result = await sendResponse({
         textId: text.id,
         userErrorDetails: errorDetails,
         userRateSelected: userRateSelected,
         sentencePositions: text.sentence_positions,
         userId: userId,
+        responseNum: responseTime,
       });
 
-      // @ts-ignore
-      setUser(prevUser => ({
-        ...prevUser,
-        points: result.newPoints,
-        catch_probability: result.newCatchProbability,
-        trust_index: result.newTrustIndex,
-
-        coeffMulti: result.newCoeffMulti
-      }));
+      if (userId) {
+        // @ts-ignore
+        setUser(prevUser => ({
+          ...prevUser,
+          points: result.newPoints,
+          catch_probability: result.newCatchProbability,
+          trust_index: result.newTrustIndex,
+          coeffMulti: result.newCoeffMulti
+        }));
+      }
 
       if (result.success) {
         if (userId > 0) {
-
           displayAchievements(result.newAchievements, result.showSkinModal, result.skinData);
         }
         goToNextSentence(true, true);
@@ -302,8 +315,6 @@ const MythoOuPasScreen = () => {
         if (isInvisibleTest && !plausibilityConfig) {
           if (userId > 0) {
             goToNextSentence(false);
-          } else {
-            goToNextSentence(true);
           }
         } else {
           setMessageContent(messageHeader);
@@ -319,15 +330,30 @@ const MythoOuPasScreen = () => {
 
 
   const goToNextSentence = async (isCorrect = true, showSuccessModal = false) => {
+
     if (showSuccessModal && isCorrect) {
       setSuccessModalVisible(true);
     }
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
+      setIsInvisibleTest(false);
+      nextTutorialStep();
       if (isCorrect) {
         setCorrectAnswers(correctAnswers + 1);
       }
+    } else {
+      if (isCorrect || isComparaison) {
+        setIsInvisibleTest(false);
+        fetchNewText();
+      } else if (user) {
+        fetchTestText();
+        setIsInvisibleTest(true);
+      } else {
+        fetchTestText();
+        setIsInvisibleTest(false);
+      }
     }
+
     setErrorDetails([]);
     setShowMessage(false);
     setMessageContent(<></>);
@@ -336,17 +362,7 @@ const MythoOuPasScreen = () => {
     setUserRateSelected(100);
     setColorIndex(0);
     toggleWikiMode(false);
-    if (isTutorial) {
-      nextTutorialStep();
-    } else {
-      if (isCorrect || isComparaison) {
-        setIsInvisibleTest(false);
-        fetchNewText();
-      } else {
-        fetchTestText();
-        setIsInvisibleTest(true);
-      }
-    }
+
   };
 
   const handleDismissSuccessModal = () => {
@@ -523,28 +539,12 @@ const MythoOuPasScreen = () => {
     setErrorSpecifying(false);
   };
 
-
-  // const plausibilityDescription = (value: any) => {
-  //   if (value === 0) return "très peu plausible";
-  //   if (value <= 25.00) return "peu plausible";
-  //   if (value <= 50.00) return "moyennement plausible";
-  //   if (value <= 75.00) return "assez plausible ";
-  //   return "complètement plausible";
-  // };
-
   const getPlausibilityConfig = (plausibility?: number) => {
     if (plausibility === undefined) {
       return plausibilityConfigs[plausibilityConfigs.length - 1];
     }
     return plausibilityConfigs.find(config => plausibility <= config.maxThreshold) || plausibilityConfigs[plausibilityConfigs.length - 1];
   };
-
-
-  // const animationGainPoints = (pointsEarned: number, catchProbability: number, trustEarned: number) => {
-  //   scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-  //   if (isTutorial) { pointsEarned = 0; catchProbability = 0; }
-  // }
-
 
   return (
     <ImageBackground source={require('images/bg_room_2.jpg')} style={tw('flex-1')}>

@@ -54,6 +54,7 @@ const MythoNoScreen = ({ }) => {
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
   const [wikiMode, setWikiMode] = useState(false);
   const [isButtonNextVisible, setIsButtonNextVisible] = useState(true);
+  const [startTime, setStartTime] = useState(Date.now());
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -104,21 +105,21 @@ const MythoNoScreen = ({ }) => {
       if (user) {
         const randomNumber = Math.floor(Math.random() * 100);
 
-        // 20% de chance d'avoir un test
-        if (randomNumber < 20) {
+        // 25% de chance d'avoir un test
+        if (randomNumber < 25) {
+
           response = await getTextTestNegation();
           // response = await getTextWithTokensById(105);
         } else {
           response = await getSmallTextWithTokensNotPlayed(user.id, 'plausibility');
           // response = await getTextWithTokensById(105);
-          // Erreur avec 389 aussi
-
         }
       } else {
         // Si l'utilisateur n'est pas connecté, récupérer un texte de test par défaut
         response = await getTextTestNegation();
       }
       setText(response);
+      setStartTime(Date.now());
     } catch (error) {
       console.error("Erreur lors de la récupération du nouveau texte :", error);
     }
@@ -183,6 +184,7 @@ const MythoNoScreen = ({ }) => {
     try {
       const response = await getTextTestNegation();
       setText(response);
+      setStartTime(Date.now());
     } catch (error) {
       console.error("Erreur lors de la récupération du texte de test.", error);
     }
@@ -210,6 +212,7 @@ const MythoNoScreen = ({ }) => {
     setIsTutorial(true);
     setTutorialFailed(false);
     setUserSentenceSpecifications([]);
+    setIsInvisibleTest(false);
     const response = await getTextWithTokensById(113);
     setText(response);
     const tutorialContent = getTutorialContentForStep(1, tw);
@@ -221,7 +224,6 @@ const MythoNoScreen = ({ }) => {
   // *****************************************************
 
   const onNextCard = async () => {
-
     if (!text) {
       console.error("Aucune spécification à traiter.");
       return;
@@ -231,10 +233,21 @@ const MythoNoScreen = ({ }) => {
     if (user) {
       setIsButtonNextVisible(false);
       try {
+        const userId = user?.id ?? 0;
+
+        const endTime = Date.now();
+        let responseTime: number;
+        if (isTutorial) {
+          responseTime = 10;
+        } else {
+          responseTime = (endTime - startTime) / 1000; // Temps en secondes
+        }
+
         const result = await sendResponse({
           textId: text.id,
           userSentenceSpecifications,
-          userId: user.id,
+          userId: userId,
+          responseNum: responseTime,
         });
 
         if (result.success) {
@@ -249,10 +262,14 @@ const MythoNoScreen = ({ }) => {
 
           displayAchievements(result.newAchievements, result.showSkinModal, result.skinData);
 
-          goToNextSentence();
+          goToNextSentence(true, true);
         } else {
           if (isInvisibleTest) {
-            goToNextSentence(false);
+            if (userId > 0) {
+              goToNextSentence(false);
+            } else {
+              goToNextSentence(true);
+            }
           } else {
             setShowMessage(true);
             setMessageContent(result.message);
@@ -270,18 +287,17 @@ const MythoNoScreen = ({ }) => {
       } finally {
         setLoading(false);
         setSelectionStarted(false);
-        setTimeout(() => {
-          setIsButtonNextVisible(true);
-        }, 2000);
       }
     }
   };
 
-  const goToNextSentence = async (isCorrect = true) => {
+  const goToNextSentence = async (isCorrect = true, showSuccessModal = false) => {
+    if (showSuccessModal && isCorrect) {
+      setSuccessModalVisible(true);
+    }
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
       if (isCorrect) {
-        setSuccessModalVisible(true);
         setCorrectAnswers(correctAnswers + 1);
       }
     }
@@ -599,7 +615,8 @@ const MythoNoScreen = ({ }) => {
           )}
 
 
-          {!showMessage && isButtonNextVisible &&
+          {/* {!showMessage && isButtonNextVisible && */}
+          {!showMessage &&
             <TouchableOpacity
               disabled={isTutorial && (isFirstClickValidate || tutorialFailed)}
               style={[

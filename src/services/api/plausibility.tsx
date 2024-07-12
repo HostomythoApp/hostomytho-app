@@ -9,6 +9,7 @@ export const sendResponse = async (data: {
   userRateSelected: number,
   sentencePositions: any,
   userId: number,
+  responseNum: number,
 }): Promise<any> => {
   try {
     const response = await api.post("/plausibility/sendResponse", data);

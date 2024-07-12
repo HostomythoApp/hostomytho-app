@@ -5,6 +5,7 @@ export const sendResponse = async (data: {
   textId: number;
   userSentenceSpecifications: UserSentenceSpecification[];
   userId: number;
+  responseNum: number,
 }): Promise<any> => {
   try {
     const response = await api.post("/userSentenceSpecifications/sendResponse", data);
