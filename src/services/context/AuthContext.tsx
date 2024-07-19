@@ -130,6 +130,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         storeToken,
         removeToken,
         resetAuthState,
+        // @ts-ignore
         renewAccessToken,
       }}
     >

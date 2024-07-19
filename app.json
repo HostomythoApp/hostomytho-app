@@ -2,7 +2,7 @@
   "expo": {
     "name": "hostomytho",
     "slug": "hostomytho",
-    "version": "1.1.2",
+    "version": "1.1.4",
     "orientation": "landscape",
     "icon": "./src/assets/images/icon.png",
     "splash": {
@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hostomytho.hostomytho",
-      "buildNumber": "12",
+      "buildNumber": "14",
       "infoPlist": {
         "NSPrivacyAccessedAPIDiskSpaceUsageDescription": "Cette application vérifie l'espace disque disponible pour s'assurer qu'il y a suffisamment de place pour télécharger et stocker le contenu nécessaire sans impacter les performances de votre appareil.",
         "NSPrivacyAccessedAPISystemBootTimeUsageDescription": "Nous utilisons l'heure de démarrage du système pour fournir des fonctionnalités de suivi du temps d'activité, ce qui nous aide à optimiser l'expérience utilisateur et à offrir des rappels personnalisés.",
@@ -29,7 +29,7 @@
         "foregroundImage": "./src/assets/images/icon.png"
       },
       "package": "com.hostomytho.hostomytho",
-      "versionCode": 7
+      "versionCode": 9
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"

@@ -604,6 +604,16 @@
 			"maxHeight": 100
 		}
 	},
+	"max-h-[80%]": {
+		"style": {
+			"maxHeight": "80%"
+		}
+	},
+	"max-h-[100%]": {
+		"style": {
+			"maxHeight": "100%"
+		}
+	},
 	"min-h-28": {
 		"style": {
 			"minHeight": 112
@@ -2007,6 +2017,20 @@
 		"style": {
 			"fontSize": 36,
 			"lineHeight": 40
+		},
+		"media": "(min-width: 768px)"
+	},
+	"md:text-base": {
+		"style": {
+			"fontSize": 16,
+			"lineHeight": 24
+		},
+		"media": "(min-width: 768px)"
+	},
+	"md:text-lg": {
+		"style": {
+			"fontSize": 18,
+			"lineHeight": 28
 		},
 		"media": "(min-width: 768px)"
 	},

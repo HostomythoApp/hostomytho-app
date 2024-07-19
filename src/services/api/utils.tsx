@@ -79,6 +79,20 @@ export const updateMenuMessageActive = async (messageId: number, isActive: boole
   }
 };
 
+export const getDefinition = async (word: string) => {
+  try {
+    const response = await api.get(`/utils/getDefinition?word=${word}`);
+    if (response.data && response.data.definitions.length > 0) {
+      return response.data;
+    } else {
+      return { error: true, message: "No definitions found on server." };
+    }
+  } catch (error) {
+    console.error("Error fetching definition from server: ", error);
+    return { error: true, message: "Server request failed", details: error.message };
+  }
+};
+
 export const tokenValidation = async (token: string): Promise<any> => {
   try {
     return await api.get(`/utils/tokenValidation/${token}`);

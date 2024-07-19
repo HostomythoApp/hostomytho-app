@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking, ActivityIndicator } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useUser } from 'services/context/UserContext';
@@ -24,6 +24,7 @@ import WikiButton from "components/button/WikiButton";
 import RatingButton from "components/button/RatingButton";
 import { useAuth } from "services/context/AuthContext";
 import { sendResponse } from "services/api/plausibility";
+import { getDefinition } from "services/api/utils";
 
 const colors = [
   "bg-yellow-300",
@@ -36,6 +37,7 @@ const MythoOuPasScreen = () => {
   const tw = useTailwind();
   const { authState } = useAuth();
   const [isModalPlausibilityVisible, setIsModalPlausibilityVisible] = useState(false);
+  const [isModalWikiVisible, setIsModalWikiVisible] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(false);
   const [errorSpecifying, setErrorSpecifying] = useState(false);
@@ -65,6 +67,22 @@ const MythoOuPasScreen = () => {
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
   const [wikiMode, setWikiMode] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
+  const [definition, setDefinition] = React.useState('');
+  const [currentUrl, setCurrentUrl] = React.useState('');
+  const [title, setTitle] = React.useState('');
+  const [currentWord, setCurrentWord] = useState('');
+  const [definitions, setDefinitions] = useState([]);
+  const [resultType, setResultType] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // useEffect(() => {
+  //   if (currentWord) {
+  //     fetchSummaryFromWikipedia(currentWord).then(data => {
+  //       setDefinition(data.text);
+  //       setTitle(data.title);
+  //     });
+  //   }
+  // }, [currentWord]);
 
   useEffect(() => {
     if (!user) {
@@ -211,6 +229,10 @@ const MythoOuPasScreen = () => {
     setIsModalPlausibilityVisible(false);
   };
 
+  const handleCloseModalWiki = () => {
+    setIsModalWikiVisible(false);
+  };
+
   const launchTuto = () => {
     setResetTutorialFlag(true);
     setShowMessage(false);
@@ -295,10 +317,10 @@ const MythoOuPasScreen = () => {
           <View>
             {plausibilityDescription}
             <Text style={tw(`text-${plausibilityConfig ? 'blue-800' : '[#B22222]'} font-primary text-lg`)}>
-              {result.message}
               {plausibilityConfig ? (
                 <Text style={tw('text-lg text-center mb-2 ml-1')}
                 >
+                  {result.message}
                   En moyenne, ils ont choisi "{plausibilityConfig.description}"
                   {/* @ts-ignore */}
                   <PlausibilityButton config={plausibilityConfig.buttonConfig} />
@@ -432,12 +454,101 @@ const MythoOuPasScreen = () => {
     return sentence ? sentence.color : "bg-transparent";
   };
 
+  ////////////////////////////////////////////////////////////////////////////
+  const fetchDirectTitle = async (searchWord: string) => {
+    const summaryUrl = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(searchWord)}`;
+    try {
+      const response = await fetch(summaryUrl);
+      const json = await response.json();
+      if (json.type === 'disambiguation') {
+        return handleDisambiguationPage(searchWord);
+      } else if (json.type === 'standard' && json.extract) {
+        return {
+          text: json.extract,
+          title: json.title,
+          url: `https://fr.wikipedia.org/wiki/${encodeURIComponent(json.title)}`
+        };
+      } else {
+        throw new Error("Page not found");
+      }
+    } catch (error) {
+      console.error("Error fetching from Wikipedia: ", error.message);
+      throw error;  // Propagate error to be handled by caller
+    }
+  };
+
+
+  const handleDisambiguationPage = async (searchWord: string) => {
+    const searchUrl = `https://fr.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchWord)}&format=json&srlimit=2&origin=*`;
+    const response = await fetch(searchUrl);
+    const data = await response.json();
+
+    const definitions = await Promise.all(data.query.search.map(async (item: any) => {
+      return fetchSummaryFromWikipedia(item.title);
+    }));
+
+    return {
+      definitions,
+      result_type: "multiple"
+    };
+  };
+
+  const fetchSummaryFromWikipedia = async (title: string) => {
+    const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
+    const response = await fetch(url);
+    const json = await response.json();
+    if (json.type === 'standard') {
+      return { text: json.extract, title: json.title, url: `https://fr.wikipedia.org/wiki/${encodeURIComponent(title)}` };
+    }
+    throw new Error('Summary not found');
+  };
+
+  const searchAndDisplayResult = async (word: string) => {
+    setIsLoading(true);
+    try {
+      const directResult = await fetchDirectTitle(word);
+      setDefinitions([{ title: directResult.title, definition: directResult.text, url: directResult.url }]);
+      setResultType("direct");
+    } catch (error) {
+      try {
+        const serverResult = await getDefinition(word);
+        if (!serverResult.error) {
+          setDefinitions(serverResult.definitions.map(def => ({
+            title: def.title,
+            definition: def.definition,
+            url: def.url
+          })));
+          setResultType(serverResult.result_type || "server");
+        } else {
+          setDefinitions([]);
+          setResultType("failed");
+        }
+      } catch (serverError) {
+        console.error("Completely failed to find definitions: ", serverError);
+        setDefinitions([]);
+        setResultType("failed");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
   const onTokenPress = useCallback((wordIndex: number) => {
     if (wikiMode) {
+      setDefinitions([]);
       const token = text!.tokens[wordIndex];
       const word = token.content;
-      openWikipediaPageForWord(word);
-      // toggleWikiMode(false);
+      setIsLoading(true);
+      setIsModalWikiVisible(true);
+      searchAndDisplayResult(word)
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error during search: ", error);
+          setIsLoading(false);
+        });
     } else {
       if (!highlightEnabled) return;
       setText(currentText => {
@@ -657,6 +768,33 @@ const MythoOuPasScreen = () => {
             >
               <Text style={tw("text-green-700 font-semibold")}>Aller au texte suivant</Text>
             </TouchableOpacity>
+          </View>
+        </CustomModal>
+
+        <CustomModal
+          isVisible={isModalWikiVisible}
+          onClose={handleCloseModalWiki}
+        >
+          <View style={tw('flex-1 justify-center items-center px-4')}>
+            {isLoading ? (
+              <ActivityIndicator size="large" color="seagreen" />
+            ) : (
+              <ScrollView style={tw('max-h-[100%] w-full')}>
+                {definitions.length > 0 ? (
+                  definitions.map((def, index) => (
+                    <View key={index} style={tw('mb-4')}>
+                      <Text style={tw('font-primary text-xl md:text-lg mb-2')}>{def.title}</Text>
+                      <Text style={tw('font-primary text-lg md:text-base')}>{def.definition}</Text>
+
+                      <TouchableOpacity onPress={() => Linking.openURL(def.url)}><Text style={[tw(`font-primary text-base my-1`),{ color: 'blue' }]}>Ouvrir la page Wikipedia associée</Text>
+                </TouchableOpacity>
+                    </View>
+                  ))
+                ) : resultType === "failed" ? (
+                  <Text style={tw('font-primary text-lg text-center')}>Aucune définition n'a été trouvée.</Text>
+                ) : null}
+              </ScrollView>
+            )}
           </View>
         </CustomModal>
 
