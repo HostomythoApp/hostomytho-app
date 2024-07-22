@@ -307,7 +307,6 @@ const MythoNoScreen = ({ }) => {
     setMessageContent("");
     setLoading(false);
     setColorIndex(0);
-    toggleWikiMode(false);
     if (isTutorial) {
       nextTutorialStep();
     } else {
@@ -332,7 +331,6 @@ const MythoNoScreen = ({ }) => {
       const token = text!.tokens[wordIndex];
       const word = token.content;
       openWikipediaPageForWord(word);
-      // toggleWikiMode(false);
     } else {
       setText(currentText => {
         if (!currentText) return currentText;

@@ -33,7 +33,7 @@ const CustomModal = ({ isVisible, onClose, children }: { isVisible: boolean, onC
 
     return (
         <TouchableOpacity
-            style={tw('absolute inset-0 justify-center items-center w-full h-full')}
+            style={tw('absolute inset-0 justify-center items-center w-full h-full z-10')}
             activeOpacity={1}
             onPress={onClose}
         >

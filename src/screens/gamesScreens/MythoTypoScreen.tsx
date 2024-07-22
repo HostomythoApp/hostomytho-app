@@ -266,7 +266,6 @@ const MythoTypoScreen = ({ }) => {
     setShowMessage(false);
     setMessageContent("");
     setLoading(false);
-    toggleWikiMode(false);
 
     if (isTutorial) {
       nextTutorialStep();

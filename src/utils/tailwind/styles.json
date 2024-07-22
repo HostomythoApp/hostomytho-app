@@ -134,6 +134,11 @@
 			"zIndex": 50
 		}
 	},
+	"z-0": {
+		"style": {
+			"zIndex": 0
+		}
+	},
 	"m-0": {
 		"style": {
 			"marginTop": 0,
@@ -599,17 +604,22 @@
 			"maxHeight": 160
 		}
 	},
+	"max-h-[100%]": {
+		"style": {
+			"maxHeight": "100%"
+		}
+	},
 	"max-h-[100px]": {
 		"style": {
 			"maxHeight": 100
 		}
 	},
-	"max-h-[80%]": {
+	"max-h-96": {
 		"style": {
-			"maxHeight": "80%"
+			"maxHeight": 384
 		}
 	},
-	"max-h-[100%]": {
+	"max-h-full": {
 		"style": {
 			"maxHeight": "100%"
 		}
