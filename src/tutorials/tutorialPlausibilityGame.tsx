@@ -3,6 +3,7 @@ import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ButtonConfig } from 'interfaces/ButtonConfig';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import { plausibilityConfigs } from 'utils/plausibilityConfigs';
+import { FontAwesome } from '@expo/vector-icons';
 
 const getPlausibilityConfig = (plausibility?: number) => {
     if (plausibility === undefined) {
@@ -14,7 +15,7 @@ const getPlausibilityConfig = (plausibility?: number) => {
 export const getTutorialContentForStep = (step: number, tw: any) => {
 
     switch (step) {
-        case 1: return <Text allowFontScaling={false} style={tw('font-primary')}> Le but du jeu est d'évaluer la crédibilité d'un texte en lui attribuant un niveau de plausibilité. Pour ce faire, vous disposez de cinq boutons, chacun représentant un niveau de plausibilité différent :
+        case 1: return <Text allowFontScaling={false} style={tw('font-primary')}> Le but du jeu est de juger la crédibilité de comptes rendus médicaux qui peuvent avoir été rédigés par de faux médecins ou concerner de faux patients. Lisez chaque texte et attribuez-lui un niveau de plausibilité en utilisant l'un des cinq boutons disponibles en bas de l'écran, chacun correspondant à un degré différent de plausibilité.:
             {"\n\n"}
             <PlausibilityButton config={getPlausibilityConfig(0).buttonConfig as ButtonConfig} /> Très peu plausible
             <PlausibilityButton config={getPlausibilityConfig(25).buttonConfig as ButtonConfig} /> Peu plausible
@@ -22,31 +23,29 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             <PlausibilityButton config={getPlausibilityConfig(75).buttonConfig as ButtonConfig} /> Plutôt plausible
             <PlausibilityButton config={getPlausibilityConfig(100).buttonConfig as ButtonConfig} /> Complètement plausible
             {"\n\n"}
-            Lisez le texte, et attribuez-lui une plausibilité. Vous commencerez à gagner des points à la fin de ce tuto.
+            Lisez le texte, et attribuez-lui une plausibilité.
         </Text>;
 
         case 2: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Si vous pensez qu'un texte contient des erreurs, vous pouvez spécifier où elles sont, quel que soit leur type : erreur grammaticale, de cohérence, un passage biaisé ou offensant, ...
-            {"\n"} Pour ce faire, sélectionnez la plausibilité comme prédédemment, cliquez sur&nbsp;
-            {/* <View
-                style={[
-                    tw("px-1 py-1 mx-1 rounded-lg bg-orange-200 opacity-100"),
-                ]}
-            > */}
-                <Text style={tw("font-semibold text-orange-500 text-sm bg-orange-200  px-1 py-1 mx-1 rounded-lg")}
-                > Source du doute </Text>&nbsp;
-            {/* </View> */}
-            puis cliquez sur les mots qui composent cette erreur.
+            Certains textes contiennent des mots techniques compliqués. Utilisez alors le bouton
+            <Text style={tw("bg-[#bbf7d0] px-1 py-1 ml-1 rounded-lg")}
+            >
+                <FontAwesome name="wikipedia-w" size={13} color="black" />
+            </Text>&nbsp;
+            en haut à gauche, pour activer le mode Wiki. Cela vous permet d'avoir les définitions des mots sur lesquels vous cliquez.
+            {/* Pas d'inquiétude, de nombreuses erreurs sont identifiables sans compétences en médecine particulière */}
             {"\n\n"}
-            Vous n'êtes pas obligés de le faire, mais cela vous fera gagner plus de points.
-
+            Essayez de traiter ce texte.
         </Text>;
 
         case 3: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Certains textes contiennent des mots techniques compliqués, mais pas d'inquiétude, de nombreuses erreurs sont identifiables sans compétences en médecine particulière.
-            Si toutefois vous souhaitez avoir la définition d'un mot, cliquez sur le bouton "W" en haut à gauche, puis sur le mot dont vous souhaitez la définition. Cela vous dirigera vers une page Wikipédia associée.
+            Si vous pensez qu'un texte contient des erreurs, vous pouvez spécifier où elles sont, quel que soit leur type : erreur grammaticale, de cohérence, un passage biaisé ou offensant, ...
+            {"\n"} Pour ce faire, sélectionnez la plausibilité comme prédédemment, cliquez sur&nbsp;
+            <Text style={tw("font-semibold text-orange-500 text-sm bg-orange-200  px-1 py-1 mx-1 rounded-lg")}
+            > Source du doute </Text>&nbsp;
+            puis cliquez sur les mots qui composent cette erreur.
             {"\n\n"}
-            Essayez de traiter ce texte.
+            Vous n'êtes pas obligés de le faire, mais cela vous fera gagner plus de points.
         </Text>;
 
         case 4: return <Text allowFontScaling={false} style={tw('font-primary')}>

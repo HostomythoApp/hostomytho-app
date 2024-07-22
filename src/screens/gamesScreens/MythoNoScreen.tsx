@@ -15,9 +15,11 @@ import HelpButton from "components/button/HelpButton";
 import CustomModal from "components/modals/CustomModal";
 import { isTutorialCompleted } from "services/api/games";
 import NextButton from "components/button/NextButton";
-import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
+import { responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
 import WikiButton from "components/button/WikiButton";
+import WikiModal from "components/modals/WikiModal";
+import WikiEncard from "components/WikiEncard";
 
 const colors = [
   "bg-yellow-300",
@@ -53,8 +55,10 @@ const MythoNoScreen = ({ }) => {
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
   const [wikiMode, setWikiMode] = useState(false);
-  const [isButtonNextVisible, setIsButtonNextVisible] = useState(true);
+  // const [isButtonNextVisible, setIsButtonNextVisible] = useState(true);
   const [startTime, setStartTime] = useState(Date.now());
+  const [selectedWord, setSelectedWord] = useState('');
+  const [isModalWikiVisible, setIsModalWikiVisible] = useState(false);
 
   useEffect(() => {
     async function checkTutorialCompletion() {
@@ -231,7 +235,7 @@ const MythoNoScreen = ({ }) => {
 
     setLoading(true);
     if (user) {
-      setIsButtonNextVisible(false);
+      // setIsButtonNextVisible(false);
       try {
         const userId = user?.id ?? 0;
 
@@ -330,7 +334,8 @@ const MythoNoScreen = ({ }) => {
     if (wikiMode) {
       const token = text!.tokens[wordIndex];
       const word = token.content;
-      openWikipediaPageForWord(word);
+      setSelectedWord(word);
+      setIsModalWikiVisible(true);
     } else {
       setText(currentText => {
         if (!currentText) return currentText;
@@ -522,13 +527,7 @@ const MythoNoScreen = ({ }) => {
       <View style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           {wikiMode && (
-            <View style={tw('p-[13px] w-full bg-blue-100 absolute z-30')}>
-              <Text style={tw('font-primary text-[16px] text-center text-blue-800')}>
-                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau dessus pour quitter ce mode.
-                {"\n"}
-                Attention, certaines pages peuvent contenir des images sensibles ou inappropriés.
-              </Text>
-            </View>
+            <WikiEncard />
           )}
           <CustomHeaderInGame title="Mytho-No" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-between z-40')}>
@@ -636,8 +635,6 @@ const MythoNoScreen = ({ }) => {
               </View>
             </TouchableOpacity>
           }
-
-
         </View>
         {userSentenceSpecifications.length > 0 && (
           <TouchableOpacity
@@ -703,6 +700,12 @@ const MythoNoScreen = ({ }) => {
             </ScrollView>
           </View>
         </CustomModal>
+
+        <WikiModal
+          isVisible={isModalWikiVisible}
+          onClose={() => setIsModalWikiVisible(false)}
+          word={selectedWord}
+        />
 
         <SuccessModal
           isVisible={successModalVisible}

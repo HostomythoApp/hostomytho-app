@@ -1484,6 +1484,12 @@
 			"backgroundColor": "rgb(253 224 71 / var(--tw-bg-opacity))"
 		}
 	},
+	"bg-[#bbf7d0]": {
+		"style": {
+			"--tw-bg-opacity": 1,
+			"backgroundColor": "rgb(187 247 208 / var(--tw-bg-opacity))"
+		}
+	},
 	"bg-opacity-50": {
 		"style": {
 			"--tw-bg-opacity": 0.5
@@ -1984,6 +1990,17 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
+		}
+	},
+	"text-[#bbf7d0]": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(187 247 208 / var(--tw-text-opacity))"
+		}
+	},
+	"text-[orange-500]": {
+		"style": {
+			"color": "orange-500"
 		}
 	},
 	"opacity-100": {

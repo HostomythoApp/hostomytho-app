@@ -26,6 +26,7 @@ import { useAuth } from "services/context/AuthContext";
 import { sendResponse } from "services/api/plausibility";
 import { getDefinition } from "services/api/utils";
 import WikiModal from "components/modals/WikiModal";
+import WikiEncard from "components/WikiEncard";
 
 const colors = [
   "bg-yellow-300",
@@ -154,15 +155,15 @@ const MythoOuPasScreen = () => {
       let response;
       switch (nextStep) {
         case 1:
-          response = await getTextWithTokensById(344);
+          response = await getTextWithTokensById(430);
           setText(response);
           break;
         case 2:
-          response = await getTextWithTokensById(145);
+          response = await getTextWithTokensById(412);
           setText(response);
           break;
         case 3:
-          response = await getTextWithTokensById(194);
+          response = await getTextWithTokensById(145);
           setText(response);
           break;
         case 4:
@@ -554,13 +555,7 @@ const MythoOuPasScreen = () => {
       <View style={tw("flex-1")}>
         <ScrollView ref={scrollViewRef}>
           {wikiMode && (
-            <View style={tw('p-[13px] w-full bg-blue-100 absolute z-30')}>
-              <Text style={tw('font-primary text-[16px] text-center text-blue-800')}>
-                Mode Wiki activé : cliquez sur un mot pour voir sa page Wikipedia. Cliquez à nouveau dessus pour quitter ce mode.
-                {"\n"}
-                Attention, certaines pages peuvent contenir des images sensibles ou inappropriés.
-              </Text>
-            </View>
+            <WikiEncard />
           )}
           <CustomHeaderInGame title="Mytho ou pas" backgroundColor="bg-whiteTransparent" />
           <View style={tw('flex-row justify-between z-40')}>
@@ -634,7 +629,7 @@ const MythoOuPasScreen = () => {
           onClose={handleCloseModalPlausibility}
         >
           <View style={tw('flex-row ')}>
-            {tutorialStep !== 1 && (
+            {tutorialStep < 2 && (
 
               <TouchableOpacity
                 style={[

@@ -89,7 +89,7 @@ export const getDefinition = async (word: string) => {
     }
   } catch (error) {
     console.error("Error fetching definition from server: ", error);
-    return { error: true, message: "Server request failed", details: error.message };
+    return { error: true, message: "Server request failed", details: error };
   }
 };
 
