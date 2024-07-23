@@ -17,7 +17,7 @@ export const fetchDirectTitle = async (searchWord: string) => {
             throw new Error("Page not found");
         }
     } catch (error) {
-        console.error("Error fetching from Wikipedia: ", error);
+        // console.error("Error fetching from Wikipedia: ", error);
         throw error;
     }
 };
@@ -57,7 +57,7 @@ export const searchAndDisplayResult = async (word: string, setIsLoading: any, se
         setDefinitions([{ title: directResult.title, definition: directResult.text, url: directResult.url }]);
         setResultType("direct");
     } catch (error) {
-        console.error("Error fetching from Wikipedia or handling disambiguation: ", error);
+        // console.error("Error fetching from Wikipedia or handling disambiguation: ", error);
         try {
             const serverResult = await getDefinition(word);
             if (!serverResult.error) {

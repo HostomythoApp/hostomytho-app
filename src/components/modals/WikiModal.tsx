@@ -19,28 +19,28 @@ const WikiModal = ({ isVisible, onClose, word }: { isVisible: boolean, onClose: 
 
     return (
         <CustomModal isVisible={isVisible} onClose={onClose}>
-            <View style={[tw('flex-1 justify-center items-center px-4'), { maxHeight: window.height * 0.8 }]}>
+            <View style={[tw(' px-4'), { maxHeight: window.height * 0.8 }]}>
 
                 {isLoading ? (
                     <ActivityIndicator size="large" color="seagreen" />
                 ) : (
-                    <ScrollView style={tw('max-h-[100%] w-full')}>
-                        {definitions.length > 0 ? (
-                            definitions.map((def, index) => (
-                                <View key={index} style={tw('mb-4')}>
-                                    {/* @ts-ignore */}
-                                    <Text style={tw('font-primary text-xl md:text-lg mb-2')}>{def.title}</Text>
-                                    {/* @ts-ignore */}
-                                    <Text style={tw('font-primary text-lg md:text-base')}>{def.definition}</Text>
-                                    {/* @ts-ignore */}
-                                    <TouchableOpacity onPress={() => Linking.openURL(def.url)}><Text style={[tw(`font-primary text-base my-1`), { color: 'blue' }]}>Ouvrir la page Wikipedia associée</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            ))
-                        ) : resultType === "failed" ? (
-                            <Text style={tw('font-primary text-lg text-center')}>Aucune définition n'a été trouvée.</Text>
-                        ) : null}
-                    </ScrollView>
+                    <View style={[tw('px-4 max-h-[100%]')]}>
+                            {definitions.length > 0 ? (
+                                definitions.map((def, index) => (
+                                    <View key={index} style={tw('mb-4')}>
+                                        {/* @ts-ignore */}
+                                        <Text style={tw('font-primary text-xl md:text-lg mb-2')}>{def.title}</Text>
+                                        {/* @ts-ignore */}
+                                        <Text style={tw('font-primary text-lg md:text-base')}>{def.definition}</Text>
+                                        {/* @ts-ignore */}
+                                        <TouchableOpacity onPress={() => Linking.openURL(def.url)}><Text style={[tw(`font-primary text-base my-1`), { color: 'blue' }]}>Ouvrir la page Wikipedia associée</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ))
+                            ) : resultType === "failed" ? (
+                                <Text style={tw('font-primary text-lg text-center')}>Aucune définition n'a été trouvée.</Text>
+                            ) : null}
+                    </View>
                 )}
             </View>
         </CustomModal>
