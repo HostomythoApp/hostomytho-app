@@ -18,6 +18,7 @@ import CharacterPortrait from "components/CharacterPortrait";
 import { loadMonthlyWinners, saveMonthlyWinners } from "utils/storage";
 import { getAuthToken, getRefreshToken, tokenIsExpired } from "utils/tokenUtils";
 import { setAuthToken } from "services/api";
+import { lemmatizeFrenchText } from "utils/wiki";
 
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
@@ -59,7 +60,6 @@ const MainBoardScreen = ({ }) => {
     //     };
     //     initializeAuth();
     // }, []);
-
 
     useEffect(() => {
         const fetchMonthlyWinners = async () => {

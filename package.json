@@ -33,6 +33,7 @@
     "expo-system-ui": "~2.4.0",
     "formik": "^2.4.5",
     "jwt-decode": "^4.0.0",
+    "nlp-js-tools-french": "^1.0.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.72.10",

@@ -629,7 +629,7 @@ const MythoOuPasScreen = () => {
           onClose={handleCloseModalPlausibility}
         >
           <View style={tw('flex-row ')}>
-            {tutorialStep < 2 && (
+            {tutorialStep > 2 && (
 
               <TouchableOpacity
                 style={[
@@ -639,6 +639,7 @@ const MythoOuPasScreen = () => {
                   setIsModalPlausibilityVisible(false);
                   setHighlightEnabled(true);
                   setErrorSpecifying(true);
+                  setWikiMode(false);
                 }}
               >
                 <Text style={tw("font-semibold text-orange-500")}

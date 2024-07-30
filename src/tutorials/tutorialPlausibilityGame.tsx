@@ -27,9 +27,8 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 2: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Certains textes contiennent des mots techniques compliqués. Utilisez alors le bouton
-            <Text style={tw("bg-[#bbf7d0] px-1 py-1 ml-1 rounded-lg")}
-            >
+            Certains textes contiennent des mots techniques compliqués. Utilisez alors le bouton&nbsp;
+            <Text style={tw("bg-[#bbf7d0] px-1 py-1 ml-1 rounded-lg")}>
                 <FontAwesome name="wikipedia-w" size={13} color="black" />
             </Text>&nbsp;
             en haut à gauche, pour activer le mode Wiki. Cela vous permet d'avoir les définitions des mots sur lesquels vous cliquez.
@@ -41,7 +40,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 3: return <Text allowFontScaling={false} style={tw('font-primary')}>
             Si vous pensez qu'un texte contient des erreurs, vous pouvez spécifier où elles sont, quel que soit leur type : erreur grammaticale, de cohérence, un passage biaisé ou offensant, ...
             {"\n"} Pour ce faire, sélectionnez la plausibilité comme prédédemment, cliquez sur&nbsp;
-            <Text style={tw("font-semibold text-orange-500 text-sm bg-orange-200  px-1 py-1 mx-1 rounded-lg")}
+            <Text style={tw("text-orange-500 text-sm bg-orange-200 px-1 py-1 mx-1 rounded-lg")}
             > Source du doute </Text>&nbsp;
             puis cliquez sur les mots qui composent cette erreur.
             {"\n\n"}
