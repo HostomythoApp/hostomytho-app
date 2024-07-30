@@ -16,9 +16,7 @@ import { getTutorialContentForStep } from "tutorials/tutorialGeneral";
 import { responsiveFontSize } from "utils/functions";
 import CharacterPortrait from "components/CharacterPortrait";
 import { loadMonthlyWinners, saveMonthlyWinners } from "utils/storage";
-import { getAuthToken, getRefreshToken, tokenIsExpired } from "utils/tokenUtils";
-import { setAuthToken } from "services/api";
-import { lemmatizeFrenchText } from "utils/wiki";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
@@ -280,19 +278,33 @@ const MainBoardScreen = ({ }) => {
                                         {
                                             position: 'relative',
                                             shadowColor: "#000",
-                                            shadowOffset: {
-                                                width: 0,
-                                                height: 2,
-                                            },
+                                            shadowOffset: { width: 0, height: 2 },
                                             shadowOpacity: 0.45,
                                             shadowRadius: 5,
                                             elevation: 10,
                                         }]
                                         }>
-                                            <Text style={tw("text-black text-lg font-primary")}>{menuMessage.title}</Text>
-                                            <Text style={tw("text-black font-primary lg:text-lg")}>{menuMessage.message}</Text>
-                                            <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>Cliquez sur le message pour le réduire</Text>
+                                            <Text style={tw("text-black font-primary lg:text-lg")}>
+                                                {menuMessage.message}
+                                            </Text>
+                                            {/* Condition pour afficher le titre et l'icône seulement si le titre n'est pas vide */}
+                                            {menuMessage.title && (
+                                                <>
+                                                    <View style={tw("h-0.5 bg-gray-300 mb-2 mt-3")} />
+                                                    <View style={tw("flex-row items-center")}>
+                                                        <Ionicons name="information-circle" size={24} color="#1e40af" /> {/* Icône avec couleur adaptée */}
+                                                        <Text style={[tw("lg:text-lg font-primary ml-2 text-blue-800")]}>
+                                                            {menuMessage.title}
+                                                        </Text>
+                                                    </View>
+                                                </>
+                                            )}
+                                            <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>
+                                                Cliquez sur le message pour le réduire
+                                            </Text>
                                         </View>
+
+
                                     )}
                                 </TouchableOpacity>
                             )

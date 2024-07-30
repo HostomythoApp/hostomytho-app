@@ -599,6 +599,16 @@
 			"height": "100%"
 		}
 	},
+	"h-0": {
+		"style": {
+			"height": 0
+		}
+	},
+	"h-0.5": {
+		"style": {
+			"height": 2
+		}
+	},
 	"max-h-40": {
 		"style": {
 			"maxHeight": 160
@@ -1988,6 +1998,12 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
+		}
+	},
+	"text-[#DC143C]": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(220 20 60 / var(--tw-text-opacity))"
 		}
 	},
 	"opacity-100": {
