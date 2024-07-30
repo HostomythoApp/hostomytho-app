@@ -33,7 +33,7 @@ const WikiModal = ({ isVisible, onClose, word }: { isVisible: boolean, onClose: 
                                     <Text style={tw('font-primary text-xl mb-2')}>{def.title}</Text>
                                     <Text style={tw('font-primary text-lg')}>{def.definition}</Text>
                                     <TouchableOpacity onPress={() => Linking.openURL(def.url)}>
-                                        <Text style={[tw('font-primary text-base my-1'), { color: 'blue' }]}>Ouvrir la page Wikipedia associée</Text>
+                                        <Text style={[tw('font-primary text-base my-1 text-blue-700')]}>Ouvrir la page Wikipedia associée</Text>
                                     </TouchableOpacity>
                                 </View>
                             ))

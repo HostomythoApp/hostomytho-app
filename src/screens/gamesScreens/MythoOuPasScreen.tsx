@@ -629,8 +629,7 @@ const MythoOuPasScreen = () => {
           onClose={handleCloseModalPlausibility}
         >
           <View style={tw('flex-row ')}>
-            {tutorialStep > 2 && (
-
+            {(tutorialStep === undefined || tutorialStep > 2 || tutorialStep === 0) && (
               <TouchableOpacity
                 style={[
                   tw("p-3 mr-3 rounded-lg bg-orange-200 opacity-100"),

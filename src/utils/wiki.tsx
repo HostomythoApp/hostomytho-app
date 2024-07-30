@@ -6,7 +6,7 @@ export const lemmatizeFrenchText = (text: string) => {
         tagTypes: ["adj", "adv", "art", "con", "nom", "ono", "pre", "ver", "pro"], // Specify the tag types you are interested in
         strictness: true,               // Allow some flexibility in text matching
         minimumLength: 3,                // Minimum word length to process
-        debug: true                      // Enable debugging to see logs
+        debug: false                      // Enable debugging to see logs
     };
 
     const nlpToolsFr = new NlpjsTFr(text, config);
