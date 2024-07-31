@@ -614,11 +614,6 @@
 			"maxHeight": 160
 		}
 	},
-	"max-h-[100%]": {
-		"style": {
-			"maxHeight": "100%"
-		}
-	},
 	"max-h-[100px]": {
 		"style": {
 			"maxHeight": 100
@@ -1946,6 +1941,12 @@
 			"color": "rgb(37 99 235 / var(--tw-text-opacity))"
 		}
 	},
+	"text-blue-700": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(29 78 216 / var(--tw-text-opacity))"
+		}
+	},
 	"text-blue-800": {
 		"style": {
 			"--tw-text-opacity": 1,
@@ -1998,12 +1999,6 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
-		}
-	},
-	"text-blue-700": {
-		"style": {
-			"--tw-text-opacity": 1,
-			"color": "rgb(29 78 216 / var(--tw-text-opacity))"
 		}
 	},
 	"opacity-100": {

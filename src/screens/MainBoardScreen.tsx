@@ -125,17 +125,13 @@ const MainBoardScreen = ({ }) => {
             try {
                 const message = await getMessageMenu(messageType);
                 setMenuMessage(message);
-
-                // Définir si le message est lu ou non
                 if (user?.id) {
                     const messageReadStatus = await getMessageReadByUserId(user.id);
                     setMenuMessageRead(messageReadStatus.hasBeenRead);
                 } else {
                     setMenuMessageRead(false);
                 }
-
-                // Définir messageExpanded en fonction du statut de connexion
-                setMessageExpanded(!authState.isAuthenticated); // Message expanded si non connecté
+                setMessageExpanded(!authState.isAuthenticated);
             } catch (error) {
                 console.error(error);
             }
@@ -284,24 +280,26 @@ const MainBoardScreen = ({ }) => {
                                             elevation: 10,
                                         }]
                                         }>
-                                            <Text style={tw("text-black font-primary lg:text-lg")}>
-                                                {menuMessage.message}
-                                            </Text>
-                                            {/* Condition pour afficher le titre et l'icône seulement si le titre n'est pas vide */}
-                                            {menuMessage.title && (
-                                                <>
-                                                    <View style={tw("h-0.5 bg-gray-300 mb-2 mt-3")} />
-                                                    <View style={tw("flex-row items-center")}>
-                                                        <Ionicons name="information-circle" size={24} color="#1e40af" /> {/* Icône avec couleur adaptée */}
-                                                        <Text style={[tw("lg:text-lg font-primary ml-2 text-blue-800")]}>
-                                                            {menuMessage.title}
-                                                        </Text>
+                                            <View>
+                                                <Text style={tw("text-black font-primary lg:text-lg")}>
+                                                    {menuMessage.message}
+                                                </Text>
+                                                {menuMessage.title ? (
+                                                    <View>
+                                                        <View style={tw("h-0.5 bg-gray-300 mb-2 mt-3")} />
+                                                        <View style={tw("flex-row items-center")}>
+                                                            <Ionicons name="information-circle" size={24} color="#1e40af" />
+                                                            <Text style={[tw("lg:text-lg font-primary ml-2 text-blue-800")]}>
+                                                                {menuMessage.title}
+                                                            </Text>
+                                                        </View>
                                                     </View>
-                                                </>
-                                            )}
-                                            <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>
-                                                Cliquez sur le message pour le réduire
-                                            </Text>
+                                                ) : null}
+                                                <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>
+                                                    Cliquez sur le message pour le réduire
+                                                </Text>
+                                            </View>
+
                                         </View>
 
 
