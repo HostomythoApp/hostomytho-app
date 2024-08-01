@@ -111,9 +111,9 @@ export const getModalHelpContent = (tw: any) => {
             L'erreur est la répétition de la phrase.
             {"\n\n"}
 
-            <HighlightedText>"Autre" </HighlightedText> si l'erreur n'est pas classable dans les catégories précédentes, ou contient des problèmes éthiques, racistes, ou toute autre déviance
-
-            Cliquez <HighlightedText>"Pas d'erreur" </HighlightedText> si le texte surligné est bon.
+            <HighlightedText>"Autre" </HighlightedText> si l'erreur n'est pas classable dans les catégories précédentes, ou contient des problèmes éthiques, racistes, ou toute autre déviance.
+            {"\n\n"}
+            Cliquez <HighlightedText>"Pas d'erreur" </HighlightedText> si le passage surligné est correct.
             {"\n\n"}
 
         </Text>

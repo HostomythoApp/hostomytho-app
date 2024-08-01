@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, ScrollView, Dimensions, ImageBackground, TextInput } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
@@ -51,8 +51,25 @@ const SignUpScreen = () => {
     const woman_2 = require('images/character/woman_2.png');
     const woman_3 = require('images/character/woman_3.png');
     const [currentIndex, setCurrentIndex] = useState(0);
+    const buttonRef = useRef(null);
 
     const charactersArray = [man_1, woman_2, man_2, woman_3, woman_1, man_3];
+
+    useEffect(() => {
+        const handleEnterPress = (event: any) => {
+            if (event.key === 'Enter') {
+                if (buttonRef.current) {
+                    // @ts-ignore
+                    buttonRef.current.click()
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleEnterPress);
+        return () => {
+            window.removeEventListener('keydown', handleEnterPress);
+        };
+    }, []);
 
     const submit = (values: Partial<User>) => {
         setErrorMessage('');
@@ -256,7 +273,16 @@ const SignUpScreen = () => {
                                                 />
                                             ))}
                                         </View>
-                                        <FunctionButton text={"Inscription"} func={handleSubmit} />
+                                        {/* <FunctionButton text={"Inscription"} func={handleSubmit} /> */}
+                                        <TouchableOpacity
+                                            ref={buttonRef}
+                                            // @ts-ignore
+                                            onPress={handleSubmit}
+                                            style={tw('bg-primary rounded py-2 px-12 my-2 font-medium min-w-60 w-[500px]')}
+                                        >
+                                            <Text style={tw("text-white text-center text-lg font-primary")}>Connexion</Text>
+                                        </TouchableOpacity>
+
                                     </View>
                                 )}
 

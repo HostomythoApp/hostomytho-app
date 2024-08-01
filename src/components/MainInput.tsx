@@ -1,6 +1,5 @@
 import { useTailwind } from "tailwind-rn";
-import { Text, TextInput, TouchableOpacity, ViewStyle } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { TextInput } from "react-native";
 import React from "react";
 
 const MainInput = ({
@@ -8,6 +7,7 @@ const MainInput = ({
   hide,
   setter,
   value,
+  onSubmitEditing,
   isError,
   width = '80%',
   minWidth = 300,
@@ -37,6 +37,7 @@ const MainInput = ({
       value={value}
       keyboardType="default"
       keyboardDismissMode='interactive'
+      onSubmitEditing={onSubmitEditing}
     />
   );
 };

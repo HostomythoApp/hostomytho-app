@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, ImageBackground } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, ScrollView, TouchableOpacity, ImageBackground, Platform } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
-import FunctionButton from "components/FunctionButton";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "services/context/AuthContext";
 import { signInUser } from "services/api/user";
@@ -25,6 +24,7 @@ const LoginScreen = () => {
     const navigation = useNavigation<RootStackNavigationProp<"MotDePasseOublie">>();
     const [errorMessage, setErrorMessage] = useState('');
     const inputWidth = Math.max(Dimensions.get('window').width * 0.4, 50);
+    const buttonRef = useRef(null);
 
     const submit = async () => {
         if (username.trim() === "" || password.trim() === "") {
@@ -45,7 +45,6 @@ const LoginScreen = () => {
                     // await storeRefreshToken(refreshToken); 
                     // setAuthToken(accessToken);         
                     // setUser(user);                
-                        
                     navigation.navigate("TableauDeBord");
                 }
             } catch (error: any) {
@@ -60,6 +59,24 @@ const LoginScreen = () => {
             }
         }
     };
+
+    useEffect(() => {
+        if (Platform.OS === 'web') {
+            const handleEnterPress = (event: any) => {
+                if (event.key === 'Enter') {
+                    if (buttonRef.current) {
+                        // @ts-ignore
+                        buttonRef.current.click();
+                    }
+                }
+            };
+
+            window.addEventListener('keydown', handleEnterPress);
+            return () => {
+                window.removeEventListener('keydown', handleEnterPress);
+            };
+        }
+    }, []);
 
     return (
 
@@ -98,7 +115,15 @@ const LoginScreen = () => {
                                 <Text>
                                     {errorMessage && <Text style={tw("text-red-500")}>{errorMessage}</Text>}
                                 </Text>
-                                <FunctionButton text={"Connexion"} func={submit} width={inputWidth} />
+                                {/* <FunctionButton text={"Connexion"} func={submit} width={inputWidth} /> */}
+                                <TouchableOpacity
+                                    ref={buttonRef}
+                                    onPress={submit}
+                                    style={tw('bg-primary rounded py-2 px-12 my-2 font-medium min-w-60 w-[500px]')}
+                                >
+                                    <Text style={tw("text-white text-center text-lg font-primary")}>Connexion</Text>
+                                </TouchableOpacity>
+
                                 <TouchableOpacity onPress={() => navigation.navigate("MotDePasseOublie")}>
                                     <Text style={tw("text-blue-500 mt-2 font-primary")}>Mot de passe oublié ?</Text>
                                 </TouchableOpacity>
