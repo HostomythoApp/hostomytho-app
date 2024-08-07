@@ -308,7 +308,7 @@ const MythoOuPasScreen = () => {
                   <PlausibilityButton config={plausibilityConfig.buttonConfig} />
                 </Text>
               ) : (
-                <Text style={tw(`text-[#B22222] ${isComparaison ? 'blue-800' : 'red-500'} font-primary text-lg`)}>
+                <Text style={tw(`text- ${isComparaison ? 'blue-800' : 'red-500'} font-primary text-lg`)}>
                   {result.message}
                 </Text>
               )}

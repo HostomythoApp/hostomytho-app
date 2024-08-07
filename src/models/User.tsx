@@ -13,7 +13,7 @@ export interface User {
     color_skin: string;
     moderator: boolean;
     ranking?: number;
-    catch_probability: number;
+    catch_probability: string;
     consecutiveDaysPlayed: number;
     created_at: string;
     coeffMulti: number;

@@ -93,8 +93,7 @@ const MainBoardScreen = ({ }) => {
     useEffect(() => {
         updateOrientation();
         const subscription = Dimensions.addEventListener('change', updateOrientation);
-
-        return () => subscription.remove(); // Nettoye l'écouteur lors du démontage
+        return () => subscription.remove();
     }, []);
 
     useEffect(() => {

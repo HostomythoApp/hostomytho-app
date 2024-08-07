@@ -191,7 +191,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       <View style={tw('bg-white rounded-xl p-2')}>
         <Text style={tw('text-center text-green-600 font-bold text-lg font-primary')}>Points supplémentaires gagnés</Text>
         <View style={tw('border-b border-gray-400 my-4')} />
-        <Text style={tw('text-center font-primary')}>Vous avez déjà débloqué tous les skins disponibles. En récompense, tous les 100 points, vous gagnez 5 points supplémentaires.</Text>
+        <Text style={tw('text-center font-primary')}>Vous avez déjà débloqué tous les skins disponibles. En récompense, tous les 100 points, vous gagnez 15 points supplémentaires.</Text>
       </View>
     );
     modalContext.showModal();

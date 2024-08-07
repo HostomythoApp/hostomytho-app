@@ -29,14 +29,36 @@ const InvestigationScreen = () => {
     const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
     const window = Dimensions.get('window');
     const isMobile = window.width < 960;
+    const [isLoading, setIsLoading] = useState(true);
+    const [userNeedsUpdate, setUserNeedsUpdate] = useState(true);
+    const { incrementTutorialProgress } = useUser();
 
     useEffect(() => {
         if (user) {
-            setInvestigationProgress(user.catch_probability);
-            // setInvestigationProgress(100);
+            const catchProbability = parseFloat(user.catch_probability);
+
+            if (!isNaN(catchProbability)) {
+                const roundedCatchProbability = catchProbability.toFixed(0);
+
+                setInvestigationProgress(parseFloat(roundedCatchProbability));
+            } else {
+                console.error("catch_probability n'est pas un nombre valide :", user.catch_probability);
+            }
         }
     }, [user?.catch_probability]);
 
+    useEffect(() => {
+        if (user?.tutorial_progress == 10) {
+            setIsHelpModalVisible(true);
+        }
+    }, []);
+
+    const handleCloseModal = () => {
+        if (user?.tutorial_progress == 10) {
+            incrementTutorialProgress();
+        }
+        setIsHelpModalVisible(false)
+    };
 
     const handleArrestAttempt = async () => {
         const randomNumber = Math.floor(Math.random() * 101);
@@ -163,7 +185,7 @@ const InvestigationScreen = () => {
                                 }}
                                 style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}
                             >
-                                <Text style={tw('text-white font-bold text-center')}>Voir le criminel</Text>
+                                <Text style={tw('text-white font-primary text-lg text-center')}>Voir le criminel</Text>
                             </TouchableOpacity>
                         </>
                     ) : (
@@ -177,14 +199,14 @@ const InvestigationScreen = () => {
 
                 <CustomModal
                     isVisible={isHelpModalVisible}
-                    onClose={() => setIsHelpModalVisible(false)}
+                    onClose={() => handleCloseModal()}
                 >
                     <View style={tw('h-40')}>
                         <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
-                            <View style={tw('p-4')}>
+                            <View style={tw('p-3')}>
                                 <Text style={tw('font-primary')}>
                                     Ici, vous pouvez tenter d'arrêter des criminels.  {"\n"}
-                                    Le taux de certitude correspond au pourcentage de chance de réussir.
+                                    Le taux de certitude correspond au pourcentage de chance de réussir. Il augmente en traitant des textes dans les mini-jeux.
                                     {"\n\n"}
                                     Si vous tentez l'arrestation mais que celle-ci échoue, votre taux de certitude baissera de 15. Si elle réussit, vous pourrez retrouver le criminel arrêté dans la page correspondante, et votre votre taux de certitude retombera à 0.
                                 </Text>
