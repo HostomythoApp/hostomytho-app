@@ -9,7 +9,7 @@ const WikiModal = ({ isVisible, onClose, word }: { isVisible: boolean, onClose: 
     const [definitions, setDefinitions] = useState([]);
     const [resultType, setResultType] = useState('');
     const tw = useTailwind();
-    
+
     const countTokens = (definitions: any) => {
         return definitions.reduce((total: any, def: any) => {
             // Check if definition exists and is not empty before splitting
@@ -30,7 +30,7 @@ const WikiModal = ({ isVisible, onClose, word }: { isVisible: boolean, onClose: 
     const shouldUseScrollView = totalTokens > 75;
 
 
-    
+
     return (
         <CustomModal isVisible={isVisible} onClose={onClose}>
             <View style={[tw('justify-center px-4 h-auto'), { maxHeight: Dimensions.get('window').height * 0.8 }]}>
@@ -59,10 +59,14 @@ const renderDefinitions = (definitions: any, tw: any) => {
         return (
             <View key={index} style={viewStyle}>
                 <Text style={tw('font-primary text-xl mb-2')}>{def.title}</Text>
-                <Text style={tw('font-primary text-lg')}>{def.definition || 'No definition available'}</Text>
-                <TouchableOpacity onPress={() => Linking.openURL(def.url)}>
-                    <Text style={[tw('font-primary text-base my-1 text-blue-700')]}>Ouvrir la page Wikipedia associée</Text>
-                </TouchableOpacity>
+                {def.definition && (
+                    <>
+                        <Text style={tw('font-primary text-lg')}>{def.definition}</Text>
+                        <TouchableOpacity onPress={() => Linking.openURL(def.url)}>
+                            <Text style={[tw('font-primary text-base my-1 text-blue-700')]}>Ouvrir la page Wikipedia associée</Text>
+                        </TouchableOpacity>
+                    </>
+                )}
             </View>
         );
     });
