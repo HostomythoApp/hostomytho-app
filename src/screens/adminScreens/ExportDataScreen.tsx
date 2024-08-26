@@ -7,7 +7,7 @@ import FunctionButton from 'components/FunctionButton';
 
 const tableDescriptions = {
   users: "Utilisateurs de l'application",
-  texts: "Table des textes (contient la note moyenne de plausibilité donnée par les utilisateurs: avg_weighted_plausibility)",
+  texts: "Table des textes",
   user_text_rating: "Annotations de plausibilité dans MythoOuPas",
   user_sentence_specification: "Annotations de négations dans MythoNo",
   user_typing_errors: "Typage d'erreurs dans MythoTypo",
