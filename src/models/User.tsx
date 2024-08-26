@@ -19,5 +19,7 @@ export interface User {
     coeffMulti: number;
     nb_first_monthly: number;
     tutorial_progress: number;
+    lastPlayedDate: string;
+    message_read: boolean;
   }
   

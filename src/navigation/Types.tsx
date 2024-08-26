@@ -43,6 +43,8 @@ export type RootStackParamList = {
     UserTypingErrorsStatistics: undefined;
     UserSentenceSpecificationsStatistics: undefined;
     GamesStatistics: undefined;
+    ManageUsers: undefined;
+    UserDetails: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

@@ -1,9 +1,15 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "./index";
 
 // ****************** User ******************
 export const getUserRegistrationsDate = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getUserRegistrationsDate');
+        const response = await api.get('/stats/getUserRegistrationsDate', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -12,8 +18,13 @@ export const getUserRegistrationsDate = async (): Promise<any[]> => {
 };
 
 export const getCumulativeUserRegistrations = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getCumulativeUserRegistrations');
+        const response = await api.get('/stats/getCumulativeUserRegistrations', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -23,8 +34,13 @@ export const getCumulativeUserRegistrations = async (): Promise<any[]> => {
 
 // ****************** Games ******************
 export const getCumulativeAnnotationsGames = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getCumulativeAnnotationsGames');
+        const response = await api.get('/stats/getCumulativeAnnotationsGames', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -34,8 +50,13 @@ export const getCumulativeAnnotationsGames = async (): Promise<any[]> => {
 
 // ****************** Text Rating ******************
 export const getRatingPlausibilityDate = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getRatingPlausibilityDate');
+        const response = await api.get('/stats/getRatingPlausibilityDate', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -44,8 +65,13 @@ export const getRatingPlausibilityDate = async (): Promise<any[]> => {
 };
 
 export const getCumulativeRatingPlausibility = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getCumulativeRatingPlausibility');
+        const response = await api.get('/stats/getCumulativeRatingPlausibility', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -55,8 +81,13 @@ export const getCumulativeRatingPlausibility = async (): Promise<any[]> => {
 
 // ****************** ErrorDetail ******************
 export const getUserErrorDetailDate = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getUserErrorDetailDate');
+        const response = await api.get('/stats/getUserErrorDetailDate', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -65,8 +96,13 @@ export const getUserErrorDetailDate = async (): Promise<any[]> => {
 };
 
 export const getCumulativeUserErrorDetail = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getCumulativeUserErrorDetail');
+        const response = await api.get('/stats/getCumulativeUserErrorDetail', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -76,8 +112,13 @@ export const getCumulativeUserErrorDetail = async (): Promise<any[]> => {
 
 // ****************** UserTypingErrors ******************
 export const getUserTypingErrorsDate = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getUserTypingErrorsDate');
+        const response = await api.get('/stats/getUserTypingErrorsDate', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -86,8 +127,13 @@ export const getUserTypingErrorsDate = async (): Promise<any[]> => {
 };
 
 export const getCumulativeUserTypingErrors = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getCumulativeUserTypingErrors');
+        const response = await api.get('/stats/getCumulativeUserTypingErrors', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -97,8 +143,13 @@ export const getCumulativeUserTypingErrors = async (): Promise<any[]> => {
 
 // ****************** UserSentenceSpecification ******************
 export const getUserSentenceSpecificationDate = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getUserSentenceSpecificationDate');
+        const response = await api.get('/stats/getUserSentenceSpecificationDate', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -107,8 +158,13 @@ export const getUserSentenceSpecificationDate = async (): Promise<any[]> => {
 };
 
 export const getCumulativeUserSentenceSpecification = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
     try {
-        const response = await api.get('/stats/getCumulativeUserSentenceSpecification');
+        const response = await api.get('/stats/getCumulativeUserSentenceSpecification', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error(error);

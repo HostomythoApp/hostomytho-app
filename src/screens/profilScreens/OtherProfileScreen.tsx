@@ -34,7 +34,6 @@ const OtherProfileScreen = (props: any) => {
     useEffect(() => {
         if (userId) {
             fetchUsers(userId);
-
         }
     }, [userId]);
 

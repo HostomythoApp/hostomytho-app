@@ -1,5 +1,6 @@
 import { User } from "models/User";
 import api from "./index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getUserById = async (id: number): Promise<User> => {
 
@@ -175,6 +176,37 @@ export const updateUserEmail = async (id: number, email: string) => {
 export const restartCatchProbability = async (id: number) => {
   try {
     return await api.put(`/users/${id}/resetCatchProbability`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// Admin
+export const getAllUsers = async (): Promise<User[]> => {
+  try {
+    const token = await AsyncStorage.getItem("@auth_token");
+    const response = await api.get(`/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const editUser = async (id: number, data: any): Promise<any> => {
+  try {
+    const token = await AsyncStorage.getItem("@auth_token");
+    const response = await api.put(`/users/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;

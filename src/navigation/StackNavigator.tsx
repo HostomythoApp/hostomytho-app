@@ -16,7 +16,7 @@ import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
 import EditRewardsScreen from "screens/adminScreens/EditRewardsScreen";
 import ExportDataScreen from "screens/adminScreens/ExportDataScreen";
 import ManageTextsScreen from "screens/adminScreens/ManageTextsScreen";
-import ManageUsersSreen from "screens/adminScreens/ManageUsersSreen";
+import ManageUsersSreen from "screens/adminScreens/usersScreens/ManageUsersSreen";
 import AdminStatisticsScreen from "screens/adminScreens/AdminStatisticsScreen";
 import UsersStatisticsScreen from "screens/adminScreens/statisticsScreens/UsersStatisticsScreen";
 import TextRatingStatisticsScreen from "screens/adminScreens/statisticsScreens/TextRatingStatisticsScreen";
@@ -24,6 +24,7 @@ import UserTypingErrorsStatisticsScreen from "screens/adminScreens/statisticsScr
 import UserSentenceSpecificationsStatisticsScreen from "screens/adminScreens/statisticsScreens/UserSentenceSpecificationsStatisticsScreen";
 import GamesStatisticsScreen from "screens/adminScreens/statisticsScreens/GamesStatisticsScreen";
 import UserMessagingScreen from "screens/adminScreens/UserMessagingScreen";
+import UserDetailsScreen from "screens/adminScreens/usersScreens/UserDetailsScreen";
 import HypothesisGameScreen from "screens/gamesScreens/HypothesisGameScreen";
 import MythoTypoScreen from "screens/gamesScreens/MythoTypoScreen";
 import ConditionGameScreen from "screens/gamesScreens/ConditionGameScreen";
@@ -154,7 +155,6 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
               <Stack.Screen name="UserStatistics" component={UsersStatisticsScreen} />
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
-              <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
               <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
               <Stack.Screen name="EditRewards" component={EditRewardsScreen} />
@@ -163,6 +163,9 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="UserSentenceSpecificationsStatistics" component={UserSentenceSpecificationsStatisticsScreen} />
               <Stack.Screen name="UserTypingErrorsStatistics" component={UserTypingErrorsStatisticsScreen} />
               <Stack.Screen name="GamesStatistics" component={GamesStatisticsScreen} />
+              <Stack.Screen name="UserDetails" component={UserDetailsScreen} />
+              <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
+
             </Stack.Group>
 
           </Stack.Navigator>

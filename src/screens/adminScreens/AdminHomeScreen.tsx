@@ -49,13 +49,12 @@ const AdminHomeScreen = () => {
         <AdminLink title="Gérer les utilisateurs" destination="ManageUsers" icon="people" />
         <AdminLink title="Statistiques de l'application" destination="Statistics" icon="analytics" />
         <AdminLink title="Exporter les données" destination="ExportData" icon="file-download" />
-        <AdminLink title="Modifier les variables de l'application" destination="EditRewards" icon="add-task" />
-        <AdminLink title="Messagerie et échanges avec les utilisateurs" destination="UserMessaging" icon="message" />
+        {/* <AdminLink title="Modifier les variables de l'application" destination="EditRewards" icon="add-task" />
+        <AdminLink title="Messagerie et échanges avec les utilisateurs" destination="UserMessaging" icon="message" /> */}
 
-        <View style={tw('border-t border-gray-200 pt-4 mt-4')}>
+        {/* <View style={tw('border-t border-gray-200 pt-4 mt-4')}>
           <AdminLink title="Gérer les modérateurs" destination="ManageModerators" icon="security" />
-          {/* <AdminLink title="Accès à la base de données" destination="AccessDatabase" icon="storage" /> */}
-        </View>
+        </View> */}
       </View>
     </View>
   );
