@@ -7,12 +7,12 @@ import FunctionButton from 'components/FunctionButton';
 
 const tableDescriptions = {
   users: "Utilisateurs de l'application",
-  texts: "Textes analysés par les utilisateurs",
-  user_text_rating: "Notation de plausibilité dans MythoOuPas",
-  user_sentence_specification: "Spécifications des phrases par les utilisateurs",
-  user_typing_errors: "Erreurs de frappe des utilisateurs",
-  user_error_details: "Détails des erreurs commises par les utilisateurs",
-  test_specifications: "Spécifications des tests effectués",
+  texts: "Table des textes (contient la note moyenne de plausibilité donnée par les utilisateurs: avg_weighted_plausibility)",
+  user_text_rating: "Annotations de plausibilité dans MythoOuPas",
+  user_sentence_specification: "Annotations de négations dans MythoNo",
+  user_typing_errors: "Typage d'erreurs dans MythoTypo",
+  user_error_details: "Erreurs spécifiées dans MythoOuPas",
+  // test_specifications: "Spécifications des tests effectués",
 };
 
 const TableEntry = ({ tableName, isActive, onToggle }: { tableName: any, isActive: boolean, onToggle: any }) => {
@@ -41,7 +41,7 @@ const ExportDataScreen = () => {
     user_sentence_specification: false,
     user_typing_errors: false,
     user_error_details: false,
-    test_specifications: false,
+    // test_specifications: false,
   });
 
   const handleCheckboxChange = (tableName: any) => {
