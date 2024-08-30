@@ -27,6 +27,7 @@ const InvestigationScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [arrestDescription, setArrestDescription] = useState<string>('');
     const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
+    const [isTrustModalVisible, setIsTrustModalVisible] = useState(false);
     const window = Dimensions.get('window');
     const isMobile = window.width < 960;
     const [isLoading, setIsLoading] = useState(true);
@@ -48,8 +49,18 @@ const InvestigationScreen = () => {
     }, [user?.catch_probability]);
 
     useEffect(() => {
+        console.log(user);
+
+
         if (user?.tutorial_progress == 10) {
             setIsHelpModalVisible(true);
+            // @ts-ignore
+        } else if (user?.trust_index <= 30) {
+            console.log();
+            setIsTrustModalVisible(true);
+        } else {
+            console.log(user?.trust_index);
+
         }
     }, []);
 
@@ -60,14 +71,27 @@ const InvestigationScreen = () => {
         setIsHelpModalVisible(false)
     };
 
+    const handleCloseTrustModal = () => {
+        if (user?.tutorial_progress == 10) {
+            incrementTutorialProgress();
+        }
+        setIsTrustModalVisible(false)
+    };
+
     const handleArrestAttempt = async () => {
-        const randomNumber = Math.floor(Math.random() * 101);
-        if (randomNumber <= investigationProgress) {
-            setArrestSuccess(true);
-            if (user) {
+        if (user) {
+            const catchResult = await catchCriminal(user.id);
+
+            if (catchResult.catchEntry.success) {
+                setArrestSuccess(true);
                 resetCatchProbability(user.id);
-                const catchResult = await catchCriminal(user.id);
-                if (catchResult.success) {
+
+                // Mettre à jour la probabilité d'arrestation affichée à 0
+                setInvestigationProgress(catchResult.catchEntry.newCatchProbability);
+                if (catchResult.catchEntry.allCriminalsCaught) {
+                    setArrestDescription("Tous les criminels ont été arrêtés. Vous gagnez " + catchResult.catchEntry.pointsAdded + " points supplémentaires.");
+
+                } else {
                     // Affiche popup haut-faits s'il y en a de nouveaux
                     if (catchResult.catchEntry.newAchievements && catchResult.catchEntry.newAchievements.length > 0) {
                         catchResult.catchEntry.newAchievements.forEach((achievement: Achievement) => {
@@ -78,22 +102,20 @@ const InvestigationScreen = () => {
                     }
 
                     setArrestDescription(catchResult.catchEntry.descriptionArrest);
-                    if (catchResult.catchEntry.allCriminalsCaught) {
-                        setArrestDescription("Tous les criminels ont été arrêtés. Vous gagnez 5 points supplémentaires.");
-                        // TODO à faire
-                        // updateUserStats(5, 0, 0);
-                    }
-                } else {
-                    console.error('Failed to catch the criminal:', catchResult.error);
+
                 }
+
+            } else {
+                setArrestSuccess(false);
+                setInvestigationProgress(catchResult.catchEntry.newCatchProbability);
+                setArrestDescription(catchResult.catchEntry.message);
             }
-        } else {
-            setArrestSuccess(false);
-            incrementCatchProbability(-15);
+
+            setModalVisible(false);
+            setResultModalVisible(true);
         }
-        setModalVisible(false);
-        setResultModalVisible(true);
     };
+
 
     const showHelpModal = () => {
         setIsHelpModalVisible(true)
@@ -146,7 +168,7 @@ const InvestigationScreen = () => {
                                         style={tw('bg-primary py-3 px-6 rounded mt-4')}
                                         onPress={() => setModalVisible(true)}
                                     >
-                                        <Text style={tw('text-white text-center font-primary')}>Tenter l'arrestation</Text>
+                                        <Text style={tw('text-white text-center font-primary md:text-lg')}>Tenter l'arrestation</Text>
                                     </TouchableOpacity>
                                 </View>
                             ) : (
@@ -162,10 +184,10 @@ const InvestigationScreen = () => {
                     onClose={() => setModalVisible(false)}
                 >
                     <View >
-                        <Text style={tw('text-lg font-primary')}>Etes-vous sûr de vouloir tenter l'arrestation?</Text>
-                        <Text style={tw('text-lg font-primary')}>Si celle-ci échoue, votre taux de certitude baissera de 15%.</Text>
+                        <Text style={tw('text-lg font-primary text-center ')}>Etes-vous sûr de vouloir tenter l'arrestation?</Text>
+                        <Text style={tw('text-lg font-primary text-center ')}>Si celle-ci échoue, votre taux de certitude baissera de 15%.</Text>
                         <TouchableOpacity onPress={handleArrestAttempt} style={tw('mt-5 bg-primary py-3 px-6 rounded self-center')}>
-                            <Text style={tw('text-white font-bold text-center font-primary')}>Je suis sûr de moi, je me lance</Text>
+                            <Text style={tw('text-white font-bold text-center font-primary md:text-lg')}>Je suis sûr de moi, je me lance</Text>
                         </TouchableOpacity>
                     </View>
                 </CustomModal>
@@ -209,6 +231,21 @@ const InvestigationScreen = () => {
                                     Le taux de certitude correspond au pourcentage de chance de réussir. Il augmente en traitant des textes dans les mini-jeux.
                                     {"\n\n"}
                                     Si vous tentez l'arrestation mais que celle-ci échoue, votre taux de certitude baissera de 15. Si elle réussit, vous pourrez retrouver le criminel arrêté dans la page correspondante, et votre votre taux de certitude retombera à 0.
+                                </Text>
+                            </View>
+                        </ScrollView>
+                    </View>
+                </CustomModal>
+
+                <CustomModal
+                    isVisible={isTrustModalVisible}
+                    onClose={() => handleCloseTrustModal()}
+                >
+                    <View style={tw('')}>
+                        <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
+                            <View style={tw('p-3')}>
+                                <Text style={tw('font-primary md:text-lg')}>
+                                    Votre taux de fiabilité est trop bas, vous semblez vous perdre dans vos indices. Faites un peu plus attention en jouant pour repasser votre fiabilité au dessus de 30, et votre enquête recommencera à avancer.
                                 </Text>
                             </View>
                         </ScrollView>

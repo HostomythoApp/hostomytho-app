@@ -8,7 +8,8 @@ import FunctionButton from 'components/FunctionButton';
 const tableDescriptions = {
   users: "Utilisateurs de l'application",
   texts: "Table des textes",
-  user_text_rating: "Annotations de plausibilité dans MythoOuPas",
+  user_text_rating: "Annotations individuelles de plausibilité dans MythoOuPas",
+  group_text_rating: "Groupe d'annotations de plausibilité dans MythoOuPas",
   user_sentence_specification: "Annotations de négations dans MythoNo",
   user_typing_errors: "Typage d'erreurs dans MythoTypo",
   user_error_details: "Erreurs spécifiées dans MythoOuPas",
@@ -38,9 +39,10 @@ const ExportDataScreen = () => {
     users: false,
     texts: false,
     user_text_rating: false,
+    group_text_rating: false,
+    user_error_details: false,
     user_sentence_specification: false,
     user_typing_errors: false,
-    user_error_details: false,
     // test_specifications: false,
   });
 

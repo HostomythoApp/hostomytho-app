@@ -32,6 +32,21 @@ export const getCumulativeUserRegistrations = async (): Promise<any[]> => {
     }
 };
 
+export const getUserTypesCount = async (): Promise<any[]> => {
+    const token = await AsyncStorage.getItem("@auth_token");
+    try {
+        const response = await api.get('/stats/getUserTypesCount', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 // ****************** Games ******************
 export const getCumulativeAnnotationsGames = async (): Promise<any[]> => {
     const token = await AsyncStorage.getItem("@auth_token");

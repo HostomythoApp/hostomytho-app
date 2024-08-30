@@ -302,7 +302,7 @@ const MythoOuPasScreen = () => {
               {plausibilityConfig ? (
                 <Text style={tw('text-lg text-center mb-2 ml-1')}
                 >
-                  {result.message}
+                  {result.message}&nbsp;
                   En moyenne, ils ont choisi "{plausibilityConfig.description}"
                   {/* @ts-ignore */}
                   <PlausibilityButton config={plausibilityConfig.buttonConfig} />

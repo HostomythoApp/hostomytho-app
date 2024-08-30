@@ -2104,6 +2104,13 @@
 		},
 		"media": "(min-width: 768px)"
 	},
+	"md:text-lg": {
+		"style": {
+			"fontSize": 18,
+			"lineHeight": 28
+		},
+		"media": "(min-width: 768px)"
+	},
 	"lg:mt-4": {
 		"style": {
 			"marginTop": 16
