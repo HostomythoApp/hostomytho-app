@@ -312,11 +312,14 @@ const MainBoardScreen = ({ }) => {
                             <View style={StyleSheet.absoluteFill}>
 
                                 <TouchableOpacity onPress={() => navigation.navigate("Investigation")}
+
+
                                     style={{
                                         position: 'absolute',
                                         top: windowWidth > 748 ? '54%' : '54%',
                                         left: windowWidth > 748 ? '21%' : '21%',
                                     }}>
+
                                     <Image source={require('images/polaroid_inconnu_shadow.png')}
                                         // onLoadEnd={loaderClose}
                                         style={{
@@ -324,6 +327,14 @@ const MainBoardScreen = ({ }) => {
                                         }}
                                         resizeMode="contain"
                                     />
+                                    {/* @ts-ignore */}
+                                    {user?.tutorial_progress < 11 && (
+                                        <IconNotification
+                                            size={iconSize}
+                                            top="2%"
+                                            right="2%"
+                                        />
+                                    )}
                                     <Text style={{
                                         ...tw('absolute bottom-[10%] w-full text-center font-secondary'),
                                         fontSize: responsiveFontSize(17)

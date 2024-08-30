@@ -223,10 +223,10 @@ const InvestigationScreen = () => {
                     isVisible={isHelpModalVisible}
                     onClose={() => handleCloseModal()}
                 >
-                    <View style={tw('h-40')}>
+                    <View style={tw('h-50')}>
                         <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
                             <View style={tw('p-3')}>
-                                <Text style={tw('font-primary')}>
+                                <Text style={tw('font-primary text-base md:text-lg')}>
                                     Ici, vous pouvez tenter d'arrêter des criminels.  {"\n"}
                                     Le taux de certitude correspond au pourcentage de chance de réussir. Il augmente en traitant des textes dans les mini-jeux.
                                     {"\n\n"}
