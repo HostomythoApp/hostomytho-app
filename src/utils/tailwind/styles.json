@@ -489,11 +489,6 @@
 			"display": "none"
 		}
 	},
-	"h-0": {
-		"style": {
-			"height": 0
-		}
-	},
 	"h-0.5": {
 		"style": {
 			"height": 2
@@ -562,11 +557,6 @@
 	"h-4": {
 		"style": {
 			"height": 16
-		}
-	},
-	"h-40": {
-		"style": {
-			"height": 160
 		}
 	},
 	"h-44": {
@@ -1696,12 +1686,6 @@
 		"style": {
 			"paddingLeft": 32,
 			"paddingRight": 32
-		}
-	},
-	"py-0": {
-		"style": {
-			"paddingTop": 0,
-			"paddingBottom": 0
 		}
 	},
 	"py-0.5": {

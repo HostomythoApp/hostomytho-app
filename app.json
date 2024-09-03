@@ -17,7 +17,6 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.hostomytho.hostomytho",
       "buildNumber": "17",
-      "deploymentTarget": "13.4",
       "infoPlist": {
         "NSPrivacyAccessedAPIDiskSpaceUsageDescription": "Cette application vérifie l'espace disque disponible pour s'assurer qu'il y a suffisamment de place pour télécharger et stocker le contenu nécessaire sans impacter les performances de votre appareil.",
         "NSPrivacyAccessedAPISystemBootTimeUsageDescription": "Nous utilisons l'heure de démarrage du système pour fournir des fonctionnalités de suivi du temps d'activité, ce qui nous aide à optimiser l'expérience utilisateur et à offrir des rappels personnalisés.",
@@ -30,10 +29,7 @@
         "foregroundImage": "./src/assets/images/icon.png"
       },
       "package": "com.hostomytho.hostomytho",
-      "versionCode": 12,
-      "compileSdkVersion": 34,
-      "targetSdkVersion": 34,
-      "buildToolsVersion": "34.0.0"
+      "versionCode": 12
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
@@ -42,8 +38,7 @@
       [
         "./src/utils/plugins/withDisableForcedDarkModeAndroid.js",
         {}
-      ],
-      "expo-build-properties"
+      ]
     ],
     "extra": {
       "eas": {
