@@ -223,7 +223,7 @@ const InvestigationScreen = () => {
                     isVisible={isHelpModalVisible}
                     onClose={() => handleCloseModal()}
                 >
-                    <View style={tw('h-50')}>
+                    <View style={tw('h-56')}>
                         <ScrollView style={[tw('flex-1'), { maxHeight: window.height * 0.8 }]}>
                             <View style={tw('p-3')}>
                                 <Text style={tw('font-primary text-base md:text-lg')}>

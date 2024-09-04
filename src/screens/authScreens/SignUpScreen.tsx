@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, ScrollView, Dimensions, ImageBackground, TextInput } from "react-native";
+import { View, Text, ScrollView, Dimensions, ImageBackground, TextInput, Platform } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import MainInput from "components/MainInput";
 import FunctionButton from "components/FunctionButton";
@@ -56,19 +56,21 @@ const SignUpScreen = () => {
     const charactersArray = [man_1, woman_2, man_2, woman_3, woman_1, man_3];
 
     useEffect(() => {
-        const handleEnterPress = (event: any) => {
-            if (event.key === 'Enter') {
-                if (buttonRef.current) {
-                    // @ts-ignore
-                    buttonRef.current.click()
+        if (Platform.OS === 'web') {
+            const handleEnterPress = (event: any) => {
+                if (event.key === 'Enter') {
+                    if (buttonRef.current) {
+                        // @ts-ignore
+                        buttonRef.current.click()
+                    }
                 }
-            }
-        };
+            };
 
-        window.addEventListener('keydown', handleEnterPress);
-        return () => {
-            window.removeEventListener('keydown', handleEnterPress);
-        };
+            window.addEventListener('keydown', handleEnterPress);
+            return () => {
+                window.removeEventListener('keydown', handleEnterPress);
+            };
+        }
     }, []);
 
     const submit = (values: Partial<User>) => {
