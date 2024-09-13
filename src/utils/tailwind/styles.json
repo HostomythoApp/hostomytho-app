@@ -489,11 +489,6 @@
 			"display": "none"
 		}
 	},
-	"h-0": {
-		"style": {
-			"height": 0
-		}
-	},
 	"h-0.5": {
 		"style": {
 			"height": 2
@@ -1538,6 +1533,11 @@
 			"--tw-bg-opacity": 0.75
 		}
 	},
+	"bg-opacity-60": {
+		"style": {
+			"--tw-bg-opacity": 0.6
+		}
+	},
 	"p-0": {
 		"style": {
 			"paddingTop": 0,
@@ -1696,12 +1696,6 @@
 		"style": {
 			"paddingLeft": 32,
 			"paddingRight": 32
-		}
-	},
-	"py-0": {
-		"style": {
-			"paddingTop": 0,
-			"paddingBottom": 0
 		}
 	},
 	"py-0.5": {
@@ -2049,6 +2043,11 @@
 		"style": {
 			"--tw-text-opacity": 1,
 			"color": "rgb(255 255 255 / var(--tw-text-opacity))"
+		}
+	},
+	"underline": {
+		"style": {
+			"textDecorationLine": "underline"
 		}
 	},
 	"opacity-100": {

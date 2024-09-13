@@ -100,11 +100,11 @@ const CriminalsCaughtScreen = () => {
                                                 style={tw(' w-44 h-44 lg:w-64 lg:h-64 rounded-md')}
                                                 resizeMode="contain"
                                             />
-                                            <View style={tw('bg-black bg-opacity-50 p-2 rounded')}>
+                                            <View style={tw('bg-black bg-opacity-60 p-2 rounded')}>
                                                 <Text style={[tw('font-bold mt-2 text-white text-center font-primary text-xl')]}>{item.name}</Text>
                                             </View>
                                             {item.description ? (
-                                                <View style={tw('bg-black bg-opacity-50 p-2 rounded')}>
+                                                <View style={tw('bg-black bg-opacity-60 p-2 rounded')}>
                                                     <Text style={[tw('text-white font-primary text-lg')]}>{item.description}</Text>
                                                 </View>
                                             ) : null}

@@ -89,7 +89,7 @@ const InvestigationScreen = () => {
                 // Mettre à jour la probabilité d'arrestation affichée à 0
                 setInvestigationProgress(catchResult.catchEntry.newCatchProbability);
                 if (catchResult.catchEntry.allCriminalsCaught) {
-                    setArrestDescription("Tous les criminels ont été arrêtés. Vous gagnez " + catchResult.catchEntry.pointsAdded + " points supplémentaires.");
+                    setArrestDescription("Tous les criminels ont été arrêtés pour le moment. Vous gagnez " + catchResult.catchEntry.pointsAdded + " points supplémentaires.");
 
                 } else {
                     // Affiche popup haut-faits s'il y en a de nouveaux

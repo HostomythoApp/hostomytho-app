@@ -573,8 +573,8 @@ const MainBoardScreen = ({ }) => {
                                     <View style={tw('font-secondary absolute text-center self-end bottom-0 w-full')}>
                                         <TouchableOpacity onPress={() => navigation.navigate('ClassementMensuel')}>
                                             <Text style={{
-                                                ...tw('text-[#5583CB] mt-2 text-center font-primary'),
-                                                fontSize: responsiveFontSize(10),
+                                                ...tw('text-[#5583CB] mt-2 text-center font-secondary underline'),
+                                                fontSize: responsiveFontSize(13),
                                             }}>Classement mensuel en cours</Text>
                                         </TouchableOpacity>
                                     </View>
