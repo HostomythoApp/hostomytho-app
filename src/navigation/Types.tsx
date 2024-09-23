@@ -45,6 +45,7 @@ export type RootStackParamList = {
     GamesStatistics: undefined;
     ManageUsers: undefined;
     UserDetails: undefined;
+    ManageTestNegation:  { textId: number };
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

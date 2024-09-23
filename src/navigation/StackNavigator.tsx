@@ -15,7 +15,8 @@ import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen"
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
 import EditRewardsScreen from "screens/adminScreens/EditRewardsScreen";
 import ExportDataScreen from "screens/adminScreens/ExportDataScreen";
-import ManageTextsScreen from "screens/adminScreens/ManageTextsScreen";
+import ManageTextsScreen from "screens/adminScreens/manageTexts/ManageTextsScreen";
+import ManageTestNegationScreen from "screens/adminScreens/manageTexts/ManageTestNegationScreen";
 import ManageUsersSreen from "screens/adminScreens/usersScreens/ManageUsersSreen";
 import AdminStatisticsScreen from "screens/adminScreens/AdminStatisticsScreen";
 import UsersStatisticsScreen from "screens/adminScreens/statisticsScreens/UsersStatisticsScreen";
@@ -154,6 +155,7 @@ const StackNavigator = ({ }) => {
               </Stack.Screen>
               <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
               <Stack.Screen name="UserStatistics" component={UsersStatisticsScreen} />
+              <Stack.Screen name="ManageTestNegation" component={ManageTestNegationScreen} />
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
               <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />

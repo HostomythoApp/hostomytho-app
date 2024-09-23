@@ -10,6 +10,9 @@ import { Theme as ThemeModel } from 'models/Theme';
 import { Ionicons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native';
 import CustomModalBackOffice from "components/modals/CustomModalBackOffice";
+import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "navigation/Types";
 
 export default function ManageTextsScreen() {
     const tw = useTailwind();
@@ -29,6 +32,7 @@ export default function ManageTextsScreen() {
     const [isLoadingAction, setIsLoadingAction] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [textIdSelected, setTextIdSelected] = useState(0);
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     const origins = [
         { id: 1, name: 'synthétique' },
@@ -195,8 +199,9 @@ export default function ManageTextsScreen() {
     }
 
     return (
-        <View>
-            <ScrollView style={tw('p-5')}>
+        <View style={tw("flex-1 bg-gray-100")}>
+            <CustomHeaderEmpty title="Gestion des textes" backgroundColor="bg-whiteTransparent" />
+            <ScrollView style={tw('p-5 mt-16')}>
                 {!selectedText && !isCreating && (
                     <TouchableOpacity
                         onPress={handleCreate}
@@ -344,6 +349,10 @@ export default function ManageTextsScreen() {
                                             onValueChange={setIsNegationSpecificationTest}
                                             value={isNegationSpecificationTest}
                                         />
+                                        <TouchableOpacity style={tw('px-4 py-2 bg-blue-500 text-white rounded-md w-80 mr-4')}
+                                            onPress={() => navigation.navigate("ManageTestNegation", { textId: text.id })}>
+                                            <Text style={tw('text-white text-center font-bold')}>Gérer les négations de contrôle</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                                 <View style={tw('flex-row mt-8 w-full justify-center')}
