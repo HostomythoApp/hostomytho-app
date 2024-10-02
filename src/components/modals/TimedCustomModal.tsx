@@ -17,10 +17,10 @@ const TimedCustomModal = ({ isVisible, onClose, children }: { isVisible: boolean
                 mass: 1
             }).start();
 
-            // // Fait disparaître la modal au bout de 5 secondes
-            // timerRef.current = setTimeout(() => {
-            //     onClose();
-            // }, 5000);
+            // Fait disparaître la modal au bout de 5 secondes
+            timerRef.current = setTimeout(() => {
+                onClose();
+            }, 2500);
         } else {
             Animated.spring(translateY, {
                 toValue: 300,
@@ -55,7 +55,7 @@ const TimedCustomModal = ({ isVisible, onClose, children }: { isVisible: boolean
                 <TouchableOpacity
                     activeOpacity={1}
                     onPress={e => e.stopPropagation()}
-                    style={[tw('p-5 bg-white rounded-lg items-center'), {
+                    style={[tw('p-5 bg-green-300 rounded-lg items-center'), {
                         shadowColor: "#000",
                         shadowOffset: { width: 0, height: 2 },
                         shadowOpacity: 0.25,
