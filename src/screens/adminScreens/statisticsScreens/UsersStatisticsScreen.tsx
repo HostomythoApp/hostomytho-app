@@ -1,9 +1,10 @@
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, View, Text, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, BarChart, Bar, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { getUserRegistrationsDate, getCumulativeUserRegistrations, getUserTypesCount } from "services/api/stats";
+import ExportButton from "components/button/ExportButton";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -12,6 +13,9 @@ const UsersStatisticsScreen = ({ }) => {
   const [weeklyData, setWeeklyData] = useState<any>([]);
   const [cumulativeData, setCumulativeData] = useState<any>([]);
   const [userTypesData, setUserTypesData] = useState<any>([]);
+  const lineChartRef = useRef(null);
+  const barChartRef = useRef(null);
+  const pieChartRef = useRef(null);
 
   useEffect(() => {
     fetchUserData();
@@ -41,14 +45,13 @@ const UsersStatisticsScreen = ({ }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-  
+
     return (
       <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
         {payload.count}
       </text>
     );
   };
-  
 
   return (
     <View style={tw("flex-1 bg-gray-100")}>
@@ -57,23 +60,28 @@ const UsersStatisticsScreen = ({ }) => {
         <View style={tw('mx-auto pt-20 items-center')}>
           <View style={tw('mb-2 p-6 rounded-lg')}>
             <Text style={tw('text-lg mb-4')}>Nombre total d'utilisateurs inscrits</Text>
-            <LineChart
-              width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
-              height={400}
-              data={cumulativeData}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="cumulativeCount" stroke="#82ca9d" name="Comptes au total" isAnimationActive={false} />
-            </LineChart>
+            <View ref={lineChartRef}>
+              <LineChart
+                width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
+                height={400}
+                data={cumulativeData}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="cumulativeCount" stroke="#82ca9d" name="Comptes au total" isAnimationActive={false} />
+              </LineChart>
+              <ExportButton chartRef={lineChartRef} fileName="line_chart" />
+            </View>
 
             <Text style={tw('text-lg mt-12 mb-4')}>Nombre de créations de comptes par semaine et type</Text>
-            <ResponsiveContainer width="100%" height={400}>
+            <View ref={barChartRef}>
               <BarChart
+                width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
+                height={400}
                 data={weeklyData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
               >
@@ -86,12 +94,16 @@ const UsersStatisticsScreen = ({ }) => {
                 <Bar dataKey="autre" stackId="a" fill="#82ca9d" name="Autre" />
                 <Bar dataKey="inconnu" stackId="a" fill="#ffc658" name="Inconnu" />
               </BarChart>
-            </ResponsiveContainer>
+            </View>
+            <ExportButton chartRef={barChartRef} fileName="line_chart" />
 
             <Text style={tw('text-lg mt-12 mb-4')}>Statuts des utilisateurs</Text>
-            <ResponsiveContainer width="100%" height={400}>
-              <PieChart>
+            <View ref={pieChartRef}>
+              <PieChart
+                width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
+                height={400}>
                 <Pie
+
                   data={userTypesData}
                   cx="50%"
                   cy="50%"
@@ -110,11 +122,13 @@ const UsersStatisticsScreen = ({ }) => {
                 <Tooltip />
                 <Legend />
               </PieChart>
-            </ResponsiveContainer>
+            </View>
+            <ExportButton chartRef={pieChartRef} fileName="line_chart" />
+
           </View>
         </View>
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
   );
 };
 

@@ -1,9 +1,10 @@
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, View, Text, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, BarChart, Bar } from 'recharts';
 import { getCumulativeUserTypingErrors, getUserTypingErrorsDate } from "services/api/stats";
+import ExportButton from "components/button/ExportButton";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -11,6 +12,8 @@ const UserTypingErrorsStatisticsScreen = ({ }) => {
   const tw = useTailwind();
   const [dailyData, setDailyData] = useState<any>([]);
   const [cumulativeData, setCumulativeData] = useState<any>([]);
+  const lineChartRef = useRef(null);
+  const barChartRef = useRef(null);
 
   useEffect(() => {
     fetchUserData();
@@ -35,34 +38,40 @@ const UserTypingErrorsStatisticsScreen = ({ }) => {
         <View style={tw('mx-auto pt-20 items-center')}>
           <View style={tw('mb-2 p-6 rounded-lg')}>
             <Text style={tw('text-lg mb-4')}>Nombre total de typages d'erreurs</Text>
-            <LineChart
-              width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
-              height={400}
-              data={cumulativeData}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="cumulativeCount" stroke="#82ca9d" name="Typages d'erreurs" isAnimationActive={false} />
-            </LineChart>
+            <View ref={lineChartRef}>
+              <LineChart
+                width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
+                height={400}
+                data={cumulativeData}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="cumulativeCount" stroke="#82ca9d" name="Typages d'erreurs" isAnimationActive={false} />
+              </LineChart>
+            </View>
+            <ExportButton chartRef={lineChartRef} fileName="line_chart" />
 
             <Text style={tw('text-lg mt-12 mb-4')}>Nombre de typages d'erreurs par semaine</Text>
-            <BarChart
-              width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
-              height={400}
-              data={dailyData}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#8884d8" name="Typages d'erreurs" />
-            </BarChart>
+            <View ref={barChartRef}>
+              <BarChart
+                width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
+                height={400}
+                data={dailyData}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="count" fill="#8884d8" name="Typages d'erreurs" />
+              </BarChart>
+            </View>
+            <ExportButton chartRef={barChartRef} fileName="line_chart" />
 
           </View>
         </View>
