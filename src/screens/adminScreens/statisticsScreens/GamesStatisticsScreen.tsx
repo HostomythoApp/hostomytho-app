@@ -1,15 +1,17 @@
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, View, Text, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, BarChart, Bar } from 'recharts';
 import { getCumulativeAnnotationsGames } from "services/api/stats";
+import ExportButton from "components/button/ExportButton";
 
 const screenWidth = Dimensions.get("window").width;
 
 const GamesStatisticsScreen = ({ }) => {
   const tw = useTailwind();
   const [cumulativeData, setCumulativeData] = useState<any>([]);
+  const lineChartRef = useRef(null);
 
   useEffect(() => {
     fetchUserData();
@@ -31,23 +33,26 @@ const GamesStatisticsScreen = ({ }) => {
         <View style={tw('mx-auto pt-20 items-center')}>
           <View style={tw('mb-2 p-6 rounded-lg')}>
             <Text style={tw('text-lg mb-4')}>Nombre d'annotations dans chaque jeu</Text>
-            <LineChart
-              width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
-              height={400}
-              data={cumulativeData}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="cumulativeTextRating" stroke="#8884d8" name="Notations dans MythoOuPas" isAnimationActive={false} />
-              <Line type="monotone" dataKey="cumulativeTypingErrors" stroke="#82ca9d" name="Types d'erreurs dans MythoTypo" isAnimationActive={false} />
-              <Line type="monotone" dataKey="cumulativeSentenceSpecification" stroke="#ffa500" name="Négations dans MythoNo" isAnimationActive={false} />
-            </LineChart>
-
+            <View ref={lineChartRef}>
+              <LineChart
+                width={Math.min(Math.max(screenWidth * 0.8, 300), 1200)}
+                height={400}
+                data={cumulativeData}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="cumulativeTextRating" stroke="#8884d8" name="Notations dans MythoOuPas" isAnimationActive={false} />
+                <Line type="monotone" dataKey="cumulativeTypingErrors" stroke="#82ca9d" name="Types d'erreurs dans MythoTypo" isAnimationActive={false} />
+                <Line type="monotone" dataKey="cumulativeSentenceSpecification" stroke="#ffa500" name="Négations dans MythoNo" isAnimationActive={false} />
+              </LineChart>
+            </View>
+            <ExportButton chartRef={lineChartRef} fileName="line_chart" />
           </View>
+
         </View>
       </ScrollView>
     </View>

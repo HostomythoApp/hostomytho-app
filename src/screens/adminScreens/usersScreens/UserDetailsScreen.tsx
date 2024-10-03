@@ -145,7 +145,7 @@ const deleteAccount = async () => {
   return (
     <View style={tw("flex-1 bg-gray-100")}>
       <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
-        <CustomHeaderEmpty title="Statistiques des jeux" backgroundColor="bg-whiteTransparent" />
+        <CustomHeaderEmpty title="Gestion des utilisateurs" backgroundColor="bg-whiteTransparent" />
         <View style={tw('mx-auto pt-4 items-center w-full')}>
           <View style={tw('mb-24 p-4 mt-16 rounded-lg bg-white w-4/5')}>
             {Object.keys(dataUser).map((key, index) => (
@@ -164,8 +164,8 @@ const deleteAccount = async () => {
                         case "points": return "Points";
                         case "coeffMulti": return "Coefficient Multi";
                         case "trust_index": return "Trust index (sur 100)";
-                        case "gender": return "Sexe";
-                        case "color_skin": return "Couleur de peau";
+                        case "gender": return "Sexe de l'avatar";
+                        case "color_skin": return "Couleur de peau de l'avatar";
                         case "catch_probability": return "Chance d'attraper un criminel (en %)";
                         case "consecutiveDaysPlayed": return "Jours joués consécutifs";
                         case "lastPlayedDate": return "Dernier jour joué";

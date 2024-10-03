@@ -28,7 +28,7 @@ export default function ManageTextsScreen() {
     const [num, setNum] = useState<string | undefined>(undefined);
     const [isNegationSpecificationTest, setIsNegationSpecificationTest] = useState(false);
     const [isPlausibilityTest, setIsPlausibilityTest] = useState(false);
-    const [reasonForRate, setReasonForRate] = useState<string | undefined>(''); // Nouveau champ
+    const [reasonForRate, setReasonForRate] = useState<string | undefined>('');
     const [isLoadingAction, setIsLoadingAction] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [textIdSelected, setTextIdSelected] = useState(0);

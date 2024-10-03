@@ -4,6 +4,15 @@ import api from "./index";
 import { TextWithError } from "interfaces/TextWithError";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export const getNumberOfTexts = async (): Promise<number> => {
+  try {
+    const response = await api.get(`/texts/getNumberOfTexts`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 export const getAllTexts = async (): Promise<Text[]> => {
   try {
