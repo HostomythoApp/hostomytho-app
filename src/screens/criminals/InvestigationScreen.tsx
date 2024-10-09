@@ -49,18 +49,12 @@ const InvestigationScreen = () => {
     }, [user?.catch_probability]);
 
     useEffect(() => {
-        console.log(user);
-
 
         if (user?.tutorial_progress == 10) {
             setIsHelpModalVisible(true);
             // @ts-ignore
         } else if (user?.trust_index <= 30) {
-            console.log();
             setIsTrustModalVisible(true);
-        } else {
-            console.log(user?.trust_index);
-
         }
     }, []);
 

@@ -259,6 +259,12 @@
 			"marginBottom": "auto"
 		}
 	},
+	"mx-6": {
+		"style": {
+			"marginLeft": 24,
+			"marginRight": 24
+		}
+	},
 	"-mt-1": {
 		"style": {
 			"marginTop": -4
@@ -472,6 +478,11 @@
 	"mt-auto": {
 		"style": {
 			"marginTop": "auto"
+		}
+	},
+	"mr-6": {
+		"style": {
+			"marginRight": 24
 		}
 	},
 	"flex": {
@@ -1049,6 +1060,11 @@
 	"justify-evenly": {
 		"style": {
 			"justifyContent": "space-evenly"
+		}
+	},
+	"self-start": {
+		"style": {
+			"alignSelf": "flex-start"
 		}
 	},
 	"self-end": {

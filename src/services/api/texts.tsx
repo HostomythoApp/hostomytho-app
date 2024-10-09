@@ -208,17 +208,22 @@ export const getTextTestPlausibility = async (): Promise<TextWithTokens> => {
     throw error;
   }
 };
-// TODO Pour sécuriser, faire une requete spéciale quand moderator connecté qui renvoie la plausibilité pour éviter de la mettre dans la requete du dessus
+
 export const getTextById = async (id: number): Promise<Text[]> => {
+  const token = await AsyncStorage.getItem("@auth_token");
   try {
-    const response = await api.get(`/texts/${id}`);
+    const response = await api.get(`/texts/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
     return response.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
-
 
 export const getPlausibilityText = async (): Promise<TextWithTokens> => {
   try {
@@ -256,11 +261,10 @@ export const createText = async (text: Partial<Text>) => {
 };
 
 
-export const updateText = async (updatedText: { text: Partial<Text> }) => {
+export const updateText = async (idText: number, updatedText: { text: Partial<Text> }) => {
   const token = await AsyncStorage.getItem("@auth_token");
-  const { text } = updatedText;
   try {
-    const response = await api.put(`/texts/${text.id}`, text, {
+    const response = await api.put(`/texts/${idText}`, updatedText, {
       headers: {
         Authorization: `Bearer ${token}`
       }

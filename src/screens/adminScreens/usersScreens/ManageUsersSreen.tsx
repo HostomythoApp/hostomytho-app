@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, ScrollView, ActivityIndicator, TouchableOpacity, Button } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import {
   useReactTable,
@@ -12,7 +12,6 @@ import CustomHeaderEmpty from 'components/header/CustomHeaderEmpty';
 import { getAllUsers } from 'services/api/user';
 import { User } from 'models/User';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackNavigationProp } from 'navigation/Types';
 import { useFocusEffect } from '@react-navigation/native';
 
 const columnHelper = createColumnHelper<User>();
@@ -53,11 +52,6 @@ const columns = [
     cell: info => info.getValue(),
     footer: info => info.column.id,
   }),
-  // columnHelper.accessor('message_read', {
-  //   header: () => 'Message Read',
-  //   cell: info => (info.getValue() ? 'Yes' : 'No'),
-  //   footer: info => info.column.id,
-  // }),
   columnHelper.display({
     id: 'manage',
     header: () => 'Gérer',
@@ -159,15 +153,6 @@ const ManageUsersScreen = () => {
               </tbody>
 
               <tfoot>
-                {/* {table.getFooterGroups().map(footerGroup => (
-                  <tr key={footerGroup.id}>
-                    {footerGroup.headers.map(header => (
-                      <th key={header.id}>
-                        {flexRender(header.column.columnDef.footer, header.getContext())}
-                      </th>
-                    ))}
-                  </tr>
-                ))} */}
               </tfoot>
             </table>
           </View>

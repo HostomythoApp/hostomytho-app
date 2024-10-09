@@ -1,38 +1,118 @@
 import React, { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Button, Switch, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, TextInput, ScrollView, Button, Switch, Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useTailwind } from 'tailwind-rn';
-import { getAllTexts, deleteText, updateText, createText } from 'services/api/texts';
+import { getAllTexts } from 'services/api/texts';
 import { getAllThemes } from 'services/api/themes';
 import { Text as TextModel } from 'models/Text';
-import { Theme as ThemeModel } from 'models/Theme';
-import { Ionicons } from '@expo/vector-icons';
-import { ActivityIndicator } from 'react-native';
-import CustomModalBackOffice from "components/modals/CustomModalBackOffice";
+import {
+    useReactTable,
+    createColumnHelper,
+    getCoreRowModel,
+    getSortedRowModel,
+    flexRender,
+} from '@tanstack/react-table';
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "navigation/Types";
+import { useFocusEffect } from '@react-navigation/native';
+
+
+const columnHelper = createColumnHelper<any>();
+const columns = [
+    columnHelper.accessor('num', {
+        header: () => 'Numéro',
+        cell: info => info.getValue(),
+        footer: info => info.column.id,
+        enableSorting: true,
+    }),
+    columnHelper.accessor('content', {
+        header: () => 'Contenu',
+        cell: info => info.getValue(),
+        footer: info => info.column.id,
+        enableSorting: true,
+    }),
+    columnHelper.accessor('origin', {
+        header: () => 'Origine',
+        cell: info => info.getValue(),
+        footer: info => info.column.id,
+        enableSorting: true,
+    }),
+    columnHelper.accessor('is_plausibility_test', {
+        header: () => 'Test de plausibilité',
+        cell: info => info.getValue() ? 'vrai' : 'faux',
+        footer: info => info.column.id,
+        enableSorting: true,
+    }),
+    columnHelper.accessor('test_plausibility', {
+        header: () => 'Taux de plausibilité',
+        cell: info => info.row.original.is_plausibility_test ? info.getValue() : '',
+        footer: info => info.column.id,
+        enableSorting: true,
+    }),
+    columnHelper.accessor('is_negation_specification_test', {
+        header: () => 'Test de négation',
+        cell: info => info.getValue() ? 'vrai' : 'faux',
+        footer: info => info.column.id,
+        enableSorting: true,
+    }),
+    columnHelper.accessor('nb_of_treatments', {
+        header: () => 'Nombre de fois joué',
+        cell: info => info.getValue(),
+        footer: info => info.column.id,
+    }),
+    columnHelper.accessor('is_active', {
+        header: () => 'Actif',
+        cell: info => info.getValue() ? 'vrai' : 'faux',
+        footer: info => info.column.id,
+    }),
+
+    columnHelper.display({
+        id: 'manage',
+        header: () => 'Gérer',
+        cell: ({ row }) => {
+            const navigation = useNavigation();
+
+            const handlePress = () => {
+                // @ts-ignore
+                navigation.navigate('TextDetails', { textId: row.original.id });
+            };
+
+            return (
+                <Button title="Gérer" onPress={handlePress} />
+            );
+        },
+        footer: info => info.column.id,
+    }),
+];
 
 export default function ManageTextsScreen() {
     const tw = useTailwind();
-    const queryClient = useQueryClient();
-    const { isLoading, error, data: texts } = useQuery('texts', getAllTexts);
-    const { data: themes } = useQuery('themes', getAllThemes);
-    const [selectedText, setSelectedText] = useState<TextModel | null>(null);
-    const [content, setContent] = useState('');
-    const [plausibility, setPlausibility] = useState<number | undefined>(0);
-    const [origin, setOrigin] = useState<string | undefined>('synthétique');
-    const [id_theme, setId_theme] = useState<number | undefined>(undefined);
-    const [isCreating, setIsCreating] = useState(false);
-    const [num, setNum] = useState<string | undefined>(undefined);
-    const [isNegationSpecificationTest, setIsNegationSpecificationTest] = useState(false);
-    const [isPlausibilityTest, setIsPlausibilityTest] = useState(false);
-    const [reasonForRate, setReasonForRate] = useState<string | undefined>('');
-    const [isLoadingAction, setIsLoadingAction] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [textIdSelected, setTextIdSelected] = useState(0);
-    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
+    const [data, setData] = useState<TextModel[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await getAllTexts();
+            setData(response);
+        } catch (error) {
+            console.error('Error fetching texts:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchUsers();
+        }, [])
+    );
+
+    const table = useReactTable({
+        data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+    });
 
     const origins = [
         { id: 1, name: 'synthétique' },
@@ -40,157 +120,7 @@ export default function ManageTextsScreen() {
         { id: 3, name: 'réel - faux' }
     ];
 
-    // Création texte
-    const createMutation = useMutation(createText, {
-        onMutate: () => {
-            setIsLoadingAction(true);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries('texts');
-            setIsCreating(false);
-            setContent('');
-            setPlausibility(0);
-            setOrigin('synthétique');
-            setId_theme(undefined);
-            setNum(undefined);
-            setIsNegationSpecificationTest(false);
-            setIsPlausibilityTest(false);
-            setReasonForRate('');
-        },
-        onSettled: () => {
-            setIsLoadingAction(false);
-        },
-    });
-
-    const handleCreate = () => {
-        setIsCreating(!isCreating);
-        setSelectedText(null);
-        if (!isCreating) {
-            setContent('');
-            setPlausibility(0);
-            setOrigin('synthétique');
-            setId_theme(undefined);
-            setNum(undefined);
-            setIsNegationSpecificationTest(false);
-            setIsPlausibilityTest(false);
-            setReasonForRate('');
-        }
-    };
-
-    const handleCreateSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        if (isCreating) {
-            createMutation.mutate({
-                content,
-                id_theme,
-                num,
-                origin,
-                test_plausibility: plausibility,
-                is_negation_specification_test: isNegationSpecificationTest,
-                is_plausibility_test: isPlausibilityTest,
-                reason_for_rate: reasonForRate,
-            });
-        }
-    };
-
-    // Suppression
-    const handleDeleteConfirmation = (id: number) => {
-        setModalVisible(true);
-        setTextIdSelected(id);
-    };
-
-    const deleteMutation = useMutation(deleteText, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('texts');
-        },
-    });
-
-    const handleDelete = (id: number) => {
-        setModalVisible(false);
-        deleteMutation.mutate(id);
-    };
-
-
-    // Modification
-    const updateMutation = useMutation(updateText, {
-        onMutate: () => {
-            setIsLoadingAction(true);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries('texts');
-            setSelectedText(null);
-            setContent('');
-            setPlausibility(0);
-            setOrigin('');
-            setId_theme(0);
-            setReasonForRate('');
-        },
-        onSettled: () => {
-            setIsLoadingAction(false);
-        },
-    });
-
-    const handleUpdate = (text: TextModel | null) => {
-        if (text) {
-            setSelectedText(text);
-            setContent(text.content);
-            setPlausibility(text.test_plausibility);
-            setOrigin(text.origin);
-            setId_theme(text.id_theme);
-            setNum(text.num);
-            // @ts-ignore
-            setIsNegationSpecificationTest(text.is_negation_specification_test);
-            // @ts-ignore
-            setIsPlausibilityTest(text.is_plausibility_test);
-            setReasonForRate(text.reason_for_rate || '');
-        } else {
-            setContent('');
-            setPlausibility(undefined);
-            setOrigin('');
-            setId_theme(undefined);
-            setNum(undefined);
-            setIsNegationSpecificationTest(false);
-            setIsPlausibilityTest(false);
-            setReasonForRate('');
-        }
-    };
-
-    const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (selectedText) {
-            updateMutation.mutate({
-                text: {
-                    id: selectedText.id,
-                    content,
-                    origin,
-                    id_theme,
-                    num,
-                    test_plausibility: plausibility,
-                    is_negation_specification_test: isNegationSpecificationTest,
-                    is_plausibility_test: isPlausibilityTest,
-                    reason_for_rate: reasonForRate,
-                }
-            });
-        }
-    };
-
-    const handleCancel = () => {
-        setSelectedText(null);
-        setContent('');
-        setPlausibility(0);
-        setOrigin('');
-        setId_theme(undefined);
-        setNum(undefined);
-        setIsNegationSpecificationTest(false);
-        setIsPlausibilityTest(false);
-        setReasonForRate('');
-    };
-
-    if (isLoading) return <View><Text>Chargement...</Text></View>;
-    if (error) return <View><Text>Une erreur s'est produite.</Text></View>;
-
-    if (isLoading || isLoadingAction) {
+    if (loading) {
         return (
             <View style={tw('flex-1 justify-center items-center')}>
                 <ActivityIndicator size="large" color="#0000ff" />
@@ -200,216 +130,57 @@ export default function ManageTextsScreen() {
 
     return (
         <View style={tw("flex-1 bg-gray-100")}>
-            <CustomHeaderEmpty title="Gestion des textes" backgroundColor="bg-whiteTransparent" />
-            <ScrollView style={tw('p-5 mt-16')}>
-                {!selectedText && !isCreating && (
-                    <TouchableOpacity
-                        onPress={handleCreate}
-                        style={tw('px-4 py-2 mb-5 bg-blue-500 text-white rounded-md flex-row items-center justify-center')}
-                    >
-                        <Ionicons name="add-outline" size={24} color="white" />
-                        <Text style={tw('text-white ml-2')}>Ajouter un nouveau texte</Text>
-                    </TouchableOpacity>
-                )}
-
-                {isCreating ? (
-                    <View style={tw('border p-4 mb-4 rounded')}>
-                        <Text>Contenu du texte</Text>
-                        <TextInput
-                            multiline
-                            numberOfLines={6}
-                            style={tw('border p-2 mb-4')}
-                            onChangeText={setContent}
-                            value={content}
-                            placeholder="Contenu"
-                        />
-                        <Text>Numéro d'identification</Text>
-                        <TextInput
-                            style={tw('border p-2 mb-4')}
-                            onChangeText={setNum}
-                            value={num}
-                            placeholder="Numéro"
-                        />
-                        <Text>Type de texte</Text>
-                        <Picker
-                            selectedValue={origin}
-                            onValueChange={(origin: string) => {
-                                setOrigin(origin);
-                                if (origin === 'synthétique') {
-                                    setIsPlausibilityTest(false);
-                                } else if (origin === 'réel - vrai' || origin === 'réel - faux') {
-                                    setIsPlausibilityTest(true);
-                                }
-                            }}
-                            style={tw('border p-2 mb-4')}
-                        >
-                            {origins.map((origin: { id: number, name: string }) => (
-                                <Picker.Item key={origin.id} label={origin.name} value={origin.name} />
-                            ))}
-                        </Picker>
-
-                        <Text>Taux de plausibilité du texte sur 100</Text>
-                        <TextInput
-                            style={tw('border p-2 mb-4')}
-                            onChangeText={value => setPlausibility(Number(value))}
-                            value={plausibility !== undefined ? String(plausibility) : ''}
-                            placeholder="Plausibilité (0 par défaut)"
-                            keyboardType="numeric"
-                        />
-                        <Text>La raison de la note, qui sera affichée au joueur s'il donne la mauvaise plausibilité.</Text>
-                        <TextInput
-                            style={tw('border p-2 mb-4')}
-                            onChangeText={setReasonForRate}
-                            value={reasonForRate}
-                            placeholder="Raison de la note (optionnel)"
-                        />
-                        <View style={tw('flex-row justify-around items-center')}>
-                            <View style={tw('flex-1 items-center')}>
-                                <Text>Texte de contrôle pour MythoNo</Text>
-                                <Switch
-                                    trackColor={{ false: "#767577", true: "#8FEE89" }}
-                                    thumbColor={isNegationSpecificationTest ? "#f5dd4b" : "#f4f3f4"}
-                                    onValueChange={setIsNegationSpecificationTest}
-                                    value={isNegationSpecificationTest}
-                                />
-                            </View>
-                        </View>
-                        <View style={tw('flex-row mt-8 w-full justify-center')}>
-                            <TouchableOpacity
-                                // @ts-ignore
-                                onPress={handleCreateSubmit}
-                                style={tw('px-4 py-2 bg-blue-500 text-white rounded-md w-80 mr-4')}
-                            >
-                                <Text style={tw('text-white text-center font-bold')}>Créer</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={handleCreate}
-                                style={tw('px-4 py-2 bg-gray-500 text-white rounded-md w-80')}
-                            >
-                                <Text style={tw('text-white text-center')}>Annuler</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                ) : null}
-
-                {/* @ts-ignore */}
-                {texts && texts.map((text: TextModel) => (
-                    <View key={text.id} style={tw('border p-4 mb-4 rounded')}>
-                        {selectedText && selectedText.id === text.id ? (
-                            <View>
-                                <Text>Contenu du texte</Text>
-                                <Text style={tw('border p-2 mb-4')}>
-                                    {content}
-                                </Text>
-                                <Text>Numéro d'identification</Text>
-                                <TextInput
-                                    style={tw('border p-2 mb-4')}
-                                    onChangeText={setNum}
-                                    value={num}
-                                    placeholder="Numéro"
-                                />
-                                <Text>Type de texte</Text>
-                                <Picker
-                                    selectedValue={origin}
-                                    onValueChange={(origin: string) => {
-                                        setOrigin(origin);
-                                        if (origin === 'synthétique') {
-                                            setIsPlausibilityTest(false);
-                                        } else if (origin === 'réel - vrai' || origin === 'réel - faux') {
-                                            setIsPlausibilityTest(true);
-                                        }
-                                    }}
-                                    style={tw('border p-2 mb-4')}
-                                >
-                                    {origins.map((origin: { id: number, name: string }) => (
-                                        <Picker.Item key={origin.id} label={origin.name} value={origin.name} />
-                                    ))}
-                                </Picker>
-                                <Text>Taux de plausibilité du texte sur 100</Text>
-                                <TextInput
-                                    style={tw('border p-2 mb-4')}
-                                    onChangeText={value => setPlausibility(Number(value))}
-                                    value={plausibility !== undefined ? String(plausibility) : ''}
-                                    placeholder="Plausibilité"
-                                    keyboardType="numeric"
-                                />
-                                <Text>La raison de la note, qui sera affichée au joueur s'il donne la mauvaise plausibilité.</Text>
-                                <TextInput
-                                    style={tw('border p-2 mb-4')}
-                                    onChangeText={setReasonForRate}
-                                    value={reasonForRate}
-                                    placeholder="Raison de la note (optionnel)"
-                                />
-                                <View style={tw('flex-row justify-around items-center')}>
-                                    <View style={tw('flex-1 items-center')}>
-                                        <Text>Texte de contrôle pour MythoNo</Text>
-                                        <Switch
-                                            trackColor={{ false: "#767577", true: "#8FEE89" }}
-                                            thumbColor={isNegationSpecificationTest ? "#f5dd4b" : "#f4f3f4"}
-                                            onValueChange={setIsNegationSpecificationTest}
-                                            value={isNegationSpecificationTest}
-                                        />
-                                        <TouchableOpacity style={tw('px-4 py-2 bg-blue-500 text-white rounded-md w-80 mr-4')}
-                                            onPress={() => navigation.navigate("ManageTestNegation", { textId: text.id })}>
-                                            <Text style={tw('text-white text-center font-bold')}>Gérer les négations de contrôle</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                <View style={tw('flex-row mt-8 w-full justify-center')}
-                                >
-                                    <TouchableOpacity
-                                        // @ts-ignore
-                                        onPress={handleSubmit}
-                                        style={tw('px-4 py-2 bg-blue-500 text-white rounded-md w-80 mr-4')}
+            <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
+                <CustomHeaderEmpty title="Gestion des textes" backgroundColor="bg-whiteTransparent" />
+                <View style={tw('mx-auto pt-20 items-center')}>
+                    <Text style={tw('text-lg font-bold mb-2 self-end mx-6')}>
+                        Nombre total de textes : {table.getRowModel().rows.length}
+                    </Text>
+                    <View style={tw('mb-2 p-4 rounded-lg bg-white')}>
+                        <table>
+                            <thead>
+                                {table.getHeaderGroups().map(headerGroup => (
+                                    <tr key={headerGroup.id}>
+                                        {headerGroup.headers.map(header => (
+                                            <th key={header.id} style={{ borderBottom: 'solid 3px ', background: 'aliceblue', color: 'black', fontWeight: 'bold' }}>
+                                                <TouchableOpacity onPress={header.column.getToggleSortingHandler()}>
+                                                    {flexRender(header.column.columnDef.header, header.getContext())}
+                                                    {{
+                                                        asc: ' 🔼',
+                                                        desc: ' 🔽',
+                                                        // @ts-ignore
+                                                    }[header.column.getIsSorted()] ?? null}
+                                                </TouchableOpacity>
+                                            </th>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </thead>
+                            <tbody>
+                                {table.getRowModel().rows.map((row, index) => (
+                                    <tr
+                                        key={row.id}
+                                        style={Object.assign(
+                                            {},
+                                            tw('py-1 px-2 flex-row items-center justify-between'),
+                                            index % 2 === 0 ? tw('bg-blue-100') : tw('bg-white')
+                                        )}
                                     >
-                                        <Text style={tw('text-white text-center font-bold')}>Enregistrer</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={handleCancel}
-                                        style={tw('px-4 py-2 bg-gray-500 text-white rounded-md w-80')}
-                                    >
-                                        <Text style={tw('text-white text-center')}>Annuler</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        ) : (
-                            <>
-                                <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Num:</Text> {text.num}</Text>
-                                <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Contenu:</Text> {text.content}</Text>
-                                <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Plausibilité: </Text>{text.test_plausibility}</Text>
-                                <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Origine:</Text> {text.origin}</Text>
-                                <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Raison de la note:</Text> {text.reason_for_rate}</Text>
-                                <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Theme:</Text> {themes && themes.find((theme: ThemeModel) => theme.id === text.id_theme)?.name}</Text>
-                                <Text style={tw('mb-2')}><Text style={tw('font-bold')}>Texte id:</Text> {text.id}</Text>
-                                <View style={tw('flex-row justify-between')}>
-                                    <Button
-                                        onPress={() => handleUpdate(text)}
-                                        title="Modifier"
-                                        color="#007BFF"
-                                    />
-                                    <Button
-                                        onPress={() => handleDeleteConfirmation(text.id)}
-                                        title="Supprimer"
-                                        color="#dc3545"
-                                    />
-                                </View>
-                            </>
-                        )}
+                                        {row.getVisibleCells().map(cell => (
+                                            <td key={cell.id} style={tw('py-1 px-2')}>
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+
+                            <tfoot>
+                            </tfoot>
+                        </table>
                     </View>
-                ))}
+                </View>
             </ScrollView>
-
-            <CustomModalBackOffice isVisible={modalVisible} onClose={() => setModalVisible(false)}>
-                <Text style={tw('text-center mb-4 font-primary text-lg')}>Etes-vous sûr de vouloir supprimer ce texte ?
-                    {"\n"}
-                    Cela entraînera la suppression de toutes les annotations liées à celui-ci.</Text>
-                <Pressable
-                    style={[tw('bg-red-600 px-4 py-2 rounded'), { alignSelf: 'center' }]}
-                    onPress={() => handleDelete(textIdSelected)}
-                >
-                    <Text style={tw('text-white font-primary text-lg')}>Confirmer la suppression</Text>
-                </Pressable>
-            </CustomModalBackOffice>
         </View>
     );
 }
