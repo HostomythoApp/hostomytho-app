@@ -13,9 +13,10 @@ import MythoOuPasScreen from "screens/gamesScreens/MythoOuPasScreen";
 import MythoOuPasFullTextScreen from "screens/gamesScreens/MythoOuPasFullTextScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
-import EditRewardsScreen from "screens/adminScreens/EditRewardsScreen";
+import EditVariablesScreen from "screens/adminScreens/EditVariablesScreen";
 import ExportDataScreen from "screens/adminScreens/ExportDataScreen";
 import ManageTextsScreen from "screens/adminScreens/manageTexts/ManageTextsScreen";
+import TextDetailsScreen from "screens/adminScreens/manageTexts/TextDetailsScreen";
 import ManageTestNegationScreen from "screens/adminScreens/manageTexts/ManageTestNegationScreen";
 import ManageUsersSreen from "screens/adminScreens/usersScreens/ManageUsersSreen";
 import AdminStatisticsScreen from "screens/adminScreens/AdminStatisticsScreen";
@@ -88,7 +89,6 @@ const StackNavigator = ({ }) => {
                 headerShown: false
               })}
             >
-
               <Stack.Screen name="TableauDeBord"
                 component={MainBoardScreen}
                 options={({ }) => ({
@@ -144,8 +144,8 @@ const StackNavigator = ({ }) => {
 
               {/* Admin */}
 
-              {/* Part admin */}
-              <Stack.Screen name="Admin"
+             {/* Part admin */}
+             <Stack.Screen name="Admin"
                 options={{
                   headerShown: false
                 }}
@@ -157,9 +157,10 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="UserStatistics" component={UsersStatisticsScreen} />
               <Stack.Screen name="ManageTestNegation" component={ManageTestNegationScreen} />
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
+              <Stack.Screen name="TextDetails" component={TextDetailsScreen} />
               <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
-              <Stack.Screen name="EditRewards" component={EditRewardsScreen} />
+              <Stack.Screen name="EditVariables" component={EditVariablesScreen} />
               <Stack.Screen name="ExportData" component={ExportDataScreen} />
               <Stack.Screen name="TextRatingStatistics" component={TextRatingStatisticsScreen} />
               <Stack.Screen name="UserSentenceSpecificationsStatistics" component={UserSentenceSpecificationsStatisticsScreen} />

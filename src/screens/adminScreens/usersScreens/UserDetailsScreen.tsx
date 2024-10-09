@@ -109,6 +109,10 @@ const UserDetailsScreen = () => {
     if (validateForm()) {
       try {
         const { created_at, ...dataToSend } = formData;
+        if (dataToSend.email === "") {
+          dataToSend.email = null;
+        }
+
         await editUser(userId, dataToSend);
         setIsEditing(false);
         fetchUserData(userId);
@@ -130,16 +134,16 @@ const UserDetailsScreen = () => {
     );
   }
 
-const deleteAccount = async () => {
-  try {
-    await deleteUser(userId);
-    setModalVisible(false);
-    // @ts-ignore
-    navigation.navigate("ManageUsers", { refresh: true });
-  } catch (error) {
-    console.error('Erreur lors de la suppression :', error);
+  const deleteAccount = async () => {
+    try {
+      await deleteUser(userId);
+      setModalVisible(false);
+      // @ts-ignore
+      navigation.navigate("ManageUsers", { refresh: true });
+    } catch (error) {
+      console.error('Erreur lors de la suppression :', error);
+    }
   }
-}
 
 
   return (
@@ -268,7 +272,7 @@ const deleteAccount = async () => {
       {!isEditing && (
         <View style={tw('absolute bottom-2 flex-row justify-end bg-transparent p-4 w-full right-8')}>
           <TouchableOpacity
-            style={tw('bg-blue-500 p-5 px-6 rounded-3xl text-center justify-center h-21')}
+            style={tw('bg-blue-500 p-5 px-6 rounded-3xl text-center justify-center h-20')}
             onPress={() => setIsEditing(true)}
           >
             <Text style={tw('text-white text-lg font-bold')}
@@ -280,13 +284,13 @@ const deleteAccount = async () => {
       )}
       {isEditing && (
         <View style={tw('absolute bottom-0 left-0 right-0 flex-row justify-around bg-transparent p-4')}>
-          <TouchableOpacity style={tw('bg-red-500 p-5 px-5 rounded-3xl text-center justify-center h-21 flex-row ')} onPress={() => setIsEditing(false)}>
+          <TouchableOpacity style={tw('bg-red-500 p-5 px-5 rounded-3xl text-center justify-center h-20 flex-row items-center')} onPress={() => setIsEditing(false)}>
             <Entypo name="cross" size={26} color="#fff" />
             <Text style={tw('ml-1 text-white text-base font-bold')}>Annuler</Text>
           </TouchableOpacity>
 
 
-          <TouchableOpacity style={tw('bg-green-500 p-5 px-5 rounded-3xl text-center justify-center h-21 flex-row')} onPress={handleSave}>
+          <TouchableOpacity style={tw('bg-green-500 p-5 px-5 rounded-3xl text-center justify-center h-20 flex-row items-center')} onPress={handleSave}>
             <Ionicons name="checkmark" size={26} color="#fff" />
             <Text style={tw('ml-1 text-white text-base font-bold')}>Enregistrer</Text>
           </TouchableOpacity>

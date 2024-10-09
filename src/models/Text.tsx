@@ -1,7 +1,6 @@
 export interface Text {
   id: number;
   content: string;
-  id_theme?: number;
   num?: string;
   origin?: string;
   test_plausibility?: number;
@@ -10,7 +9,7 @@ export interface Text {
   is_negation_specification_test?: boolean,
   is_plausibility_test?: boolean,
   includeSentences?: boolean,
+  nb_of_treatments: number;
   reason_for_rate: string;
+  is_active?: boolean;
 }
-
-// TODO ajouter le model ErrorDetail
