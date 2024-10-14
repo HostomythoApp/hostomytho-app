@@ -39,16 +39,14 @@ export default function ManageTextsScreen({ route }: { route: any }) {
             const newTokens = [...currentText.tokens];
             const token = newTokens[index];
 
-            token.isCurrentSelection = !token.isCurrentSelection; // Basculer la sélection provisoire
+            token.isCurrentSelection = !token.isCurrentSelection;
 
-            // Appliquer ou retirer la couleur en fonction de la sélection
             if (token.isCurrentSelection) {
-                token.color = 'bg-blue-200'; // Colorier en bleu clair si sélectionné
+                token.color = 'bg-blue-200';
             } else {
-                delete token.color; // Retirer la couleur si déselectionné
+                delete token.color;
             }
 
-            // Vérifier si des tokens sont sélectionnés pour activer d'autres actions
             const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
             setSelectionStarted(anyTokenSelected);
 
@@ -67,20 +65,17 @@ export default function ManageTextsScreen({ route }: { route: any }) {
             return;
         }
 
-        // Créer une nouvelle spécification avec les mots sélectionnés
-        const wordPositions = selectedTokens.map(token => token.position).join(', '); // Utilisation de `token.position` plutôt que `token.index`
+        const wordPositions = selectedTokens.map(token => token.position).join(', ');
 
         const newSpec = {
-            id: Date.now(), // Utiliser un identifiant temporaire
+            id: Date.now(),
             textId: textId,
             word_positions: wordPositions,
             description: selectedTokens.map(token => token.content).join(' ') || "Négation ajoutée localement"
         };
 
-        // Ajouter la nouvelle spécification à la liste locale
         setTestSpecifications(prevSpecs => [...prevSpecs, newSpec]);
 
-        // Réinitialiser la sélection provisoire
         setText(currentText => {
             if (!currentText) return currentText;
 
@@ -88,7 +83,7 @@ export default function ManageTextsScreen({ route }: { route: any }) {
             newTokens.forEach(token => {
                 if (token.isCurrentSelection) {
                     token.isCurrentSelection = false;
-                    delete token.color; // Supprimer la couleur après ajout
+                    delete token.color;
                 }
             });
 
@@ -119,12 +114,8 @@ export default function ManageTextsScreen({ route }: { route: any }) {
         setLoading(true);
 
         try {
-            // Supprimer toutes les spécifications pour le texte
             await deleteTestSpecificationsByTextId(textId);
-
-            // La suppression se fait. Regarder maintenant la création
             console.log(testSpecifications);
-
             const creations = testSpecifications.map(spec =>
                 createTestSpecification({ textId: spec.textId, word_positions: spec.word_positions })
             );

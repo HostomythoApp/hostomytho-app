@@ -131,7 +131,7 @@ const TextDetailsScreen = () => {
                         case "is_plausibility_test": return "Est un texte de contrôle pour MythoOuPas";
                         case "test_plausibility": return "Taux de plausibilité de test (pour si c'est un texte de contrôle";
                         case "is_negation_specification_test": return "Est un texte de contrôle pour MythoNo";
-                        case "nb_of_treatments": return "Nombre de fois joué";
+                        case "nb_of_treatments": return "Nombre de fois joué (dans MythoOuPas et MythoNo)";
                         case "reason_for_rate": return "Raison de la note";
                         case "is_active": return "Actif";
                         default: return key;
