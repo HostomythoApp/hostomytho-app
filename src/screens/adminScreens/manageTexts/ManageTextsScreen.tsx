@@ -19,6 +19,12 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const columnHelper = createColumnHelper<any>();
 const columns = [
+    columnHelper.accessor('id', {
+        header: () => 'Id',
+        cell: info => info.getValue(),
+        footer: info => info.column.id,
+        enableSorting: true,
+    }),
     columnHelper.accessor('num', {
         header: () => 'Numéro',
         cell: info => info.getValue(),

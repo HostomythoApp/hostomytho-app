@@ -144,8 +144,10 @@ const StackNavigator = ({ }) => {
 
               {/* Admin */}
 
-             {/* Part admin */}
-             <Stack.Screen name="Admin"
+              {/* Part admin */}
+              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
+
+              <Stack.Screen name="Admin"
                 options={{
                   headerShown: false
                 }}
@@ -156,7 +158,6 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
               <Stack.Screen name="UserStatistics" component={UsersStatisticsScreen} />
               <Stack.Screen name="ManageTestNegation" component={ManageTestNegationScreen} />
-              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
               <Stack.Screen name="TextDetails" component={TextDetailsScreen} />
               <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />

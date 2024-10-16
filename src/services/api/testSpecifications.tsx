@@ -11,7 +11,7 @@ export const getTestSpecificationsByTextId = async (textId: number, gameType: 'h
       }
     });
     console.log(response);
-    
+
     return response.data;
   } catch (error) {
     console.error(error);
@@ -19,14 +19,15 @@ export const getTestSpecificationsByTextId = async (textId: number, gameType: 'h
   }
 };
 
-export const createTestSpecification = async (testSpecification: Omit<TestSpecification, 'id'>): Promise<TestSpecification> => {
+export const createTestSpecification = async (testSpecification: any): Promise<any> => {
   try {
     const token = await AsyncStorage.getItem("@auth_token");
-    const response = await api.post(`/testSpecifications`, {
+    const response = await api.post(`/testSpecifications`, testSpecification, {
       headers: {
         Authorization: `Bearer ${token}`
-      }, testSpecification
+      }
     });
+
     return response.data;
   } catch (error) {
     console.error(error);

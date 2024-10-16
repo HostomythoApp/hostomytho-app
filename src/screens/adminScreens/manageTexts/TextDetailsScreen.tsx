@@ -131,7 +131,7 @@ const TextDetailsScreen = () => {
                         case "is_plausibility_test": return "Est un texte de contrôle pour MythoOuPas";
                         case "test_plausibility": return "Taux de plausibilité de test (pour si c'est un texte de contrôle";
                         case "is_negation_specification_test": return "Est un texte de contrôle pour MythoNo";
-                        case "nb_of_treatments": return "Nombre de fois joué (dans MythoOuPas et MythoNo)";
+                        case "nb_of_treatments": return "Nombre de fois joué (dans MythoOuPas)";
                         case "reason_for_rate": return "Raison de la note";
                         case "is_active": return "Actif";
                         default: return key;
@@ -181,7 +181,7 @@ const TextDetailsScreen = () => {
                         {errors[key] && <Text style={tw('text-red-500')}>{errors[key]}</Text>}
                       </>
                     )
-                      : ["is_plausibility_test", "is_negation_specification_test", "is_active"].includes(key) ? (
+                      : ["is_plausibility_test", "is_active"].includes(key) ? (
                         <>
                           <Picker
                             selectedValue={formData[key]}
@@ -191,6 +191,26 @@ const TextDetailsScreen = () => {
                             <Picker.Item label="Oui" value="true" />
                             <Picker.Item label="Non" value="false" />
                           </Picker>
+                          {errors[key] && <Text style={tw('text-red-500')}>{errors[key]}</Text>}
+                        </>
+                      ) : ["is_negation_specification_test"].includes(key) ? (
+                        <>
+                          <Picker
+                            selectedValue={formData[key]}
+                            onValueChange={(value) => handleInputChange(key, value === 'true')}
+                            style={tw('border p-2 rounded-lg w-full')}
+                          >
+                            <Picker.Item label="Oui" value="true" />
+                            <Picker.Item label="Non" value="false" />
+                          </Picker>
+                          <TouchableOpacity
+                            style={tw('px-4 py-2 bg-blue-500 text-white rounded-md w-1/2 mr-4 mt-2')}
+                            onPress={() => navigation.navigate("ManageTestNegation", { textId: textId })}
+                          >
+                            <Text style={tw('text-white text-center font-bold')}>
+                              Gérer les négations de contrôle
+                            </Text>
+                          </TouchableOpacity>
                           {errors[key] && <Text style={tw('text-red-500')}>{errors[key]}</Text>}
                         </>
                       ) : (
