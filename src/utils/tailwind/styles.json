@@ -880,6 +880,11 @@
 			"minWidth": 20
 		}
 	},
+	"min-w-96": {
+		"style": {
+			"minWidth": 384
+		}
+	},
 	"max-w-40": {
 		"style": {
 			"maxWidth": 160

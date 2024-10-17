@@ -10,7 +10,6 @@ export const getTestSpecificationsByTextId = async (textId: number, gameType: 'h
         Authorization: `Bearer ${token}`
       }
     });
-    console.log(response);
 
     return response.data;
   } catch (error) {
