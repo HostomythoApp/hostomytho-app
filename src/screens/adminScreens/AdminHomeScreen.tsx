@@ -50,12 +50,8 @@ const AdminHomeScreen = () => {
         <AdminLink title="Statistiques de l'application" destination="Statistics" icon="analytics" />
         <AdminLink title="Exporter les données" destination="ExportData" icon="file-download" />
         <AdminLink title="Modifier les variables de l'application" destination="EditVariables" icon="edit" />
-        <AdminLink title="Gestion du message de la page d'accueil" destination="UserMessaging" icon="message" />
+        <AdminLink title="Gestion du message de la page d'accueil" destination="ManageHomeMessages" icon="home" />
         <AdminLink title="Messagerie et échanges avec les utilisateurs" destination="UserMessaging" icon="message" />
-
-        {/* <View style={tw('border-t border-gray-200 pt-4 mt-4')}>
-          <AdminLink title="Gérer les modérateurs" destination="ManageModerators" icon="security" />
-        </View> */}
       </View>
     </View>
   );

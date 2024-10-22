@@ -46,6 +46,8 @@ export type RootStackParamList = {
     ManageUsers: undefined;
     UserDetails: undefined;
     ManageTestNegation:  { textId: number };
+    UserMessaging: undefined;
+    ManageHomeMessages: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

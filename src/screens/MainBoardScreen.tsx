@@ -5,7 +5,6 @@ import { useAuth } from "services/context/AuthContext";
 import { useUser } from "services/context/UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
-import { getMessageMenu, refreshToken } from "services/api/utils";
 import { MessageMenu } from 'models/MessageMenu';
 import IconNotification from "components/IconNotification";
 import { FontAwesome } from '@expo/vector-icons';
@@ -17,6 +16,7 @@ import { responsiveFontSize } from "utils/functions";
 import CharacterPortrait from "components/CharacterPortrait";
 import { loadMonthlyWinners, saveMonthlyWinners } from "utils/storage";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { getMessageMenu } from "services/api/messages";
 
 const MainBoardScreen = ({ }) => {
     const tw = useTailwind();
@@ -435,11 +435,10 @@ const MainBoardScreen = ({ }) => {
                                             right="0%"
                                         />
                                     }
-                                    {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] && // Modification ici pour afficher le cadenas seulement si le tuto n'est pas complété
+                                    {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] &&
                                         <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
                                     }
                                 </TouchableOpacity>
-
 
                                 {/* Tableau des gagnants mensuels */}
                                 <View style={{

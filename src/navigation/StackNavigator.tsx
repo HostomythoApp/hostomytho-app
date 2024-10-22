@@ -26,6 +26,7 @@ import UserTypingErrorsStatisticsScreen from "screens/adminScreens/statisticsScr
 import UserSentenceSpecificationsStatisticsScreen from "screens/adminScreens/statisticsScreens/UserSentenceSpecificationsStatisticsScreen";
 import GamesStatisticsScreen from "screens/adminScreens/statisticsScreens/GamesStatisticsScreen";
 import UserMessagingScreen from "screens/adminScreens/UserMessagingScreen";
+import ManageHomeMessagesScreen from "screens/adminScreens/ManageHomeMessagesScreen";
 import UserDetailsScreen from "screens/adminScreens/usersScreens/UserDetailsScreen";
 import HypothesisGameScreen from "screens/gamesScreens/HypothesisGameScreen";
 import MythoTypoScreen from "screens/gamesScreens/MythoTypoScreen";
@@ -160,6 +161,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ManageTestNegation" component={ManageTestNegationScreen} />
               <Stack.Screen name="TextDetails" component={TextDetailsScreen} />
               <Stack.Screen name="UserMessaging" component={UserMessagingScreen} />
+              <Stack.Screen name="ManageHomeMessages" component={ManageHomeMessagesScreen} />
               <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
               <Stack.Screen name="EditVariables" component={EditVariablesScreen} />
               <Stack.Screen name="ExportData" component={ExportDataScreen} />

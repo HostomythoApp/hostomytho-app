@@ -49,36 +49,6 @@ export const refreshToken = async (refreshToken: string) => {
   }
 };
 
-export const getMessageMenu = async (messageType: string) => {
-  try {
-    const response = await api.get(`/utils/messageMenu?messageType=${messageType}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-// export const changeMessageMenu = async (messageMenu: MessageMenu) => {
-//   try {
-//     const response = await api.put("/utils/messageMenu", messageMenu);
-//     return response.data;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// };
-
-export const updateMenuMessageActive = async (messageId: number, isActive: boolean) => {
-  try {
-    const response = await api.put(`/utils/updateMenuMessageActive/${messageId}`, { active: isActive });
-    return response.data;
-  } catch (error) {
-    console.error('Failed to update menu message active status:', error);
-    throw error;
-  }
-};
-
 export const getDefinition = async (word: string) => {
   try {
     const response = await api.get(`/utils/getDefinition?word=${word}`);
