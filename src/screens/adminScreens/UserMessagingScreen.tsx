@@ -46,6 +46,7 @@ const UserMessagingScreen = () => {
       <View style={tw("flex-1")}>
         {item.user_id && <Text style={tw("text-sm text-gray-500")}>User ID: {String(item.user_id)}</Text>}
         {item.email !== "" && <Text style={tw("text-sm text-gray-500")}>Email: {item.email}</Text>}
+        {item.username && <Text style={tw("text-sm text-gray-500")}>Pseudo: {item.username}</Text>}
         {item.subject && <Text style={tw("text-lg font-semibold")}>{item.subject}</Text>}
         {item.message && <Text style={tw("text-base text-gray-700")}>{item.message}</Text>}
       </View>

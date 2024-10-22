@@ -41,7 +41,8 @@ const HelpScreen = () => {
           email,
           subject,
           message,
-          user_id: user?.id
+          user_id: user?.id,
+          username: user?.username
         };
         await createMessageContact(messageData);
         setFeedbackMessage('Message envoyé avec succès.');
