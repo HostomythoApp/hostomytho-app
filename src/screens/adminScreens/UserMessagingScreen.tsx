@@ -70,7 +70,8 @@ const UserMessagingScreen = () => {
             data={messages}
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderMessage}
-            ListEmptyComponent={<Text>Aucun message pour le moment.</Text>}
+            ListEmptyComponent={<Text style={tw('text-center text-lg font-bold mt-32')}
+            >Aucun message pour le moment.</Text>}
           />
         </View>
       </ScrollView>
