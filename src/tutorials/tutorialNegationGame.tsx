@@ -7,39 +7,47 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         return <Text style={tw('text-[#5077BE] font-bold')}>{children}</Text>;
     };
 
-   switch (step) {
-        case 1: return <Text allowFontScaling={false} style={tw('font-primary')}> Voici des dossiers patients. Sélectionnez les indications d'absence de quelque chose dans le texte.
+    switch (step) {
+        case 1: return <Text allowFontScaling={false} style={tw('font-primary')}> Voici des dossiers patients. Sélectionnez les absences de symptômes et les tests ayant des résultats négatifs.
             {"\n"}
-            Par exemple, si le texte contient <HighlightedText>"Le bilan d'extension du patient malade est sans particularité." </HighlightedText>, il faut identifier les mots <HighlightedText>"sans particularité". </HighlightedText>
+            Par exemple, si le texte contient <HighlightedText>"Le bilan d'extension du patient malade est sans particularité" </HighlightedText>, il faut identifier <HighlightedText>"particularité". </HighlightedText>
             {"\n"}
-            Pour ce faire, cliquez sur les mots et validez la sélection.
+            Cliquez sur le mot pour le sélectionner, puis validez.
         </Text>;
 
         case 2: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Vous pouvez ensuite ajouter de nouvelles négations si vous en trouvez dans le texte, en procédant de la même manière.
+            Vous pouvez ajouter de nouvelles absences de symptômes ou résultats négatifs en cliquant sur les mots correspondants.
             {"\n"}Vos sélections sont affichées sous le texte. Vous pouvez les supprimer en cliquant sur la croix rouge.
             {"\n"}
-            Attention, certains textes peuvent aussi ne contenir aucune négation !
+            Attention, certains textes peuvent ne contenir aucune absence de symptômes ou résultats négatifs  !
             {"\n\n"}
             Quand vous pensez avoir fini, appuyez sur le bouton "Texte suivant".
         </Text>;
 
         case 3: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Certains cas peuvent être imbriqués, et un mot peut servir dans plusieurs négations.
+            Un autre exemple : <HighlightedText> Le test PCR s'est révélé négatif..</HighlightedText>
             {"\n"}
-            Dans cet exemple : <HighlightedText> Les suites opératoires étaient simples sans récidive neurologique ni métastases secondaires.</HighlightedText>
-            {"\n"}
-            Les deux négations à spécifier sont <HighlightedText>"sans récidive neurologique" </HighlightedText>et <HighlightedText>"sans métastases secondaires".</HighlightedText>
+            L'absence à spécifier est <HighlightedText>"test PCR".</HighlightedText>
         </Text>;
 
         case 4: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Un autre exemple : <HighlightedText> L'échographie était demandée par la patiente qui ne présentait pas d'autres métrorragies ou autres pathologies gynécologiques..</HighlightedText>
+            Certains cas peuvent contenir plusieurs absences de symptômes dans une même phrase.
             {"\n"}
-            Les deux négations à spécifier sont <HighlightedText>"pas d'métrorragies" </HighlightedText>et <HighlightedText>"pas d'pathologies gynécologiques".</HighlightedText>
+            Par exemple : <HighlightedText>L'échographie était demandée par la patiente qui ne présentait pas d'autres métrorragies ou autres pathologies gynécologiques.</HighlightedText>
+            {"\n"}
+            Sélectionnez individuellement <HighlightedText>"métrorragies"</HighlightedText> et <HighlightedText>"pathologies gynécologiques".</HighlightedText>
         </Text>;
 
         case 5: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Vous connaissez désormais les bases de l'annotation de négations.
+            Sélectionnez uniquement les éléments observés.
+            {"\n"}
+            Par exemple, si la phrase dit : <HighlightedText>L'absence de traitement influence le pronostic.</HighlightedText>
+            {"\n"}
+            Ne sélectionnez rien si cela décrit une situation générale ou hypothétique. Dans le cas où cela s'applique au patient présent, sélectionnez <HighlightedText>"traitement".</HighlightedText>
+        </Text>;
+
+        case 6: return <Text allowFontScaling={false} style={tw('font-primary')}>
+            Vous maîtrisez maintenant les bases de l'annotation des absences de symptômes et résultats négatifs.
             {"\n\n"}
             Traitez ces quelques textes supplémentaires, et si vous obtenez au moins 4 bonnes réponses, vous pourrez vous lancer à la recherche d'indices.
             {"\n\n"}
@@ -76,32 +84,40 @@ export const getModalHelpContent = (tw: any) => {
     return (
         <TouchableWithoutFeedback>
             <Text style={tw('font-primary')}>
-                Le but du jeu est de cliquer sur les mots qui, selon vous, composent une négation ou une absence.
-                Une fois les mots sélectionnés, validez la sélection. Quand vous pensez avoir trouvé toutes les négations, vérifiez bien d'avoir validé votre dernière selection, et vous pouvez ensuite passer au texte suivant.
+                Le but du jeu est de sélectionner les mots ou expressions qui indiquent des absences de symptômes ou des résultats négatifs dans le texte.
+                Lorsque vous pensez avoir trouvé toutes les absences, vérifiez bien votre dernière sélection avant de passer au texte suivant.
                 {"\n"}
-                Quelques exemples de négations dans des phrases :
-                {"\n\n"}
-                <ItalicPhrase>
-                    "Le bilan d'extension du patient malade est <HighlightedText>sans particularité.</HighlightedText>"
-                </ItalicPhrase>
-                {"\n"}
-                Il faut spécifier la négation : <HighlightedText>"sans particularité"</HighlightedText>
+                Quelques exemples :
                 {"\n\n"}
 
                 <ItalicPhrase>
-                    "Les suites opératoires étaient simples <HighlightedText>sans récidive neurologique</HighlightedText> ni <HighlightedText>métastases secondaires.</HighlightedText>"
+                    "Le bilan d'extension du patient était sans <HighlightedText>particularité.</HighlightedText>"
                 </ItalicPhrase>
                 {"\n"}
-                Les négations à spécifier sont : <HighlightedText>"sans récidive neurologique" </HighlightedText> et <HighlightedText>"sans métastase secondaires"</HighlightedText>
+                Ici, il faut sélectionner : <HighlightedText>"particularité"</HighlightedText>
                 {"\n\n"}
 
                 <ItalicPhrase>
-                    "l'échographie abdomino-pelvienne était demandée par la patiente qui ne présentait <HighlightedText>pas d'</HighlightedText>autres <HighlightedText> métrorragies</HighlightedText> ou autres <HighlightedText> pathologies gynécologiques.</HighlightedText>"
+                    "Le <HighlightedText>test PCR</HighlightedText> s'est révélé négatif."
                 </ItalicPhrase>
                 {"\n"}
-                Les négations à spécifier sont : <HighlightedText>"pas d' métrorragies" </HighlightedText> et <HighlightedText>"pas d' pathologies gynécologiques"</HighlightedText>
+                Sélectionnez : <HighlightedText>"test PCR"</HighlightedText>
                 {"\n\n"}
+
+                <ItalicPhrase>
+                    "L'échographie abdomino-pelvienne a été demandée car la patiente ne présentait pas d'<HighlightedText>autres métrorragies</HighlightedText> ou <HighlightedText>autres pathologies gynécologiques.</HighlightedText>"
+                </ItalicPhrase>
+                {"\n"}
+                Sélectionnez : <HighlightedText>"métrorragies"</HighlightedText> et <HighlightedText>"pathologies gynécologiques"</HighlightedText>
+                {"\n\n"}
+
+                Assurez-vous de ne sélectionnez uniquement les éléments observés et vérifiés, et non les situations générales et hypothétiques :
+                {"\n"}
+                <ItalicPhrase>"L'absence de traitement influence le pronostic."</ItalicPhrase>
+                {"\n"}
+                Ne sélectionnez rien si cela décrit une situation hypothétique. Si cela s'applique au patient, sélectionnez <HighlightedText>"traitement".</HighlightedText>
             </Text>
         </TouchableWithoutFeedback>
+
     );
 }

@@ -31,7 +31,10 @@ const GameRulesScreen = ({ }) => {
                                 Gain de Points
                             </Text>
                             <Text style={tw('font-primary text-lg')}>
-                                Les points sont le baromètre de votre performance en tant qu'enquêteur. Vous les accumulez en jouant aux mini-jeux. Plusieurs éléments peuvent booster votre gain de points, notamment un taux de fiabilité élevé. Vous possédez également un coefficient multiplicateur de points. Celui-ci commence à 1, et s'accroît avec chaque haut fait réalisé, ajoutant 0,1 à chaque fois. Ce multiplicateur est visible en jeu à côté de votre score, mais aussi dans la section Statistiques de votre profil. La longueur des textes est importante aussi. Plus le texte est long, plus il y a de points à gagner.
+                                Les points sont le baromètre de votre performance en tant qu'enquêteur. Vous les accumulez en jouant aux mini-jeux. Plusieurs éléments peuvent booster votre gain de points, notamment un taux de fiabilité élevé. Si celui-ci est trop bas, vous ne gagnerez presque plus de points.
+                                Vous possédez également un coefficient multiplicateur de points. Celui-ci commence à 1, et s'accroît avec chaque haut fait réalisé, ajoutant 0,1 à chaque fois. Ce multiplicateur est visible en jeu à côté de votre score, mais aussi dans la section Statistiques de votre profil.
+                                {"\n"}
+                                Certains textes rapportent plus de points, et les gains dépendent parfois également de la correspondance de vos réponses avec celles des autres joueurs.
                             </Text>
 
                             <Text style={tw('text-2xl font-bold mt-6 mb-2 font-primary')}>
@@ -39,6 +42,8 @@ const GameRulesScreen = ({ }) => {
                             </Text>
                             <Text style={tw('font-primary text-lg')}>
                                 En jouant et en répondant aux questions, vous augmentez votre taux de certitude d'attraper un criminel. Plus votre taux de fiabilité est élevé, plus rapidement ce taux augmente. Vous pouvez tenter une arrestation à tout moment, mais attention : un échec entraîne une perte de 15% de votre taux de certitude. En cas de succès, le criminel est capturé et vous passez à la traque d'un nouveau suspect.
+                                {"\n"}
+                                Si votre fiabilité est trop basse, le taux risque de ne plus augmenter.
                             </Text>
 
                             <Text style={tw('text-2xl font-bold mt-6 mb-2 font-primary')}>

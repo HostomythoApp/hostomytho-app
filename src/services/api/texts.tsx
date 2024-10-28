@@ -179,7 +179,7 @@ export const getTextWithTokensById = async (textId: number): Promise<TextWithTok
 
 export const getTextTestNegation = async (): Promise<TextWithTokens> => {
   try {
-    const response = await api.get(`/texts/getTextTestNegation`);
+    const response = await api.get(`/sentenceSpecifications/getTextTestNegation`);
     return response.data;
   } catch (error: any) {
     if (error.response) {

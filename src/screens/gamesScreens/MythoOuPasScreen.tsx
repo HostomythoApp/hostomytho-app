@@ -597,7 +597,14 @@ const MythoOuPasScreen = () => {
               tutorialFailed && (
                 <TouchableOpacity
                   onPress={launchTuto}
-                  style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
+                  style={[tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3'),
+                  {
+                    shadowColor: 'black',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 4,
+                    elevation: 2
+                  }]}
                 >
                   <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
                 </TouchableOpacity>

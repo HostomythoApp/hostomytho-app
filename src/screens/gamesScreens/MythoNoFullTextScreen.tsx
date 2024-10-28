@@ -5,7 +5,7 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
 import { getTextTestNegation, getTextWithTokensNotPlayed, getTextWithTokensById, getTextWithTokensByGameType } from "services/api/texts";
-import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
+import { createUserSentenceSpecification } from 'services/api/sentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelection } from 'utils/gameFunctions';

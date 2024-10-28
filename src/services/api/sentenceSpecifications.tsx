@@ -1,5 +1,6 @@
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import api from "./index";
+import { TextWithTokens } from "interfaces/TextWithTokens";
 
 export const sendResponse = async (data: {
   textId: number;
@@ -8,7 +9,7 @@ export const sendResponse = async (data: {
   responseNum: number,
 }): Promise<any> => {
   try {
-    const response = await api.post("/userSentenceSpecifications/sendResponse", data);
+    const response = await api.post("/sentenceSpecifications/sendResponse", data);
     return response.data;
   } catch (error) {
     console.error("Erreur lors de l'envoi de la réponse :", error);
@@ -16,9 +17,20 @@ export const sendResponse = async (data: {
   }
 };
 
+
+export const getSentenceSpecificationsText = async (): Promise<TextWithTokens> => {
+  try {
+    const response = await api.get(`/sentenceSpecifications/getText`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const getNumberSpecifications = async (): Promise<number> => {
   try {
-    return await api.get(`/userSentenceSpecifications/getNumberSpecifications`);
+    return await api.get(`/sentenceSpecifications/getNumberSpecifications`);
   } catch (error) {
     console.error(error);
     throw error;
@@ -27,7 +39,7 @@ export const getNumberSpecifications = async (): Promise<number> => {
 
 export const createUserSentenceSpecification = async (userSentenceSpecification: Partial<UserSentenceSpecification>) => {
   try {
-    const response = await api.post("/userSentenceSpecifications", userSentenceSpecification);
+    const response = await api.post("/sentenceSpecifications", userSentenceSpecification);
     return response.data;
   } catch (error) {
     console.error(error);

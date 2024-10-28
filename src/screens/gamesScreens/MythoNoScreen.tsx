@@ -5,7 +5,7 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
 import { getTextTestNegation, getTextWithTokensById, getSmallTextWithTokensNotPlayed } from "services/api/texts";
-import { sendResponse } from 'services/api/userSentenceSpecifications';
+import { getSentenceSpecificationsText, sendResponse } from 'services/api/sentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import InfoText from "components/InfoText";
@@ -107,17 +107,8 @@ const MythoNoScreen = ({ }) => {
     try {
       let response;
       if (user) {
-        const randomNumber = Math.floor(Math.random() * 100);
 
-        // 25% de chance d'avoir un test
-        if (randomNumber < 25) {
-
-          response = await getTextTestNegation();
-          // response = await getTextWithTokensById(105);
-        } else {
-          response = await getSmallTextWithTokensNotPlayed(user.id, 'plausibility');
-          // response = await getTextWithTokensById(105);
-        }
+        response = await getSentenceSpecificationsText();
       } else {
         // Si l'utilisateur n'est pas connecté, récupérer un texte de test par défaut
         response = await getTextTestNegation();
@@ -136,7 +127,7 @@ const MythoNoScreen = ({ }) => {
     const nextStep = tutorialStep + 1;
     setTutorialStep(nextStep);
 
-    if (nextStep <= 5) {
+    if (nextStep <= 6) {
       let response;
       switch (nextStep) {
         case 1:
@@ -144,7 +135,8 @@ const MythoNoScreen = ({ }) => {
           setText(response);
           break;
         case 3:
-          response = await getTextWithTokensById(112);
+          //todo mettre exemple avec négation
+          response = await getTextWithTokensById(120);
           setText(response);
           break;
         case 4:
@@ -152,6 +144,10 @@ const MythoNoScreen = ({ }) => {
           setText(response);
           break;
         case 5:
+          response = await getTextWithTokensById(117);
+          setText(response);
+          break;
+        case 6:
           response = await getTextTestNegation();
           setText(response);
           break;
@@ -567,7 +563,15 @@ const MythoNoScreen = ({ }) => {
             tutorialFailed && (
               <TouchableOpacity
                 onPress={launchTuto}
-                style={tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3')}
+                style={[tw('bg-blue-500 px-4 py-2 rounded-lg w-96 self-center p-3'),
+                {
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 4,
+                  elevation: 2
+                }
+                ]}
               >
                 <Text style={tw('text-white text-center font-primary text-lg')}>Relancer le tutoriel</Text>
               </TouchableOpacity>
@@ -694,7 +698,15 @@ const MythoNoScreen = ({ }) => {
               <TouchableOpacity onPress={() => {
                 launchTuto();
                 setIsHelpModalVisible(false);
-              }} style={tw('bg-primary py-2 px-4 rounded self-center')}>
+              }} style={[tw('bg-primary py-2 px-4 rounded self-center'),
+              {
+                shadowColor: 'black',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 2
+              }
+              ]}>
                 <Text style={tw('text-white font-bold text-center font-primary')}>Relancer le tutoriel</Text>
               </TouchableOpacity>
             </ScrollView>

@@ -5,11 +5,11 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
 import { getTextWithTokensByGameType, getTextWithTokensNotPlayed } from "services/api/texts";
-import { createUserSentenceSpecification } from 'services/api/userSentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import { checkUserSelection } from 'utils/gameFunctions';
 import InfoText from "components/InfoText";
+import {  } from 'services/api/sentenceSpecifications';
 
 const colors = [
   "bg-yellow-300",
