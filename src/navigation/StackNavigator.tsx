@@ -16,6 +16,7 @@ import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
 import EditVariablesScreen from "screens/adminScreens/EditVariablesScreen";
 import ExportDataScreen from "screens/adminScreens/ExportDataScreen";
 import ManageTextsScreen from "screens/adminScreens/manageTexts/ManageTextsScreen";
+import CreateTextScreen from "screens/adminScreens/manageTexts/CreateTextScreen";
 import TextDetailsScreen from "screens/adminScreens/manageTexts/TextDetailsScreen";
 import ManageTestNegationScreen from "screens/adminScreens/manageTexts/ManageTestNegationScreen";
 import ManageUsersSreen from "screens/adminScreens/usersScreens/ManageUsersSreen";
@@ -90,6 +91,14 @@ const StackNavigator = ({ }) => {
                 headerShown: false
               })}
             >
+                            <Stack.Screen name="Admin"
+                options={{
+                  headerShown: false
+                }}
+              >
+                {/* @ts-ignore */}
+                {(props) => <AdminNavigator {...props} />}
+              </Stack.Screen>
               <Stack.Screen name="TableauDeBord"
                 component={MainBoardScreen}
                 options={({ }) => ({
@@ -143,19 +152,9 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ReglesDuJeu" component={GameRulesScreen} />
               <Stack.Screen name="APropos" component={AboutScreen} />
 
-              {/* Admin */}
 
               {/* Part admin */}
-              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
 
-              <Stack.Screen name="Admin"
-                options={{
-                  headerShown: false
-                }}
-              >
-                {/* @ts-ignore */}
-                {(props) => <AdminNavigator {...props} />}
-              </Stack.Screen>
               <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
               <Stack.Screen name="UserStatistics" component={UsersStatisticsScreen} />
               <Stack.Screen name="ManageTestNegation" component={ManageTestNegationScreen} />
@@ -171,7 +170,9 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="GamesStatistics" component={GamesStatisticsScreen} />
               <Stack.Screen name="UserDetails" component={UserDetailsScreen} />
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
-
+              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
+              <Stack.Screen name="CreateText" component={CreateTextScreen} />
+              
             </Stack.Group>
 
           </Stack.Navigator>

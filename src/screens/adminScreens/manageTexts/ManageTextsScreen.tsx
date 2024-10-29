@@ -15,7 +15,8 @@ import {
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from '@react-navigation/native';
-
+import { RootStackNavigationProp } from "navigation/Types";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 const columnHelper = createColumnHelper<any>();
 const columns = [
@@ -95,6 +96,7 @@ export default function ManageTextsScreen() {
     const tw = useTailwind();
     const [data, setData] = useState<TextModel[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     const fetchUsers = async () => {
         try {
@@ -139,9 +141,16 @@ export default function ManageTextsScreen() {
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Gestion des textes" backgroundColor="bg-whiteTransparent" />
                 <View style={tw('mx-auto pt-20 items-center')}>
-                    <Text style={tw('text-lg font-bold mb-2 self-end mx-6')}>
-                        Nombre total de textes : {table.getRowModel().rows.length}
-                    </Text>
+                    <View style={tw('flex-row justify-between w-full')}>
+                        <TouchableOpacity onPress={() => navigation.navigate("CreateText")} style={tw('ml-4 flex-row items-center justify-center px w-96 bg-blue-400 py-2 rounded-md shadow-lg')}>
+                            <FontAwesome6 name="add" size={24} color="white" style={tw('mr-2')} />
+                            <Text style={tw('text-white font-semibold')}>Ajouter un texte</Text>
+                        </TouchableOpacity>
+
+                        <Text style={tw('text-lg font-bold mb-2 self-end mx-6')}>
+                            Nombre total de textes : {table.getRowModel().rows.length}
+                        </Text>
+                    </View>
                     <View style={tw('mb-2 p-4 rounded-lg bg-white')}>
                         <table>
                             <thead>

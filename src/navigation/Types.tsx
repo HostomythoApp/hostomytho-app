@@ -48,6 +48,7 @@ export type RootStackParamList = {
     ManageTestNegation:  { textId: number };
     UserMessaging: undefined;
     ManageHomeMessages: undefined;
+    CreateText: undefined;
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<
