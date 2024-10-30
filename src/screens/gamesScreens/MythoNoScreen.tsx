@@ -135,7 +135,7 @@ const MythoNoScreen = ({ }) => {
           setText(response);
           break;
         case 3:
-          response = await getTextWithTokensById(431);
+          response = await getTextWithTokensById(435);
           setText(response);
           break;
         case 4:
@@ -143,7 +143,7 @@ const MythoNoScreen = ({ }) => {
           setText(response);
           break;
         case 5:
-          response = await getTextWithTokensById(432);
+          response = await getTextWithTokensById(436);
           setText(response);
           break;
         case 6:
