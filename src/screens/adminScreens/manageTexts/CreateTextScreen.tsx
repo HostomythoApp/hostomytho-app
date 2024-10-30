@@ -4,7 +4,7 @@ import { ScrollView, View, Text, TextInput, Alert, TouchableOpacity, ActivityInd
 import { useTailwind } from "tailwind-rn";
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from '@react-native-picker/picker';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { RootStackNavigationProp } from "navigation/Types";
 import { createText } from "services/api/texts";
 
@@ -199,7 +199,7 @@ const CreateTextScreen = () => {
 
             <View style={tw('justify-center items-center mt-4')}>
               <TouchableOpacity style={tw('bg-green-500 p-5 rounded-3xl flex-row items-center')} onPress={handleCreate}>
-                <FontAwesome6 name="add" size={26} color="#fff" />
+                <Ionicons name="add" size={26} color="#fff" />
                 <Text style={tw('ml-1 text-white text-base font-bold')}>Créer</Text>
               </TouchableOpacity>
             </View>

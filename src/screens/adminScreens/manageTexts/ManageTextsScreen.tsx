@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, TextInput, ScrollView, Button, Switch, Pressable } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Button } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import { getAllTexts } from 'services/api/texts';
-import { getAllThemes } from 'services/api/themes';
 import { Text as TextModel } from 'models/Text';
 import {
     useReactTable,
@@ -16,7 +14,7 @@ import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from '@react-navigation/native';
 import { RootStackNavigationProp } from "navigation/Types";
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const columnHelper = createColumnHelper<any>();
 const columns = [
@@ -143,7 +141,7 @@ export default function ManageTextsScreen() {
                 <View style={tw('mx-auto pt-20 items-center')}>
                     <View style={tw('flex-row justify-between w-full')}>
                         <TouchableOpacity onPress={() => navigation.navigate("CreateText")} style={tw('ml-4 flex-row items-center justify-center px w-96 bg-blue-400 py-2 rounded-md shadow-lg')}>
-                            <FontAwesome6 name="add" size={24} color="white" style={tw('mr-2')} />
+                            <Ionicons name="add" size={24} color="white" style={tw('mr-2')} />
                             <Text style={tw('text-white font-semibold')}>Ajouter un texte</Text>
                         </TouchableOpacity>
 
