@@ -91,14 +91,7 @@ const StackNavigator = ({ }) => {
                 headerShown: false
               })}
             >
-                            <Stack.Screen name="Admin"
-                options={{
-                  headerShown: false
-                }}
-              >
-                {/* @ts-ignore */}
-                {(props) => <AdminNavigator {...props} />}
-              </Stack.Screen>
+
               <Stack.Screen name="TableauDeBord"
                 component={MainBoardScreen}
                 options={({ }) => ({
@@ -154,7 +147,14 @@ const StackNavigator = ({ }) => {
 
 
               {/* Part admin */}
-
+              <Stack.Screen name="Admin"
+                options={{
+                  headerShown: false
+                }}
+              >
+                {/* @ts-ignore */}
+                {(props) => <AdminNavigator {...props} />}
+              </Stack.Screen>
               <Stack.Screen name="Statistics" component={AdminStatisticsScreen} />
               <Stack.Screen name="UserStatistics" component={UsersStatisticsScreen} />
               <Stack.Screen name="ManageTestNegation" component={ManageTestNegationScreen} />
@@ -172,7 +172,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
               <Stack.Screen name="CreateText" component={CreateTextScreen} />
-              
+
             </Stack.Group>
 
           </Stack.Navigator>

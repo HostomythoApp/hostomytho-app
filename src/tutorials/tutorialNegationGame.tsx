@@ -11,15 +11,15 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         case 1: return <Text allowFontScaling={false} style={tw('font-primary')}> Voici des dossiers patients. Sélectionnez les absences de symptômes et les tests ayant des résultats négatifs.
             {"\n"}
             Par exemple, si le texte contient <HighlightedText>"Le bilan d'extension du patient malade est sans particularité" </HighlightedText>, il faut identifier <HighlightedText>"particularité". </HighlightedText>
-            {"\n"}
-            Cliquez sur le mot pour le sélectionner, puis validez.
+            {"\n\n"}
+            Cliquez sur le ou les mots pour les sélectionner, puis validez.
         </Text>;
 
         case 2: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Vous pouvez ajouter de nouvelles absences de symptômes ou résultats négatifs en cliquant sur les mots correspondants.
+            Vous pouvez ajouter plusieurs absences de symptômes ou résultats négatifs, en utilisant ce même procédé.
             {"\n"}Vos sélections sont affichées sous le texte. Vous pouvez les supprimer en cliquant sur la croix rouge.
             {"\n"}
-            Attention, certains textes peuvent ne contenir aucune absence de symptômes ou résultats négatifs  !
+            Attention, certains textes peuvent n'en contenir aucune !
             {"\n\n"}
             Quand vous pensez avoir fini, appuyez sur le bouton "Texte suivant".
         </Text>;
@@ -35,7 +35,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             {"\n"}
             Par exemple : <HighlightedText>L'échographie était demandée par la patiente qui ne présentait pas d'autres métrorragies ou autres pathologies gynécologiques.</HighlightedText>
             {"\n"}
-            Sélectionnez individuellement <HighlightedText>"métrorragies"</HighlightedText> et <HighlightedText>"pathologies gynécologiques".</HighlightedText>
+            Attention : sélectionnez bien individuellement <HighlightedText>"métrorragies"</HighlightedText>, validez la sélection, puis <HighlightedText>"pathologies gynécologiques".</HighlightedText>
         </Text>;
 
         case 5: return <Text allowFontScaling={false} style={tw('font-primary')}>

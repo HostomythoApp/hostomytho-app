@@ -364,12 +364,12 @@ const MainBoardScreen = ({ }) => {
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    onPress={tutorialsCompleted && tutorialsCompleted["MythoOuPas"] ? () => navigation.navigate("MythoTypo") : undefined}
+                                    onPress={tutorialsCompleted && tutorialsCompleted["MythoNo"] ? () => navigation.navigate("MythoTypo") : undefined}
                                     style={{
                                         position: 'absolute',
                                         top: windowWidth > 748 ? '20%' : '20%',
                                         left: windowWidth > 748 ? '43%' : '43%',
-                                        opacity: tutorialsCompleted && tutorialsCompleted["MythoOuPas"] ? 1 : 0.6
+                                        opacity: tutorialsCompleted && tutorialsCompleted["MythoNo"] ? 1 : 0.6
                                     }}>
                                     <View style={{ position: 'relative' }}>
                                         <Image
@@ -379,14 +379,14 @@ const MainBoardScreen = ({ }) => {
                                                 width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
                                             }}
                                         />
-                                        {tutorialsCompleted && tutorialsCompleted["MythoOuPas"] && !tutorialsCompleted["MythoTypo"] &&
+                                        {tutorialsCompleted && tutorialsCompleted["MythoNo"] && !tutorialsCompleted["MythoTypo"] &&
                                             <IconNotification
                                                 size={iconSize}
                                                 top="2%"
                                                 right="2%"
                                             />
                                         }
-                                        {!tutorialsCompleted || !tutorialsCompleted["MythoOuPas"] &&
+                                        {!tutorialsCompleted || !tutorialsCompleted["MythoNo"] &&
                                             // TODO responsive lock
                                             <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
                                         }
@@ -394,12 +394,14 @@ const MainBoardScreen = ({ }) => {
                                 </TouchableOpacity>
 
 
-                                <TouchableOpacity onPress={() => navigation.navigate("MythoOuPas")}
+                                <TouchableOpacity
+                                    onPress={tutorialsCompleted && tutorialsCompleted["MythoTypo"] ? () => navigation.navigate("MythoOuPas") : undefined}
                                     style={{
                                         position: 'absolute',
                                         top: windowWidth > 748 ? '40%' : '40%',
                                         left: windowWidth > 748 ? '33%' : '33%',
-                                        transform: [{ rotate: '4deg' }]
+                                        transform: [{ rotate: '4deg' }],
+                                        opacity: tutorialsCompleted && tutorialsCompleted["MythoTypo"] ? 1 : 0.6
                                     }}>
                                     <Image source={require('images/postit_green.png')}
                                         style={{
@@ -407,36 +409,34 @@ const MainBoardScreen = ({ }) => {
                                         }}
                                         resizeMode="contain"
                                     />
-                                    {tutorialsCompleted && !tutorialsCompleted["MythoOuPas"] &&
+                                    {tutorialsCompleted && tutorialsCompleted["MythoTypo"] && !tutorialsCompleted["MythoOuPas"] &&
                                         <IconNotification
                                             size={iconSize}
                                             top="1%"
                                             right="0%"
                                         />
                                     }
+                                    {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] &&
+                                        <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
+                                    }
                                 </TouchableOpacity>
 
-                                <TouchableOpacity
-                                    onPress={tutorialsCompleted && tutorialsCompleted["MythoTypo"] ? () => navigation.navigate("MythoNo") : undefined}
+                                <TouchableOpacity onPress={() => navigation.navigate("MythoNo")}
                                     style={{
                                         position: 'absolute',
                                         top: windowWidth > 748 ? '56%' : '56%',
                                         left: windowWidth > 748 ? '68%' : '68%',
                                         transform: [{ rotate: '-8deg' }],
-                                        opacity: tutorialsCompleted && tutorialsCompleted["MythoTypo"] ? 1 : 0.6
                                     }}>
                                     <Image source={require('images/postit_pink.png')} style={{
                                         width: windowWidth * 0.07, height: windowWidth * 0.07, minWidth: 65, minHeight: 65,
                                     }} />
-                                    {tutorialsCompleted && tutorialsCompleted["MythoTypo"] && !tutorialsCompleted["MythoNo"] &&
+                                    {tutorialsCompleted && !tutorialsCompleted["MythoNo"] &&
                                         <IconNotification
                                             size={iconSize}
                                             top="-5%"
                                             right="0%"
                                         />
-                                    }
-                                    {tutorialsCompleted && !tutorialsCompleted["MythoTypo"] &&
-                                        <FontAwesome name="lock" size={44} color="slategray" style={{ position: 'absolute', top: '40%', left: '50%', marginTop: -12, marginLeft: -12 }} />
                                     }
                                 </TouchableOpacity>
 

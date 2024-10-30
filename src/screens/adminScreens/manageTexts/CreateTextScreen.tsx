@@ -1,6 +1,6 @@
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import React, { useState } from "react";
-import { ScrollView, View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
+import { ScrollView, View, Text, TextInput, Alert, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from '@react-native-picker/picker';
@@ -22,6 +22,7 @@ const CreateTextScreen = () => {
   });
   const [errors, setErrors] = useState<any>({});
   const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     let valid = true;
@@ -37,10 +38,6 @@ const CreateTextScreen = () => {
       valid = false;
     }
 
-    console.log("validate form");
-    console.log(formData.origin);
-    
-    
     if (!["synthétique", "réel - faux", "réel - vrai"].includes(formData.origin)) {
       newErrors.origin = "Le statut doit être 'synthétique', 'réel - faux', ou 'réel - vrai'.";
       valid = false;
@@ -72,10 +69,13 @@ const CreateTextScreen = () => {
   const handleCreate = async () => {
     if (validateForm()) {
       try {
+        setIsLoading(true);
         await createText(formData);
+        setIsLoading(false);
         Alert.alert("Succès", "Création réussie.");
         navigation.goBack();
       } catch (error) {
+        setIsLoading(false);
         console.error("Erreur lors de la création du texte", error);
         Alert.alert("Erreur", "La création a échoué.");
       }
@@ -84,6 +84,13 @@ const CreateTextScreen = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <View style={tw('flex-1 justify-center items-center')}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
   return (
     <View style={tw("flex-1 bg-gray-100")}>
       <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
@@ -91,7 +98,6 @@ const CreateTextScreen = () => {
         <View style={tw('mx-auto pt-4 items-center w-full')}>
           <View style={tw('mb-24 p-4 mt-16 rounded-lg bg-white w-4/5')}>
 
-            {/* Champ numéro */}
             <View style={tw('py-2 px-4')}>
               <Text style={tw('text-lg font-bold mb-2')}>Numéro :</Text>
               <TextInput
@@ -104,7 +110,6 @@ const CreateTextScreen = () => {
               {errors.num && <Text style={tw('text-red-500')}>{errors.num}</Text>}
             </View>
 
-            {/* Champ contenu du texte */}
             <View style={tw('py-2 px-4')}>
               <Text style={tw('text-lg font-bold mb-2')}>Contenu :</Text>
               <TextInput
@@ -118,7 +123,6 @@ const CreateTextScreen = () => {
               {errors.content && <Text style={tw('text-red-500')}>{errors.content}</Text>}
             </View>
 
-            {/* Champ origine */}
             <View style={tw('py-2 px-4')}>
               <Text style={tw('text-lg font-bold mb-2')}>Origine :</Text>
               <Picker
@@ -133,7 +137,6 @@ const CreateTextScreen = () => {
               {errors.origin && <Text style={tw('text-red-500')}>{errors.origin}</Text>}
             </View>
 
-            {/* Champ texte de contrôle pour MythoOuPas */}
             <View style={tw('py-2 px-4')}>
               <Text style={tw('text-lg font-bold mb-2')}>Texte de contrôle pour MythoOuPas :</Text>
               <Picker
@@ -146,7 +149,6 @@ const CreateTextScreen = () => {
               </Picker>
             </View>
 
-            {/* Champ taux de plausibilité */}
             <View style={tw('py-2 px-4')}>
               <Text style={tw('text-lg font-bold mb-2')}>Taux de plausibilité de test (pour si c'est un texte de contrôle :</Text>
               <TextInput
@@ -159,7 +161,6 @@ const CreateTextScreen = () => {
               {errors.test_plausibility && <Text style={tw('text-red-500')}>{errors.test_plausibility}</Text>}
             </View>
 
-            {/* Champ texte de contrôle pour MythoNo */}
             <View style={tw('py-2 px-4')}>
               <Text style={tw('text-lg font-bold mb-2')}>Texte de contrôle pour MythoNo :</Text>
               <Picker
@@ -172,7 +173,6 @@ const CreateTextScreen = () => {
               </Picker>
             </View>
 
-            {/* Champ raison de la note */}
             <View style={tw('py-2 px-4')}>
               <Text style={tw('text-lg font-bold mb-2')}>Raison de la note :</Text>
               <TextInput
@@ -185,7 +185,6 @@ const CreateTextScreen = () => {
               />
             </View>
 
-            {/* Champ actif */}
             <View style={tw('py-2 px-4')}>
               <Text style={tw('text-lg font-bold mb-2')}>Actif :</Text>
               <Picker
@@ -198,7 +197,6 @@ const CreateTextScreen = () => {
               </Picker>
             </View>
 
-            {/* Bouton de création */}
             <View style={tw('justify-center items-center mt-4')}>
               <TouchableOpacity style={tw('bg-green-500 p-5 rounded-3xl flex-row items-center')} onPress={handleCreate}>
                 <FontAwesome6 name="add" size={26} color="#fff" />

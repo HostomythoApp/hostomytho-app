@@ -135,8 +135,7 @@ const MythoNoScreen = ({ }) => {
           setText(response);
           break;
         case 3:
-          //todo mettre exemple avec négation
-          response = await getTextWithTokensById(120);
+          response = await getTextWithTokensById(439);
           setText(response);
           break;
         case 4:
@@ -144,7 +143,7 @@ const MythoNoScreen = ({ }) => {
           setText(response);
           break;
         case 5:
-          response = await getTextWithTokensById(117);
+          response = await getTextWithTokensById(441);
           setText(response);
           break;
         case 6:
