@@ -150,7 +150,7 @@ const CreateTextScreen = () => {
             </View>
 
             <View style={tw('py-2 px-4')}>
-              <Text style={tw('text-lg font-bold mb-2')}>Taux de plausibilité de test (pour si c'est un texte de contrôle :</Text>
+              <Text style={tw('text-lg font-bold mb-2')}>Taux de plausibilité de test (nécessaire si c'est un texte de contrôle dans MythoOupas) :</Text>
               <TextInput
                 style={tw('border p-2 rounded-lg')}
                 value={formData.test_plausibility}
