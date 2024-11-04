@@ -43,7 +43,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
             {"\n"}
             Par exemple, si la phrase dit : <HighlightedText>L'absence de traitement influence le pronostic.</HighlightedText>
             {"\n"}
-            Ne sélectionnez rien si cela décrit une situation générale ou hypothétique. Dans le cas où cela s'applique au patient présent, sélectionnez <HighlightedText>"traitement".</HighlightedText>
+            Ne sélectionnez rien si cela décrit seulement une situation générale ou hypothétique. Dans le cas où cela s'applique au patient présent, sélectionnez <HighlightedText>"traitement".</HighlightedText>
         </Text>;
 
         case 6: return <Text allowFontScaling={false} style={tw('font-primary')}>

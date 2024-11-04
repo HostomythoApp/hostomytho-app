@@ -287,14 +287,14 @@ const MainBoardScreen = ({ }) => {
                                                     <View>
                                                         <View style={tw("h-0.5 bg-gray-300 mb-2 mt-3")} />
                                                         <View style={tw("flex-row items-center")}>
-                                                            <Ionicons name="information-circle" size={24} color="#1e40af" />
-                                                            <Text style={[tw("lg:text-lg font-primary ml-2 text-blue-800")]}>
+                                                            <Ionicons name="information-circle" size={28} color="#1e40af" />
+                                                            <Text style={[tw("lg:text-xl font-primary ml-2 text-blue-800")]}>
                                                                 {menuMessage.title}
                                                             </Text>
                                                         </View>
                                                     </View>
                                                 ) : null}
-                                                <Text style={tw("text-black text-center text-sm mt-2 italic font-primary")}>
+                                                <Text style={tw("text-black text-center text-sm mt-3 italic font-primary")}>
                                                     Cliquez sur le message pour le réduire
                                                 </Text>
                                             </View>

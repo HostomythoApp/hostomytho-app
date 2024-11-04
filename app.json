@@ -2,7 +2,7 @@
   "expo": {
     "name": "hostomytho",
     "slug": "hostomytho",
-    "version": "1.1.9",
+    "version": "1.2",
     "orientation": "landscape",
     "icon": "./src/assets/images/icon.png",
     "splash": {
@@ -29,7 +29,7 @@
         "foregroundImage": "./src/assets/images/icon.png"
       },
       "package": "com.hostomytho.hostomytho",
-      "versionCode": 15
+      "versionCode": 16
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"

@@ -2192,6 +2192,13 @@
 		},
 		"media": "(min-width: 1024px)"
 	},
+	"lg:text-xl": {
+		"style": {
+			"fontSize": 20,
+			"lineHeight": 28
+		},
+		"media": "(min-width: 1024px)"
+	},
 	"xl:mt-4": {
 		"style": {
 			"marginTop": 16
