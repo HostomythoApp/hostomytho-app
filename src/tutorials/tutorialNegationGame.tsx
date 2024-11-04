@@ -8,7 +8,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
     };
 
     switch (step) {
-        case 1: return <Text allowFontScaling={false} style={tw('font-primary')}> Voici des dossiers patients. Sélectionnez les absences de symptômes et les tests ayant des résultats négatifs.
+        case 1: return <Text allowFontScaling={false} style={tw('font-primary')}> Voici des dossiers patients. Pour commencer à trouver des pistes, sélectionnez les absences de symptômes observées chez le patient et les tests ayant des résultats négatifs.
             {"\n"}
             Par exemple, si le texte contient <HighlightedText>"Le bilan d'extension du patient malade est sans particularité" </HighlightedText>, il faut identifier <HighlightedText>"particularité". </HighlightedText>
             {"\n\n"}
@@ -39,7 +39,7 @@ export const getTutorialContentForStep = (step: number, tw: any) => {
         </Text>;
 
         case 5: return <Text allowFontScaling={false} style={tw('font-primary')}>
-            Sélectionnez uniquement les éléments observés.
+            Sélectionnez uniquement les éléments observés qui concernent le cas du patient.
             {"\n"}
             Par exemple, si la phrase dit : <HighlightedText>L'absence de traitement influence le pronostic.</HighlightedText>
             {"\n"}
