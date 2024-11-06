@@ -20,11 +20,9 @@ export type RootStackParamList = {
     AdminHome: undefined;
     MotDePasseOublie: undefined;
     TableauDeBord: undefined;
-    HypoMytho: undefined;
     MythoTypo: undefined;
     TemporalEntity: undefined;
     MythoOuPas: undefined;
-    CondiMytho: undefined;
     Criminels: undefined;
     MythoNo: undefined;
     HautsFaits: undefined;

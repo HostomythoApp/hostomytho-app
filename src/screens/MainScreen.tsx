@@ -18,9 +18,6 @@ const MainScreen = ({ }) => {
                     <View>
                         <PrimaryButton title="Tableau de bord" destination="TableauDeBord" />
                         <PrimaryButton title="Plausibilité des textes détaillés" destination="MythoOuPas" />
-                        <PrimaryButton title="Plausibilité des textes" destination="Plausibilites" />
-                        <PrimaryButton title="Trouver les hypothèses" destination="HypoMytho" />
-                        <PrimaryButton title="Trouver les conditions" destination="CondiMytho" />
                         <PrimaryButton title="Trouver les négations" destination="MythoNo" />
                         <PrimaryButton title="Spécifier le type des phrases" destination="TypeSentenceGame" />
                         <PrimaryButton title="Trouver les entités et expressions temporelles" destination="TemporalEntity" />

@@ -10,7 +10,6 @@ import ForgetPasswordScreen from "screens/authScreens/ForgetPasswordScreen";
 import ResetPasswordScreen from "screens/authScreens/ResetPasswordScreen";
 import ChangePasswordScreen from "screens/authScreens/ChangePasswordScreen";
 import MythoOuPasScreen from "screens/gamesScreens/MythoOuPasScreen";
-import MythoOuPasFullTextScreen from "screens/gamesScreens/MythoOuPasFullTextScreen";
 import TemporalEntityScreen from "screens/gamesScreens/TemporalEntityGameScreen";
 import AdminLoginScreen from "screens/adminScreens/AdminLoginScreen";
 import EditVariablesScreen from "screens/adminScreens/EditVariablesScreen";
@@ -29,9 +28,7 @@ import GamesStatisticsScreen from "screens/adminScreens/statisticsScreens/GamesS
 import UserMessagingScreen from "screens/adminScreens/UserMessagingScreen";
 import ManageHomeMessagesScreen from "screens/adminScreens/ManageHomeMessagesScreen";
 import UserDetailsScreen from "screens/adminScreens/usersScreens/UserDetailsScreen";
-import HypothesisGameScreen from "screens/gamesScreens/HypothesisGameScreen";
 import MythoTypoScreen from "screens/gamesScreens/MythoTypoScreen";
-import ConditionGameScreen from "screens/gamesScreens/ConditionGameScreen";
 import MythoNoScreen from "screens/gamesScreens/MythoNoScreen";
 import AchievementsScreen from "screens/profilScreens/AchievementsScreen";
 import RankingScreen from "screens/profilScreens/RankingScreen";
@@ -109,14 +106,11 @@ const StackNavigator = ({ }) => {
 
               {/* Games */}
               <Stack.Screen name="MythoNo" component={MythoNoScreen} />
-              <Stack.Screen name="HypoMytho" component={HypothesisGameScreen} />
-              <Stack.Screen name="CondiMytho" component={ConditionGameScreen} />
               <Stack.Screen name="MythoTypo" component={MythoTypoScreen} />
               <Stack.Screen name="MythoTempo" component={TemporalLinkGameScreen} />
               <Stack.Screen name="TemporalEntity" component={TemporalEntityScreen} />
               <Stack.Screen name="TypeSentenceGame" component={TypeSentenceGameScreen} />
               <Stack.Screen name="MythoOuPas" component={MythoOuPasScreen} />
-              <Stack.Screen name="MythoOuPasFullText" component={MythoOuPasFullTextScreen} />
 
               {/* Profil */}
               <Stack.Screen name="Profil" component={ProfileScreen} />
