@@ -2,8 +2,8 @@ import { User } from "models/User";
 import api from "./index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// token a mettre et bien vérifier si marche bien à la co
 export const getUserById = async (id: number): Promise<User> => {
-
   try {
     const response = await api.get(`/users/${id}`);
     return response.data;
@@ -48,8 +48,13 @@ export const signInUser = async (username: string, password: string) => {
   }
 };
 
+// Verif token admin et user
 export const deleteUser = async (id: number): Promise<void> => {
   try {
+    const token = await AsyncStorage.getItem("@auth_token");
+    if (!token) {
+      throw new Error("User is not authenticated");
+    }
     await api.delete(`/users/${id}`);
   } catch (error: any) {
     console.error("Erreur dans la suppression du compte: ", error);
@@ -103,14 +108,14 @@ export const getTopMonthlyWinners = async (): Promise<any> => {
   }
 };
 
-export const getCoeffMultiByUserId = async (id: number): Promise<number> => {
-  try {
-    return await api.get(`/users/getCoeffMultiByUserId/${id}`);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+// export const getCoeffMultiByUserId = async (id: number): Promise<number> => {
+//   try {
+//     return await api.get(`/users/getCoeffMultiByUserId/${id}`);
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
 
 export const getMessageReadByUserId = async (id: number): Promise<any> => {
   try {
@@ -122,6 +127,7 @@ export const getMessageReadByUserId = async (id: number): Promise<any> => {
   }
 };
 
+// token a mettre
 export const updateMessageReadByUserId = async (id: number, readStatus: boolean) => {
   try {
     return await api.put(`/users/updateMessageReadByUserId/${id}`, {
@@ -142,17 +148,18 @@ export const getUserDetailsById = async (id: number): Promise<any> => {
   }
 };
 
-export const updateUserCatchProbability = async (id: number, catch_probability: number) => {
-  try {
-    return await api.put(`/users/${id}/catchProbability`, {
-      catch_probability,
-    });
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+// export const updateUserCatchProbability = async (id: number, catch_probability: number) => {
+//   try {
+//     return await api.put(`/users/${id}/catchProbability`, {
+//       catch_probability,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
 
+// token a mettre
 export const updateTutorialProgress = async (id: number) => {
   try {
     return await api.put(`/users/${id}/incrementTutorialProgress`);
@@ -162,17 +169,25 @@ export const updateTutorialProgress = async (id: number) => {
   }
 };
 
-export const updateUserEmail = async (id: number, email: string) => {
+export const updateUserEmail = async (email: string) => {
+  const token = await AsyncStorage.getItem("@auth_token");
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
   try {
-    return await api.put(`/users/${id}/updateUserEmail`, {
-      email,
+    return await api.put(`/users/updateUserEmail`, { email }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error updating user email:", error);
     throw error;
   }
 };
 
+// token user a mettre
 export const restartCatchProbability = async (id: number) => {
   try {
     return await api.put(`/users/${id}/resetCatchProbability`);

@@ -1,13 +1,13 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTailwind } from "tailwind-rn";
-import { getUserById, updateUserCatchProbability, restartCatchProbability, updateTutorialProgress } from "services/api/user";
+import { getUserById, restartCatchProbability, updateTutorialProgress } from "services/api/user";
 import { Achievement } from "models/Achievement";
 import { User } from "models/User";
 import ModalContext from "services/context/ModalContext";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import AchievementIcon from "components/AchievementIcon";
-import { getEquippedUserSkins, getRandomSkin } from "services/api/skins";
+import { getEquippedUserSkins } from "services/api/skins";
 import { Skin } from "models/Skin";
 import SkinImage from "components/SkinImage";
 import { completeTutorialForUser, getCompletedTutorials } from "services/api/games";
@@ -17,7 +17,7 @@ interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => Promise<void>;
   removeUser: () => Promise<void>;
-  incrementCatchProbability: (percentageToAdd: number) => void;
+  // incrementCatchProbability: (percentageToAdd: number) => void;
   updateStorageUserFromAPI: (userId: number) => Promise<void>;
   resetCatchProbability: (userId: number) => Promise<void>;
   incrementTutorialProgress: () => void;
@@ -198,12 +198,12 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
 
-  const incrementCatchProbability = async (percentageToAdd: number) => {
-    if (user) {
-      const response = await updateUserCatchProbability(user.id, percentageToAdd);
-      setUser((prevUser: any) => ({ ...prevUser, catch_probability: response.data.newCatchProbability }));
-    }
-  };
+  // const incrementCatchProbability = async (percentageToAdd: number) => {
+  //   if (user) {
+  //     const response = await updateUserCatchProbability(user.id, percentageToAdd);
+  //     setUser((prevUser: any) => ({ ...prevUser, catch_probability: response.data.newCatchProbability }));
+  //   }
+  // };
 
   const incrementTutorialProgress = async () => {
     if (user) {
@@ -267,7 +267,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, incrementCatchProbability, resetCatchProbability, incrementTutorialProgress, unlockSkinModal, equippedSkins, setEquippedSkins, unlockAchievementModal, tutorialsCompleted, fetchTutorialsCompleted, completeTutorial, resetTutorialsCompleted, displayAchievements }}>
+    <UserContext.Provider value={{ user, setUser, removeUser, updateStorageUserFromAPI, resetUserState, resetCatchProbability, incrementTutorialProgress, unlockSkinModal, equippedSkins, setEquippedSkins, unlockAchievementModal, tutorialsCompleted, fetchTutorialsCompleted, completeTutorial, resetTutorialsCompleted, displayAchievements }}>
       {children}
     </UserContext.Provider>
   );

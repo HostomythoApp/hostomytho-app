@@ -3,7 +3,6 @@ import { TouchableOpacity, Text, View, Dimensions, Image } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { getUserRankingRange, getUserRankingRangeInMonthly } from 'services/api/user';
 import { getUserAchievements } from 'services/api/achievements';
 import { Achievement } from 'models/Achievement';

@@ -19,6 +19,7 @@ export const getCriminalById = async (id: number): Promise<Criminal | null> => {
   }
 };
 
+// token user a mettre
 export const getUserCriminals = async (userId: number): Promise<Criminal[] | undefined> => {
   try {
     const response = await api.get(`/criminals/caughtByUserId/${userId}`);
@@ -37,6 +38,7 @@ export const getUserCriminals = async (userId: number): Promise<Criminal[] | und
   }
 };
 
+// token user a mettre
 export const catchCriminal = async (userId: number): Promise<{ success: boolean; catchEntry?: any; error?: string }> => {
   try {
     const response = await api.post(`/criminals/catchCriminal`, {

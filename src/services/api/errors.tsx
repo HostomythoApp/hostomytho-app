@@ -1,6 +1,7 @@
 import { ErrorType } from "models/ErrorType";
 import api from "./index";
 
+// token user a mettre
 export const sendResponse = async (data: {
   userErrorDetailId: number;
   selectedErrorType: number;

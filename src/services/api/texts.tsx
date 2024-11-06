@@ -29,8 +29,8 @@ export const getAllTexts = async (): Promise<Text[]> => {
   }
 };
 
+// Inutile pour le moment
 export const getTextWithTokensNotPlayed = async (userId: number, gameType: string): Promise<TextWithTokens> => {
-  // TODO cacher les infos sensibles comme is_test, ...
   try {
     const response = await api.get(`/texts/getTextWithTokensNotPlayed/${userId}/${gameType}`);
     return response.data;
@@ -46,8 +46,8 @@ export const getTextWithTokensNotPlayed = async (userId: number, gameType: strin
   }
 };
 
+// Inutile pour le moment
 export const getSmallTextWithTokensNotPlayed = async (userId: number, gameType: string): Promise<TextWithTokens> => {
-  // TODO cacher les infos sensibles comme is_test, ...
   try {
     const response = await api.get(`/texts/getSmallTextWithTokensNotPlayed/${userId}/${gameType}/110`);
     return response.data;
@@ -63,8 +63,8 @@ export const getSmallTextWithTokensNotPlayed = async (userId: number, gameType: 
   }
 };
 
+// Inutile pour le moment
 export const getSmallTextWithTokens = async (gameType: string): Promise<TextWithTokens> => {
-  // TODO cacher les infos sensibles comme is_test, ...
   try {
     const response = await api.get(`/texts/getSmallTextWithTokens/${gameType}/110`);
     return response.data;
@@ -80,8 +80,8 @@ export const getSmallTextWithTokens = async (gameType: string): Promise<TextWith
   }
 };
 
+// Inutile pour le moment
 export const getTextWithTokensByGameType = async (gameType: string): Promise<TextWithTokens> => {
-  // TODO cacher les infos sensibles comme is_test, ...
   try {
     const response = await api.get(`/texts/getTextWithTokensByGameType/${gameType}`);
     return response.data;
@@ -235,16 +235,6 @@ export const getPlausibilityText = async (): Promise<TextWithTokens> => {
   }
 };
 
-export const getTextsByTheme = async (theme: string): Promise<Text[]> => {
-  try {
-    const response = await api.get(`/texts/theme/${theme}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
 export const createText = async (text: Partial<Text>) => {
   try {
     const token = await AsyncStorage.getItem("@auth_token");
@@ -290,13 +280,3 @@ export const deleteText = async (id: number) => {
     throw error;
   }
 };
-
-// export const getTextsByOrigin = async (origin: string): Promise<Text[]> => {
-//   try {
-//     const response = await api.get(`/texts/origin/${origin}`);
-//     return response.data;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// };

@@ -45,7 +45,7 @@ const ProfileSettingsScreen = (props: any) => {
 
     const handleUpdateEmail = () => {
         if (user) {
-            updateUserEmail(user.id, email)
+            updateUserEmail(email)
                 .then(response => {
                     if (response.status === 200) {
                         setUpdateError('');
@@ -54,7 +54,6 @@ const ProfileSettingsScreen = (props: any) => {
                         setUser({ ...user, email });
                         setEmailModalVisible(false);
                     } else {
-                        // Gérer d'autres statuts de réponse ici si nécessaire
                         console.log(`Erreur lors de la mise à jour de l'email : ${response.statusText}`);
                     }
                 })

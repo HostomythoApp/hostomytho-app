@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import { useUser } from 'services/context/UserContext';
-import { getTextTestNegation, getTextWithTokensById, getSmallTextWithTokensNotPlayed } from "services/api/texts";
+import { getTextTestNegation, getTextWithTokensById } from "services/api/texts";
 import { getSentenceSpecificationsText, sendResponse } from 'services/api/sentenceSpecifications';
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
 import { TextWithTokens } from "interfaces/TextWithTokens";
@@ -151,6 +151,7 @@ const MythoNoScreen = ({ }) => {
           setText(response);
           break;
       }
+
       const tutorialContent = getTutorialContentForStep(nextStep, tw);
       if (tutorialContent) {
         showModal(tutorialContent);

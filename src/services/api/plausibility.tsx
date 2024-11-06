@@ -3,6 +3,7 @@ import api from "./index";
 import { UserErrorDetail } from "models/UserErrorDetail";
 
 
+// token user a mettre
 export const sendResponse = async (data: {
   textId: number,
   userErrorDetails: UserErrorDetail[],

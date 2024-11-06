@@ -41,10 +41,7 @@ const OtherProfileScreen = (props: any) => {
     useEffect(() => {
         // @ts-ignore
         setCharacterImage(characterImagesMapping[dataUser?.userGender || 'femme'][dataUser?.userColorSkin || 'clear']);
-        // setTimeout(() => {
             setIsLoading(false);
-        // }, 200);
-
     }, [dataUser?.userGender]);
 
 

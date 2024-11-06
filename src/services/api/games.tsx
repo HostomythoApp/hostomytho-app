@@ -22,6 +22,7 @@ export const getCompletedTutorials = async (userId: number): Promise<Game[]> => 
   }
 };
 
+// token user a mettre
 export const completeTutorialForUser = async (userId: number, gameId: number): Promise<void> => {
   try {
     const response = await api.post("/games/completeTutorial", {

@@ -19,7 +19,7 @@ export interface Criminal {
 
 const InvestigationScreen = () => {
     const tw = useTailwind();
-    const { user, incrementCatchProbability, resetCatchProbability, unlockAchievementModal } = useUser();
+    const { user, resetCatchProbability, unlockAchievementModal } = useUser();
     const [investigationProgress, setInvestigationProgress] = useState<number>(0);
     const [resultModalVisible, setResultModalVisible] = useState(false);
     const [arrestSuccess, setArrestSuccess] = useState<boolean | null>(null);

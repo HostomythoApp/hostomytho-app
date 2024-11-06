@@ -12,6 +12,7 @@ export const getAllAchievements = async (): Promise<Achievement[]> => {
   }
 };
 
+// token user a mettre
 export const getUserAchievements = async (userId: number): Promise<Achievement[]> => {
   try {
     const response = await api.get(`/achievements/byUserId/${userId}`);

@@ -7,7 +7,7 @@ import { Token } from "models/Token";
 import CustomHeaderInGame from 'components/header/CustomHeaderInGame';
 import PlausibilityButton from 'components/button/PlausibilityButton';
 import { ErrorDetail } from "models/ErrorDetail";
-import { getPlausibilityText, getSmallTextWithTokensNotPlayed, getTextTestPlausibility, getTextWithTokensById } from "services/api/texts";
+import { getPlausibilityText, getTextTestPlausibility, getTextWithTokensById } from "services/api/texts";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 import InfoText from 'components/InfoText';
 import { plausibilityConfigs } from "utils/plausibilityConfigs";

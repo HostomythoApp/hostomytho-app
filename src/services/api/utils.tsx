@@ -29,6 +29,7 @@ export const dumpTable = async (tableNames: string[]) => {
   }
 };
 
+// TODO Mettre un middleWare avec email
 export const requestReset = async (email: string) => {
   try {
     const response = await api.post("/utils/requestReset", { email });
@@ -39,6 +40,7 @@ export const requestReset = async (email: string) => {
   }
 };
 
+// Inutile pour le moment
 export const refreshToken = async (refreshToken: string) => {
   try {
     const response = await api.post("/utils/refreshToken", { refreshToken });
@@ -83,6 +85,7 @@ export const resetPassword = async (token: string, newPassword: string) => {
   }
 };
 
+// token user a mettre
 export const changePassword = async (id: number, newPassword: string) => {
   try {
     return await api.post(`/utils/changePassword`, {

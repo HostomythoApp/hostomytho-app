@@ -2,6 +2,7 @@ import { UserSentenceSpecification } from "models/UserSentenceSpecification";
 import api from "./index";
 import { TextWithTokens } from "interfaces/TextWithTokens";
 
+// token user a mettre
 export const sendResponse = async (data: {
   textId: number;
   userSentenceSpecifications: UserSentenceSpecification[];
@@ -28,15 +29,7 @@ export const getSentenceSpecificationsText = async (): Promise<TextWithTokens> =
   }
 };
 
-export const getNumberSpecifications = async (): Promise<number> => {
-  try {
-    return await api.get(`/sentenceSpecifications/getNumberSpecifications`);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
+// Inutilisé
 export const createUserSentenceSpecification = async (userSentenceSpecification: Partial<UserSentenceSpecification>) => {
   try {
     const response = await api.post("/sentenceSpecifications", userSentenceSpecification);

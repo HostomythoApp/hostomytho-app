@@ -31,6 +31,7 @@ export const getEquippedUserSkins = async (userId: number): Promise<Skin[]> => {
     }
 };
 
+// token user a mettre
 export const equipSkin = async (userId: number, skinId: number): Promise<Skin> => {
     try {
         const response = await api.put(`/skins/equip/${userId}/${skinId}`);
@@ -41,19 +42,10 @@ export const equipSkin = async (userId: number, skinId: number): Promise<Skin> =
     }
 };
 
+// token user a mettre
 export const unequipSkin = async (userId: number, skinId: number): Promise<Skin> => {
     try {
         const response = await api.put(`/skins/unequip/${userId}/${skinId}`);
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-export const getRandomSkin = async (userId: number): Promise<any> => {
-    try {
-        const response = await api.post(`/skins/randomSkin/${userId}`);
         return response.data;
     } catch (error) {
         console.error(error);
