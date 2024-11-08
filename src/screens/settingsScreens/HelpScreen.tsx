@@ -1,17 +1,19 @@
 import FunctionButton from "components/FunctionButton";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import React, { useState } from 'react';
-import { View, Text, ScrollView, ImageBackground, TextInput } from 'react-native';
+import { View, Text, ScrollView, ImageBackground, TextInput, Linking } from 'react-native';
 import { createMessageContact } from "services/api/messages";
 import { useTailwind } from 'tailwind-rn';
 import { useUser } from 'services/context/UserContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { FontAwesome } from '@expo/vector-icons';
 
 const HelpScreen = () => {
   const tw = useTailwind();
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
+  const [required, setRequired] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
@@ -20,10 +22,14 @@ const HelpScreen = () => {
   const { user } = useUser();
 
   const submitContactForm = async () => {
+
     setEmailError(false);
     setSubjectError(false);
     setMessageError(false);
     setFeedbackMessage('');
+
+    // HoneyPot
+    if (required) return;
 
     let hasError = false;
     if (!subject.trim()) {
@@ -50,6 +56,7 @@ const HelpScreen = () => {
         setEmail('');
         setSubject('');
         setMessage('');
+        setRequired('');
       } catch (error) {
         setFeedbackMessage('Erreur lors de l\'envoi du message.');
         setFeedbackMessageType('error');
@@ -58,6 +65,10 @@ const HelpScreen = () => {
       setFeedbackMessage('Veuillez remplir tous les champs requis.');
       setFeedbackMessageType('error');
     }
+  };
+
+  const openEmail = (email: any) => {
+    Linking.openURL(`mailto:${email}`);
   };
 
   return (
@@ -94,6 +105,12 @@ const HelpScreen = () => {
                   multiline
                 />
                 {messageError && <Text style={tw("text-red-500 font-primary")}>Veuillez remplir ce champ.</Text>}
+                <TextInput
+                  style={tw('h-0')}
+                  autoComplete="off"
+                  value={required}
+                  onChangeText={setRequired}
+                />
               </View>
             </KeyboardAwareScrollView>
 
@@ -107,14 +124,25 @@ const HelpScreen = () => {
               )}
             </Text>
 
-            <Text style={tw('text-xl font-bold mt-6 mb-4 font-primary text-center')}>
-              Contact des administrateurs</Text>
-            <View style={tw(' w-10/12')}>
-              <Text style={tw('font-primary')}>
-                Bertrand REMY - bertrand.remy@inria.fr
-                {"\n"}Karën FORT - karen.fort@loria.fr
-                {"\n"}Bruno GUILLAUME - bruno.guillaume@inria.fr
+            <View style={tw('w-full items-center')}>
+              <Text style={tw('text-xl font-bold mt-6 mb-4 font-primary text-center')}>
+                Contact des administrateurs
               </Text>
+              <View style={tw('w-10/12')}>
+                {[
+                  { name: 'Bertrand REMY', email: 'remybertrand@hotmail.fr' },
+                  { name: 'Karën FORT', email: 'karen.fort@loria.fr' },
+                  { name: 'Bruno GUILLAUME', email: 'bruno.guillaume@inria.fr' },
+                ].map((contact, index) => (
+                  <View key={index} style={tw('flex-row items-center mb-1')}>
+                    <Text style={tw('font-primary mr-1')}>{contact.name} - </Text>
+                    <Text onPress={() => openEmail(contact.email)} style={tw('font-primary')}>
+                      Contact
+                      <FontAwesome name="envelope" size={18} color="black" style={tw('ml-1')} />
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
         </View>

@@ -635,6 +635,11 @@
 			"height": "100%"
 		}
 	},
+	"h-0": {
+		"style": {
+			"height": 0
+		}
+	},
 	"max-h-40": {
 		"style": {
 			"maxHeight": 160
