@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import CryptoJS from 'crypto-js';
 
-// TODO A mettre dans un fichier env
+// A mettre dans un fichier env quand le refreshToken sera en place
 const SECRET_KEY = 'your_secret_key_here';
 
 export const storeRefreshToken = async (refreshToken: string) => {

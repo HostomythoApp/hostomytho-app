@@ -164,7 +164,6 @@ const MythoNoScreen = ({ }) => {
         if (correctAnswers >= 4) {
           showModal(getTutorialContentForStep(98, tw));
           setIsTutorial(false);
-
           if (user) {
             completeTutorial(1, "MythoNo");
           }
@@ -240,13 +239,12 @@ const MythoNoScreen = ({ }) => {
         if (isTutorial) {
           responseTime = 10;
         } else {
-          responseTime = (endTime - startTime) / 1000; // Temps en secondes
+          responseTime = (endTime - startTime) / 1000;
         }
 
         const result = await sendResponse({
           textId: text.id,
           userSentenceSpecifications,
-          userId: userId,
           responseNum: responseTime,
         });
 

@@ -1,4 +1,5 @@
 import { Achievement } from "models/Achievement";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import api from "./index";
 
@@ -12,10 +13,16 @@ export const getAllAchievements = async (): Promise<Achievement[]> => {
   }
 };
 
-// token user a mettre
 export const getUserAchievements = async (userId: number): Promise<Achievement[]> => {
   try {
-    const response = await api.get(`/achievements/byUserId/${userId}`);
+    const token = await AsyncStorage.getItem("@auth_token");
+
+    const response = await api.get(`/achievements/byUserId`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     return response.data;
   } catch (error) {
     console.error(error);

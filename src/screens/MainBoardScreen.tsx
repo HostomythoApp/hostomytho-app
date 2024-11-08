@@ -42,7 +42,7 @@ const MainBoardScreen = ({ }) => {
     const [orientation, setOrientation] = useState('portrait');
     const { renewAccessToken } = useAuth();
 
-    // TODO refresh TOKEN a revoir
+    // refresh TOKEN a revoir
     // useEffect(() => {
     //     const initializeAuth = async () => {
     //         const refreshTokenValue = await getRefreshToken();
@@ -210,7 +210,7 @@ const MainBoardScreen = ({ }) => {
         if (!messageExpanded && menuMessage?.active) {
             setMessageExpanded(true);
             if (user) {
-                await updateMessageReadByUserId(user?.id, true);
+                await updateMessageReadByUserId(true);
             }
             setMenuMessageRead(true);
         } else {

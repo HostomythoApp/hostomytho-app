@@ -12,7 +12,7 @@ const AdminLoginScreen = () => {
 
 
   const handleLogin = () => {
-    // TODO: vérifier les informations de connexion de l'administrateur
+    // vérifier les informations de connexion de l'administrateur
     // faire appel à API pour vérifier ces informations
    if (username && password) {
       navigation.navigate('AdminHome');

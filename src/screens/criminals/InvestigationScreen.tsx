@@ -74,11 +74,11 @@ const InvestigationScreen = () => {
 
     const handleArrestAttempt = async () => {
         if (user) {
-            const catchResult = await catchCriminal(user.id);
+            const catchResult = await catchCriminal();
 
             if (catchResult.catchEntry.success) {
                 setArrestSuccess(true);
-                resetCatchProbability(user.id);
+                resetCatchProbability();
 
                 // Mettre à jour la probabilité d'arrestation affichée à 0
                 setInvestigationProgress(catchResult.catchEntry.newCatchProbability);

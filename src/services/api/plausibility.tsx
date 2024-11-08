@@ -1,19 +1,22 @@
 import { TestPlausibilityError } from "models/TestPlausibilityError";
 import api from "./index";
 import { UserErrorDetail } from "models/UserErrorDetail";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-// token user a mettre
 export const sendResponse = async (data: {
   textId: number,
   userErrorDetails: UserErrorDetail[],
   userRateSelected: number,
   sentencePositions: any,
-  userId: number,
   responseNum: number,
 }): Promise<any> => {
   try {
-    const response = await api.post("/plausibility/sendResponse", data);
+    const token = await AsyncStorage.getItem("@auth_token");
+    const response = await api.post("/plausibility/sendResponse", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Erreur lors de l'envoi de la réponse :", error);

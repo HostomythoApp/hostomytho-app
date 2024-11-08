@@ -29,7 +29,6 @@ export const dumpTable = async (tableNames: string[]) => {
   }
 };
 
-// TODO Mettre un middleWare avec email
 export const requestReset = async (email: string) => {
   try {
     const response = await api.post("/utils/requestReset", { email });
@@ -85,12 +84,13 @@ export const resetPassword = async (token: string, newPassword: string) => {
   }
 };
 
-// token user a mettre
-export const changePassword = async (id: number, newPassword: string) => {
+export const changePassword = async (newPassword: string) => {
   try {
-    return await api.post(`/utils/changePassword`, {
-      id,
-      newPassword
+    const token = await AsyncStorage.getItem("@auth_token");
+    return await api.post(`/utils/changePassword`, { newPassword }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   } catch (error) {
     console.error(error);

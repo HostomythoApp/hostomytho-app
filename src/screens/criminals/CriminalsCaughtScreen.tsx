@@ -26,7 +26,7 @@ const CriminalsCaughtScreen = () => {
         const loadCriminals = async () => {
             if (user) {
                 try {
-                    const userCriminals = await getUserCriminals(user.id);
+                    const userCriminals = await getUserCriminals();
                     // @ts-ignore
                     setCriminals(userCriminals);
                 } catch (error) {

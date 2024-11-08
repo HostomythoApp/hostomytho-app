@@ -53,13 +53,13 @@ const ChangePasswordScreen = () => {
         }
         try {
             if (user?.id) {
-                await changePassword(user.id, password);
+                await changePassword(password);
                 setSuccessMessage("Votre mot de passe a été modifié avec succès.");
                 setPassword('');
                 setPasswordCheck('');
-                // setTimeout(() => {
-                //     navigation.navigate("Profil");
-                // }, 3000);
+                setTimeout(() => {
+                    navigation.navigate("Profil");
+                }, 3000);
             }
         } catch (error) {
             setErrorMessage("Erreur lors de la modification du mot de passe");

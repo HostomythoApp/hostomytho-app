@@ -1,4 +1,5 @@
 import { Game } from "models/Game";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import api from "./index";
 
@@ -13,7 +14,7 @@ export const isTutorialCompleted = async (userId: number, gameId: number): Promi
 };
 
 export const getCompletedTutorials = async (userId: number): Promise<Game[]> => {
-  try { 
+  try {
     const response = await api.get(`/games/tutorialsCompleted/${userId}`);
     return response.data;
   } catch (error) {
@@ -22,12 +23,15 @@ export const getCompletedTutorials = async (userId: number): Promise<Game[]> => 
   }
 };
 
-// token user a mettre
-export const completeTutorialForUser = async (userId: number, gameId: number): Promise<void> => {
+export const completeTutorialForUser = async (gameId: number): Promise<void> => {
   try {
+    const token = await AsyncStorage.getItem("@auth_token");
     const response = await api.post("/games/completeTutorial", {
-      userId,
       gameId
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (response.status !== 200) {

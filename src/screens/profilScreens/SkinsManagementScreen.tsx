@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Text, View, ScrollView, Dimensions, ImageBackground, Image } from 'react-native';
+import { TouchableOpacity, Text, View, Dimensions } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import withAuth from 'services/context/withAuth';
 import { useUser } from 'services/context/UserContext';
 import { Skin } from 'models/Skin';
-import skinImages from 'utils/skinImages';
-import { getUserSkins, unequipSkin } from 'services/api/skins';
-import { equipSkin } from 'services/api/skins';
+import { getUserSkins, unequipSkin, equipSkin } from 'services/api/skins';
 import SkinImage from 'components/SkinImage';
 
 const SkinsManagementScreen = (props: any) => {
     const tw = useTailwind();
-    const { user, updateStorageUserFromAPI,  equippedSkins, setEquippedSkins } = useUser();
+    const { user, updateStorageUserFromAPI, equippedSkins, setEquippedSkins } = useUser();
     const window = Dimensions.get('window');
     const isMobile = window.width < 670;
     const skinTypes = ["visage", "lunettes", "chapeau", "veste", "cheveux", "stetho"];
@@ -34,12 +32,12 @@ const SkinsManagementScreen = (props: any) => {
 
                 // Vérification qu'un visage est équippé
                 if (sameTypeEquippedSkins.length > 1 || skin.type !== 'visage') {
-                    const updatedSkin = await unequipSkin(user.id, skin.id);
+                    const updatedSkin = await unequipSkin(skin.id);
                     const updatedEquippedSkins = equippedSkins.filter(s => s.id !== updatedSkin.id);
                     setEquippedSkins(updatedEquippedSkins);
                 }
             } else {
-                const updatedSkin = await equipSkin(user.id, skin.id);
+                const updatedSkin = await equipSkin(skin.id);
                 setEquippedSkins([...equippedSkins, updatedSkin]);
             }
 

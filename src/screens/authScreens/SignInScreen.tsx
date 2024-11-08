@@ -39,7 +39,7 @@ const LoginScreen = () => {
                     setAuthToken(token);
                     setUser(response.data.user);
 
-                    // TODO Logique de refreshtoken a revoir
+                    // Logique de refreshtoken a revoir
                     // const { accessToken, refreshToken, user } = response.data;
                     // await storeToken(accessToken);    
                     // await storeRefreshToken(refreshToken); 

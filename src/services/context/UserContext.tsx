@@ -17,9 +17,8 @@ interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => Promise<void>;
   removeUser: () => Promise<void>;
-  // incrementCatchProbability: (percentageToAdd: number) => void;
   updateStorageUserFromAPI: (userId: number) => Promise<void>;
-  resetCatchProbability: (userId: number) => Promise<void>;
+  resetCatchProbability: () => Promise<void>;
   incrementTutorialProgress: () => void;
   resetUserState: () => void;
   equippedSkins: Skin[];
@@ -114,7 +113,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const completeTutorial = useCallback(async (gameId: number, tutorialName: string) => {
     if (user) {
       try {
-        await completeTutorialForUser(user.id, gameId);
+        await completeTutorialForUser(gameId);
         setTutorialsCompleted(prev => ({
           ...prev,
           [tutorialName]: true
@@ -243,7 +242,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const resetCatchProbability = async () => {
     if (user) {
       try {
-        await restartCatchProbability(user.id);
+        await restartCatchProbability();
         setUser({ ...user, catch_probability: 0 });
       } catch (error) {
         console.error('Erreur dans le reset de la probabilité:', error);

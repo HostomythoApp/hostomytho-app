@@ -2,10 +2,14 @@ import { User } from "models/User";
 import api from "./index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// token a mettre et bien vérifier si marche bien à la co
 export const getUserById = async (id: number): Promise<User> => {
   try {
-    const response = await api.get(`/users/${id}`);
+    const token = await AsyncStorage.getItem("@auth_token");
+    const response = await api.get(`/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -127,11 +131,15 @@ export const getMessageReadByUserId = async (id: number): Promise<any> => {
   }
 };
 
-// token a mettre
-export const updateMessageReadByUserId = async (id: number, readStatus: boolean) => {
+export const updateMessageReadByUserId = async (readStatus: boolean) => {
   try {
-    return await api.put(`/users/updateMessageReadByUserId/${id}`, {
+    const token = await AsyncStorage.getItem("@auth_token");
+    return await api.put(`/users/updateMessageReadByUserId`, {
       readStatus,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   } catch (error) {
     console.error(error);
@@ -159,10 +167,14 @@ export const getUserDetailsById = async (id: number): Promise<any> => {
 //   }
 // };
 
-// token a mettre
 export const updateTutorialProgress = async (id: number) => {
   try {
-    return await api.put(`/users/${id}/incrementTutorialProgress`);
+    const token = await AsyncStorage.getItem("@auth_token");
+    return await api.put(`/users/incrementTutorialProgress`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   } catch (error) {
     console.error(error);
     throw error;
@@ -170,12 +182,12 @@ export const updateTutorialProgress = async (id: number) => {
 };
 
 export const updateUserEmail = async (email: string) => {
-  const token = await AsyncStorage.getItem("@auth_token");
-  if (!token) {
-    throw new Error("User is not authenticated");
-  }
-
   try {
+    const token = await AsyncStorage.getItem("@auth_token");
+    if (!token) {
+      throw new Error("User is not authenticated");
+    }
+
     return await api.put(`/users/updateUserEmail`, { email }, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -187,10 +199,14 @@ export const updateUserEmail = async (email: string) => {
   }
 };
 
-// token user a mettre
-export const restartCatchProbability = async (id: number) => {
+export const restartCatchProbability = async () => {
   try {
-    return await api.put(`/users/${id}/resetCatchProbability`);
+    const token = await AsyncStorage.getItem("@auth_token");
+    return await api.put(`/users/resetCatchProbability`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   } catch (error) {
     console.error(error);
     throw error;

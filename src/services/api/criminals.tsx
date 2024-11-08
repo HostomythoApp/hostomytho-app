@@ -1,4 +1,5 @@
 import { Criminal } from "models/Criminals";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import api from "./index";
 
@@ -19,17 +20,21 @@ export const getCriminalById = async (id: number): Promise<Criminal | null> => {
   }
 };
 
-// token user a mettre
-export const getUserCriminals = async (userId: number): Promise<Criminal[] | undefined> => {
+export const getUserCriminals = async (): Promise<Criminal[] | undefined> => {
   try {
-    const response = await api.get(`/criminals/caughtByUserId/${userId}`);
+    const token = await AsyncStorage.getItem("@auth_token");
+    const response = await api.get(`/criminals/caughtByUserId`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (response.status === 200) {
       return response.data;
     } else if (response.status === 404) {
       console.error(`Pas de criminels trouvés, status code: ${response.status}`);
     } else {
-      console.error(`Failed to fetch criminals for user ID: ${userId}, status code: ${response.status}`);
+      console.error(`Failed to fetch criminals, status code: ${response.status}`);
       return [];
     }
   } catch (error: any) {
@@ -38,11 +43,14 @@ export const getUserCriminals = async (userId: number): Promise<Criminal[] | und
   }
 };
 
-// token user a mettre
-export const catchCriminal = async (userId: number): Promise<{ success: boolean; catchEntry?: any; error?: string }> => {
+export const catchCriminal = async (): Promise<{ success: boolean; catchEntry?: any; error?: string }> => {
   try {
-    const response = await api.post(`/criminals/catchCriminal`, {
-      userId
+    const token = await AsyncStorage.getItem("@auth_token");
+    
+    const response = await api.post(`/criminals/catchCriminal`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (response.status === 200) {
@@ -51,7 +59,7 @@ export const catchCriminal = async (userId: number): Promise<{ success: boolean;
         catchEntry: response.data
       };
     } else {
-      console.error(`Failed to catch next criminal for user ID: ${userId}, status code: ${response.status}`);
+      console.error(`Failed to catch next criminal, status code: ${response.status}`);
       return {
         success: false,
         error: `Failed to catch next criminal, status code: ${response.status}`

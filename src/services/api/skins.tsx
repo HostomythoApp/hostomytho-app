@@ -1,5 +1,6 @@
 import { Skin } from "models/Skin";
 import api from "./index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getAllSkins = async (): Promise<Skin[]> => {
     try {
@@ -31,10 +32,14 @@ export const getEquippedUserSkins = async (userId: number): Promise<Skin[]> => {
     }
 };
 
-// token user a mettre
-export const equipSkin = async (userId: number, skinId: number): Promise<Skin> => {
+export const equipSkin = async (skinId: number): Promise<Skin> => {
     try {
-        const response = await api.put(`/skins/equip/${userId}/${skinId}`);
+        const token = await AsyncStorage.getItem("@auth_token");
+        const response = await api.put(`/skins/equip/${skinId}`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -42,10 +47,14 @@ export const equipSkin = async (userId: number, skinId: number): Promise<Skin> =
     }
 };
 
-// token user a mettre
-export const unequipSkin = async (userId: number, skinId: number): Promise<Skin> => {
+export const unequipSkin = async (skinId: number): Promise<Skin> => {
     try {
-        const response = await api.put(`/skins/unequip/${userId}/${skinId}`);
+        const token = await AsyncStorage.getItem("@auth_token");
+        const response = await api.put(`/skins/unequip/${skinId}`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response.data;
     } catch (error) {
         console.error(error);

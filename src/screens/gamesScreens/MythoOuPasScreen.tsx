@@ -251,7 +251,6 @@ const MythoOuPasScreen = () => {
         userErrorDetails: errorDetails,
         userRateSelected: userRateSelected,
         sentencePositions: text.sentence_positions,
-        userId: userId,
         responseNum: responseTime,
       });
 
