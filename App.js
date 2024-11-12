@@ -19,6 +19,7 @@ const linking = {
     screens: {
       Admin: "HMe1sj",
       NouveauMotDePasse: 'NouveauMotDePasse', 
+      PrivacyPolicy: 'PrivacyPolicy',
     },
   },
 };

@@ -55,7 +55,6 @@ const MythoNoScreen = ({ }) => {
   const [isTutorialCheckComplete, setIsTutorialCheckComplete] = useState(false);
   const [isInvisibleTest, setIsInvisibleTest] = useState(false);
   const [wikiMode, setWikiMode] = useState(false);
-  // const [isButtonNextVisible, setIsButtonNextVisible] = useState(true);
   const [startTime, setStartTime] = useState(Date.now());
   const [selectedWord, setSelectedWord] = useState('');
   const [isModalWikiVisible, setIsModalWikiVisible] = useState(false);
@@ -107,7 +106,6 @@ const MythoNoScreen = ({ }) => {
     try {
       let response;
       if (user) {
-
         response = await getSentenceSpecificationsText();
       } else {
         // Si l'utilisateur n'est pas connecté, récupérer un texte de test par défaut

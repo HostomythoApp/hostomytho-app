@@ -29,22 +29,6 @@ export const getAllTexts = async (): Promise<Text[]> => {
   }
 };
 
-export const getTextWithErrorValidatedNotPlayed = async (userId: number): Promise<TextWithError> => {
-  try {
-    const response = await api.get(`/texts/getTextWithErrorValidatedNotPlayed/${userId}/`);
-    return response.data;
-  } catch (error: any) {
-    if (error.response) {
-      console.error('Status:', error.response.status);
-    } else if (error.request) {
-      console.error('Request:', error.request);
-    } else {
-      console.error('Config:', error.config);
-    }
-    throw error;
-  }
-};
-
 export const getTextWithErrorValidated = async (): Promise<TextWithError> => {
   try {
     const response = await api.get(`/texts/getTextWithErrorValidated`);
@@ -80,6 +64,22 @@ export const getTextWithErrorValidatedById = async (textId: number): Promise<Tex
 export const getTextTestWithErrorValidated = async (): Promise<TextWithError> => {
   try {
     const response = await api.get(`/texts/getTextTestWithErrorValidated`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Status:', error.response.status);
+    } else if (error.request) {
+      console.error('Request:', error.request);
+    } else {
+      console.error('Config:', error.config);
+    }
+    throw error;
+  }
+};
+
+export const getTextMythoTypo = async (): Promise<TextWithError> => {
+  try {
+    const response = await api.get(`/errors/getTextMythoTypo`);
     return response.data;
   } catch (error: any) {
     if (error.response) {

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Linking } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { ErrorType } from "models/ErrorType";
 import { useUser } from 'services/context/UserContext';
-import { getTextTestWithErrorValidated, getTextWithErrorValidated, getTextWithErrorValidatedById, getTextWithErrorValidatedNotPlayed } from "services/api/texts";
+import { getTextMythoTypo, getTextTestWithErrorValidated, getTextWithErrorValidated, getTextWithErrorValidatedById } from "services/api/texts";
 import { TextWithError } from "interfaces/TextWithError";
 import { getTypesError, sendResponse } from "services/api/errors";
 import CustomHeaderInGame from "components/header/CustomHeaderInGame";
@@ -94,16 +94,7 @@ const MythoTypoScreen = ({ }) => {
     try {
       let response;
       if (user) {
-
-        const randomNumber = Math.floor(Math.random() * 100);
-
-        // 20% de chance d'avoir un test
-        if (randomNumber < 20) {
-          response = await getTextTestWithErrorValidated();
-        } else {
-          response = await getTextWithErrorValidatedNotPlayed(user.id);
-          // response = await getTextWithTokensById(114);
-        }
+        response = await getTextMythoTypo();
 
       } else {
         response = await getTextWithErrorValidated();
@@ -241,7 +232,7 @@ const MythoTypoScreen = ({ }) => {
           }));
 
           displayAchievements(result.newAchievements, result.showSkinModal, result.skinData);
-          goToNextSentence(true);
+          goToNextSentence(true, true);
         } else {
           if (isInvisibleTest) {
             goToNextSentence(false);
@@ -257,11 +248,13 @@ const MythoTypoScreen = ({ }) => {
   };
 
 
-  const goToNextSentence = async (isCorrect = false) => {
+  const goToNextSentence = async (isCorrect = false, showSuccessModal = false) => {
+    if (showSuccessModal && isCorrect) {
+      setSuccessModalVisible(true);
+    }
     if (isTutorial) {
       setQuestionsAsked(questionsAsked + 1);
       if (isCorrect) {
-        setSuccessModalVisible(true);
         setCorrectAnswers(correctAnswers + 1);
       }
     }

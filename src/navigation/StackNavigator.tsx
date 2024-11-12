@@ -47,6 +47,7 @@ import StatisticsScreen from "screens/profilScreens/StatisticsScreen";
 import TypeSentenceGameScreen from "screens/gamesScreens/TypeSentenceGameScreen";
 import CustomHeader from "components/header/CustomHeader";
 import AdminNavigator from "./AdminNavigator";
+import PrivacyPolicyNavigator from "./PrivacyPolicyNavigator";
 import InvestigationScreen from "screens/criminals/InvestigationScreen";
 import CriminalsCaughtScreen from "screens/criminals/CriminalsCaughtScreen";
 import { View } from 'react-native';
@@ -167,6 +168,15 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
               <Stack.Screen name="CreateText" component={CreateTextScreen} />
 
+              {/* Part politique confidentialité */}
+              <Stack.Screen name="PrivacyPolicy"
+                options={{
+                  headerShown: false
+                }}
+              >
+                {/* @ts-ignore */}
+                {(props) => <PrivacyPolicyNavigator {...props} />}
+              </Stack.Screen>
             </Stack.Group>
 
           </Stack.Navigator>
