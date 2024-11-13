@@ -11,12 +11,14 @@ const PrivacyPolicysScreen = ({ }) => {
         <ImageBackground source={require('images/bg_corridor.jpg')} style={tw('flex-1')}>
             <View style={tw("flex-1 items-center text-black")}>
                 <ScrollView style={tw('w-full')}>
-                    <CustomHeaderEmpty title="Charte d'Admission" backgroundColor="bg-whiteTransparent" />
+                    <CustomHeaderEmpty title="Politique de confidentialité" backgroundColor="bg-whiteTransparent" />
                     <View style={tw('mx-auto pt-20 items-center')}>
 
                         <View style={{ ...tw('mb-2 p-6 mx-4 max-w-6xl rounded-lg'), backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
                             <Text style={tw('font-primary text-lg')}>
                                 HostoMytho est un jeu gratuit créé dans le cadre d'un projet de recherche par Karën Fort, Bruno Guillaume et Bertrand REMY au sein du LORIA, avec l'aide d'Aurélie Névéol et Nicolas Hiebel, et la participation de Jules Steelandt . L'objet de ce projet est la construction de corpus annotés de qualité, pour des applications de traitement automatique de la langue (TAL). Ces données sont le produit de l'activité des joueurs de HostoMytho.
+                                {"\n\n"}
+                                Le jeu a été conçu uniquement à des fins de recherche linguistique. Les informations contenues dans les rapports médicaux sont entièrement fictives et générées par un modèle de langage ; elles ne se basent sur aucun patient réel ni cas médical authentique. Ces contenus ne doivent en aucun cas être interprétés comme des conseils médicaux ou des diagnostics et ne sont pas destinés à un usage médical. Aucune donnée de santé réelle n'est collectée, stockée ou utilisée dans cette application.
                                 {"\n\n"}
                                 Les données sont accessibles sous des licences libres variées (fonction de la licence de la ressource d'origine), qui sont précisées dans chaque ressource. Le code source d'HostoMytho est librement disponible sur GitHub sous licence CeCILL 2.1.
                                 {"\n\n"}

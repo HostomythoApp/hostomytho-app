@@ -500,6 +500,11 @@
 			"display": "none"
 		}
 	},
+	"h-0": {
+		"style": {
+			"height": 0
+		}
+	},
 	"h-0.5": {
 		"style": {
 			"height": 2
@@ -633,11 +638,6 @@
 	"h-full": {
 		"style": {
 			"height": "100%"
-		}
-	},
-	"h-0": {
-		"style": {
-			"height": 0
 		}
 	},
 	"max-h-40": {
@@ -1657,14 +1657,6 @@
 			"paddingRight": 32,
 			"paddingBottom": 32,
 			"paddingLeft": 32
-		}
-	},
-	"p-[13px]": {
-		"style": {
-			"paddingTop": 13,
-			"paddingRight": 13,
-			"paddingBottom": 13,
-			"paddingLeft": 13
 		}
 	},
 	"p-[14px]": {
