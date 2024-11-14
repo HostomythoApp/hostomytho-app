@@ -1,7 +1,6 @@
 import { TestPlausibilityError } from "models/TestPlausibilityError";
 import api from "./index";
 import { UserErrorDetail } from "models/UserErrorDetail";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const sendResponse = async (data: {
   textId: number,
@@ -9,14 +8,10 @@ export const sendResponse = async (data: {
   userRateSelected: number,
   sentencePositions: any,
   responseNum: number,
+  userId: number,
 }): Promise<any> => {
   try {
-    const token = await AsyncStorage.getItem("@auth_token");
-    const response = await api.post("/plausibility/sendResponse", data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.post("/plausibility/sendResponse", data);
     return response.data;
   } catch (error) {
     console.error("Erreur lors de l'envoi de la réponse :", error);
@@ -33,16 +28,6 @@ export const getTestPlausibilityErrorByTextId = async (textId: number): Promise<
     throw error;
   }
 };
-
-// export const getCorrectPlausibilityByTextId = async (textId: number): Promise<number> => {
-//   try {
-//     const response = await api.get(`/plausibility/correctPlausibility/${textId}`);
-//     return response.data.test_plausibility;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// };
 
 export const getReasonForRateByTextId = async (textId: number): Promise<string> => {
   try {

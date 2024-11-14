@@ -252,6 +252,7 @@ const MythoOuPasScreen = () => {
         userRateSelected: userRateSelected,
         sentencePositions: text.sentence_positions,
         responseNum: responseTime,
+        userId
       });
 
       if (userId) {
