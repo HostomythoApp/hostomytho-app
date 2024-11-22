@@ -34,7 +34,7 @@ const IconNotification = ({ size, top, right }: { size: number; top: string; rig
             useNativeDriver: true
           })
         ])
-      ]).start(() => setTimeout(startAnimation, 5000));
+      ]).start(() => setTimeout(startAnimation, 4500));
     };
 
     startAnimation();
@@ -59,7 +59,7 @@ const IconNotification = ({ size, top, right }: { size: number; top: string; rig
       justifyContent: 'center',
       transform: [{ scale: scaleAnim }, { rotate: rotation }]
     }}>
-      <Entypo name="magnifying-glass" size={size - 5} color={"white"} />
+      <Entypo name="magnifying-glass" size={size - 4} color={"white"} />
     </Animated.View>
   );
 };

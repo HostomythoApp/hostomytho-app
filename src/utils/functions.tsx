@@ -118,3 +118,11 @@ export const getRarityColor = (rarity: number) => {
     default: return '#ccc';
   }
 };
+
+export const getRarityColorWithOpacity = (rarity: number) => {
+  if (rarity < 3) {
+    return 'transparent';
+  }
+  const color = getRarityColor(rarity);
+  return `${color}20`;
+};

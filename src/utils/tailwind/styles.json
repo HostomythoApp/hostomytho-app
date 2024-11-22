@@ -835,6 +835,11 @@
 			"width": "100%"
 		}
 	},
+	"w-4": {
+		"style": {
+			"width": 16
+		}
+	},
 	"min-w-28": {
 		"style": {
 			"minWidth": 112

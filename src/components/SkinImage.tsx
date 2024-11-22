@@ -13,17 +13,17 @@ const SkinImage = ({ skin }: { skin: Skin | null }) => {
 
     const getImageStyle = (type: string) => {
         switch (type) {
-            case 'veste':
+            case 'Vestes':
                 return tw('w-20 h-28 -mt-6');
-            case 'visage':
+            case 'Visages':
                 return tw('w-20 h-52 -mt-4');
-            case 'stetho':
+            case 'Accessoires':
                 return tw('w-20 h-52 -mt-[58px]');
-            case 'cheveux':
+            case 'Cheveux':
                 return tw('w-20 h-52 -mt-1');
-            case 'chapeau':
+            case 'Chapeaux':
                 return tw('w-20 h-52 mt-2');
-            case 'lunettes':
+            case 'Lunettes':
                 return tw('w-20 h-52 -mt-1');
             default:
                 return tw('w-20 h-52');

@@ -28,7 +28,7 @@ const MainBoardScreen = ({ }) => {
     const [menuMessageRead, setMenuMessageRead] = useState(false);
     const [messageExpanded, setMessageExpanded] = useState(false);
     const [isUserDataLoaded, setIsUserDataLoaded] = useState(false);
-    const iconSize = windowWidth * 0.015;
+    const iconSize = windowWidth * 0.0155;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isBossVisible, setIsBossVisible] = useState(false);
     const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);

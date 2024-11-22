@@ -77,7 +77,7 @@ const UserMessagingScreen = () => {
       </ScrollView>
 
       <CustomModal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
-        <Text style={tw('text-center mb-4 font-primary text-lg')}>Etes-vous sûr de vouloir supprimer le texte ?</Text>
+        <Text style={tw('text-center mb-4 font-primary text-lg')}>Etes-vous sûr de vouloir supprimer le message ?</Text>
         <Pressable
           style={[tw('bg-red-600 px-4 py-2 rounded'), { alignSelf: 'center' }]}
           onPress={handleDeleteMessage}
