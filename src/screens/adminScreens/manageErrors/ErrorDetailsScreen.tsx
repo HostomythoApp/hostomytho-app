@@ -10,7 +10,7 @@ import FunctionButton from "components/FunctionButton";
 import { RootStackNavigationProp } from "navigation/Types";
 import { deleteText, getTextById, updateText } from "services/api/texts";
 
-const TextDetailsScreen = () => {
+const ErrorDetailsScreen = () => {
   const tw = useTailwind();
   const [dataText, setText] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -181,27 +181,7 @@ const TextDetailsScreen = () => {
                         {errors[key] && <Text style={tw('text-red-500')}>{errors[key]}</Text>}
                       </>
                     )
-                      : ["is_plausibility_test"].includes(key) ? (
-                        <>
-                          <Picker
-                            selectedValue={formData[key]}
-                            onValueChange={(value) => handleInputChange(key, value === 'true')}
-                            style={tw('border p-2 rounded-lg')}
-                          >
-                            <Picker.Item label="Oui" value="true" />
-                            <Picker.Item label="Non" value="false" />
-                          </Picker>
-                          <TouchableOpacity
-                            style={tw('px-4 py-2 bg-blue-500 text-white rounded-md w-1/2 mr-4 mt-2')}
-                            onPress={() => navigation.navigate("AddTestError", { textId: textId })}
-                          >
-                            <Text style={tw('text-white text-center font-bold')}>
-                            Ajouter une erreur de test
-                            </Text>
-                          </TouchableOpacity>
-                          {errors[key] && <Text style={tw('text-red-500')}>{errors[key]}</Text>}
-                        </>
-                      ) : ["is_active"].includes(key) ? (
+                      : ["is_plausibility_test", "is_active"].includes(key) ? (
                         <>
                           <Picker
                             selectedValue={formData[key]}
@@ -293,4 +273,4 @@ const TextDetailsScreen = () => {
   );
 };
 
-export default TextDetailsScreen;
+export default ErrorDetailsScreen;

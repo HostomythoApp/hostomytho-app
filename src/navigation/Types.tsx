@@ -43,10 +43,13 @@ export type RootStackParamList = {
     GamesStatistics: undefined;
     ManageUsers: undefined;
     UserDetails: undefined;
-    ManageTestNegation:  { textId: number };
+    ManageTestNegation: { textId: number };
     UserMessaging: undefined;
     ManageHomeMessages: undefined;
     CreateText: undefined;
+    ErrorDetails: undefined;
+    ManageListError: undefined;
+    AddTestError: { textId: number };
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

@@ -55,6 +55,9 @@ import React, { useState } from 'react';
 import ModalContext from "services/context/ModalContext";
 import TimedModalContext from "components/modals/TimedModalContext";
 import { UserProvider } from "services/context/UserContext";
+import ErrorDetailsScreen from "screens/adminScreens/manageErrors/ErrorDetailsScreen";
+import ManageListErrorScreen from "screens/adminScreens/manageErrors/ManageListErrorScreen";
+import AddTestErrorScreen from "screens/adminScreens/manageErrors/AddTestErrorScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -167,6 +170,9 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
               <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
               <Stack.Screen name="CreateText" component={CreateTextScreen} />
+              <Stack.Screen name="ErrorDetails" component={ErrorDetailsScreen} />
+              <Stack.Screen name="ManageListError" component={ManageListErrorScreen} />
+              <Stack.Screen name="AddTestError" component={AddTestErrorScreen} />
 
               {/* Part politique confidentialité */}
               <Stack.Screen name="PrivacyPolicy"
