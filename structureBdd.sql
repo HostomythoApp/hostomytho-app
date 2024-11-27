@@ -1,8 +1,8 @@
 -- MariaDB dump 10.19  Distrib 10.11.7-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: hostomytho_bdd
+-- Host: 127.0.0.1    Database: hostomytho_bdd
 -- ------------------------------------------------------
--- Server version	10.6.18-MariaDB-0ubuntu0.22.04.1
+-- Server version	10.11.7-MariaDB-3+b1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -129,7 +129,7 @@ CREATE TABLE `group_text_rating` (
   PRIMARY KEY (`id`),
   KEY `text_id` (`text_id`),
   CONSTRAINT `group_text_rating_ibfk_1` FOREIGN KEY (`text_id`) REFERENCES `texts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=434 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=545 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,6 +142,7 @@ DROP TABLE IF EXISTS `message_contact`;
 CREATE TABLE `message_contact` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `subject` varchar(255) NOT NULL,
   `message` text NOT NULL,
@@ -149,7 +150,7 @@ CREATE TABLE `message_contact` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `message_contact_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +186,7 @@ CREATE TABLE `monthly_winners` (
   PRIMARY KEY (`id`),
   KEY `fk_monthly_winners_1_idx` (`user_id`),
   CONSTRAINT `fk_monthly_winners_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,7 +204,7 @@ CREATE TABLE `password_reset_tokens` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `password_reset_tokens_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,7 +272,7 @@ DROP TABLE IF EXISTS `skins`;
 CREATE TABLE `skins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
-  `type` enum('veste','chapeau','lunettes','cheveux','visage','stetho') NOT NULL,
+  `type` enum('Vestes','Chapeaux','Lunettes','Cheveux','Visages','Accessoires') NOT NULL,
   `gender` enum('homme','femme','unisexe') NOT NULL,
   `rarity` int(11) DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
@@ -314,7 +315,7 @@ CREATE TABLE `test_specifications` (
   PRIMARY KEY (`id`),
   KEY `fk_test_specifications_1_idx` (`text_id`),
   CONSTRAINT `fk_test_specifications_1` FOREIGN KEY (`text_id`) REFERENCES `texts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -326,22 +327,20 @@ DROP TABLE IF EXISTS `texts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `texts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nb_of_treatments` int(11) DEFAULT 0,
   `num` varchar(45) NOT NULL,
   `content` text NOT NULL,
-  `id_theme` int(11) DEFAULT 0,
   `origin` enum('synthétique','réel - vrai','réel - faux') NOT NULL DEFAULT 'synthétique',
   `is_plausibility_test` tinyint(4) DEFAULT 0,
   `test_plausibility` decimal(5,2) DEFAULT NULL,
+  `reason_for_rate` longtext DEFAULT NULL,
   `is_hypothesis_specification_test` tinyint(4) DEFAULT 0,
   `is_condition_specification_test` tinyint(4) DEFAULT 0,
   `is_negation_specification_test` tinyint(4) DEFAULT 0,
-  `nb_of_treatments` int(11) DEFAULT 0,
+  `is_active` tinyint(4) DEFAULT 1,
   `length` int(11) DEFAULT 0,
-  `reason_for_rate` longtext DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_texts_1_idx` (`id_theme`),
-  CONSTRAINT `fk_texts_1` FOREIGN KEY (`id_theme`) REFERENCES `themes` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=431 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=441 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,7 +376,20 @@ CREATE TABLE `tokens` (
   KEY `fk_tokens_2_idx` (`sentence_id`),
   CONSTRAINT `fk_tokens_1` FOREIGN KEY (`text_id`) REFERENCES `texts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_tokens_2` FOREIGN KEY (`sentence_id`) REFERENCES `sentences` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=172343 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=172977 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `treatment_counts`
+--
+
+DROP TABLE IF EXISTS `treatment_counts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `treatment_counts` (
+  `text_id` int(11) NOT NULL,
+  `total_treatments` bigint(21) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -475,6 +487,7 @@ CREATE TABLE `user_error_details` (
   `is_test` tinyint(4) DEFAULT NULL,
   `test_error_type_id` int(11) DEFAULT NULL,
   `created_at` varchar(45) DEFAULT NULL,
+  `reason_for_rate` longtext DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_user_error_details_2_idx` (`text_id`),
   KEY `fk_user_error_details_3_idx` (`test_error_type_id`),
@@ -482,7 +495,7 @@ CREATE TABLE `user_error_details` (
   CONSTRAINT `fk_user_error_details_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `fk_user_error_details_2` FOREIGN KEY (`text_id`) REFERENCES `texts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_user_error_details_3` FOREIGN KEY (`test_error_type_id`) REFERENCES `error_types` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=367 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=524 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -544,7 +557,7 @@ CREATE TABLE `user_sentence_specification` (
   KEY `fk_user_sentence_specification_1_idx` (`user_id`),
   CONSTRAINT `fk_user_sentence_specification_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `fk_user_sentence_specification_2` FOREIGN KEY (`text_id`) REFERENCES `texts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1210 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1389 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +601,7 @@ CREATE TABLE `user_text_rating` (
   CONSTRAINT `fk_user_text_rating_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `fk_user_text_rating_2` FOREIGN KEY (`text_id`) REFERENCES `texts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_user_text_rating_3` FOREIGN KEY (`group_id`) REFERENCES `group_text_rating` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1702 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2082 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -608,7 +621,7 @@ CREATE TABLE `user_tutorials` (
   KEY `fk_user_tutorials_2_idx` (`game_id`),
   CONSTRAINT `fk_user_tutorials_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_user_tutorials_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -631,7 +644,7 @@ CREATE TABLE `user_typing_errors` (
   CONSTRAINT `fk_user_typing_errors_1` FOREIGN KEY (`user_error_details_id`) REFERENCES `user_error_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_user_typing_responses_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `fk_user_typing_responses_3` FOREIGN KEY (`error_type_id`) REFERENCES `error_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2063 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2337 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -665,7 +678,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=309 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -677,10 +690,13 @@ DROP TABLE IF EXISTS `variables`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `variables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `value` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `key` varchar(255) NOT NULL,
+  `value` int(11) NOT NULL,
+  `default_value` int(11) NOT NULL,
+  `description` longtext DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `key_UNIQUE` (`key`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -692,4 +708,4 @@ CREATE TABLE `variables` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-17 11:29:34
+-- Dump completed on 2024-11-27 10:49:10
