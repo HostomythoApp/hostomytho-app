@@ -33,7 +33,6 @@ const UserDetailsScreen = () => {
       const result = await getUserById(id);
       setDataUser(result);
       setFormData(result);
-      console.log(result);
     } catch (error) {
       console.error('Erreur lors de la récupération des données', error);
     }

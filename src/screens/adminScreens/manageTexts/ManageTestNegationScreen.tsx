@@ -127,7 +127,7 @@ export default function ManageTextsScreen({ route }: { route: any }) {
 
     const renderTestSpecification = (testSpecification: TestSpecification) => {
         return (
-            <View key={testSpecification.id} style={tw("flex-row justify-between items-center p-2 bg-white rounded-md shadow-md mb-2")}>
+            <View key={testSpecification.id} style={tw("flex-row justify-between items-center p-2 bg-white rounded-md")}>
                 <Text style={tw("flex-1 text-lg")}>
                     {testSpecification.content || `Positions: ${testSpecification.word_positions}`}
                 </Text>

@@ -76,7 +76,7 @@ const TextDetailsScreen = () => {
   const handleSave = async () => {
     if (validateForm()) {
       try {
-        const { nb_of_treatments, content, length, ...dataToSend } = formData;
+        const { nb_of_treatments, created_at, content, length, ...dataToSend } = formData;
         await updateText(textId, dataToSend);
         setIsEditing(false);
         fetchTextData(textId);
@@ -133,6 +133,7 @@ const TextDetailsScreen = () => {
                         case "is_negation_specification_test": return "Est un texte de contrôle pour MythoNo";
                         case "nb_of_treatments": return "Nombre de fois joué (dans MythoOuPas)";
                         case "reason_for_rate": return "Raison de la note";
+                        case "created_at": return "Date d'ajout";
                         case "is_active": return "Actif";
                         default: return key;
                       }
@@ -141,7 +142,7 @@ const TextDetailsScreen = () => {
                 </View>
                 <View style={tw('w-2/4')}>
                   {isEditing ? (
-                    key === "id" || key === "nb_of_treatments" || key === "length" || key === "content" ? (
+                    key === "id" || key === "created_at" || key === "nb_of_treatments" || key === "length" || key === "content" ? (
                       <Text style={tw('text-base')}>{dataText[key]?.toString()}</Text>
                     ) : key === "origin" ? (
                       <>

@@ -15,16 +15,15 @@ import CustomModal from "components/modals/CustomModal";
 import { getModalHelpContent, getTutorialContentForStep } from "tutorials/tutorialPlausibilityGame";
 import HelpButton from "components/button/HelpButton";
 import NextButton from "components/button/NextButton";
-import { completeTutorialForUser, isTutorialCompleted } from "services/api/games";
+import { isTutorialCompleted } from "services/api/games";
 import ModalDoctorsExplanation from "components/modals/ModalDoctorsExplanation";
 import { UserErrorDetail } from "models/UserErrorDetail";
-import { openWikipediaPageForWord, responsiveFontSize } from "utils/functions";
+import { responsiveFontSize } from "utils/functions";
 import SuccessModal from "components/modals/SuccessModal";
 import WikiButton from "components/button/WikiButton";
 import RatingButton from "components/button/RatingButton";
 import { useAuth } from "services/context/AuthContext";
 import { sendResponse } from "services/api/plausibility";
-import { getDefinition } from "services/api/utils";
 import WikiModal from "components/modals/WikiModal";
 import WikiEncard from "components/WikiEncard";
 

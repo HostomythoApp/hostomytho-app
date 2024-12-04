@@ -30,7 +30,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({ chartRef, fileName }) => {
   return (
     <View style={tw('max-w-40 self-end mx-4 my-2')}>
       <TouchableOpacity
-        style={tw('flex-row items-center justify-center px-4 w-full bg-blue-400 py-2 rounded-md shadow-lg')}
+        style={tw('flex-row items-center justify-center px-4 w-full bg-blue-400 py-2 rounded-md')}
         onPress={() => handleExportSVG(chartRef, fileName)}
       >
         <Entypo name="download" size={24} color="white" style={tw('mr-2')} />

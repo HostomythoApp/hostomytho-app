@@ -13,6 +13,7 @@ web-build/
 
 # Environment variables
 .env
+src/services/api/index.tsx
 
 # macOS
 .DS_Store

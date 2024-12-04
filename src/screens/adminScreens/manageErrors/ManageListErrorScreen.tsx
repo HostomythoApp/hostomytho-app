@@ -140,7 +140,7 @@ export default function ManageListErrorScreen() {
                 <CustomHeaderEmpty title="Gestion des textes" backgroundColor="bg-whiteTransparent" />
                 <View style={tw('mx-auto pt-20 items-center')}>
                     <View style={tw('flex-row justify-between w-full')}>
-                        <TouchableOpacity onPress={() => navigation.navigate("CreateText")} style={tw('ml-4 flex-row items-center justify-center px w-96 bg-blue-400 py-2 rounded-md shadow-lg')}>
+                        <TouchableOpacity onPress={() => navigation.navigate("CreateText")} style={tw('ml-4 flex-row items-center justify-center px w-96 bg-blue-400 py-2 rounded-md')}>
                             <Ionicons name="add" size={24} color="white" style={tw('mr-2')} />
                             <Text style={tw('text-white font-semibold')}>Ajouter un texte</Text>
                         </TouchableOpacity>
