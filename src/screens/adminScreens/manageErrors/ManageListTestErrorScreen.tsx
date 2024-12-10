@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Button } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
-import { getAllTexts } from 'services/api/texts';
-import { Text as TextModel } from 'models/Text';
+import { getAllErrorTests, deleteErrorTestById } from 'services/api/testError';
 import {
     useReactTable,
     createColumnHelper,
@@ -13,95 +12,25 @@ import {
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from '@react-navigation/native';
+import CustomModal from "components/modals/CustomModal";
 import { RootStackNavigationProp } from "navigation/Types";
-import Ionicons from '@expo/vector-icons/Ionicons';
 
 const columnHelper = createColumnHelper<any>();
-const columns = [
-    columnHelper.accessor('id', {
-        header: () => 'Id',
-        cell: info => info.getValue(),
-        footer: info => info.column.id,
-        enableSorting: true,
-    }),
-    columnHelper.accessor('num', {
-        header: () => 'Numéro',
-        cell: info => info.getValue(),
-        footer: info => info.column.id,
-        enableSorting: true,
-    }),
-    columnHelper.accessor('content', {
-        header: () => 'Contenu',
-        cell: info => info.getValue(),
-        footer: info => info.column.id,
-        enableSorting: true,
-    }),
-    columnHelper.accessor('origin', {
-        header: () => 'Origine',
-        cell: info => info.getValue(),
-        footer: info => info.column.id,
-        enableSorting: true,
-    }),
-    columnHelper.accessor('is_plausibility_test', {
-        header: () => 'Test de plausibilité',
-        cell: info => info.getValue() ? 'vrai' : 'faux',
-        footer: info => info.column.id,
-        enableSorting: true,
-    }),
-    columnHelper.accessor('test_plausibility', {
-        header: () => 'Taux de plausibilité',
-        cell: info => info.row.original.is_plausibility_test ? info.getValue() : '',
-        footer: info => info.column.id,
-        enableSorting: true,
-    }),
-    columnHelper.accessor('is_negation_specification_test', {
-        header: () => 'Test de négation',
-        cell: info => info.getValue() ? 'vrai' : 'faux',
-        footer: info => info.column.id,
-        enableSorting: true,
-    }),
-    columnHelper.accessor('nb_of_treatments', {
-        header: () => 'Nombre de fois joué',
-        cell: info => info.getValue(),
-        footer: info => info.column.id,
-    }),
-    columnHelper.accessor('is_active', {
-        header: () => 'Actif',
-        cell: info => info.getValue() ? 'vrai' : 'faux',
-        footer: info => info.column.id,
-    }),
 
-    columnHelper.display({
-        id: 'manage',
-        header: () => 'Gérer',
-        cell: ({ row }) => {
-            const navigation = useNavigation();
-
-            const handlePress = () => {
-                // @ts-ignore
-                navigation.navigate('TextDetails', { textId: row.original.id });
-            };
-
-            return (
-                <Button title="Gérer" onPress={handlePress} />
-            );
-        },
-        footer: info => info.column.id,
-    }),
-];
-
-export default function ManageListErrorScreen() {
+export default function ManageListTestErrorScreen() {
     const tw = useTailwind();
-    const [data, setData] = useState<TextModel[]>([]);
+    const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [errorIdToDelete, setErrorIdToDelete] = useState<number | null>(null);
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
-    const fetchUsers = async () => {
+    const fetchErrors = async () => {
         try {
-            const response = await getAllTexts();
+            const response = await getAllErrorTests();
             setData(response);
         } catch (error) {
-            console.error('Error fetching texts:', error);
+            console.error('Error fetching errors:', error);
         } finally {
             setLoading(false);
         }
@@ -109,9 +38,71 @@ export default function ManageListErrorScreen() {
 
     useFocusEffect(
         React.useCallback(() => {
-            fetchUsers();
+            fetchErrors();
         }, [])
     );
+
+    const handleDeleteError = async () => {
+        if (!errorIdToDelete) return;
+        try {
+            await deleteErrorTestById(errorIdToDelete);
+            Alert.alert("Succès", "Erreur supprimée.");
+            setModalVisible(false);
+            fetchErrors(); // Refresh the table after deletion
+        } catch (error) {
+            Alert.alert("Erreur", "La suppression a échoué.");
+        }
+    };
+
+    const columns = [
+        columnHelper.accessor('id', {
+            header: () => 'Id',
+            cell: info => info.getValue(),
+            footer: info => info.column.id,
+            enableSorting: true,
+        }),
+        columnHelper.accessor('text_id', {
+            header: () => 'Id du texte lié',
+            cell: info => info.getValue(),
+            footer: info => info.column.id,
+            enableSorting: true,
+        }),
+        columnHelper.accessor('content', {
+            header: () => 'Contenu',
+            cell: info => info.getValue(),
+            footer: info => info.column.id,
+            enableSorting: true,
+        }),
+        columnHelper.accessor('test_error_type_id', {
+            header: () => 'Type de l\'erreur',
+            cell: info => `Type ${info.getValue()}`,
+            footer: info => info.column.id,
+        }),
+        columnHelper.display({
+            id: 'manage',
+            header: () => 'Gérer',
+            cell: ({ row }) => (
+                <View style={tw('flex-row')}>
+                    <TouchableOpacity
+                        style={tw('mr-3')}
+                        // @ts-ignore
+                        onPress={() => navigation.navigate("TestErrorDetails", { errorId: row.original.id })}
+                    >
+                        <Text style={tw("text-blue-500")}>Modifier</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setErrorIdToDelete(row.original.id);
+                            setModalVisible(true);
+                        }}
+                    >
+                        <Text style={tw("text-red-500")}>Supprimer</Text>
+                    </TouchableOpacity>
+                </View>
+            ),
+            footer: info => info.column.id,
+        }),
+    ];
 
     const table = useReactTable({
         data,
@@ -119,12 +110,6 @@ export default function ManageListErrorScreen() {
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
     });
-
-    const origins = [
-        { id: 1, name: 'synthétique' },
-        { id: 2, name: 'réel - vrai' },
-        { id: 3, name: 'réel - faux' }
-    ];
 
     if (loading) {
         return (
@@ -137,17 +122,10 @@ export default function ManageListErrorScreen() {
     return (
         <View style={tw("flex-1 bg-gray-100")}>
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
-                <CustomHeaderEmpty title="Gestion des textes" backgroundColor="bg-whiteTransparent" />
+                <CustomHeaderEmpty title="Gestion des erreurs de tests" backgroundColor="bg-whiteTransparent" />
                 <View style={tw('mx-auto pt-20 items-center')}>
-                    <View style={tw('flex-row justify-between w-full')}>
-                        <TouchableOpacity onPress={() => navigation.navigate("CreateText")} style={tw('ml-4 flex-row items-center justify-center px w-96 bg-blue-400 py-2 rounded-md')}>
-                            <Ionicons name="add" size={24} color="white" style={tw('mr-2')} />
-                            <Text style={tw('text-white font-semibold')}>Ajouter un texte</Text>
-                        </TouchableOpacity>
-
-                        <Text style={tw('text-lg font-bold mb-2 self-end mx-6')}>
-                            Nombre total de textes : {table.getRowModel().rows.length}
-                        </Text>
+                    <View style={tw('flex-row justify-between w-full mb-4')}>
+                        <Text>Pour créer de nouvelles erreurs de tests, passez par la gestion des textes et ajoutez une erreur à un texte.</Text>
                     </View>
                     <View style={tw('mb-2 p-4 rounded-lg bg-white')}>
                         <table>
@@ -187,13 +165,17 @@ export default function ManageListErrorScreen() {
                                     </tr>
                                 ))}
                             </tbody>
-
-                            <tfoot>
-                            </tfoot>
                         </table>
                     </View>
                 </View>
             </ScrollView>
+
+            <CustomModal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
+                <Text style={tw("mb-4 text-center font-primary")}>Êtes-vous sûr de vouloir supprimer cette erreur ?</Text>
+                <TouchableOpacity onPress={handleDeleteError} style={tw("bg-red-500 p-4 rounded-lg")}>
+                    <Text style={tw("text-center text-white font-bold")}>Confirmer</Text>
+                </TouchableOpacity>
+            </CustomModal>
         </View>
     );
 }

@@ -47,6 +47,7 @@ const AdminHomeScreen = () => {
       <View style={tw('p-20 pt-24')}>
         <AdminLink title="Gérer les textes" destination="ManageTexts" icon="text-format" />
         <AdminLink title="Gérer les utilisateurs" destination="ManageUsers" icon="people" />
+        <AdminLink title="Modifier les erreurs de contrôle de MythoOuPas et MythoTypo" destination="ManageListTestError" icon="error" />
         <AdminLink title="Statistiques de l'application" destination="Statistics" icon="analytics" />
         <AdminLink title="Exporter les données" destination="ExportData" icon="file-download" />
         <AdminLink title="Modifier les variables de l'application" destination="EditVariables" icon="edit" />

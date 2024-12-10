@@ -6,5 +6,7 @@ export interface UserErrorDetail {
   vote_weight?: number;
   content: string;
   is_test?: boolean,
+  test_error_type_id?: number;
+  reason_for_type?: string;
   color?: string; 
 }

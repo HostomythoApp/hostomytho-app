@@ -55,8 +55,8 @@ import React, { useState } from 'react';
 import ModalContext from "services/context/ModalContext";
 import TimedModalContext from "components/modals/TimedModalContext";
 import { UserProvider } from "services/context/UserContext";
-import ErrorDetailsScreen from "screens/adminScreens/manageErrors/ErrorDetailsScreen";
-import ManageListErrorScreen from "screens/adminScreens/manageErrors/ManageListErrorScreen";
+import TestErrorDetailsScreen from "screens/adminScreens/manageErrors/TestErrorDetailsScreen";
+import ManageListTestErrorScreen from "screens/adminScreens/manageErrors/ManageListTestErrorScreen";
 import AddTestErrorScreen from "screens/adminScreens/manageErrors/AddTestErrorScreen";
 
 const Stack = createNativeStackNavigator();
@@ -168,11 +168,11 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="GamesStatistics" component={GamesStatisticsScreen} />
               <Stack.Screen name="UserDetails" component={UserDetailsScreen} />
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
-              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
               <Stack.Screen name="CreateText" component={CreateTextScreen} />
-              <Stack.Screen name="ErrorDetails" component={ErrorDetailsScreen} />
-              <Stack.Screen name="ManageListError" component={ManageListErrorScreen} />
+              <Stack.Screen name="TestErrorDetails" component={TestErrorDetailsScreen} />
+              <Stack.Screen name="ManageListTestError" component={ManageListTestErrorScreen} />
               <Stack.Screen name="AddTestError" component={AddTestErrorScreen} />
+              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
 
               {/* Part politique confidentialité */}
               <Stack.Screen name="PrivacyPolicy"

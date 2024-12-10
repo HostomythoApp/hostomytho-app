@@ -1,305 +1,244 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Button, Switch, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, ActivityIndicator, Alert, SafeAreaView, Pressable } from 'react-native';
 import { useTailwind } from "tailwind-rn";
-import { useNavigation } from "@react-navigation/native";
-import { createText, getTextWithTokensById } from "services/api/texts";
-import { createTestSpecification, deleteTestSpecificationsByTextId, getTestSpecificationsByTextId } from "services/api/testSpecifications";
+import { getTextWithTokensById } from "services/api/texts";
+import { createErrorTest, deleteErrorTestById, getErrorTestsByTextId } from "services/api/testError";
+import { getTypesError } from "services/api/errors";
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
-import { TextWithTokens } from "interfaces/TextWithTokens";
-import { TestSpecification } from "models/TestSpecification";
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
-import TimedCustomModal from "components/modals/TimedCustomModal";
+import CustomModal from "components/modals/CustomModal";
 import { Picker } from "@react-native-picker/picker";
+import TimedCustomModal from "components/modals/TimedCustomModal";
+import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function AddTestErrorScreen({ route }: { route: any }) {
     const { textId } = route.params;
-    const [text, setText] = useState(null);
-
-    const [loading, setLoading] = useState(false);
     const tw = useTailwind();
-    const navigation = useNavigation();
-    const [testSpecifications, setTestSpecifications] = useState<TestSpecification[]>([]);
-    const [isSelectionStarted, setSelectionStarted] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [errors, setErrors] = useState<any>({});
+    const [text, setText] = useState<any>(null);
+    const [errorsTest, setErrorsTest] = useState<any[]>([]);
+    const [errorTypes, setErrorTypes] = useState<any[]>([]);
+    const [selectedPositions, setSelectedPositions] = useState<number[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-
-    const [formData, setFormData] = useState<any>({
-        test_error_type: 4,
-        reason_for_rate: "",
+    const [modalVisible, setModalVisible] = useState(false);
+    const [timedModalVisible, setTimedModalVisible] = useState(false);
+    const navigation = useNavigation();
+    const [errorIdToDelete, setErrorIdToDelete] = useState<number | null>(null);
+    const [formData, setFormData] = useState({
+        test_error_type_id: 1,
+        reason_for_type: "",
+        text_id: textId,
+        word_positions: "",
+        content: "",
     });
+    const [errors, setErrors] = useState<any>({});
 
+    useFocusEffect(
+        useCallback(() => {
+            const fetchData = async () => {
+                setIsLoading(true);
+                try {
+                    const textData = await getTextWithTokensById(textId);
+                    const errorTests = await getErrorTestsByTextId(textId);
+                    const types = await getTypesError();
+                    setText(textData);
+                    setErrorsTest(errorTests);
+                    setErrorTypes(types);
+                } catch (error) {
+                    Alert.alert("Erreur", "Impossible de charger les données.");
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+    
+            fetchData();
+        }, [textId])
+    );
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            const textData = await getTextWithTokensById(textId);
-            const negations = await getTestSpecificationsByTextId(textId, 'negation');
-            setTestSpecifications(negations);
-            // @ts-ignore
-            setText(textData);
-            setLoading(false);
-        };
-
-        fetchData();
-    }, [textId]);
-
-    useEffect(() => {
+    const onTokenPress = useCallback((index: number) => {
         if (!text) return;
-
-        const allPositions = testSpecifications
-            .flatMap(spec => spec.word_positions.split(',').map(pos => parseInt(pos.trim())));
-
-        const uniquePositions = Array.from(new Set(allPositions));
-        // @ts-ignore
-        const newTokens = text.tokens.map((token: any) => {
-            if (uniquePositions.includes(token.position)) {
-                token.isSelected = true;
-                token.color = 'bg-yellow-200';
-            } else {
-                token.isSelected = false;
-                delete token.color;
-            }
-            return token;
-        });
-
-        // @ts-ignore
-        setText({ ...text, tokens: newTokens });
-    }, [testSpecifications]);
+        const token = text.tokens[index];
+        token.isSelected = !token.isSelected;
+        if (token.isSelected) {
+            setSelectedPositions((prev) => [...prev, token.position]);
+        } else {
+            setSelectedPositions((prev) => prev.filter((pos) => pos !== token.position));
+        }
+        setText({ ...text });
+    }, [text]);
 
     const validateForm = () => {
         let valid = true;
-        let newErrors: any = {};
-
-        if (!formData.test_error_type) {
-            newErrors.test_error_type = "Le numéro est requis.";
+        const newErrors: any = {};
+        if (!formData.test_error_type_id) {
+            newErrors.test_error_type_id = "Le type d'erreur est requis.";
             valid = false;
         }
-
+        if (!selectedPositions.length) {
+            newErrors.word_positions = "Veuillez sélectionner des mots.";
+            valid = false;
+        }
         setErrors(newErrors);
         return valid;
     };
 
-
-    const handleInputChange = (name: string, value: any) => {
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-
     const handleCreate = async () => {
-        if (validateForm()) {
-            try {
-                setIsLoading(true);
-                // await createText(formData);
-                setIsLoading(false);
-                Alert.alert("Succès", "Création réussie.");
-                navigation.goBack();
-            } catch (error) {
-                setIsLoading(false);
-                console.error("Erreur lors de la création du texte", error);
-                Alert.alert("Erreur", "La création a échoué.");
-            }
-        } else {
-            Alert.alert("Création échouée", "Veuillez corriger les erreurs avant de soumettre.");
+        if (!validateForm()) return;
+        try {
+            setIsLoading(true);
+            const content = text.tokens
+                .filter((token: any) => selectedPositions.includes(token.position))
+                .map((token: any) => token.content)
+                .join("");
+            const newError = {
+                text_id: textId,
+                word_positions: selectedPositions.join(","),
+                content,
+                test_error_type_id: formData.test_error_type_id,
+                reason_for_type: formData.reason_for_type,
+            };
+            await createErrorTest(newError);
+            Alert.alert("Succès", "Erreur de test créée.");
+
+            setSelectedPositions([]);
+            setFormData({ ...formData, reason_for_type: "", test_error_type_id: 1 });
+
+            setText((currentText: any) => {
+                const updatedTokens = currentText.tokens.map((token: any) => ({
+                    ...token,
+                    isSelected: false,
+                }));
+                return { ...currentText, tokens: updatedTokens };
+            });
+
+            const updatedErrors = await getErrorTestsByTextId(textId);
+            setErrorsTest(updatedErrors);
+            setTimedModalVisible(true);
+        } catch (error) {
+            Alert.alert("Erreur", "La création a échoué.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
+    const handleDeleteError = async () => {
+        if (!errorIdToDelete) return;
+        try {
+            setIsLoading(true);
+            await deleteErrorTestById(errorIdToDelete);
+            setModalVisible(false);
+            const updatedErrors = await getErrorTestsByTextId(textId);
+            setErrorsTest(updatedErrors);
+            Alert.alert("Succès", "Erreur supprimée.");
+        } catch (error) {
+            Alert.alert("Erreur", "La suppression a échoué.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const renderText = (text: any) => (
+        <SafeAreaView style={tw("flex-1 mt-20")}>
+            <View style={tw("bg-[#DAEBDC] rounded-xl mx-4 p-4 shadow-lg")}>
+                <View style={tw("flex-row flex-wrap")}>
+                    {text.tokens.map((token: any, idx: number) => (
+                        <TouchableOpacity
+                            key={idx}
+                            onPress={() => onTokenPress(idx)}
+                            style={tw(
+                                `px-0 ${token.isSelected ? "bg-blue-200" : "bg-transparent"}`
+                            )}
+                        >
+                            <Text style={tw("text-lg text-gray-800")}>{token.content}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            </View>
+        </SafeAreaView>
+    );
+
     if (isLoading) {
         return (
-            <View style={tw('flex-1 justify-center items-center')}>
+            <View style={tw("flex-1 justify-center items-center")}>
                 <ActivityIndicator size="large" color="#0000ff" />
             </View>
         );
     }
 
-    const onTokenPress = useCallback((index: number) => {
-        setText((currentText: any) => {
-            if (!currentText) return currentText;
-
-            const newTokens = [...currentText.tokens];
-            const token = newTokens[index];
-
-            token.isCurrentSelection = !token.isCurrentSelection;
-
-            if (token.isCurrentSelection) {
-                token.color = 'bg-blue-200';
-            } else {
-                delete token.color;
-            }
-
-            const anyTokenSelected = newTokens.some(t => t.isCurrentSelection);
-            setSelectionStarted(anyTokenSelected);
-
-            return { ...currentText, tokens: newTokens };
-        });
-    }, []);
-
-    const onSaveChanges = async () => {
-        // setLoading(true);
-        // try {
-        //     await deleteTestSpecificationsByTextId(textId);
-
-        //     const creations = testSpecifications.map(spec => ({
-        //         text_id: textId,
-        //         type: spec.type,
-        //         content: spec.content,
-        //         word_positions: spec.word_positions
-        //     }));
-
-        //     await createTestSpecification(creations);
-        //     Alert.alert("Modifications enregistrées", "L'erreur de test a été créée.");
-        //     setModalVisible(true);
-        // } catch (error) {
-        //     console.error("Erreur lors de la sauvegarde des modifications", error);
-        //     Alert.alert("Erreur", "Une erreur est survenue lors de la sauvegarde des modifications.");
-        // }
-
-        setLoading(false);
-    };
-
-
-    if (loading) {
-        return <View style={tw('flex-1 justify-center items-center')}>
-            <ActivityIndicator size="large" color="#0000ff" />
-        </View>;
-    }
-
-    if (!text) {
-        return <View style={tw('flex-1 justify-center items-center')}>
-            <Text>Aucun texte chargé</Text>
-        </View>;
-    }
-
-    const renderText = (text: TextWithTokens) => {
-        if (typeof text === "undefined") {
-            return null;
-        }
-        return (
-            <SafeAreaView style={tw("flex-1")}>
-                <View
-                    style={[
-                        tw("bg-[#DAEBDC] rounded-xl justify-center mx-2 mt-4"),
-                        {
-                            backgroundColor: 'rgba(255, 222, 173, 0.92)',
-                            minHeight: 150,
-                            shadowColor: "#000",
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 3.84,
-                            elevation: 5,
-                        },
-                    ]}
-                >
-                    <View style={tw("flex-row flex-wrap mb-2 m-7")}>
-                        {text.tokens.map((token: any, idx: number) => {
-                            const isPunctuation = token.is_punctuation;
-                            const isNewLine = token.content.includes('\n');
-
-                            if (isNewLine) {
-                                return token.content.split('\n').map((_: any, lineIdx: any) => (
-                                    <View key={`${idx}-${lineIdx}`} style={{ width: '100%', height: lineIdx === 0 ? 0 : 20 }} />
-                                ));
-                            } else if (isPunctuation) {
-                                return (
-                                    <Text
-                                        key={idx}
-                                        style={[
-                                            tw("font-primary text-gray-800 text-lg"),
-                                            token.color ? tw(token.color) : null
-                                        ]}
-                                    >
-                                        {token.content}
-                                    </Text>
-                                );
-                            } else {
-                                return (
-                                    <TouchableOpacity
-                                        key={idx}
-                                        onPress={() => onTokenPress(idx)}
-                                        style={tw(
-                                            `m-0 p-[1px] ${token.isCurrentSelection ? token.color : token.isSelected ? "bg-yellow-200" : "bg-transparent"}`
-                                        )}
-                                    >
-                                        <Text
-                                            style={[
-                                                tw("font-primary text-gray-800 text-lg"),
-                                                token.color ? tw(token.color) : null
-                                            ]}
-                                        >
-                                            {token.content}
-                                        </Text>
-                                    </TouchableOpacity>
-                                );
-                            }
-                        })}
-                    </View>
-                </View>
-            </SafeAreaView>
-        );
-    };
-
     return (
         <View style={tw("flex-1 bg-gray-100")}>
-            <CustomHeaderEmpty title="Ajout d'une erreur de test" backgroundColor="bg-whiteTransparent" />
-            <ScrollView style={tw('p-5 mt-16')}>
-                <View style={tw("mb-2 flex-1 justify-center items-center")}>
-                    {text && renderText(text)}
+            <CustomHeaderEmpty title="Gestion des erreurs de test" backgroundColor="bg-whiteTransparent" />
+            <ScrollView contentContainerStyle={tw("p-5")}>
+                {text && renderText(text)}
+
+                <View style={tw("mx-4 pb-3")}>
+                    {errorsTest.map((error) => (
+                        <View key={error.id} style={tw("flex-row justify-between items-center p-2 mt-2 bg-white rounded-md")}>
+                            <View style={tw("flex-1")}>
+                                <Text style={tw("text-lg font-bold")}>{error.content}</Text>
+                                <Text style={tw("text-sm text-gray-600")}>
+                                    Type : {errorTypes.find((type) => type.id === error.test_error_type_id)?.name || "Inconnu"}
+                                </Text>
+                                {error.reason_for_type && (
+                                    <Text style={tw("text-sm text-gray-600")}>Raison du typage : {error.reason_for_type}</Text>
+                                )}
+                            </View>
+                            <View style={tw("flex-row")}>
+                                <TouchableOpacity
+                                // @ts-ignore
+                                    onPress={() => navigation.navigate("TestErrorDetails", { errorId: error.id })}
+                                    style={tw("mr-3")}
+                                >
+                                    <Text style={tw("text-blue-500")}>Modifier</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => { setErrorIdToDelete(error.id); setModalVisible(true); }}>
+                                    <Text style={tw("text-red-500")}>Supprimer</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    ))}
                 </View>
 
-                <View style={tw('mx-auto pt-4 items-center w-full')}>
 
-                    <View style={tw('mb-24 p-4 mt-16 rounded-lg bg-white w-4/5')}>
-                        <View style={tw('py-2 px-4')}>
-                            <Text style={tw('text-lg font-bold mb-2')}>Type de l'erreur :</Text>
-                            <Picker
-                                selectedValue={formData.test_error_type}
-                                onValueChange={(value) => handleInputChange("origin", value)}
-                                style={tw('border p-2 rounded-lg')}
-                            >
-                                {/* faire map avec les types récupérés  */}
-                                <Picker.Item label="synthétique" value="synthétique" />
-                                <Picker.Item label="réel - faux" value="réel - faux" />
-                                <Picker.Item label="réel - vrai" value="réel - vrai" />
-                            </Picker>
-                            {errors.test_error_type && <Text style={tw('text-red-500')}>{errors.test_error_type}</Text>}
-                        </View>
+                <View style={tw("mt-4 bg-white p-7")}>
+                    <Text style={tw("font-bold mb-2 text-lg")}>Créer une erreur</Text>
+                    <Text style={tw("mb-4")}>Pour créer une erreur, cliquez sur les mots correspondant à l'erreur dans le text au dessus, puis choisissez son type, et la raison du typage si vous souhaitez la préciser.</Text>
 
-                        <View style={tw('py-2 px-4')}>
-                            <Text style={tw('text-lg font-bold mb-2')}>Contenu :</Text>
-                            <TextInput
-                                style={tw('border p-2 rounded-lg h-32')}
-                                multiline={true}
-                                numberOfLines={5}
-                                value={formData.reason_for_rate}
-                                onChangeText={(value) => handleInputChange("reason_for_rate", value)}
-                                placeholder="Entrez le contenu du texte"
-                            />
-                            {errors.reason_for_rate && <Text style={tw('text-red-500')}>{errors.reason_for_rate}</Text>}
-                        </View>
-
-                        <View style={tw('justify-center items-center mt-4')}>
-                            <TouchableOpacity style={tw('bg-green-500 p-5 rounded-3xl flex-row items-center')} onPress={handleCreate}>
-                                <Ionicons name="add" size={26} color="#fff" />
-                                <Text style={tw('ml-1 text-white text-base font-bold')}>Créer</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <Text style={tw("font-bold mb-2")}>Type de l'erreur :</Text>
+                    <Picker
+                        selectedValue={formData.test_error_type_id}
+                        onValueChange={(value) => setFormData({ ...formData, test_error_type_id: value })}
+                        style={tw("border p-2")}
+                    >
+                        {errorTypes.map((type) => (
+                            <Picker.Item key={type.id} label={type.name} value={type.id} />
+                        ))}
+                    </Picker>
+                    {errors.test_error_type_id && <Text style={tw("text-red-500")}>{errors.test_error_type_id}</Text>}
+                    <Text style={tw("font-bold mt-4 mb-2")}>Raison du typage (facultatif, et sera affiché quand un joueur donnera le mauvais typage):</Text>
+                    <TextInput
+                        style={tw("border p-2 rounded-lg h-24")}
+                        multiline
+                        value={formData.reason_for_type}
+                        onChangeText={(value) => setFormData({ ...formData, reason_for_type: value })}
+                    />
                 </View>
-                <View style={tw("mx-4 pb-3 max-w-80 self-center")}>
 
-                    <TouchableOpacity style={tw('bg-green-500 p-5 px-5 rounded-3xl text-center justify-center h-20 flex-row items-center')} onPress={onSaveChanges}>
-                        <Ionicons name="checkmark" size={26} color="#fff" />
-                        <Text style={tw('ml-1 text-white text-base font-bold')}>Enregistrer</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={handleCreate} style={tw("bg-green-500 p-4 mt-4 rounded-lg w-96 self-center")}>
+                    <Text style={tw("text-center text-white font-bold")}>Créer l'erreur de test</Text>
+                </TouchableOpacity>
             </ScrollView>
-            <TimedCustomModal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
+
+            <CustomModal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
+                <Text style={tw("mb-4 text-center font-primary")}>Êtes-vous sûr de vouloir supprimer cette erreur ?</Text>
+                <TouchableOpacity onPress={handleDeleteError} style={tw("bg-red-500 p-4 rounded-lg")}>
+                    <Text style={tw("text-center text-white font-bold")}>Confirmer</Text>
+                </TouchableOpacity>
+            </CustomModal>
+
+            <TimedCustomModal isVisible={timedModalVisible} onClose={() => setTimedModalVisible(false)}>
                 <Text style={tw('text-center font-primary text-xl text-green-900')}>
-                    Modifications enregistrées</Text>
+                    Erreur créée</Text>
             </TimedCustomModal>
         </View>
     );
-
 }

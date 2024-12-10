@@ -50,6 +50,7 @@ export type RootStackParamList = {
     ErrorDetails: undefined;
     ManageListError: undefined;
     AddTestError: { textId: number };
+    TestErrorDetails: { errorId: any };
 };
 
 export type RootStackNavigationProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<

@@ -90,7 +90,7 @@ const ManageHomeMessagesScreen = () => {
         <CustomHeaderEmpty title="Gestion des messages d'accueil" backgroundColor="bg-whiteTransparent" />
 
         <View style={tw('flex-1 p-4 mt-16 min-w-96')}>
-          {messages.map((message) => (
+          {messages.map((message: any) => (
             <View key={message.id} style={tw('p-4 border-b border-gray-300')}>
               <Text style={tw('text-xl font-bold mb-4')}>
                 {message.message_type === 'home_not_connected'
@@ -135,18 +135,18 @@ const ManageHomeMessagesScreen = () => {
             style={[tw('border p-2 mb-2 w-full'), { height: messageHeight }]}
             placeholder="Message"
             value={selectedMessage.message}
-            onChangeText={(text) => setSelectedMessage({ ...selectedMessage, message: text })}
+            onChangeText={(text: any) => setSelectedMessage({ ...selectedMessage, message: text })}
             multiline
-            onContentSizeChange={(event) => handleContentSizeChange(event, 'message')}
+            onContentSizeChange={(event: any) => handleContentSizeChange(event, 'message')}
           />
 
           <TextInput
             style={[tw('border p-2 mb-2 w-full'), { height: titleHeight }]}
             placeholder="Actualité"
             value={selectedMessage.title || ''}
-            onChangeText={(text) => setSelectedMessage({ ...selectedMessage, title: text })}
+            onChangeText={(text: any) => setSelectedMessage({ ...selectedMessage, title: text })}
             multiline
-            onContentSizeChange={(event) => handleContentSizeChange(event, 'title')}
+            onContentSizeChange={(event: any) => handleContentSizeChange(event, 'title')}
           />
 
           <TouchableOpacity style={tw('bg-green-600 px-4 py-2 rounded')} onPress={handleSaveMessage}>

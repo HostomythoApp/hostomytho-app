@@ -485,6 +485,11 @@
 			"marginTop": "auto"
 		}
 	},
+	"mt-20": {
+		"style": {
+			"marginTop": 80
+		}
+	},
 	"flex": {
 		"style": {
 			"display": "flex"
@@ -1691,6 +1696,14 @@
 			"paddingLeft": 2
 		}
 	},
+	"p-7": {
+		"style": {
+			"paddingTop": 28,
+			"paddingRight": 28,
+			"paddingBottom": 28,
+			"paddingLeft": 28
+		}
+	},
 	"px-1": {
 		"style": {
 			"paddingLeft": 4,
@@ -1773,6 +1786,12 @@
 		"style": {
 			"paddingTop": 24,
 			"paddingBottom": 24
+		}
+	},
+	"px-0": {
+		"style": {
+			"paddingLeft": 0,
+			"paddingRight": 0
 		}
 	},
 	"pb-0": {
