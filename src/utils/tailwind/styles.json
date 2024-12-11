@@ -440,6 +440,11 @@
 			"marginTop": 8
 		}
 	},
+	"mt-20": {
+		"style": {
+			"marginTop": 80
+		}
+	},
 	"mt-3": {
 		"style": {
 			"marginTop": 12
@@ -483,11 +488,6 @@
 	"mt-auto": {
 		"style": {
 			"marginTop": "auto"
-		}
-	},
-	"mt-20": {
-		"style": {
-			"marginTop": 80
 		}
 	},
 	"flex": {
@@ -1656,6 +1656,14 @@
 			"paddingLeft": 24
 		}
 	},
+	"p-7": {
+		"style": {
+			"paddingTop": 28,
+			"paddingRight": 28,
+			"paddingBottom": 28,
+			"paddingLeft": 28
+		}
+	},
 	"p-8": {
 		"style": {
 			"paddingTop": 32,
@@ -1696,12 +1704,10 @@
 			"paddingLeft": 2
 		}
 	},
-	"p-7": {
+	"px-0": {
 		"style": {
-			"paddingTop": 28,
-			"paddingRight": 28,
-			"paddingBottom": 28,
-			"paddingLeft": 28
+			"paddingLeft": 0,
+			"paddingRight": 0
 		}
 	},
 	"px-1": {
@@ -1786,12 +1792,6 @@
 		"style": {
 			"paddingTop": 24,
 			"paddingBottom": 24
-		}
-	},
-	"px-0": {
-		"style": {
-			"paddingLeft": 0,
-			"paddingRight": 0
 		}
 	},
 	"pb-0": {

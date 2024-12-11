@@ -2,7 +2,7 @@ import { UserErrorDetail } from "models/UserErrorDetail";
 import api from "./index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const getErrorTestsByTextId = async (textId: number): Promise<UserErr[]> => {
+export const getErrorTestsByTextId = async (textId: number): Promise<UserErrorDetail[]> => {
   try {
     const token = await AsyncStorage.getItem("@auth_token");
     const response = await api.get(`/testError/byTextId/${textId}`, {
@@ -13,7 +13,7 @@ export const getErrorTestsByTextId = async (textId: number): Promise<UserErr[]> 
 
     return response.data;
   } catch (error) {
-    console.error("Erreur lors de la récupération des erreurs de tests par texte :", error);
+    console.error("Erreur lors de la récupération des erreurs de contrôle par texte :", error);
     throw error;
   }
 };
@@ -46,16 +46,13 @@ export const getAllErrorTests = async (): Promise<any[]> => {
 
     return response.data;
   } catch (error) {
-    console.error("Erreur lors de la récupération de toutes les erreurs de tests :", error);
+    console.error("Erreur lors de la récupération de toutes les erreurs de contrôle :", error);
     throw error;
   }
 };
 
 export const createErrorTest = async (errorTest: any): Promise<any> => {
   try {
-    console.log("createErrorTest");
-    console.log(errorTest);
-
     const token = await AsyncStorage.getItem("@auth_token");
     const response = await api.post(`/testError`, errorTest, {
       headers: {

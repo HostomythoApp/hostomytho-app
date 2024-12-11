@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import { getAllErrorTests, deleteErrorTestById } from 'services/api/testError';
+import { getTypesError } from 'services/api/errors';
 import {
     useReactTable,
     createColumnHelper,
@@ -23,6 +24,7 @@ export default function ManageListTestErrorScreen() {
     const [loading, setLoading] = useState<boolean>(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [errorIdToDelete, setErrorIdToDelete] = useState<number | null>(null);
+    const [errorTypes, setErrorTypes] = useState<any[]>([]);
     const navigation = useNavigation<RootStackNavigationProp<"Menu">>();
 
     const fetchErrors = async () => {
@@ -36,9 +38,19 @@ export default function ManageListTestErrorScreen() {
         }
     };
 
+    const fetchErrorTypes = async () => {
+        try {
+            const types = await getTypesError();
+            setErrorTypes(types);
+        } catch (error) {
+            console.error("Error fetching error types:", error);
+        }
+    };
+
     useFocusEffect(
         React.useCallback(() => {
             fetchErrors();
+            fetchErrorTypes();
         }, [])
     );
 
@@ -63,7 +75,17 @@ export default function ManageListTestErrorScreen() {
         }),
         columnHelper.accessor('text_id', {
             header: () => 'Id du texte lié',
-            cell: info => info.getValue(),
+            cell: info => (
+                <View style={[tw('flex-row items-center'), { minWidth: 120 }]}>
+                    <Text>{info.getValue()}</Text>
+                    <TouchableOpacity
+                        style={tw('ml-2')}
+                        onPress={() => navigation.navigate("AddTestError", { textId: info.getValue() })}
+                    >
+                        <Text style={tw("text-blue-500")}>Gérer le texte</Text>
+                    </TouchableOpacity>
+                </View>
+            ),
             footer: info => info.column.id,
             enableSorting: true,
         }),
@@ -75,7 +97,10 @@ export default function ManageListTestErrorScreen() {
         }),
         columnHelper.accessor('test_error_type_id', {
             header: () => 'Type de l\'erreur',
-            cell: info => `Type ${info.getValue()}`,
+            cell: info => {
+                const type = errorTypes.find((type) => type.id === info.getValue());
+                return type ? type.name : "Inconnu";
+            },
             footer: info => info.column.id,
         }),
         columnHelper.display({
@@ -122,10 +147,10 @@ export default function ManageListTestErrorScreen() {
     return (
         <View style={tw("flex-1 bg-gray-100")}>
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
-                <CustomHeaderEmpty title="Gestion des erreurs de tests" backgroundColor="bg-whiteTransparent" />
+                <CustomHeaderEmpty title="Gestion des erreurs de contrôle" backgroundColor="bg-whiteTransparent" />
                 <View style={tw('mx-auto pt-20 items-center')}>
                     <View style={tw('flex-row justify-between w-full mb-4')}>
-                        <Text>Pour créer de nouvelles erreurs de tests, passez par la gestion des textes et ajoutez une erreur à un texte.</Text>
+                        <Text>Pour créer de nouvelles erreurs de contrôle, passez par la gestion des textes et ajoutez une erreur à un texte.</Text>
                     </View>
                     <View style={tw('mb-2 p-4 rounded-lg bg-white')}>
                         <table>

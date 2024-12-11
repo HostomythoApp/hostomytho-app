@@ -294,21 +294,6 @@ const MythoTypoScreen = ({ }) => {
 
   const toggleWikiMode = (newMode?: boolean) => { setWikiMode(newMode !== undefined ? newMode : !wikiMode); }
 
-  // const getCorrectionMessage = (errorTypeId: number) => {
-  //   switch (errorTypeId) {
-  //     case 1:
-  //       return "L'erreur était plutôt une faute de français.";
-  //     case 2:
-  //       return "L'erreur concerne la cohérence médicale du texte.";
-  //     case 3:
-  //       return "L'erreur est une répétition.";
-  //     case 4:
-  //       return "L'erreur appartient à une autre catégorie.";
-  //     default:
-  //       return "Ce n'était pas une erreur.";
-  //   }
-  // };
-
   const renderErrorTypeButtons = () => {
     return errorTypes.map((errorType) => {
       const isSelected = selectedErrorType === errorType.id;

@@ -166,7 +166,7 @@ export default function AddTestErrorScreen({ route }: { route: any }) {
 
     return (
         <View style={tw("flex-1 bg-gray-100")}>
-            <CustomHeaderEmpty title="Gestion des erreurs de test" backgroundColor="bg-whiteTransparent" />
+            <CustomHeaderEmpty title="Gestion des erreurs de contrôle" backgroundColor="bg-whiteTransparent" />
             <ScrollView contentContainerStyle={tw("p-5")}>
                 {text && renderText(text)}
 
