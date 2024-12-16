@@ -491,7 +491,7 @@ const MythoTypoScreen = ({ }) => {
         <View style={tw('flex-col w-full bottom-0')}>
           {showMessage &&
             <View style={tw("bg-red-200 p-2 rounded-lg w-full flex-row justify-between items-center")}>
-              <View>
+              <View style={tw('w-5/6')}>
                 <Text style={tw("text-[#B22222] font-primary text-lg flex-shrink")}>{messageContent}</Text>
               </View>
               <TouchableOpacity
