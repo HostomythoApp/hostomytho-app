@@ -13,7 +13,7 @@ const TestErrorDetailsScreen = () => {
     const route = useRoute();
     const { errorId } = route.params as { errorId: number };
     const navigation = useNavigation();
-    
+
     const [text, setText] = useState<any>(null);
     const [errorDetails, setErrorDetails] = useState<any>(null);
     const [errorTypes, setErrorTypes] = useState<any[]>([]);
@@ -37,7 +37,7 @@ const TestErrorDetailsScreen = () => {
                 setText(textData);
                 setErrorTypes(types);
                 setFormData({
-                  // @ts-ignore
+                    // @ts-ignore
                     test_error_type_id: errorData.test_error_type_id,
                     reason_for_type: errorData.reason_for_type || "",
                 });
@@ -54,15 +54,19 @@ const TestErrorDetailsScreen = () => {
 
     const onTokenPress = useCallback((index: number) => {
         if (!text) return;
+
         const token = text.tokens[index];
-        token.isSelected = !token.isSelected;
-        if (token.isSelected) {
-            setSelectedPositions((prev) => [...prev, token.position]);
-        } else {
-            setSelectedPositions((prev) => prev.filter((pos) => pos !== token.position));
-        }
-        setText({ ...text });
+        const position = token.position;
+
+        setSelectedPositions((prev) => {
+            if (prev.includes(position)) {
+                return prev.filter((pos) => pos !== position);
+            } else {
+                return [...prev, position];
+            }
+        });
     }, [text]);
+
 
     const validateForm = () => {
         let valid = true;
@@ -88,7 +92,7 @@ const TestErrorDetailsScreen = () => {
                 .map((token: any) => token.content)
                 .join("");
             const updatedError = {
-                word_positions: selectedPositions.join(","),
+                word_positions: selectedPositions.join(", "),
                 content,
                 test_error_type_id: formData.test_error_type_id,
                 reason_for_type: formData.reason_for_type,
@@ -112,7 +116,7 @@ const TestErrorDetailsScreen = () => {
                             key={idx}
                             onPress={() => onTokenPress(idx)}
                             style={tw(
-                                `px-0 ${token.isSelected || selectedPositions.includes(token.position)
+                                `px-0 ${selectedPositions.includes(token.position)
                                     ? "bg-blue-200"
                                     : "bg-transparent"
                                 }`

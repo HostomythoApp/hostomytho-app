@@ -91,7 +91,7 @@ export default function AddTestErrorScreen({ route }: { route: any }) {
                 .join("");
             const newError = {
                 text_id: textId,
-                word_positions: selectedPositions.join(","),
+                word_positions: selectedPositions.join(", "),
                 content,
                 test_error_type_id: formData.test_error_type_id,
                 reason_for_type: formData.reason_for_type,

@@ -2,7 +2,7 @@
   "expo": {
     "name": "hostomytho",
     "slug": "hostomytho",
-    "version": "1.21",
+    "version": "1.21.0",
     "orientation": "landscape",
     "icon": "./src/assets/images/icon.png",
     "splash": {

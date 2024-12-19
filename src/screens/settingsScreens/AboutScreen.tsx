@@ -1,13 +1,19 @@
 import CustomHeaderEmpty from "components/header/CustomHeaderEmpty";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, ImageBackground, TouchableOpacity, Linking, Image } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
+import pkg from '../../../package.json';
 
 const AboutScreen = ({ }) => {
   const tw = useTailwind();
   const navigation = useNavigation<RootStackNavigationProp<"ReglesDuJeu">>();
+  const [appVersion, setAppVersion] = useState("");
+
+  useEffect(() => {
+    setAppVersion(pkg.version);
+  }, []);
 
   return (
     <ImageBackground source={require('images/bg_corridor.jpg')} style={tw('absolute bottom-0 left-0 w-full h-full')}>
@@ -31,7 +37,7 @@ const AboutScreen = ({ }) => {
                 Avant de jouer, lisez la <TouchableOpacity onPress={() => navigation.navigate('PolitiqueDeConfidentialite')}><Text style={{ color: 'blue' }}>charte d'HostoMytho</Text>
                 </TouchableOpacity>.
                 {"\n\n"}
-                
+
                 L'application est téléchargeable pour les téléphones, ou accessible directement depuis votre navigateur à l'adresse <Text style={{ color: 'blue' }}
                   onPress={() => Linking.openURL('https://hostomytho.atilf.fr')}>
                   https://hostomytho.atilf.fr
@@ -130,7 +136,14 @@ const AboutScreen = ({ }) => {
                 Games and Natural Language Processing Workshop at LREC-COLING 2024, May 2024, Turin, Italy
               </Text>
 
+              <Text style={tw('text-xl font-bold mt-6 font-primary')}>
+              Version de l'application
+            </Text>
+            <Text style={tw('font-primary text-lg')}>
+              {appVersion}
+            </Text>
             </View>
+
           </View>
         </ScrollView>
       </View>

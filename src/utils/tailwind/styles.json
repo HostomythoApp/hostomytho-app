@@ -1957,6 +1957,11 @@
 			"lineHeight": 16
 		}
 	},
+	"text-[10px]": {
+		"style": {
+			"fontSize": 10
+		}
+	},
 	"font-bold": {
 		"style": {
 			"fontWeight": "700"
@@ -2176,6 +2181,27 @@
 		},
 		"media": "(min-width: 768px)"
 	},
+	"md:text-base": {
+		"style": {
+			"fontSize": 16,
+			"lineHeight": 24
+		},
+		"media": "(min-width: 768px)"
+	},
+	"md:text-sm": {
+		"style": {
+			"fontSize": 14,
+			"lineHeight": 20
+		},
+		"media": "(min-width: 768px)"
+	},
+	"md:text-xs": {
+		"style": {
+			"fontSize": 12,
+			"lineHeight": 16
+		},
+		"media": "(min-width: 768px)"
+	},
 	"lg:mt-4": {
 		"style": {
 			"marginTop": 16
@@ -2215,9 +2241,30 @@
 		},
 		"media": "(min-width: 1024px)"
 	},
+	"lg:text-base": {
+		"style": {
+			"fontSize": 16,
+			"lineHeight": 24
+		},
+		"media": "(min-width: 1024px)"
+	},
 	"xl:mt-4": {
 		"style": {
 			"marginTop": 16
+		},
+		"media": "(min-width: 1280px)"
+	},
+	"xl:text-lg": {
+		"style": {
+			"fontSize": 18,
+			"lineHeight": 28
+		},
+		"media": "(min-width: 1280px)"
+	},
+	"xl:text-xl": {
+		"style": {
+			"fontSize": 20,
+			"lineHeight": 28
 		},
 		"media": "(min-width: 1280px)"
 	},

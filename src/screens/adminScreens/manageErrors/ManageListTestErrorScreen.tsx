@@ -149,8 +149,9 @@ export default function ManageListTestErrorScreen() {
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Gestion des erreurs de contrôle" backgroundColor="bg-whiteTransparent" />
                 <View style={tw('mx-auto pt-20 items-center')}>
-                    <View style={tw('flex-row justify-between w-full mb-4')}>
-                        <Text>Pour créer de nouvelles erreurs de contrôle, passez par la gestion des textes et ajoutez une erreur à un texte.</Text>
+                    <View style={tw('flex-row justify-between w-full mb-4 ml-2')}>
+                        <Text style={tw('font-primary')}
+                        >Pour créer de nouvelles erreurs de contrôle, passez par la gestion des textes et ajoutez une erreur à un texte.</Text>
                     </View>
                     <View style={tw('mb-2 p-4 rounded-lg bg-white')}>
                         <table>

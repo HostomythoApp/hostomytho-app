@@ -76,6 +76,7 @@ const ErrorDetailsScreen = () => {
   const handleSave = async () => {
     if (validateForm()) {
       try {
+
         const { nb_of_treatments, content, length, ...dataToSend } = formData;
         await updateText(textId, dataToSend);
         setIsEditing(false);
