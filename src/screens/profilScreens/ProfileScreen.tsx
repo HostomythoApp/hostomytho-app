@@ -99,11 +99,15 @@ const ProfileScreen = (props: any) => {
             resizeMode="cover"
         >
             {isLoading && <Loader />}
-            {user && user.tutorial_progress > 4 && (
+
+            {user && (user.tutorial_progress == 4 ||user.tutorial_progress == 5 || user.tutorial_progress == 6) && (
+                <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' backToMain={true} animation={true} />
+            )}
+            {user && user.tutorial_progress > 6 && (
                 <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' backToMain={true} />
             )}
 
-            {user && user.tutorial_progress > 5 && (
+            {user && user.tutorial_progress > 6 && (
                 <TouchableOpacity onPress={() => navigation.navigate("ParametreProfil")}
                     style={{ position: 'absolute', bottom: 0, right: 0, padding: 0, width: windowWidth * 0.10, height: windowWidth * 0.10, minWidth: 100, minHeight: 100, zIndex: 90 }}>
                     <View style={{
@@ -140,7 +144,7 @@ const ProfileScreen = (props: any) => {
                     </View>
                 }
                 <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center z-20")} style={[tw('w-3/5 h-full'), { marginright: '5%' }]}>
-                    {user && user.tutorial_progress > 1 ? (
+                    {user && user.tutorial_progress > 2 ? (
                         viewMode === 'profile' ?
                             <ContentProfileScreen user={user} />
                             :
