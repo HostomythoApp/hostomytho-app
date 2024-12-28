@@ -4649,6 +4649,11 @@ expo-constants@~14.4.2:
     "@expo/config" "~8.1.0"
     uuid "^3.3.2"
 
+expo-document-picker@^13.0.1:
+  version "13.0.1"
+  resolved "https://registry.npmjs.org/expo-document-picker/-/expo-document-picker-13.0.1.tgz"
+  integrity sha512-M3O3SDqubsRbVyY+Xu6V45K0/G1S1IqEdmVAnPkOiUU2eIEFfF5oP4KON4CsvEhO9IIunnpRr/oq9NQxb3SrEA==
+
 expo-file-system@~15.4.0, expo-file-system@~15.4.5:
   version "15.4.5"
   resolved "https://registry.npmjs.org/expo-file-system/-/expo-file-system-15.4.5.tgz"

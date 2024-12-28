@@ -16,6 +16,7 @@ import EditVariablesScreen from "screens/adminScreens/EditVariablesScreen";
 import ExportDataScreen from "screens/adminScreens/ExportDataScreen";
 import ManageTextsScreen from "screens/adminScreens/manageTexts/ManageTextsScreen";
 import CreateTextScreen from "screens/adminScreens/manageTexts/CreateTextScreen";
+import ImportTextScreen from "screens/adminScreens/manageTexts/ImportTextScreen";
 import TextDetailsScreen from "screens/adminScreens/manageTexts/TextDetailsScreen";
 import ManageTestNegationScreen from "screens/adminScreens/manageTexts/ManageTestNegationScreen";
 import ManageUsersSreen from "screens/adminScreens/usersScreens/ManageUsersSreen";
@@ -92,6 +93,7 @@ const StackNavigator = ({ }) => {
                 headerShown: false
               })}
             >
+              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
 
               <Stack.Screen name="TableauDeBord"
                 component={MainBoardScreen}
@@ -169,10 +171,9 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="UserDetails" component={UserDetailsScreen} />
               <Stack.Screen name="ManageUsers" component={ManageUsersSreen} />
               <Stack.Screen name="CreateText" component={CreateTextScreen} />
-              <Stack.Screen name="TestErrorDetails" component={TestErrorDetailsScreen} />
+              <Stack.Screen name="ImportText" component={ImportTextScreen} />
               <Stack.Screen name="ManageListTestError" component={ManageListTestErrorScreen} />
               <Stack.Screen name="AddTestError" component={AddTestErrorScreen} />
-              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
 
               {/* Part politique confidentialité */}
               <Stack.Screen name="PrivacyPolicy"

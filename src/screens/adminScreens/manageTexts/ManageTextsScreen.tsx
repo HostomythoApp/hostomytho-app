@@ -139,16 +139,23 @@ export default function ManageTextsScreen() {
             <ScrollView contentContainerStyle={tw("flex-grow justify-center items-center")} style={tw('w-full')}>
                 <CustomHeaderEmpty title="Gestion des textes" backgroundColor="bg-whiteTransparent" />
                 <View style={tw('mx-auto pt-20 items-center')}>
-                    <View style={tw('flex-row justify-between w-full')}>
-                        <TouchableOpacity onPress={() => navigation.navigate("CreateText")} style={tw('ml-4 flex-row items-center justify-center px w-96 bg-blue-400 py-2 rounded-md')}>
-                            <Ionicons name="add" size={24} color="white" style={tw('mr-2')} />
-                            <Text style={tw('text-white font-semibold')}>Ajouter un texte</Text>
-                        </TouchableOpacity>
-
+                <View style={tw('flex-row justify-end w-full mb-3')}>
                         <Text style={tw('text-lg font-bold mb-2 self-end mx-6')}>
                             Nombre total de textes : {table.getRowModel().rows.length}
                         </Text>
                     </View>
+                    <View style={tw('flex-row justify-center w-full pb-3')}>
+                        <TouchableOpacity onPress={() => navigation.navigate("CreateText")} style={tw('ml-4 flex-row items-center justify-center px w-96 bg-green-600 py-2 rounded-md')}>
+                            <Ionicons name="add" size={24} color="white" style={tw('mr-2')} />
+                            <Text style={tw('text-white font-semibold')}>Ajouter un texte</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => navigation.navigate("ImportText")} style={tw('ml-4 flex-row items-center justify-center px w-96 bg-green-600 py-2 rounded-md')}>
+                            <Ionicons name="add" size={24} color="white" style={tw('mr-2')} />
+                            <Text style={tw('text-white font-semibold')}>Importer plusieurs textes</Text>
+                        </TouchableOpacity>
+                    </View>
+     
                     <View style={tw('mb-2 p-4 rounded-lg bg-white')}>
                         <table>
                             <thead>
