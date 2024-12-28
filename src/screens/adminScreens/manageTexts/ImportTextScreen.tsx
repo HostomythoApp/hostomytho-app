@@ -104,6 +104,9 @@ const ImportTextScreen = () => {
     "is_active": "1",
     "reason_for_rate": "Facultatif",
     "test_plausibility": "50"
+  },
+  {
+    .....
   }
 ]`}
                 </Text>
@@ -123,13 +126,13 @@ const ImportTextScreen = () => {
 
 
             <View style={tw("justify-center items-center mt-6")}>
-            <TouchableOpacity
-              style={tw("bg-blue-500 p-5 rounded-3xl flex-row items-center mb-4 w-24")}
-              onPress={handlePickFile}
-            >
-              <Ionicons name="document" size={26} color="#fff" />
-              <Text style={tw("ml-1 text-white text-base font-bold")}>Choisir un fichier JSON</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={tw("bg-blue-500 p-5 rounded-3xl flex-row items-center mb-4 w-24")}
+                onPress={handlePickFile}
+              >
+                <Ionicons name="document" size={26} color="#fff" />
+                <Text style={tw("ml-1 text-white text-base font-bold")}>Choisir un fichier JSON</Text>
+              </TouchableOpacity>
             </View>
 
             {file && (

@@ -93,7 +93,6 @@ const StackNavigator = ({ }) => {
                 headerShown: false
               })}
             >
-              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
 
               <Stack.Screen name="TableauDeBord"
                 component={MainBoardScreen}
@@ -174,6 +173,7 @@ const StackNavigator = ({ }) => {
               <Stack.Screen name="ImportText" component={ImportTextScreen} />
               <Stack.Screen name="ManageListTestError" component={ManageListTestErrorScreen} />
               <Stack.Screen name="AddTestError" component={AddTestErrorScreen} />
+              <Stack.Screen name="ManageTexts" component={ManageTextsScreen} />
 
               {/* Part politique confidentialité */}
               <Stack.Screen name="PrivacyPolicy"
