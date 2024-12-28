@@ -12,7 +12,7 @@ export const plausibilityConfigs = [
     {
         maxThreshold: 62.50,
         description: "moyennement plausible",
-        buttonConfig: { backgroundColor: 'bg-yellow-100', iconName: 'question', iconColor: 'orange', iconSet: 'AntDesign' }
+        buttonConfig: { backgroundColor: 'bg-yellow-100', iconName: 'minus', iconColor: 'orange', iconSet: 'Entypo' }
     },
     {
         maxThreshold: 87.50,
