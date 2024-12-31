@@ -98,7 +98,12 @@ const ProfileSettingsScreen = (props: any) => {
                         <PrimaryButton title="Modifier le mot de passe" destination="ChangePassword" />
 
                         <LogoutButton />
-                        <FunctionButton text={"Supprimer le compte"} func={() => setModalVisible(true)} />
+                        <TouchableOpacity
+                            onPress={() => setModalVisible(true)}
+                            style={tw("bg-red-500 rounded py-2 px-12 my-2 font-medium ")}
+                        >
+                            <Text style={tw("text-white text-center text-lg font-primary")}>{"Supprimer le compte"}</Text>
+                        </TouchableOpacity>
                     </View>
 
                 </View>

@@ -167,6 +167,31 @@ export const getPlausibilityText = async (): Promise<TextWithTokens> => {
   }
 };
 
+export const createSeveralTexts = async (texts: Partial<Text>[]) => {
+  try {
+    const token = await AsyncStorage.getItem("@auth_token");
+
+    // Préparer le fichier JSON en mémoire
+    const formData = new FormData();
+    const fileBlob = new Blob([JSON.stringify(texts)], { type: "application/json" });
+
+    formData.append("file", fileBlob, "texts.json");
+
+    // Envoyer la requête POST à l'API
+    const response = await api.post("/texts/bulk", formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in createSeveralTexts:", error);
+    throw error;
+  }
+};
+
 export const createText = async (text: Partial<Text>) => {
   try {
     const token = await AsyncStorage.getItem("@auth_token");

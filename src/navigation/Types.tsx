@@ -47,6 +47,7 @@ export type RootStackParamList = {
     UserMessaging: undefined;
     ManageHomeMessages: undefined;
     CreateText: undefined;
+    ImportText: undefined;
     ErrorDetails: undefined;
     ManageListError: undefined;
     AddTestError: { textId: number };
