@@ -17,6 +17,7 @@ import Loader from 'components/Loader';
 import CustomModal from 'components/modals/CustomModal';
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "navigation/Types";
+import AnimHeader from 'components/header/AnimHeader';
 
 const ProfileScreen = (props: any) => {
     const tw = useTailwind();
@@ -101,7 +102,7 @@ const ProfileScreen = (props: any) => {
             {isLoading && <Loader />}
 
             {user && (user.tutorial_progress == 4 ||user.tutorial_progress == 5 || user.tutorial_progress == 6) && (
-                <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' backToMain={true} animation={true} />
+                <AnimHeader backgroundColor='bg-transparent' textColor='white' backToMain={true} animation={true} />
             )}
             {user && user.tutorial_progress > 6 && (
                 <CustomHeaderEmpty backgroundColor='bg-transparent' textColor='white' backToMain={true} />
