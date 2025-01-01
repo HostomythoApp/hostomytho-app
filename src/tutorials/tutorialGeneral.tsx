@@ -50,7 +50,7 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
 
         case 9: return (
             <Text style={tw('font-primary text-base')}>
-                Commencez par le jeu «Mytho Ou Pas».
+                Commencez par le jeu «Mytho No».
                 Un collègue médecin vous orientera et évaluera vos compétences d'enquêteur.
                 {"\n"}
                 En cas de besoin, vous trouverez des boutons d'aide à divers endroits :

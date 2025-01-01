@@ -33,8 +33,8 @@ const StatisticsScreen = ({ }) => {
               <Text style={tw('font-primary text-2xl text-white font-bold mt-4 mb-2 text-center ')}>Statistiques de l'application</Text>
               <View style={tw('justify-center flex-row rounded-xl shadow-lg p-4 pt-0 flex-wrap')}>
                 {/* <StatBox title="Criminels mis en prison :" value="83" color="border-l-4 border-teal-500" /> */}
-                <StatBox title="Nombre de textes total :" value="45" color="border-l-4 border-orange-500" />
-                <StatBox title="Annotations totales créées :" value="615" color="border-l-4 border-pink-500" />
+                <StatBox title="Nombre de joueurs :" value="356" color="border-l-4 border-orange-500" />
+                <StatBox title="Annotations totales créées :" value="5 315" color="border-l-4 border-pink-500" />
               </View>
             </View>
           </View>

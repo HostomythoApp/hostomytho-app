@@ -101,7 +101,7 @@ const ProfileScreen = (props: any) => {
         >
             {isLoading && <Loader />}
 
-            {user && (user.tutorial_progress == 4 ||user.tutorial_progress == 5 || user.tutorial_progress == 6) && (
+            {user && (user.tutorial_progress == 5 || user.tutorial_progress == 6) && (
                 <AnimHeader backgroundColor='bg-transparent' textColor='white' backToMain={true} animation={true} />
             )}
             {user && user.tutorial_progress > 6 && (
