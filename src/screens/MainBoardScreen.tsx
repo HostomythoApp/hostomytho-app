@@ -336,8 +336,7 @@ const MainBoardScreen = ({ }) => {
                                         />
                                     )}
                                     <Text style={{
-                                        ...tw('absolute bottom-[10%] w-full text-center font-secondary'),
-                                        fontSize: responsiveFontSize(17)
+                                        ...tw('absolute bottom-[10%] w-full text-center font-secondary text-xs md:text-base xl:text-xl')
                                     }}>Suspect</Text>
                                 </TouchableOpacity>
 
@@ -469,11 +468,10 @@ const MainBoardScreen = ({ }) => {
                                     }} />
 
                                     {/* Titre */}
-                                    <Text style={[tw('font-secondary absolute text-center text-gray-800'),
+                                    <Text style={[tw('font-secondary absolute text-center text-gray-800 text-xs lg:text-base xl:text-xl'),
                                     {
                                         top: '10%',
                                         width: '100%',
-                                        fontSize: responsiveFontSize(16),
                                     }]}>
                                         Enquêteurs du mois précédent
                                     </Text>
@@ -487,8 +485,7 @@ const MainBoardScreen = ({ }) => {
 
                                             <View style={[tw('overflow-hidden relative'), { height: windowWidth * 0.068 }]}>
                                                 <Text style={{
-                                                    ...tw('font-secondary text-center'),
-                                                    fontSize: responsiveFontSize(14),
+                                                    ...tw('font-secondary text-center text-[10px] md:text-xs xl:text-lg')
                                                 }}>
                                                     {monthlyWinners[1]?.username}
                                                 </Text>
@@ -523,8 +520,7 @@ const MainBoardScreen = ({ }) => {
                                         >
                                             <View style={[tw('overflow-hidden relative'), { height: windowWidth * 0.068 }]}>
                                                 <Text style={{
-                                                    ...tw('font-secondary text-center'),
-                                                    fontSize: responsiveFontSize(14),
+                                                    ...tw('font-secondary text-center text-[10px] md:text-xs xl:text-lg')
                                                 }}>
                                                     {monthlyWinners[2]?.username}
                                                 </Text>
@@ -549,15 +545,14 @@ const MainBoardScreen = ({ }) => {
                                     </View>
 
                                     {/* Zone du Joueur 1 */}
-                                    <View style={[tw('absolute top-[24%] items-center self-center  bg-white border border-gray-500 rounded min-w-[25%]'), { height: windowWidth * 0.07 }]}>
+                                    <View style={[tw('absolute top-[24%] items-center self-center bg-white border border-gray-500 rounded min-w-[25%]'), { height: windowWidth * 0.07 }]}>
 
                                         <TouchableOpacity style={tw('text-center z-10')}
                                             onPress={() => navigation.navigate("ProfilJoueur", { userId: monthlyWinners[0]?.user_id })}
                                         >
                                             <View style={[tw('overflow-hidden relative'), { height: windowWidth * 0.068 }]}>
                                                 <Text style={{
-                                                    ...tw('font-secondary text-center'),
-                                                    fontSize: responsiveFontSize(14),
+                                                    ...tw('font-secondary text-center text-[10px] md:text-xs xl:text-lg'),
                                                 }}>
                                                     {monthlyWinners[0]?.username}
                                                 </Text>
@@ -586,8 +581,7 @@ const MainBoardScreen = ({ }) => {
                                     <View style={tw('font-secondary absolute text-center self-end bottom-0 w-full')}>
                                         <TouchableOpacity onPress={() => navigation.navigate('ClassementMensuel')}>
                                             <Text style={{
-                                                ...tw('text-[#5583CB] mt-2 text-center font-secondary underline'),
-                                                fontSize: responsiveFontSize(13),
+                                                ...tw('text-[#5583CB] mt-2 text-center font-secondary underline text-[10px] md:text-xs xl:text-lg')
                                             }}>Classement mensuel en cours</Text>
                                         </TouchableOpacity>
                                     </View>

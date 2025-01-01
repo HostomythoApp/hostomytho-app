@@ -65,17 +65,3 @@ export const getTutorialContentForStep = (step: number, tw: any, navigation?: an
         default: return null;
     }
 };
-
-
-// export const getMessageMainBoardContent = (tw: any) => {
-//     return (
-//         <TouchableWithoutFeedback>
-//             <Text allowFontScaling={false} style={tw('font-primary')}>
-//                 Bienvenue sur HostoMytho
-//                 Ici, vous pouvez essayer de jouer aux différents jeux d'annotations, mais si vous souhaitez tenter d'arrêter les criminels et vous mesurer aux autres enquêteurs, créez un compte, ça ne prend que quelques secondes !
-//                 Les données d'annotations que vous produirez en étant connecté et en jouant, seront récupérées et serviront à la science.
-//             </Text>
-//         </TouchableWithoutFeedback>
-//     );
-// }
-
