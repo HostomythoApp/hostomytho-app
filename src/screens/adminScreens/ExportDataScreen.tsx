@@ -8,6 +8,8 @@ import FunctionButton from 'components/FunctionButton';
 const tableDescriptions = {
   users: "Utilisateurs de l'application",
   texts: "Table des textes",
+  sentences: "Table des phrases issues des textes",
+  tokens: "Table des tokens (attention: le fichier peut être volumineux)",
   user_text_rating: "Annotations individuelles de plausibilité dans MythoOuPas",
   group_text_rating: "Groupe d'annotations de plausibilité dans MythoOuPas",
   user_sentence_specification: "Annotations de négations dans MythoNo",
@@ -38,6 +40,8 @@ const ExportDataScreen = () => {
   const [selectedTables, setSelectedTables] = useState({
     users: false,
     texts: false,
+    sentences: false,
+    tokens: false,
     user_text_rating: false,
     group_text_rating: false,
     user_error_details: false,
