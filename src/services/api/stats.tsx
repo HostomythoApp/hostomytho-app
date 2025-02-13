@@ -1,6 +1,41 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "./index";
 
+
+// ****************** Stats Page ******************
+export const getTotalUsersCount = async (): Promise<number> => {
+    try {
+        const response = await api.get('/stats/getTotalUsers');
+        return response.data.totalUsers;
+    } catch (error) {
+        console.error("Erreur lors de la récupération du nombre total d'utilisateurs :", error);
+        throw error;
+    }
+};
+
+export const getUserAnnotationsCount = async (): Promise<number> => {
+    const token = await AsyncStorage.getItem("@auth_token");
+    try {
+        const response = await api.get('/stats/getUserAnnotations', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data.userAnnotations;
+    } catch (error) {
+        console.error("Erreur lors de la récupération des annotations de l'utilisateur :", error);
+        throw error;
+    }
+};
+
+export const getTotalAnnotationsCount = async (): Promise<number> => {
+    try {
+        const response = await api.get('/stats/getTotalAnnotations');
+        return response.data.totalAnnotations;
+    } catch (error) {
+        console.error("Erreur lors de la récupération du nombre total d'annotations :", error);
+        throw error;
+    }
+};
+
 // ****************** User ******************
 export const getUserRegistrationsDate = async (): Promise<any[]> => {
     const token = await AsyncStorage.getItem("@auth_token");
